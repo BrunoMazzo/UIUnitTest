@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "flyingfox",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swhitty/FlyingFox.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "f765ae38657f587e8fe763d98e10400f96610050"
+      }
+    }
+  ],
+  "version" : 2
+}
