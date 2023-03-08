@@ -35,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1D01C92B29B88B0200551803 /* package */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = package; path = ../Server/Server/package; sourceTree = "<group>"; };
 		1D136B6C29B45A4600465FB6 /* Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Client.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D136B6F29B45A4600465FB6 /* ClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientApp.swift; sourceTree = "<group>"; };
 		1D136B7129B45A4600465FB6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -143,6 +144,7 @@
 		1D24055629B4A3F200DEA206 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				1D01C92B29B88B0200551803 /* package */,
 			);
 			name = Packages;
 			sourceTree = "<group>";

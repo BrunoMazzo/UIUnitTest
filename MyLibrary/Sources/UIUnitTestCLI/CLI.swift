@@ -31,7 +31,7 @@ struct UserFetcher {
 //        await executeShellCommand("xcodebuild -project \(rootFolder)/Server/Server.xcodeproj -scheme ServerUITests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=\(device.name)' test")
         
         while true {
-            await executeShellCommand("xcodebuild -project \(rootFolder)/Server/Server.xcodeproj -scheme ServerUITests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' test")
+            await executeShellCommand("xcodebuild -project \(rootFolder)/Server/Server.xcodeproj -scheme ServerUITests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' -clonedSourcePackagesDirPath \(rootFolder)/Packages -derivedDataPath \(rootFolder)/build  CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO test")
         }
 //
         
@@ -62,7 +62,7 @@ struct UserFetcher {
 }
 
 @available(macOS 12.0, *)
-func executeShellCommand(_ command: String) async -> Data {
+func executeShellCommand(_ command: String) async {
     
     print("Executing command: \(command)")
     
@@ -77,28 +77,29 @@ func executeShellCommand(_ command: String) async -> Data {
     task.launch()
     
 
-    var data = Data()
+//    var data = Data()
     
     do {
         for try await line in pipe.fileHandleForReading.bytes {
-            data.append(Data(bytes: [line], count: 1))
+//            data.append(Data(bytes: [line], count: 1))
             
             if let string = String(bytes: [line], encoding: .utf8) {
                 print(string, terminator: "")
             }
-            
         }
     } catch {
-        
+        print("Error: --------------------------------------")
+        print(error.localizedDescription)
+        print("Error: --------------------------------------")
     }
     
-    return data
+//    return data
 }
 
-@available(macOS 12.0, *)
-func executeShellCommand2(_ command: String) async -> String {
-    let data: Data = await executeShellCommand(command)
-    let output = String(data: data, encoding: .utf8)!
-    return output
-}
-
+//@available(macOS 12.0, *)
+//func executeShellCommand2(_ command: String) async -> String {
+//    let data: Data = await executeShellCommand(command)
+//    let output = String(data: data, encoding: .utf8)!
+//    return output
+//}
+//

@@ -10,8 +10,6 @@
 		1D24055C29B4A61100DEA206 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D24055B29B4A61100DEA206 /* UIUnitTest */; };
 		1DA1932D29B4260500322869 /* ServerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1932C29B4260500322869 /* ServerApp.swift */; };
 		1DA1932F29B4260500322869 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1932E29B4260500322869 /* ContentView.swift */; };
-		1DA1933129B4260600322869 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DA1933029B4260600322869 /* Assets.xcassets */; };
-		1DA1933529B4260600322869 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DA1933429B4260600322869 /* Preview Assets.xcassets */; };
 		1DA1935929B4267200322869 /* UIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1935729B4267200322869 /* UIServer.swift */; };
 		1DA1935A29B4267200322869 /* UITestServerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1935829B4267200322869 /* UITestServerTest.swift */; };
 		1DA1935D29B4270F00322869 /* FlyingFox in Frameworks */ = {isa = PBXBuildFile; productRef = 1DA1935C29B4270F00322869 /* FlyingFox */; };
@@ -28,13 +26,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1D01C92A29B88A0700551803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1D01C92C29B898E700551803 /* Server.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Server.entitlements; sourceTree = "<group>"; };
 		1D24055A29B4A55700DEA206 /* package */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = package; path = Server/package; sourceTree = "<group>"; };
 		1DA1932929B4260500322869 /* Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Server.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DA1932C29B4260500322869 /* ServerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerApp.swift; sourceTree = "<group>"; };
 		1DA1932E29B4260500322869 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		1DA1933029B4260600322869 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1DA1933229B4260600322869 /* Server.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Server.entitlements; sourceTree = "<group>"; };
-		1DA1933429B4260600322869 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1DA1934429B4260600322869 /* ServerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ServerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DA1935729B4267200322869 /* UIServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIServer.swift; sourceTree = "<group>"; };
 		1DA1935829B4267200322869 /* UITestServerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestServerTest.swift; sourceTree = "<group>"; };
@@ -91,21 +88,12 @@
 		1DA1932B29B4260500322869 /* Server */ = {
 			isa = PBXGroup;
 			children = (
+				1D01C92A29B88A0700551803 /* Info.plist */,
 				1DA1932C29B4260500322869 /* ServerApp.swift */,
 				1DA1932E29B4260500322869 /* ContentView.swift */,
-				1DA1933029B4260600322869 /* Assets.xcassets */,
-				1DA1933229B4260600322869 /* Server.entitlements */,
-				1DA1933329B4260600322869 /* Preview Content */,
+				1D01C92C29B898E700551803 /* Server.entitlements */,
 			);
 			path = Server;
-			sourceTree = "<group>";
-		};
-		1DA1933329B4260600322869 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				1DA1933429B4260600322869 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		1DA1934729B4260600322869 /* ServerUITests */ = {
@@ -174,7 +162,7 @@
 		1DA1932129B4260500322869 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
+				BuildIndependentTargetsInParallel = NO;
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
@@ -183,7 +171,6 @@
 					};
 					1DA1934329B4260600322869 = {
 						CreatedOnToolsVersion = 14.2;
-						TestTargetID = 1DA1932829B4260500322869;
 					};
 				};
 			};
@@ -214,8 +201,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DA1933529B4260600322869 /* Preview Assets.xcassets in Resources */,
-				1DA1933129B4260600322869 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,11 +358,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Server/Server.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Server/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Server/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -395,6 +383,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.mazzo.Server;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -411,11 +400,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Server/Server.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Server/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Server/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -433,6 +425,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.mazzo.Server;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -450,6 +443,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
@@ -463,7 +457,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Server;
 			};
 			name = Debug;
 		};
@@ -474,6 +467,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
@@ -487,7 +481,6 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Server;
 			};
 			name = Release;
 		};

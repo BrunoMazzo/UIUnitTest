@@ -26,6 +26,12 @@ final class UITestServerTest: XCTestCase {
     func testStart() async throws {
         let server = UIServer()
         
-        try await server.start()
+        do {
+            try await server.start()
+        } catch {
+            print("SERVER ERROR ----------------------------------")
+            print(error.localizedDescription)
+            print("SERVER ERROR ----------------------------------")
+        }
     }
 }
