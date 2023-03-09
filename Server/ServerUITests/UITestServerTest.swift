@@ -8,6 +8,13 @@
 import XCTest
 
 final class UITestServerTest: XCTestCase {
+    
+    override func record(_ issue: XCTIssue) {
+        print(issue)
+        print(issue)
+        
+        self.server.lastIssue = issue
+    }
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -21,13 +28,15 @@ final class UITestServerTest: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    
+    var server: UIServer!
 
     @MainActor
     func testStart() async throws {
-        let server = UIServer()
+        self.server = UIServer()
         
         do {
-            try await server.start()
+            try await self.server.start()
         } catch {
             print("SERVER ERROR ----------------------------------")
             print(error.localizedDescription)

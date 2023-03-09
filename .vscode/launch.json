@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug UIUnitTestCLI",
+            "program": "${workspaceFolder:UIUnitTest}/.build/debug/UIUnitTestCLI",
+            "args": [],
+            "cwd": "${workspaceFolder:UIUnitTest}",
+            "preLaunchTask": "swift: Build Debug UIUnitTestCLI"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release UIUnitTestCLI",
+            "program": "${workspaceFolder:UIUnitTest}/.build/release/UIUnitTestCLI",
+            "args": [],
+            "cwd": "${workspaceFolder:UIUnitTest}",
+            "preLaunchTask": "swift: Build Release UIUnitTestCLI"
+        }
+    ]
+}

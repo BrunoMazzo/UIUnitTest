@@ -21,13 +21,13 @@ final class ClientTests: XCTestCase {
 
     @MainActor
     func testExample() async throws {
-        await UI.activate()
+        let app = try await App()
         
         showView(MySettingTable())
         
-        await UI().button(identifier: "Something").tap()
+        try await app.button(identifier: "Something").tap()
         
-        let exists = await UI().staticText(label: "Something View").exists()
+        let exists = try await app.staticText(label: "Something View").exists()
         
         XCTAssert(exists)
         
@@ -35,15 +35,31 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testExample2() async throws {
-        await UI.activate()
+        let app = try await App()
         
         showView(MySettingTable())
         
-        await UI().button(identifier: "Hello world button").tap()
+        try await app.button(identifier: "Hello world button").tap()
         
-        let exists = await UI().staticText(label: "Value: Hello world").exists()
+        let exists = try await app.staticText(label: "Value: Hello world").exists()
         
         XCTAssert(exists)
+    }
+    
+    
+    @MainActor
+    func testExample3() async throws {
+        let app = try await App()
+        
+        showView(MySettingTable())
+        
+        try await app.button(identifier: "TextField").tap()
+        
+        try await app.textField(identifier: "TextField-Default").tap()
+        
+        try await app.textField(identifier: "TextField-Default").enterText("Hello world")
+        
+        XCTAssert(true)
     }
 
 }

@@ -25,11 +25,35 @@ struct MySettingTable: View {
                 NavigationLink(value: "Hello world") {
                     Text("Hello world button")
                 }
+                NavigationLink("Stepper", destination: StepperView())
+                NavigationLink("TextField", destination: TextFieldsView())
             }
             .navigationDestination(for: String.self) { value in
                 StringView(value: value)
             }
         }
+    }
+}
+
+struct TextFieldsView: View {
+    
+    @State var textFieldValue: String = ""
+    
+    var body: some View {
+        VStack {
+            LabeledContent("Default") {
+                TextField("Default", text: $textFieldValue)
+                    .accessibilityIdentifier("TextField-Default")
+            }
+        }
+    }
+}
+
+struct StepperView: View {
+    @State var value: Int = 0
+    
+    var body: some View {
+        Stepper("Stepper", value: $value)
     }
 }
 

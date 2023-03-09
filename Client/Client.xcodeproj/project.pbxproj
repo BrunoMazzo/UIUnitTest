@@ -35,7 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1D01C92B29B88B0200551803 /* package */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = package; path = ../Server/Server/package; sourceTree = "<group>"; };
+		1D01C93029B9CC3600551803 /* UIUnitTest */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UIUnitTest; path = ..; sourceTree = "<group>"; };
 		1D136B6C29B45A4600465FB6 /* Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Client.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D136B6F29B45A4600465FB6 /* ClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientApp.swift; sourceTree = "<group>"; };
 		1D136B7129B45A4600465FB6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -75,10 +75,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D01C92F29B9CC3600551803 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				1D01C93029B9CC3600551803 /* UIUnitTest */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		1D136B6329B45A4600465FB6 = {
 			isa = PBXGroup;
 			children = (
-				1D24055629B4A3F200DEA206 /* Packages */,
+				1D01C92F29B9CC3600551803 /* Packages */,
 				1D136B6E29B45A4600465FB6 /* Client */,
 				1D136B8029B45A4600465FB6 /* ClientTests */,
 				1D136B8A29B45A4600465FB6 /* ClientUITests */,
@@ -139,14 +147,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		1D24055629B4A3F200DEA206 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				1D01C92B29B88B0200551803 /* package */,
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
