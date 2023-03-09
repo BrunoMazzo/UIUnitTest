@@ -41,51 +41,12 @@ struct UserFetcher {
         
         await executeShellCommand("xcrun simctl install booted \(rootFolder)/ServerUITests-Runner.app")
         await executeShellCommand("xcrun simctl launch booted bruno.mazzo.ServerUITests.xctrunner")
-        
-        
-        
-//        let device = await openDevices().first!
-//        await boot()
-        
-        //  xcrun simctl launch booted bruno.mazzo.ServerUITests.xctrunner
-//
-//        await executeShellCommand("xcodebuild -xctestrun \(rootFolder)/Server-config.xctestrun  -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' test-without-building")
-        
-//        await executeShellCommand("xcodebuild -project \(rootFolder)/Server/Server.xcodeproj -scheme ServerUITests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=\(device.name)' test")
-        
-//        while true {
-//            await executeShellCommand("xcodebuild -project \(rootFolder)/Server/Server.xcodeproj -scheme ServerUITests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' -clonedSourcePackagesDirPath \(rootFolder)/Packages -derivedDataPath \(rootFolder)/build  CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO test")
-//        }
-//
-        
-        // xcrun simctl list devices -j
-        // xcrun simctl install booted ServerUITests-Runner.app
-        
-        // Run Server Test
-//        let server = executeShellCommand("xcodebuild -workspace UIUnitTest.xcworkspace -scheme ServerUITests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=\(device.name)' test")
-        
-//        let server = executeShellCommand("xcodebuild -project \(rootFolder)/Server/Server.xcodeproj -scheme ServerUITests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' test")
-        
-//        try await Task.sleep(for: .seconds(10))
-//
-//        // Run client tests
-//        let client = executeShellCommand("xcodebuild -workspace UIUnitTest.xcworkspace -scheme Client -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' test")
-        
-        // Stop Server
-//        client.waitUntilExit()
-    }
-    
-    static func release() async {
-        await executeShellCommand("zip -r Server.zip Server")
-        
-        
-        
-        
     }
 }
 
 @available(macOS 12.0, *)
-func executeShellCommand(_ command: String) async {
+@discardableResult
+func executeShellCommand(_ command: String) async -> Data {
     
     print("Executing command: \(command)")
     
@@ -100,11 +61,11 @@ func executeShellCommand(_ command: String) async {
     task.launch()
     
 
-//    var data = Data()
+    var data = Data()
     
     do {
         for try await line in pipe.fileHandleForReading.bytes {
-//            data.append(Data(bytes: [line], count: 1))
+            data.append(Data(bytes: [line], count: 1))
             
             if let string = String(bytes: [line], encoding: .utf8) {
                 print(string, terminator: "")
@@ -116,13 +77,13 @@ func executeShellCommand(_ command: String) async {
         print("Error: --------------------------------------")
     }
     
-//    return data
+    return data
 }
 
-//@available(macOS 12.0, *)
-//func executeShellCommand2(_ command: String) async -> String {
-//    let data: Data = await executeShellCommand(command)
-//    let output = String(data: data, encoding: .utf8)!
-//    return output
-//}
-//
+@available(macOS 12.0, *)
+@_disfavoredOverload
+func executeShellCommand(_ command: String) async -> String {
+    let data: Data = await executeShellCommand(command)
+    let output = String(data: data, encoding: .utf8)!
+    return output
+}
