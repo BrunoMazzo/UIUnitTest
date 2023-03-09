@@ -9,6 +9,12 @@ import XCTest
 import UIUnitTest
 @testable import Client
 
+extension App {
+    convenience init() async throws {
+        try await self.init(appId: "bruno.mazzo.Client")
+    }
+}
+
 final class ClientTests: XCTestCase {
 
     override func setUpWithError() throws {

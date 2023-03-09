@@ -2,7 +2,7 @@ import Foundation
 
 public class App {
 
-    public init(appId: String = "bruno.mazzo.Client") async throws {
+    public init(appId: String) async throws {
         let activateRequestData = ActivateRequest(appId: appId)
         
         let _: Bool = try await callServer(path: "Activate", request: activateRequestData)
