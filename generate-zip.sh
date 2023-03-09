@@ -5,6 +5,8 @@
 ## TODO: Maybe convert to Swift inside the command line?
 
 ## Build the UI test
+root=$PWD
+
 xcodebuild -project ./Server/Server.xcodeproj \
   -scheme Server -sdk iphonesimulator \
   -destination "platform=iOS Simulator,name=iPhone 14,OS=16.2" \
@@ -13,5 +15,5 @@ xcodebuild -project ./Server/Server.xcodeproj \
   -IDECustomBuildProductsPath="$PWD/build/Products" \
   build-for-testing || exit 1
 
-(zip -r ./cli/Sources/UIUnitTestCLI/resources/Server.zip "$PWD"/build/Products/Debug-iphonesimulator/ServerUITests-Runner.app) || exit 1
+(cd "$root"/build/Products/Debug-iphonesimulator/ && zip -r "$root"/Lib/Sources/UIUnitTestCLI/resources/Server.zip ServerUITests-Runner.app) || exit 1
 

@@ -8,20 +8,21 @@ struct UserFetcher {
     static func getTempFolder() -> URL {
         let tempDirectory = FileManager.default.temporaryDirectory
         let tempUIUnitTestDirectory = tempDirectory.appendingPathComponent("UIUnitTest/")
-        if FileManager.default.fileExists(atPath: tempUIUnitTestDirectory.absoluteString) {
+        if !FileManager.default.fileExists(atPath: tempUIUnitTestDirectory.relativePath) {
             try! FileManager.default.createDirectory(at: tempUIUnitTestDirectory, withIntermediateDirectories: true)
         }
         
         return tempUIUnitTestDirectory
     }
     
-    static func copyFile(file: URL, toFolder folder: URL)  -> URL {
-        let initialPath = URL(string: "file://\(file)")!
-        let newPath = folder.appending(path: file.lastPathComponent, directoryHint: .notDirectory)
+    static func copyFile(file initialPath: URL, toFolder folder: URL)  -> URL {
+        let newPath = folder.appending(path: initialPath.lastPathComponent, directoryHint: .notDirectory)
         
         if FileManager.default.fileExists(atPath: newPath.relativePath) {
             try? FileManager.default.removeItem(at: newPath)
         }
+        
+        
         
         try! FileManager.default.copyItem(at: initialPath, to: newPath)
         return newPath
@@ -34,7 +35,7 @@ struct UserFetcher {
         
         let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: tempDirectory)
 
-        await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.path)")
+        await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
         
         let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
         

@@ -14,6 +14,7 @@ let package = Package(
         .library(
             name: "UIUnitTest",
             targets: ["UIUnitTest"]),
+        .plugin(name: "UIUnitTestBuildPlugin", targets: ["UIUnitTestBuildPlugin"])
 //        .library(name: "Test", targets: ["UIUnitTestBundle"])
     ],
     dependencies: [
@@ -36,5 +37,11 @@ let package = Package(
             dependencies: [],
             path: "Lib/Sources/UIUnitTest"
         ),
+        .plugin(
+            name: "UIUnitTestBuildPlugin",
+            capability: .buildTool(),
+            dependencies: [.target(name: "UIUnitTestCLI")],
+            path: "Lib/Sources/UIUnitTestBuildPlugin"
+        )
     ]
 )
