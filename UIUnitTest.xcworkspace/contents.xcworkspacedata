@@ -2,7 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:MyLibrary">
+      location = "group:CLI">
+   </FileRef>
+   <FileRef
+      location = "group:generate-zip.sh">
    </FileRef>
    <FileRef
       location = "group:Server/Server.xcodeproj">
