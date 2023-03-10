@@ -37,7 +37,7 @@ struct Device: Codable {
 //    }
 //}
 //
-@available(macOS 12.0, *)
+
 func boot() async {
     _ = await executeShellCommand("xcrun simctl boot iPhone 14")
 }

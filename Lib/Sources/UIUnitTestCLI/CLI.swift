@@ -1,7 +1,6 @@
 import Foundation
 
 @available(iOS 16.0, *)
-@available(macOS 13.0, *)
 @main
 struct UserFetcher {
     
@@ -44,7 +43,6 @@ struct UserFetcher {
     }
 }
 
-@available(macOS 12.0, *)
 @discardableResult
 func executeShellCommand(_ command: String) async -> Data {
     
@@ -60,7 +58,6 @@ func executeShellCommand(_ command: String) async -> Data {
     task.arguments = ["-c", command]
     task.launch()
     
-
     var data = Data()
     
     do {
@@ -80,7 +77,6 @@ func executeShellCommand(_ command: String) async -> Data {
     return data
 }
 
-@available(macOS 12.0, *)
 @_disfavoredOverload
 func executeShellCommand(_ command: String) async -> String {
     let data: Data = await executeShellCommand(command)
