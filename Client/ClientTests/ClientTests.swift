@@ -17,16 +17,8 @@ extension App {
 
 final class ClientTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
     @MainActor
-    func testExample() async throws {
+    func testTap() async throws {
         let app = try await App()
         
         showView(MySettingTable())
@@ -36,11 +28,10 @@ final class ClientTests: XCTestCase {
         let exists = try await app.staticText(label: "Something View").exists()
         
         XCTAssert(exists)
-        
     }
     
     @MainActor
-    func testExample2() async throws {
+    func testExists() async throws {
         let app = try await App()
         
         showView(MySettingTable())
@@ -67,7 +58,7 @@ final class ClientTests: XCTestCase {
     
     
     @MainActor
-    func testExample3() async throws {
+    func testEnterText() async throws {
         let app = try await App()
         
         showView(MySettingTable())
@@ -78,7 +69,9 @@ final class ClientTests: XCTestCase {
         
         try await app.textField(identifier: "TextField-Default").enterText("Hello world")
         
-        XCTAssert(true)
+        let exists = try await app.staticText(label: "Text value: Hello world").exists()
+        
+        XCTAssert(exists)
     }
 
 }
