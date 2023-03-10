@@ -49,6 +49,23 @@ class UIServer {
             return self.buildResponse()
         }
         
+        await server.appendRoute(HTTPRoute(stringLiteral: "doubleTap")) { request in
+            
+            defer {
+                self.lastIssue = nil
+            }
+            
+            let tapRequest = try self.decoder.decode(DoubleTapRequest.self, from: request.body)
+            
+            await MainActor.run {
+                let element = self.findElement(matchers: tapRequest.matchers)
+                
+                element?.doubleTap()
+            }
+            
+            return self.buildResponse()
+        }
+        
         await server.appendRoute(HTTPRoute(stringLiteral: "exists")) { request in
             
             defer {

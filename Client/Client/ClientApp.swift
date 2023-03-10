@@ -18,8 +18,11 @@ struct ClientApp: App {
 
 
 struct MySettingTable: View {
+    
+    @State var navigationStack: [String] = []
+    
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationStack) {
             List {
                 NavigationLink("Something", destination: SomethingView())
                 NavigationLink(value: "Hello world") {
@@ -27,6 +30,10 @@ struct MySettingTable: View {
                 }
                 NavigationLink("Stepper", destination: StepperView())
                 NavigationLink("TextField", destination: TextFieldsView())
+                Text("Double tap")
+                    .onTapGesture(count: 2) {
+                        navigationStack.append("Double tap")
+                    }
             }
             .navigationDestination(for: String.self) { value in
                 StringView(value: value)

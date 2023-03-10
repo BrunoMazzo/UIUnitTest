@@ -14,7 +14,7 @@
 		1D136B8229B45A4600465FB6 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8129B45A4600465FB6 /* ClientTests.swift */; };
 		1D136B8C29B45A4600465FB6 /* ClientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8B29B45A4600465FB6 /* ClientUITests.swift */; };
 		1D136B8E29B45A4600465FB6 /* ClientUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8D29B45A4600465FB6 /* ClientUITestsLaunchTests.swift */; };
-		1D136BA629B469FA00465FB6 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D136BA529B469FA00465FB6 /* UIUnitTest */; };
+		1D435E8D29BB26240027CD1D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D435E8C29BB26240027CD1D /* UIUnitTest */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D136BA629B469FA00465FB6 /* UIUnitTest in Frameworks */,
+				1D435E8D29BB26240027CD1D /* UIUnitTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +185,7 @@
 			);
 			name = ClientTests;
 			packageProductDependencies = (
-				1D136BA529B469FA00465FB6 /* UIUnitTest */,
+				1D435E8C29BB26240027CD1D /* UIUnitTest */,
 			);
 			productName = ClientTests;
 			productReference = 1D136B7D29B45A4600465FB6 /* ClientTests.xctest */;
@@ -634,13 +634,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1D136BA529B469FA00465FB6 /* UIUnitTest */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = UIUnitTest;
-		};
 		1D435E8629B9DEC00027CD1D /* UIUnitTestBuildPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "plugin:UIUnitTestBuildPlugin";
+		};
+		1D435E8C29BB26240027CD1D /* UIUnitTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UIUnitTest;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

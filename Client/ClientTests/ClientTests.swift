@@ -52,6 +52,19 @@ final class ClientTests: XCTestCase {
         XCTAssert(exists)
     }
     
+    @MainActor
+    func testDoubleTap() async throws {
+        let app = try await App()
+        
+        showView(MySettingTable())
+        
+        try await app.staticText(label: "Double tap").doubleTap()
+        
+        let exists = try await app.staticText(label: "Value: Double tap").exists()
+        
+        XCTAssert(exists)
+    }
+    
     
     @MainActor
     func testExample3() async throws {
