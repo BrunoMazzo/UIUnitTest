@@ -73,5 +73,31 @@ final class ClientTests: XCTestCase {
         
         XCTAssert(exists)
     }
+    
+    @MainActor
+    func testSwipeActions() async throws {
+        let app = try await App()
+        
+        showView(SwipeView())
+        
+        let noSwipeLabel = try await app.staticText(label: "Direction: No swipe detected").exists()
+        XCTAssert(noSwipeLabel)
+        
+        try await app.staticText(label: "Swipe me").swipeUp()
+        var exists = try await app.staticText(label: "Direction: Up").exists()
+        XCTAssert(exists)
+        
+        try await app.staticText(label: "Swipe me").swipeDown()
+        exists = try await app.staticText(label: "Direction: Down").exists()
+        XCTAssert(exists)
+        
+        try await app.staticText(label: "Swipe me").swipeLeft()
+        exists = try await app.staticText(label: "Direction: Left").exists()
+        XCTAssert(exists)
+        
+        try await app.staticText(label: "Swipe me").swipeRight()
+        exists = try await app.staticText(label: "Direction: Right").exists()
+        XCTAssert(exists)
+    }
 
 }

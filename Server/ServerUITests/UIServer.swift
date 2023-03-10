@@ -44,6 +44,21 @@ class UIServer {
             element?.typeText(tapRequest.textToEnter)
         })
         
+        await addRoute("swipe", handler: { (tapRequest: SwipeRequest) in
+            let element = self.findElement(matchers: tapRequest.matchers)
+            
+            switch tapRequest.swipeDirection {
+            case .left:
+                element?.swipeLeft()
+            case .right:
+                element?.swipeRight()
+            case .up:
+                element?.swipeUp()
+            case .down:
+                element?.swipeDown()
+            }
+        })
+        
         try await server.start()
     }
     

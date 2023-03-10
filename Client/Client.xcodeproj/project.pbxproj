@@ -15,6 +15,7 @@
 		1D136B8C29B45A4600465FB6 /* ClientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8B29B45A4600465FB6 /* ClientUITests.swift */; };
 		1D136B8E29B45A4600465FB6 /* ClientUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8D29B45A4600465FB6 /* ClientUITestsLaunchTests.swift */; };
 		1D435E8D29BB26240027CD1D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D435E8C29BB26240027CD1D /* UIUnitTest */; };
+		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		1D136B8729B45A4600465FB6 /* ClientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClientUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D136B8B29B45A4600465FB6 /* ClientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientUITests.swift; sourceTree = "<group>"; };
 		1D136B8D29B45A4600465FB6 /* ClientUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		1D435E9029BB48250027CD1D /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				1D136B7329B45A4600465FB6 /* Assets.xcassets */,
 				1D136B7529B45A4600465FB6 /* Client.entitlements */,
 				1D136B7629B45A4600465FB6 /* Preview Content */,
+				1D435E9029BB48250027CD1D /* SwipeView.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */,
 				1D136B7229B45A4600465FB6 /* ContentView.swift in Sources */,
 				1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */,
 			);
