@@ -92,7 +92,9 @@ internal func callServer<RequestData: Codable, ResponseData: Codable>(path: Stri
     case .success(data: let response):
         return response as! ResponseData
     case .error(error: let error):
+        
         print(error.error)
+        
         throw NSError(domain: "Test", code: 1, userInfo: ["reason": error])
     }
 }
