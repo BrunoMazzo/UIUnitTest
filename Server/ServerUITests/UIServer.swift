@@ -18,7 +18,9 @@ class UIServer {
         self.server = server
         
         await addRoute("Activate", handler: { (activateRequest: ActivateRequest) in
-            self.app = XCUIApplication(bundleIdentifier: activateRequest.appId)
+            if self.app == nil {
+                self.app = XCUIApplication(bundleIdentifier: activateRequest.appId)
+            }
             self.app.activate()
         })
         
@@ -71,6 +73,9 @@ class UIServer {
             return WaitForExistenceResponse(elementExists: exists)
         })
         
+        await addRoute("HomeButton", handler: { (tapRequest: HomeButtonRequest) in
+            XCUIDevice.shared.press(.home)
+        })
         
         try await server.start()
     }

@@ -18,6 +18,7 @@
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
 		1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
 		1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */; };
+		1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,9 @@
 		1D435E9029BB48250027CD1D /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
 		1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitForExistenceView.swift; sourceTree = "<group>"; };
 		1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressAndHoldView.swift; sourceTree = "<group>"; };
+		1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToBackgroundAndBackView.swift; sourceTree = "<group>"; };
+		1DE0F33829BDDBBC0044AFFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1DE0F33929BDDBC70044AFFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +118,7 @@
 		1D136B6E29B45A4600465FB6 /* Client */ = {
 			isa = PBXGroup;
 			children = (
+				1DE0F33929BDDBC70044AFFC /* Info.plist */,
 				1D136B6F29B45A4600465FB6 /* ClientApp.swift */,
 				1D136B7129B45A4600465FB6 /* ContentView.swift */,
 				1D136B7329B45A4600465FB6 /* Assets.xcassets */,
@@ -122,6 +127,7 @@
 				1D435E9029BB48250027CD1D /* SwipeView.swift */,
 				1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */,
 				1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */,
+				1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -137,6 +143,7 @@
 		1D136B8029B45A4600465FB6 /* ClientTests */ = {
 			isa = PBXGroup;
 			children = (
+				1DE0F33829BDDBBC0044AFFC /* Info.plist */,
 				1D136B8129B45A4600465FB6 /* ClientTests.swift */,
 			);
 			path = ClientTests;
@@ -296,6 +303,7 @@
 				1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */,
 				1D136B7229B45A4600465FB6 /* ContentView.swift in Sources */,
 				1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */,
+				1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */,
 				1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,6 +465,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Client/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Client/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -493,6 +502,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Client/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Client/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -526,6 +536,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ClientTests/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
@@ -548,6 +560,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ClientTests/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;

@@ -2,7 +2,18 @@ import Foundation
 
 public class App {
 
+    let appId: String
+    
     public init(appId: String) async throws {
+        self.appId = appId
+        try await self.activate()
+    }
+    
+    public func pressHomeButton() async throws {
+        let _: Bool = try await callServer(path: "HomeButton", request: HomeButtonRequest())
+    }
+    
+    public func activate() async throws {
         let activateRequestData = ActivateRequest(appId: appId)
         
         let _: Bool = try await callServer(path: "Activate", request: activateRequestData)
@@ -183,6 +194,11 @@ public struct ActivateRequest: Codable {
     public init(appId: String) {
         self.appId = appId
     }
+}
+
+
+public struct HomeButtonRequest: Codable {
+    
 }
 
 public enum ElementMatcher: Codable {

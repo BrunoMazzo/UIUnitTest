@@ -132,5 +132,22 @@ final class ClientTests: XCTestCase {
         XCTAssert(messageExistsAfterShow == true)
         
     }
+    
+    @MainActor
+    func testHomeButtonAndLaunch() async throws {
+        let app = try await App()
+        
+        showView(GoToBackgroundAndBackView())
+        
+        let wasntInBackgroud = try await app.staticText(label: "WasInBackground: false").exists()
+        XCTAssert(wasntInBackgroud == true)
+        
+        try await app.pressHomeButton()
+        try await app.activate()
+        
+        let wasntInBackgroudAfterBackground = try await app.staticText(label: "WasInBackground: true").waitForExistence(timeout: 1)
+        XCTAssert(wasntInBackgroudAfterBackground == true)
+        
+    }
 
 }
