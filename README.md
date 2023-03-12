@@ -4,7 +4,7 @@ Run XCTest UI commands from your unit test.
 
 # Still in development
 
-I am still working in the API parity and stability of the server, so crashes may happen. At the moment, it only works with one simulator, and it need to be open before the building of the unit test.
+I am still working in the [API parity](docs/API%20Coverage.md) and stability of the server, so crashes may happen. At the moment, it only works with one simulator, and it need to be open before the building of the unit test.
 
 ## Installation
 
