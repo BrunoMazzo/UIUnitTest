@@ -99,6 +99,10 @@ class UIServer {
             switch matcher {
             case .activityIndicators(let identifier):
                 matchedElement = matchedElement?.activityIndicators[identifier]
+            case .alerts(let identifier):
+                matchedElement = matchedElement?.alerts[identifier]
+            case .browsers(let identifier):
+                matchedElement = matchedElement?.browsers[identifier]
             case .button(let identifier):
                 matchedElement = matchedElement?.buttons[identifier]
             case .cells(let identifier):

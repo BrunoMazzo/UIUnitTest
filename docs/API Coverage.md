@@ -7,8 +7,8 @@ The following table shows the API coverage at the moment:
 | **XCUIElementTypeQueryProvider** |
 | var firstMatch: XCUIElement | ❌ | |
 | var activityIndicators: XCUIElementQuery | ✅ | |
-| var alerts: XCUIElementQuery | ❌ | |
-| var browsers: XCUIElementQuery | ❌ | |
+| var alerts: XCUIElementQuery | ✅ | |
+| var browsers: XCUIElementQuery | ✅ | |
 | var buttons: XCUIElementQuery | ✅ | |
 | var cells: XCUIElementQuery | ✅ | |
 | var checkBoxes: XCUIElementQuery | ✅ | |

@@ -14,6 +14,14 @@ public struct Query {
         Query(matchers: self.matchers + [.activityIndicators(identifier: identifier)])
     }
     
+    public func alert(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.alerts(identifier: identifier)])
+    }
+    
+    public func browser(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.browsers(identifier: identifier)])
+    }
+    
     public func button(identifier: String) -> Query {
         Query(matchers: self.matchers + [.button(identifier: identifier)])
     }

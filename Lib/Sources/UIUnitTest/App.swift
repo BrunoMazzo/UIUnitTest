@@ -23,6 +23,14 @@ public class App {
         Query(matchers: [.activityIndicators(identifier: identifier)])
     }
     
+    public func alerts(identifier: String) -> Query {
+        Query(matchers: [.alerts(identifier: identifier)])
+    }
+    
+    public func browsers(identifier: String) -> Query {
+        Query(matchers: [.browsers(identifier: identifier)])
+    }
+    
     public func button(identifier: String) -> Query {
         Query(matchers: [.button(identifier: identifier)])
     }
@@ -203,6 +211,8 @@ public struct HomeButtonRequest: Codable {
 
 public enum ElementMatcher: Codable {
     case activityIndicators(identifier: String)
+    case alerts(identifier: String)
+    case browsers(identifier: String)
     case button(identifier: String)
     case cells(identifier: String)
     case checkBoxes(identifier: String)
