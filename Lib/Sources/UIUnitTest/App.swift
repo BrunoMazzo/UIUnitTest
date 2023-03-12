@@ -107,6 +107,62 @@ public class App {
         Query(matchers: [.images(identifier: identifier)])
     }
     
+    public func incrementArrows(identifier: String) -> Query {
+        Query(matchers: [.incrementArrows(identifier: identifier)])
+    }
+    
+    public func keyboards(identifier: String) -> Query {
+        Query(matchers: [.keyboards(identifier: identifier)])
+    }
+    
+    public func keys(identifier: String) -> Query {
+        Query(matchers: [.keys(identifier: identifier)])
+    }
+    
+    public func layoutAreas(identifier: String) -> Query {
+        Query(matchers: [.layoutAreas(identifier: identifier)])
+    }
+    
+    public func layoutItems(identifier: String) -> Query {
+        Query(matchers: [.layoutItems(identifier: identifier)])
+    }
+    
+    public func levelIndicators(identifier: String) -> Query {
+        Query(matchers: [.levelIndicators(identifier: identifier)])
+    }
+    
+    public func links(identifier: String) -> Query {
+        Query(matchers: [.links(identifier: identifier)])
+    }
+    
+    public func maps(identifier: String) -> Query {
+        Query(matchers: [.maps(identifier: identifier)])
+    }
+    
+    public func mattes(identifier: String) -> Query {
+        Query(matchers: [.mattes(identifier: identifier)])
+    }
+    
+    public func menuBarItems(identifier: String) -> Query {
+        Query(matchers: [.menuBarItems(identifier: identifier)])
+    }
+    
+    public func menuBars(identifier: String) -> Query {
+        Query(matchers: [.menuBars(identifier: identifier)])
+    }
+    
+    public func menuButtons(identifier: String) -> Query {
+        Query(matchers: [.menuButtons(identifier: identifier)])
+    }
+    
+    public func menuItems(identifier: String) -> Query {
+        Query(matchers: [.menuItems(identifier: identifier)])
+    }
+    
+    public func menus(identifier: String) -> Query {
+        Query(matchers: [.menus(identifier: identifier)])
+    }
+    
     public func tables(identifier: String) -> Query {
         Query(matchers: [.tables(identifier: identifier)])
     }
@@ -232,6 +288,31 @@ public enum ElementMatcher: Codable {
     case helpTags(identifier: String)
     case icons(identifier: String)
     case images(identifier: String)
+    case incrementArrows(identifier: String)
+    case keyboards(identifier: String)
+    case keys(identifier: String)
+    case layoutAreas(identifier: String)
+    case layoutItems(identifier: String)
+    case levelIndicators(identifier: String)
+    case links(identifier: String)
+    case maps(identifier: String)
+    case mattes(identifier: String)
+    case menuBarItems(identifier: String)
+    case menuBars(identifier: String)
+    case menuButtons(identifier: String)
+    case menuItems(identifier: String)
+    case menus(identifier: String)
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
     case tables(identifier: String)
     case staticText(label: String)
     case textField(identifier: String)

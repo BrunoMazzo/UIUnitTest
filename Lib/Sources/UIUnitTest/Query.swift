@@ -98,6 +98,62 @@ public struct Query {
         Query(matchers: self.matchers + [.images(identifier: identifier)])
     }
     
+    public func incrementArrows(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.incrementArrows(identifier: identifier)])
+    }
+    
+    public func keyboards(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.keyboards(identifier: identifier)])
+    }
+    
+    public func keys(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.keys(identifier: identifier)])
+    }
+    
+    public func layoutAreas(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.layoutAreas(identifier: identifier)])
+    }
+    
+    public func layoutItems(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.layoutItems(identifier: identifier)])
+    }
+    
+    public func levelIndicators(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.levelIndicators(identifier: identifier)])
+    }
+    
+    public func links(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.links(identifier: identifier)])
+    }
+    
+    public func maps(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.maps(identifier: identifier)])
+    }
+    
+    public func mattes(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.mattes(identifier: identifier)])
+    }
+    
+    public func menuBarItems(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.menuBarItems(identifier: identifier)])
+    }
+    
+    public func menuBars(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.menuBars(identifier: identifier)])
+    }
+    
+    public func menuButtons(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.menuButtons(identifier: identifier)])
+    }
+    
+    public func menuItems(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.menuItems(identifier: identifier)])
+    }
+    
+    public func menus(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.menus(identifier: identifier)])
+    }
+    
     public func tables(identifier: String) -> Query {
         Query(matchers: self.matchers + [.tables(identifier: identifier)])
     }

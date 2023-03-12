@@ -141,6 +141,34 @@ class UIServer {
                 matchedElement = matchedElement?.icons[identifier]
             case .images(let identifier):
                 matchedElement = matchedElement?.images[identifier]
+            case .incrementArrows(identifier: let identifier):
+                matchedElement = matchedElement?.incrementArrows[identifier]
+            case .keyboards(identifier: let identifier):
+                matchedElement = matchedElement?.keyboards[identifier]
+            case .keys(identifier: let identifier):
+                matchedElement = matchedElement?.keys[identifier]
+            case .layoutAreas(identifier: let identifier):
+                matchedElement = matchedElement?.layoutAreas[identifier]
+            case .layoutItems(identifier: let identifier):
+                matchedElement = matchedElement?.layoutItems[identifier]
+            case .levelIndicators(identifier: let identifier):
+                matchedElement = matchedElement?.levelIndicators[identifier]
+            case .links(identifier: let identifier):
+                matchedElement = matchedElement?.links[identifier]
+            case .maps(identifier: let identifier):
+                matchedElement = matchedElement?.maps[identifier]
+            case .mattes(identifier: let identifier):
+                matchedElement = matchedElement?.mattes[identifier]
+            case .menuBarItems(identifier: let identifier):
+                matchedElement = matchedElement?.menuBarItems[identifier]
+            case .menuBars(identifier: let identifier):
+                matchedElement = matchedElement?.menuBars[identifier]
+            case .menuButtons(identifier: let identifier):
+                matchedElement = matchedElement?.menuButtons[identifier]
+            case .menuItems(identifier: let identifier):
+                matchedElement = matchedElement?.menuItems[identifier]
+            case .menus(identifier: let identifier):
+                matchedElement = matchedElement?.menus[identifier]
             case .tables(let identifier):
                 matchedElement = matchedElement?.tables[identifier]
             case .staticText(label: let label):
