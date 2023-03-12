@@ -108,7 +108,7 @@ The following table shows the API coverage at the moment:
 | func scroll(byDeltaX: CGFloat, deltaY: CGFloat) | ❌ | Try to implement to version 1.0 |
 | func tap() | ✅ | |
 | func doubleTap() | ✅ | |
-| func press(forDuration: TimeInterval) | ❌ | Try to implement to version 1.0 |
+| func press(forDuration: TimeInterval) | ✅ |  |
 | func press(forDuration: TimeInterval, thenDragTo: XCUIElement) | ❌ | After version 1.0 |
 | func press(forDuration: TimeInterval, thenDragTo: XCUIElement, withVelocity: XCUIGestureVelocity, thenHoldForDuration: TimeInterval) | ❌ | After version 1.0 |
 | func twoFingerTap() | ❌ | |
