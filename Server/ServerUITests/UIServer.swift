@@ -24,7 +24,12 @@ class UIServer {
         
         await addRoute("Tap", handler: { (tapRequest: TapRequest) in
             let element = self.findElement(matchers: tapRequest.matchers)
-            element?.tap()
+            if let duration = tapRequest.duration {
+                element?.press(forDuration: duration)
+            } else {
+                element?.tap()
+            }
+            
         })
         
         await addRoute("doubleTap", handler: { (tapRequest: DoubleTapRequest) in

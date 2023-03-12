@@ -17,6 +17,7 @@
 		1D435E8D29BB26240027CD1D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D435E8C29BB26240027CD1D /* UIUnitTest */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
 		1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
+		1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		1D136B8D29B45A4600465FB6 /* ClientUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		1D435E9029BB48250027CD1D /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
 		1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitForExistenceView.swift; sourceTree = "<group>"; };
+		1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressAndHoldView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				1D136B7529B45A4600465FB6 /* Client.entitlements */,
 				1D136B7629B45A4600465FB6 /* Preview Content */,
 				1D435E9029BB48250027CD1D /* SwipeView.swift */,
+				1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */,
 				1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */,
 			);
 			path = Client;
@@ -186,7 +189,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				1D435E8729B9DEC00027CD1D /* PBXTargetDependency */,
+				1DE0F33129BDA1F80044AFFC /* PBXTargetDependency */,
 				1D136B7F29B45A4600465FB6 /* PBXTargetDependency */,
 			);
 			name = ClientTests;
@@ -292,6 +295,7 @@
 				1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */,
 				1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */,
 				1D136B7229B45A4600465FB6 /* ContentView.swift in Sources */,
+				1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */,
 				1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -326,9 +330,9 @@
 			target = 1D136B6B29B45A4600465FB6 /* Client */;
 			targetProxy = 1D136B8829B45A4600465FB6 /* PBXContainerItemProxy */;
 		};
-		1D435E8729B9DEC00027CD1D /* PBXTargetDependency */ = {
+		1DE0F33129BDA1F80044AFFC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 1D435E8629B9DEC00027CD1D /* UIUnitTestBuildPlugin */;
+			productRef = 1DE0F33029BDA1F80044AFFC /* UIUnitTestBuildPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -642,13 +646,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1D435E8629B9DEC00027CD1D /* UIUnitTestBuildPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = "plugin:UIUnitTestBuildPlugin";
-		};
 		1D435E8C29BB26240027CD1D /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UIUnitTest;
+		};
+		1DE0F33029BDA1F80044AFFC /* UIUnitTestBuildPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "plugin:UIUnitTestBuildPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

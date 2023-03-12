@@ -116,4 +116,21 @@ final class ClientTests: XCTestCase {
         
     }
 
+    
+    @MainActor
+    func testPressWithDuration() async throws {
+        let app = try await App()
+        
+        showView(PressAndHoldView())
+        
+        let messageExists = try await app.staticText(label: "Hello world!").exists()
+        XCTAssert(messageExists == false)
+        
+        try await app.staticText(label: "Press and hold").press(forDuration: 2.5)
+        
+        let messageExistsAfterShow = try await app.staticText(label: "Hello world!").exists()
+        XCTAssert(messageExistsAfterShow == true)
+        
+    }
+
 }
