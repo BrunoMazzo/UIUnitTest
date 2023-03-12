@@ -87,8 +87,18 @@ class UIServer {
         
         for matcher in matchers {
             switch matcher {
+            case .activityIndicators(let identifier):
+                matchedElement = matchedElement?.activityIndicators[identifier]
             case .button(let identifier):
                 matchedElement = matchedElement?.buttons[identifier]
+            case .cells(let identifier):
+                matchedElement = matchedElement?.cells[identifier]
+            case .datePickers(let identifier):
+                matchedElement = matchedElement?.datePickers[identifier]
+            case .images(let identifier):
+                matchedElement = matchedElement?.images[identifier]
+            case .tables(let identifier):
+                matchedElement = matchedElement?.tables[identifier]
             case .staticText(label: let label):
                 matchedElement = matchedElement?.staticTexts[label]
             case .textField(identifier: let identifier):

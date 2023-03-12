@@ -6,16 +6,16 @@ The following table shows the API coverage at the moment:
 | --- | --- | --- |
 | **XCUIElementTypeQueryProvider** |
 | var firstMatch: XCUIElement | ❌ | |
-| var activityIndicators: XCUIElementQuery | ❌ | |
+| var activityIndicators: XCUIElementQuery | ✅ | |
 | var alerts: XCUIElementQuery | ❌ | |
 | var browsers: XCUIElementQuery | ❌ | |
 | var buttons: XCUIElementQuery | ✅ | |
-| var cells: XCUIElementQuery | ❌ | |
+| var cells: XCUIElementQuery | ✅ | |
 | var checkBoxes: XCUIElementQuery | ❌ | |
 | var collectionViews: XCUIElementQuery | ❌ | |
 | var colorWells: XCUIElementQuery | ❌ | |
 | var comboBoxes: XCUIElementQuery | ❌ | |
-| var datePickers: XCUIElementQuery | ❌ | |
+| var datePickers: XCUIElementQuery | ✅ | |
 | var decrementArrows: XCUIElementQuery | ❌ | |
 | var dialogs: XCUIElementQuery | ❌ | |
 | var disclosureTriangles: XCUIElementQuery | ❌ | |
@@ -27,7 +27,7 @@ The following table shows the API coverage at the moment:
 | var handles: XCUIElementQuery | ❌ | |
 | var helpTags: XCUIElementQuery | ❌ | |
 | var icons: XCUIElementQuery | ❌ | |
-| var images: XCUIElementQuery | ❌ | |
+| var images: XCUIElementQuery | ✅ | |
 | var incrementArrows: XCUIElementQuery | ❌ | |
 | var keyboards: XCUIElementQuery | ❌ | |
 | var keys: XCUIElementQuery | ❌ | |
@@ -76,9 +76,9 @@ The following table shows the API coverage at the moment:
 | var tabGroups: XCUIElementQuery | ❌ | |
 | var tableColumns: XCUIElementQuery | ❌ | |
 | var tableRows: XCUIElementQuery | ❌ | |
-| var tables: XCUIElementQuery | ❌ | |
+| var tables: XCUIElementQuery | ✅ | |
 | var tabs: XCUIElementQuery | ❌ | |
-| var textFields: XCUIElementQuery | ❌ | |
+| var textFields: XCUIElementQuery | ✅ | |
 | var textViews: XCUIElementQuery | ❌ | |
 | var timelines: XCUIElementQuery | ❌ | |
 | var toggles: XCUIElementQuery | ❌ | |

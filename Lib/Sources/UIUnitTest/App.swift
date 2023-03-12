@@ -108,7 +108,12 @@ public struct ActivateRequest: Codable {
 }
 
 public enum ElementMatcher: Codable {
+    case activityIndicators(identifier: String)
     case button(identifier: String)
+    case cells(identifier: String)
+    case datePickers(identifier: String)
+    case images(identifier: String)
+    case tables(identifier: String)
     case staticText(label: String)
     case textField(identifier: String)
 }
