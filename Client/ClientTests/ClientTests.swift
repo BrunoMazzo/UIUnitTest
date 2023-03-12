@@ -99,5 +99,21 @@ final class ClientTests: XCTestCase {
         exists = try await app.staticText(label: "Direction: Right").exists()
         XCTAssert(exists)
     }
+    
+    @MainActor
+    func testWaitForExistence() async throws {
+        let app = try await App()
+        
+        showView(WaitForExistenceView())
+        
+        let messageExists = try await app.staticText(label: "Hello world!").exists()
+        XCTAssert(messageExists == false)
+        
+        try await app.button(identifier: "Show Message").tap()
+        
+        let messageExistsAfterShow = try await app.staticText(label: "Hello world!").waitForExistence(timeout: 2)
+        XCTAssert(messageExistsAfterShow == true)
+        
+    }
 
 }

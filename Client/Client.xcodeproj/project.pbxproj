@@ -16,6 +16,7 @@
 		1D136B8E29B45A4600465FB6 /* ClientUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8D29B45A4600465FB6 /* ClientUITestsLaunchTests.swift */; };
 		1D435E8D29BB26240027CD1D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D435E8C29BB26240027CD1D /* UIUnitTest */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
+		1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		1D136B8B29B45A4600465FB6 /* ClientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientUITests.swift; sourceTree = "<group>"; };
 		1D136B8D29B45A4600465FB6 /* ClientUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		1D435E9029BB48250027CD1D /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
+		1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitForExistenceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				1D136B7529B45A4600465FB6 /* Client.entitlements */,
 				1D136B7629B45A4600465FB6 /* Preview Content */,
 				1D435E9029BB48250027CD1D /* SwipeView.swift */,
+				1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */,
 				1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */,
 				1D136B7229B45A4600465FB6 /* ContentView.swift in Sources */,
 				1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */,

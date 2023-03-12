@@ -59,6 +59,14 @@ class UIServer {
             }
         })
         
+        await addRoute("waitForExistence", handler: { (tapRequest: WaitForExistenceRequest) in
+            let element = self.findElement(matchers: tapRequest.matchers)
+            let exists = element?.waitForExistence(timeout: tapRequest.timeout) ?? false
+            
+            return WaitForExistenceResponse(elementExists: exists)
+        })
+        
+        
         try await server.start()
     }
     
