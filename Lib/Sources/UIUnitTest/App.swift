@@ -8,10 +8,88 @@ public class App {
         let _: Bool = try await callServer(path: "Activate", request: activateRequestData)
     }
     
-    
+    public func activityIndicators(identifier: String) -> Query {
+        Query(matchers: [.activityIndicators(identifier: identifier)])
+    }
     
     public func button(identifier: String) -> Query {
         Query(matchers: [.button(identifier: identifier)])
+    }
+    
+    public func cells(identifier: String) -> Query {
+        Query(matchers: [.cells(identifier: identifier)])
+    }
+    
+    public func checkBoxes(identifier: String) -> Query {
+        Query(matchers: [.checkBoxes(identifier: identifier)])
+    }
+    
+    public func collectionViews(identifier: String) -> Query {
+        Query(matchers: [.collectionViews(identifier: identifier)])
+    }
+    
+    public func colorWells(identifier: String) -> Query {
+        Query(matchers: [.colorWells(identifier: identifier)])
+    }
+    
+    public func comboBoxes(identifier: String) -> Query {
+        Query(matchers: [.comboBoxes(identifier: identifier)])
+    }
+    
+    public func datePickers(identifier: String) -> Query {
+        Query(matchers: [.datePickers(identifier: identifier)])
+    }
+    
+    public func decrementArrows(identifier: String) -> Query {
+        Query(matchers: [.decrementArrows(identifier: identifier)])
+    }
+    
+    public func dialogs(identifier: String) -> Query {
+        Query(matchers: [.dialogs(identifier: identifier)])
+    }
+    
+    public func disclosureTriangles(identifier: String) -> Query {
+        Query(matchers: [.disclosureTriangles(identifier: identifier)])
+    }
+    
+    public func disclosedChildRows(identifier: String) -> Query {
+        Query(matchers: [.disclosedChildRows(identifier: identifier)])
+    }
+    
+    public func dockItems(identifier: String) -> Query {
+        Query(matchers: [.dockItems(identifier: identifier)])
+    }
+    
+    public func drawers(identifier: String) -> Query {
+        Query(matchers: [.drawers(identifier: identifier)])
+    }
+    
+    public func grids(identifier: String) -> Query {
+        Query(matchers: [.grids(identifier: identifier)])
+    }
+    
+    public func groups(identifier: String) -> Query {
+        Query(matchers: [.groups(identifier: identifier)])
+    }
+    
+    public func handles(identifier: String) -> Query {
+        Query(matchers: [.handles(identifier: identifier)])
+    }
+    
+    public func helpTags(identifier: String) -> Query {
+        Query(matchers: [.helpTags(identifier: identifier)])
+    }
+    
+    public func icons(identifier: String) -> Query {
+        Query(matchers: [.icons(identifier: identifier)])
+    }
+    
+    public func images(identifier: String) -> Query {
+        Query(matchers: [.images(identifier: identifier)])
+    }
+    
+    public func tables(identifier: String) -> Query {
+        Query(matchers: [.tables(identifier: identifier)])
     }
     
     public func staticText(label: String) -> Query {
@@ -111,7 +189,22 @@ public enum ElementMatcher: Codable {
     case activityIndicators(identifier: String)
     case button(identifier: String)
     case cells(identifier: String)
+    case checkBoxes(identifier: String)
+    case collectionViews(identifier: String)
+    case colorWells(identifier: String)
+    case comboBoxes(identifier: String)
     case datePickers(identifier: String)
+    case decrementArrows(identifier: String)
+    case dialogs(identifier: String)
+    case disclosureTriangles(identifier: String)
+    case disclosedChildRows(identifier: String)
+    case dockItems(identifier: String)
+    case drawers(identifier: String)
+    case grids(identifier: String)
+    case groups(identifier: String)
+    case handles(identifier: String)
+    case helpTags(identifier: String)
+    case icons(identifier: String)
     case images(identifier: String)
     case tables(identifier: String)
     case staticText(label: String)

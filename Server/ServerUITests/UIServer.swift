@@ -98,8 +98,38 @@ class UIServer {
                 matchedElement = matchedElement?.buttons[identifier]
             case .cells(let identifier):
                 matchedElement = matchedElement?.cells[identifier]
+            case .checkBoxes(identifier: let identifier):
+                matchedElement = matchedElement?.checkBoxes[identifier]
+            case .collectionViews(identifier: let identifier):
+                matchedElement = matchedElement?.collectionViews[identifier]
+            case .colorWells(identifier: let identifier):
+                matchedElement = matchedElement?.colorWells[identifier]
+            case .comboBoxes(identifier: let identifier):
+                matchedElement = matchedElement?.comboBoxes[identifier]
             case .datePickers(let identifier):
                 matchedElement = matchedElement?.datePickers[identifier]
+            case .decrementArrows(identifier: let identifier):
+                matchedElement = matchedElement?.decrementArrows[identifier]
+            case .dialogs(identifier: let identifier):
+                matchedElement = matchedElement?.dialogs[identifier]
+            case .disclosureTriangles(identifier: let identifier):
+                matchedElement = matchedElement?.disclosureTriangles[identifier]
+            case .disclosedChildRows(identifier: let identifier):
+                matchedElement = matchedElement?.disclosedChildRows[identifier]
+            case .dockItems(identifier: let identifier):
+                matchedElement = matchedElement?.dockItems[identifier]
+            case .drawers(identifier: let identifier):
+                matchedElement = matchedElement?.drawers[identifier]
+            case .grids(identifier: let identifier):
+                matchedElement = matchedElement?.grids[identifier]
+            case .groups(identifier: let identifier):
+                matchedElement = matchedElement?.groups[identifier]
+            case .handles(identifier: let identifier):
+                matchedElement = matchedElement?.handles[identifier]
+            case .helpTags(identifier: let identifier):
+                matchedElement = matchedElement?.helpTags[identifier]
+            case .icons(identifier: let identifier):
+                matchedElement = matchedElement?.icons[identifier]
             case .images(let identifier):
                 matchedElement = matchedElement?.images[identifier]
             case .tables(let identifier):
