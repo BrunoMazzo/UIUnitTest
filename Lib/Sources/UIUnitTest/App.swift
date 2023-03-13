@@ -163,6 +163,106 @@ public class App {
         Query(matchers: [.menus(identifier: identifier)])
     }
     
+    public func navigationBars(identifier: String) -> Query {
+        Query(matchers: [.navigationBars(identifier: identifier)])
+    }
+    
+    public func otherElements(identifier: String) -> Query {
+        Query(matchers: [.otherElements(identifier: identifier)])
+    }
+    
+    public func outlineRows(identifier: String) -> Query {
+        Query(matchers: [.outlineRows(identifier: identifier)])
+    }
+    
+    public func outlines(identifier: String) -> Query {
+        Query(matchers: [.outlines(identifier: identifier)])
+    }
+    
+    public func pageIndicators(identifier: String) -> Query {
+        Query(matchers: [.pageIndicators(identifier: identifier)])
+    }
+    
+    public func pickerWheels(identifier: String) -> Query {
+        Query(matchers: [.pickerWheels(identifier: identifier)])
+    }
+    
+    public func pickers(identifier: String) -> Query {
+        Query(matchers: [.pickers(identifier: identifier)])
+    }
+    
+    public func popUpButtons(identifier: String) -> Query {
+        Query(matchers: [.popUpButtons(identifier: identifier)])
+    }
+    
+    public func popovers(identifier: String) -> Query {
+        Query(matchers: [.popovers(identifier: identifier)])
+    }
+    
+    public func progressIndicators(identifier: String) -> Query {
+        Query(matchers: [.progressIndicators(identifier: identifier)])
+    }
+    
+    public func radioButtons(identifier: String) -> Query {
+        Query(matchers: [.radioButtons(identifier: identifier)])
+    }
+    
+    public func radioGroups(identifier: String) -> Query {
+        Query(matchers: [.radioGroups(identifier: identifier)])
+    }
+    
+    public func ratingIndicators(identifier: String) -> Query {
+        Query(matchers: [.ratingIndicators(identifier: identifier)])
+    }
+    
+    public func relevanceIndicators(identifier: String) -> Query {
+        Query(matchers: [.relevanceIndicators(identifier: identifier)])
+    }
+    
+    public func rulerMarkers(identifier: String) -> Query {
+        Query(matchers: [.rulerMarkers(identifier: identifier)])
+    }
+    
+    public func rulers(identifier: String) -> Query {
+        Query(matchers: [.rulers(identifier: identifier)])
+    }
+    
+    public func scrollBars(identifier: String) -> Query {
+        Query(matchers: [.scrollBars(identifier: identifier)])
+    }
+    
+    public func scrollViews(identifier: String) -> Query {
+        Query(matchers: [.scrollViews(identifier: identifier)])
+    }
+    
+    public func searchFields(identifier: String) -> Query {
+        Query(matchers: [.searchFields(identifier: identifier)])
+    }
+    
+    public func secureTextFields(identifier: String) -> Query {
+        Query(matchers: [.secureTextFields(identifier: identifier)])
+    }
+    
+    public func segmentedControls(identifier: String) -> Query {
+        Query(matchers: [.segmentedControls(identifier: identifier)])
+    }
+    
+    public func sheets(identifier: String) -> Query {
+        Query(matchers: [.sheets(identifier: identifier)])
+    }
+    
+    public func sliders(identifier: String) -> Query {
+        Query(matchers: [.sliders(identifier: identifier)])
+    }
+    
+    public func splitGroups(identifier: String) -> Query {
+        Query(matchers: [.splitGroups(identifier: identifier)])
+    }
+    
+    public func splitters(identifier: String) -> Query {
+        Query(matchers: [.splitters(identifier: identifier)])
+    }
+    
     public func tables(identifier: String) -> Query {
         Query(matchers: [.tables(identifier: identifier)])
     }
@@ -302,17 +402,31 @@ public enum ElementMatcher: Codable {
     case menuButtons(identifier: String)
     case menuItems(identifier: String)
     case menus(identifier: String)
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
+    case navigationBars(identifier: String)
+    case otherElements(identifier: String)
+    case outlineRows(identifier: String)
+    case outlines(identifier: String)
+    case pageIndicators(identifier: String)
+    case pickerWheels(identifier: String)
+    case pickers(identifier: String)
+    case popUpButtons(identifier: String)
+    case popovers(identifier: String)
+    case progressIndicators(identifier: String)
+    case radioButtons(identifier: String)
+    case radioGroups(identifier: String)
+    case ratingIndicators(identifier: String)
+    case relevanceIndicators(identifier: String)
+    case rulerMarkers(identifier: String)
+    case rulers(identifier: String)
+    case scrollBars(identifier: String)
+    case scrollViews(identifier: String)
+    case searchFields(identifier: String)
+    case secureTextFields(identifier: String)
+    case segmentedControls(identifier: String)
+    case sheets(identifier: String)
+    case sliders(identifier: String)
+    case splitGroups(identifier: String)
+    case splitters(identifier: String)
     case tables(identifier: String)
     case staticText(label: String)
     case textField(identifier: String)

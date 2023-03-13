@@ -165,4 +165,104 @@ public struct Query {
     public func textField(identifier: String) -> Query {
         Query(matchers: self.matchers + [.textField(identifier: identifier)])
     }
+    
+    public func navigationBars(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.navigationBars(identifier: identifier)])
+    }
+    
+    public func otherElements(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.otherElements(identifier: identifier)])
+    }
+    
+    public func outlineRows(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.outlineRows(identifier: identifier)])
+    }
+    
+    public func outlines(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.outlines(identifier: identifier)])
+    }
+    
+    public func pageIndicators(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.pageIndicators(identifier: identifier)])
+    }
+    
+    public func pickerWheels(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.pickerWheels(identifier: identifier)])
+    }
+    
+    public func pickers(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.pickers(identifier: identifier)])
+    }
+    
+    public func popUpButtons(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.popUpButtons(identifier: identifier)])
+    }
+    
+    public func popovers(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.popovers(identifier: identifier)])
+    }
+    
+    public func progressIndicators(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.progressIndicators(identifier: identifier)])
+    }
+    
+    public func radioButtons(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.radioButtons(identifier: identifier)])
+    }
+    
+    public func radioGroups(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.radioGroups(identifier: identifier)])
+    }
+    
+    public func ratingIndicators(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.ratingIndicators(identifier: identifier)])
+    }
+    
+    public func relevanceIndicators(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.relevanceIndicators(identifier: identifier)])
+    }
+    
+    public func rulerMarkers(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.rulerMarkers(identifier: identifier)])
+    }
+    
+    public func rulers(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.rulers(identifier: identifier)])
+    }
+    
+    public func scrollBars(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.scrollBars(identifier: identifier)])
+    }
+    
+    public func scrollViews(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.scrollViews(identifier: identifier)])
+    }
+    
+    public func searchFields(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.searchFields(identifier: identifier)])
+    }
+    
+    public func secureTextFields(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.secureTextFields(identifier: identifier)])
+    }
+    
+    public func segmentedControls(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.segmentedControls(identifier: identifier)])
+    }
+    
+    public func sheets(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.sheets(identifier: identifier)])
+    }
+    
+    public func sliders(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.sliders(identifier: identifier)])
+    }
+    
+    public func splitGroups(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.splitGroups(identifier: identifier)])
+    }
+    
+    public func splitters(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.splitters(identifier: identifier)])
+    }
 }
