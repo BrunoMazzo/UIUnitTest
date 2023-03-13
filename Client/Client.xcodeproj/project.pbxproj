@@ -19,6 +19,7 @@
 		1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
 		1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */; };
 		1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */; };
+		1DE0F33E29BF265D0044AFFC /* TapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33D29BF265D0044AFFC /* TapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToBackgroundAndBackView.swift; sourceTree = "<group>"; };
 		1DE0F33829BDDBBC0044AFFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1DE0F33929BDDBC70044AFFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1DE0F33D29BF265D0044AFFC /* TapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 				1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */,
 				1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */,
 				1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */,
+				1DE0F33D29BF265D0044AFFC /* TapView.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */,
 				1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */,
 				1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */,
+				1DE0F33E29BF265D0044AFFC /* TapView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

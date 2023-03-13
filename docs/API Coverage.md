@@ -111,8 +111,8 @@ The following table shows the API coverage at the moment:
 | func press(forDuration: TimeInterval) | ✅ |  |
 | func press(forDuration: TimeInterval, thenDragTo: XCUIElement) | ❌ | After version 1.0 |
 | func press(forDuration: TimeInterval, thenDragTo: XCUIElement, withVelocity: XCUIGestureVelocity, thenHoldForDuration: TimeInterval) | ❌ | After version 1.0 |
-| func twoFingerTap() | ❌ | |
-| func tap(withNumberOfTaps: Int, numberOfTouches: Int) | ❌ | Try to implement to version 1.0 |
+| func twoFingerTap() | ✅ | |
+| func tap(withNumberOfTaps: Int, numberOfTouches: Int) | ✅ | |
 | func swipeLeft() | ✅ | |
 | func swipeLeft(velocity: XCUIGestureVelocity) | ❌ | Try to implement to version 1.0 |
 | func swipeRight() | ✅ | |

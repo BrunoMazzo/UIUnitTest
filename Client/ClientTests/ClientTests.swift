@@ -149,5 +149,32 @@ final class ClientTests: XCTestCase {
         XCTAssert(wasntInBackgroudAfterBackground == true)
         
     }
+    
+    @MainActor
+    func testTwoFingerTap() async throws {
+        let app = try await App()
+        
+        showView(TapView())
+        
+        try await app.otherElements(identifier: "TwoFingersView").twoFingerTap()
+        
+        let wasntInBackgroudAfterBackground = try await app.staticText(label: "Two fingers tapped").waitForExistence(timeout: 1)
+        XCTAssert(wasntInBackgroudAfterBackground == true)
+        
+    }
+    
+    @MainActor
+    func testThreeFingerTap() async throws {
+        let app = try await App()
+        
+        showView(TapView())
+        
+        try await app.otherElements(identifier: "ThreeFingersView").tap(withNumberOfTaps: 1, numberOfTouches: 3)
+        
+        let wasntInBackgroudAfterBackground = try await app.staticText(label: "Three fingers tapped").waitForExistence(timeout: 1)
+        XCTAssert(wasntInBackgroudAfterBackground == true)
+        
+    }
 
+    
 }

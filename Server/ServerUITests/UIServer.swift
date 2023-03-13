@@ -28,7 +28,13 @@ class UIServer {
             let element = self.findElement(matchers: tapRequest.matchers)
             if let duration = tapRequest.duration {
                 element?.press(forDuration: duration)
-            } else {
+            } else if let numberOfTouches = tapRequest.numberOfTouches {
+                if let numberOfTaps = tapRequest.numberOfTaps {
+                    element?.tap(withNumberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
+                } else {
+                    element?.twoFingerTap()
+                }
+            } else  {
                 element?.tap()
             }
             
