@@ -302,6 +302,43 @@ public class App {
     public func textField(identifier: String) -> Query {
         Query(matchers: [.textField(identifier: identifier)])
     }
+    
+    public func textViews(identifier: String) -> Query {
+        Query(matchers: [.textViews(identifier: identifier)])
+    }
+    
+    public func timelines(identifier: String) -> Query {
+        Query(matchers: [.timelines(identifier: identifier)])
+    }
+    
+    public func toggles(identifier: String) -> Query {
+        Query(matchers: [.toggles(identifier: identifier)])
+    }
+    
+    public func toolbarButtons(identifier: String) -> Query {
+        Query(matchers: [.toolbarButtons(identifier: identifier)])
+    }
+    
+    public func toolbars(identifier: String) -> Query {
+        Query(matchers: [.toolbars(identifier: identifier)])
+    }
+
+    public func touchBars(identifier: String) -> Query {
+        Query(matchers: [.touchBars(identifier: identifier)])
+    }
+
+    public func valueIndicators(identifier: String) -> Query {
+        Query(matchers: [.valueIndicators(identifier: identifier)])
+    }
+
+    public func webViews(identifier: String) -> Query {
+        Query(matchers: [.webViews(identifier: identifier)])
+    }
+
+    public func windows(identifier: String) -> Query {
+        Query(matchers: [.windows(identifier: identifier)])
+    }
+
 }
 
 public enum Response {
@@ -466,6 +503,15 @@ public enum ElementMatcher: Codable {
     case tableRows(identifier: String)
     case tables(identifier: String)
     case textField(identifier: String)
+    case textViews(identifier: String)
+    case timelines(identifier: String)
+    case toggles(identifier: String)
+    case toolbarButtons(identifier: String)
+    case toolbars(identifier: String)
+    case touchBars(identifier: String)
+    case valueIndicators(identifier: String)
+    case webViews(identifier: String)
+    case windows(identifier: String)
 }
 
 public struct EnterTextRequest: Codable {

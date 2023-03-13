@@ -293,4 +293,40 @@ public struct Query {
     public func tableRows(identifier: String) -> Query {
         Query(matchers: self.matchers + [.tableRows(identifier: identifier)])
     }
+    
+    public func textViews(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.textViews(identifier: identifier)])
+    }
+    
+    public func timelines(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.timelines(identifier: identifier)])
+    }
+    
+    public func toggles(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.toggles(identifier: identifier)])
+    }
+    
+    public func toolbarButtons(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.toolbarButtons(identifier: identifier)])
+    }
+    
+    public func toolbars(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.toolbars(identifier: identifier)])
+    }
+
+    public func touchBars(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.touchBars(identifier: identifier)])
+    }
+
+    public func valueIndicators(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.valueIndicators(identifier: identifier)])
+    }
+
+    public func webViews(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.webViews(identifier: identifier)])
+    }
+
+    public func windows(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.windows(identifier: identifier)])
+    }
 }

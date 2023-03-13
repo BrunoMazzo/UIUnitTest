@@ -241,6 +241,24 @@ class UIServer {
                 matchedElement = matchedElement?.tableRows[identifier]
             case .textField(identifier: let identifier):
                 matchedElement = matchedElement?.textFields[identifier]
+            case .textViews(identifier: let identifier):
+                matchedElement = matchedElement?.textViews[identifier]
+            case .timelines(identifier: let identifier):
+                matchedElement = matchedElement?.timelines[identifier]
+            case .toggles(identifier: let identifier):
+                matchedElement = matchedElement?.toggles[identifier]
+            case .toolbarButtons(identifier: let identifier):
+                matchedElement = matchedElement?.toolbarButtons[identifier]
+            case .toolbars(identifier: let identifier):
+                matchedElement = matchedElement?.toolbars[identifier]
+            case .touchBars(identifier: let identifier):
+                matchedElement = matchedElement?.touchBars[identifier]
+            case .valueIndicators(identifier: let identifier):
+                matchedElement = matchedElement?.valueIndicators[identifier]
+            case .webViews(identifier: let identifier):
+                matchedElement = matchedElement?.webViews[identifier]
+            case .windows(identifier: let identifier):
+                matchedElement = matchedElement?.windows[identifier]
             }
         }
         

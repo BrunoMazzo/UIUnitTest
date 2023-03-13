@@ -79,15 +79,15 @@ The following table shows the API coverage at the moment:
 | var tables: XCUIElementQuery | ✅ | |
 | var tabs: XCUIElementQuery | ✅ | |
 | var textFields: XCUIElementQuery | ✅ | |
-| var textViews: XCUIElementQuery | ❌ | |
-| var timelines: XCUIElementQuery | ❌ | |
-| var toggles: XCUIElementQuery | ❌ | |
-| var toolbarButtons: XCUIElementQuery | ❌ | |
-| var toolbars: XCUIElementQuery | ❌ | |
-| var touchBars: XCUIElementQuery | ❌ | |
-| var valueIndicators: XCUIElementQuery | ❌ | |
-| var webViews: XCUIElementQuery | ❌ | |
-| var windows: XCUIElementQuery | ❌ | |
+| var textViews: XCUIElementQuery | ✅ | |
+| var timelines: XCUIElementQuery | ✅ | |
+| var toggles: XCUIElementQuery | ✅ | |
+| var toolbarButtons: XCUIElementQuery | ✅ | |
+| var toolbars: XCUIElementQuery | ✅ | |
+| var touchBars: XCUIElementQuery | ✅ | |
+| var valueIndicators: XCUIElementQuery | ✅ | |
+| var webViews: XCUIElementQuery | ✅ | |
+| var windows: XCUIElementQuery | ✅ | |
 | **XCUIElement** |
 | func waitForExistence(timeout: TimeInterval) -> Bool | ✅ | |
 | var exists: Bool | ✅ | | 
