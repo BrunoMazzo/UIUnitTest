@@ -265,4 +265,32 @@ public struct Query {
     public func splitters(identifier: String) -> Query {
         Query(matchers: self.matchers + [.splitters(identifier: identifier)])
     }
+    
+    public func statusBars(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.statusBars(identifier: identifier)])
+    }
+    
+    public func statusItems(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.statusItems(identifier: identifier)])
+    }
+    
+    public func switches(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.switches(identifier: identifier)])
+    }
+    
+    public func tabBars(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.tabBars(identifier: identifier)])
+    }
+    
+    public func tabGroups(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.tabGroups(identifier: identifier)])
+    }
+    
+    public func tableColumns(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.tableColumns(identifier: identifier)])
+    }
+    
+    public func tableRows(identifier: String) -> Query {
+        Query(matchers: self.matchers + [.tableRows(identifier: identifier)])
+    }
 }

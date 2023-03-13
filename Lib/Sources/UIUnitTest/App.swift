@@ -263,6 +263,34 @@ public class App {
         Query(matchers: [.splitters(identifier: identifier)])
     }
     
+    public func statusBars(identifier: String) -> Query {
+        Query(matchers: [.statusBars(identifier: identifier)])
+    }
+    
+    public func statusItems(identifier: String) -> Query {
+        Query(matchers: [.statusItems(identifier: identifier)])
+    }
+    
+    public func switches(identifier: String) -> Query {
+        Query(matchers: [.switches(identifier: identifier)])
+    }
+    
+    public func tabBars(identifier: String) -> Query {
+        Query(matchers: [.tabBars(identifier: identifier)])
+    }
+    
+    public func tabGroups(identifier: String) -> Query {
+        Query(matchers: [.tabGroups(identifier: identifier)])
+    }
+    
+    public func tableColumns(identifier: String) -> Query {
+        Query(matchers: [.tableColumns(identifier: identifier)])
+    }
+    
+    public func tableRows(identifier: String) -> Query {
+        Query(matchers: [.tableRows(identifier: identifier)])
+    }
+    
     public func tables(identifier: String) -> Query {
         Query(matchers: [.tables(identifier: identifier)])
     }
@@ -427,8 +455,16 @@ public enum ElementMatcher: Codable {
     case sliders(identifier: String)
     case splitGroups(identifier: String)
     case splitters(identifier: String)
-    case tables(identifier: String)
     case staticText(label: String)
+    case statusBars(identifier: String)
+    case statusItems(identifier: String)
+    case steppers(identifier: String)
+    case switches(identifier: String)
+    case tabBars(identifier: String)
+    case tabGroups(identifier: String)
+    case tableColumns(identifier: String)
+    case tableRows(identifier: String)
+    case tables(identifier: String)
     case textField(identifier: String)
 }
 

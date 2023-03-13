@@ -169,10 +169,76 @@ class UIServer {
                 matchedElement = matchedElement?.menuItems[identifier]
             case .menus(identifier: let identifier):
                 matchedElement = matchedElement?.menus[identifier]
-            case .tables(let identifier):
-                matchedElement = matchedElement?.tables[identifier]
+            case .navigationBars(identifier: let identifier):
+                matchedElement = matchedElement?.navigationBars[identifier]
+            case .otherElements(identifier: let identifier):
+                matchedElement = matchedElement?.otherElements[identifier]
+            case .outlineRows(identifier: let identifier):
+                matchedElement = matchedElement?.outlineRows[identifier]
+            case .outlines(identifier: let identifier):
+                matchedElement = matchedElement?.outlines[identifier]
+            case .pageIndicators(identifier: let identifier):
+                matchedElement = matchedElement?.pageIndicators[identifier]
+            case .pickerWheels(identifier: let identifier):
+                matchedElement = matchedElement?.pickerWheels[identifier]
+            case .pickers(identifier: let identifier):
+                matchedElement = matchedElement?.pickers[identifier]
+            case .popUpButtons(identifier: let identifier):
+                matchedElement = matchedElement?.popUpButtons[identifier]
+            case .popovers(identifier: let identifier):
+                matchedElement = matchedElement?.popovers[identifier]
+            case .progressIndicators(identifier: let identifier):
+                matchedElement = matchedElement?.progressIndicators[identifier]
+            case .radioButtons(identifier: let identifier):
+                matchedElement = matchedElement?.radioButtons[identifier]
+            case .radioGroups(identifier: let identifier):
+                matchedElement = matchedElement?.radioGroups[identifier]
+            case .ratingIndicators(identifier: let identifier):
+                matchedElement = matchedElement?.ratingIndicators[identifier]
+            case .relevanceIndicators(identifier: let identifier):
+                matchedElement = matchedElement?.relevanceIndicators[identifier]
+            case .rulerMarkers(identifier: let identifier):
+                matchedElement = matchedElement?.rulerMarkers[identifier]
+            case .rulers(identifier: let identifier):
+                matchedElement = matchedElement?.rulers[identifier]
+            case .scrollBars(identifier: let identifier):
+                matchedElement = matchedElement?.scrollBars[identifier]
+            case .scrollViews(identifier: let identifier):
+                matchedElement = matchedElement?.scrollViews[identifier]
+            case .searchFields(identifier: let identifier):
+                matchedElement = matchedElement?.searchFields[identifier]
+            case .secureTextFields(identifier: let identifier):
+                matchedElement = matchedElement?.secureTextFields[identifier]
+            case .segmentedControls(identifier: let identifier):
+                matchedElement = matchedElement?.segmentedControls[identifier]
+            case .sheets(identifier: let identifier):
+                matchedElement = matchedElement?.sheets[identifier]
+            case .sliders(identifier: let identifier):
+                matchedElement = matchedElement?.sliders[identifier]
+            case .splitGroups(identifier: let identifier):
+                matchedElement = matchedElement?.splitGroups[identifier]
+            case .splitters(identifier: let identifier):
+                matchedElement = matchedElement?.splitters[identifier]
             case .staticText(label: let label):
                 matchedElement = matchedElement?.staticTexts[label]
+            case .statusBars(identifier: let identifier):
+                matchedElement = matchedElement?.statusBars[identifier]
+            case .statusItems(identifier: let identifier):
+                matchedElement = matchedElement?.statusItems[identifier]
+            case .steppers(identifier: let identifier):
+                matchedElement = matchedElement?.steppers[identifier]
+            case .switches(identifier: let identifier):
+                matchedElement = matchedElement?.switches[identifier]
+            case .tabBars(identifier: let identifier):
+                matchedElement = matchedElement?.tabBars[identifier]
+            case .tabGroups(identifier: let identifier):
+                matchedElement = matchedElement?.tabGroups[identifier]
+            case .tables(let identifier):
+                matchedElement = matchedElement?.tables[identifier]
+            case .tableColumns(identifier: let identifier):
+                matchedElement = matchedElement?.tableColumns[identifier]
+            case .tableRows(identifier: let identifier):
+                matchedElement = matchedElement?.tableRows[identifier]
             case .textField(identifier: let identifier):
                 matchedElement = matchedElement?.textFields[identifier]
             }
