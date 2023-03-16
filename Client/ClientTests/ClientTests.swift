@@ -23,7 +23,11 @@ final class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
-        try await app.buttons["Something"].tap()
+        let somethingButton = try await app.buttons["Something"]
+        let isHittable = try await somethingButton.isHittable
+        XCTAssert(isHittable)
+        
+        try await somethingButton.tap()
         
         let exists = try await app.staticTexts["Something View"].exists
         

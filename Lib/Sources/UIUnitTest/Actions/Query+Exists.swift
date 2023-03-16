@@ -23,3 +23,21 @@ public struct ExistsRequest: Codable {
     }
 }
 
+
+
+public struct IsHittableResponse: Codable {
+    public var isHittable: Bool
+    
+    public init(isHittable: Bool) {
+        self.isHittable = isHittable
+    }
+}
+
+public struct IsHittableRequest: Codable {
+    public var elementServerId: UUID
+    
+    init(elementServerId: UUID) {
+        self.elementServerId = elementServerId
+    }
+}
+

@@ -120,10 +120,18 @@ public class Element: ElementTypeQueryProvider {
         
         return response.elementExists
     }
-//
-//
-//    /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
-//    open var isHittable: Bool { get }
+
+
+    /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
+    open var isHittable: Bool {
+        get async throws {
+            let existsRequestData = IsHittableRequest(elementServerId: serverId)
+            
+            let existsResponse: IsHittableResponse = try await callServer(path: "isHittable", request: existsRequestData)
+            
+            return existsResponse.isHittable
+        }
+    }
 //
 //
 //    /** Returns a query for all descendants of the element matching the specified type. */

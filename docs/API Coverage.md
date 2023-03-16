@@ -2,9 +2,9 @@
 
 The following table shows the API coverage at the moment:
 
+## **XCUIElementTypeQueryProvider**
 | API | Coverage | Notes |
 | --- | --- | --- |
-| **XCUIElementTypeQueryProvider** |
 | var firstMatch: XCUIElement | ❌ | |
 | var activityIndicators: XCUIElementQuery | ✅ | |
 | var alerts: XCUIElementQuery | ✅ | |
@@ -88,10 +88,33 @@ The following table shows the API coverage at the moment:
 | var valueIndicators: XCUIElementQuery | ✅ | |
 | var webViews: XCUIElementQuery | ✅ | |
 | var windows: XCUIElementQuery | ✅ | |
-| **XCUIElement** |
+
+## **XCUIElementQuery**
+| API | Coverage | Notes |
+| --- | --- | --- |
+| var element: XCUIElement { get } | ❌ | |
+| var count: Int { get } | ✅ | |
+| func element(boundBy index: Int) -> XCUIElement | ❌ | |
+| func element(matching predicate: NSPredicate) -> XCUIElement | ❌ | |
+| func element(matching elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElement | ❌ | |
+| subscript(key: String) -> XCUIElement { get } | ✅ | |
+| var allElementsBoundByAccessibilityElement: [XCUIElement] { get } | ❌ | |
+| var allElementsBoundByIndex: [XCUIElement] { get } | ❌ | |
+| func descendants(matching type: XCUIElement.ElementType) -> XCUIElementQuery | ❌ | |
+| func children(matching type: XCUIElement.ElementType) -> XCUIElementQuery | ❌ | |
+| func matching(_ predicate: NSPredicate) -> XCUIElementQuery | ❌ | |
+| func matching(_ elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElementQuery | ❌ | |
+| func matching(identifier: String) -> XCUIElementQuery | ❌ | |
+| func containing(_ predicate: NSPredicate) -> XCUIElementQuery | ❌ | |
+| func containing(_ elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElementQuery | ❌ | |
+| var debugDescription: String { get } | ❌ | |
+
+## **XCUIElement**
+| API | Coverage | Notes |
+| --- | --- | --- |
 | func waitForExistence(timeout: TimeInterval) -> Bool | ✅ | |
 | var exists: Bool | ✅ | | 
-| var isHittable: Bool | ❌ | Try to implement to version 1.0 | 
+| var isHittable: Bool | ✅ |  | 
 | var debugDescription: String | ❌ | Try to implement to version 1.0 |
 | func children(matching: XCUIElement.ElementType) -> XCUIElementQuery | ❌ | |
 | func descendants(matching: XCUIElement.ElementType) -> XCUIElementQuery | ❌ | |

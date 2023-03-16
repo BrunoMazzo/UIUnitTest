@@ -27,12 +27,6 @@ public class Query: ElementTypeQueryProvider {
         }
     }
     
-    public subscript(_ identifier: String) -> Element {
-        get async throws {
-            let response: ElementResponse = try await callServer(path: "element", request: ElementRequest(queryRoot: queryServerId, identifier: identifier))
-            return Element(serverId: response.serverId)
-        }
-    }
     /** Returns an element that will use the query for resolution. */
     //    open var element: Element! {
     //        get async throws {
@@ -42,7 +36,12 @@ public class Query: ElementTypeQueryProvider {
     //
     
     /** Evaluates the query at the time it is called and returns the number of matches found. */
-    //    open var count: Int32 { get }
+    public var count: Int {
+        get async throws {
+            let response: CountResponse = try await callServer(path: "count", request: CountRequest(serverId: self.queryServerId!))
+            return response.count
+        }
+    }
     
     
     /** Returns an element that will resolve to the index into the query's result set. */
@@ -62,7 +61,12 @@ public class Query: ElementTypeQueryProvider {
     
     
     /** Keyed subscripting is implemented as a shortcut for matching an identifier only. For example, app.descendants["Foo"] -> XCUIElement. */
-    //    open subscript(key: Any!) -> Element! { get }
+    public subscript(_ identifier: String) -> Element {
+        get async throws {
+            let response: ElementResponse = try await callServer(path: "element", request: ElementRequest(queryRoot: queryServerId, identifier: identifier))
+            return Element(serverId: response.serverId)
+        }
+    }
     
     
     /** Returns a new query that finds the descendants of all the elements found by the receiver. */
@@ -107,3 +111,18 @@ public struct QueryResponse: Codable {
     }
 }
 
+public struct CountRequest: Codable {
+    public var serverId: UUID
+    
+    public init(serverId: UUID) {
+        self.serverId = serverId
+    }
+}
+
+public struct CountResponse: Codable {
+    public var count: Int
+    
+    public init(count: Int) {
+        self.count = count
+    }
+}
