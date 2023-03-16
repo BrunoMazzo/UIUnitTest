@@ -6,6 +6,9 @@ import UIUnitTest
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
 
+var queryIds: [UUID: XCUIElementTypeQueryProvider] = [:]
+var elementIds: [UUID: XCUIElement] = [:]
+
 class UIServer {
     var app: XCUIApplication!
     
@@ -40,25 +43,46 @@ class UIServer {
             
         })
         
+        await addRoute("tapElement", handler: { (tapRequest: TapElementRequest) -> Bool in
+            guard let element = elementIds[tapRequest.elementServerId] else {
+                return false
+            }
+            
+            if let duration = tapRequest.duration {
+                element.press(forDuration: duration)
+            } else if let numberOfTouches = tapRequest.numberOfTouches {
+                if let numberOfTaps = tapRequest.numberOfTaps {
+                    element.tap(withNumberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
+                } else {
+                    element.twoFingerTap()
+                }
+            } else  {
+                element.tap()
+            }
+            
+            return true
+            
+        })
+        
         await addRoute("doubleTap", handler: { (tapRequest: DoubleTapRequest) in
-            let element = self.findElement(matchers: tapRequest.matchers)
+            let element = elementIds[tapRequest.elementServerId]
             element?.doubleTap()
         })
         
         await addRoute("exists", handler: { (tapRequest: ExistsRequest) in
-            let element = self.findElement(matchers: tapRequest.matchers)
+            let element = elementIds[tapRequest.elementServerId]
             let exists = element?.exists ?? false
             
             return ExistsResponse(exists: exists)
         })
         
         await addRoute("enterText", handler: { (tapRequest: EnterTextRequest) in
-            let element = self.findElement(matchers: tapRequest.matchers)
+            let element = elementIds[tapRequest.elementServerId]
             element?.typeText(tapRequest.textToEnter)
         })
         
         await addRoute("swipe", handler: { (tapRequest: SwipeRequest) in
-            let element = self.findElement(matchers: tapRequest.matchers)
+            let element = elementIds[tapRequest.elementServerId]
             
             switch tapRequest.swipeDirection {
             case .left:
@@ -73,7 +97,7 @@ class UIServer {
         })
         
         await addRoute("waitForExistence", handler: { (tapRequest: WaitForExistenceRequest) in
-            let element = self.findElement(matchers: tapRequest.matchers)
+            let element = elementIds[tapRequest.elementServerId]
             let exists = element?.waitForExistence(timeout: tapRequest.timeout) ?? false
             
             return WaitForExistenceResponse(elementExists: exists)
@@ -82,6 +106,51 @@ class UIServer {
         await addRoute("HomeButton", handler: { (tapRequest: HomeButtonRequest) in
             XCUIDevice.shared.press(.home)
         })
+        
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "query")) { request in
+            defer {
+                self.lastIssue = nil
+            }
+            
+            let queryRequest = try decoder.decode(QueryRequest.self, from: request.body)
+            
+            let newQuery = self.performQuery(queryRequest: queryRequest)
+            
+            let serverId = UUID()
+            queryIds[serverId] = newQuery
+            
+            
+            return self.buildResponse(QueryResponse(serverId: serverId))
+        }
+        
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "element")) { request in
+            defer {
+                self.lastIssue = nil
+            }
+            
+            let queryRequest = try decoder.decode(ElementRequest.self, from: request.body)
+            
+            let newElement = try! self.findElement(elementRequest: queryRequest)
+            
+            let serverId = UUID()
+            queryIds[serverId] = newElement
+            elementIds[serverId] = newElement
+            
+            return self.buildResponse(ElementResponse(serverId: serverId))
+        }
+        
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "remove")) { request in
+            defer {
+                self.lastIssue = nil
+            }
+            
+            let queryRequest = try decoder.decode(RemoveServerItemRequest.self, from: request.body)
+            
+            queryIds.removeValue(forKey: queryRequest.queryRoot)
+            elementIds.removeValue(forKey: queryRequest.queryRoot)
+            
+            return self.buildResponse(true)
+        }
         
         try await server.start()
     }
@@ -269,6 +338,191 @@ class UIServer {
         }
         
         return matchedElement
+    }
+    
+    func performQuery(queryRequest: QueryRequest) -> XCUIElementQuery {
+        var rootElementQuery: XCUIElementTypeQueryProvider = app
+        if let rootQueryId = queryRequest.queryRoot, let rootQuery = queryIds[rootQueryId] {
+            rootElementQuery = rootQuery
+        }
+        
+        let resultQuery: XCUIElementQuery
+        switch queryRequest.elementType {
+        case .staticTexts:
+            resultQuery = rootElementQuery.staticTexts
+        case .activityIndicators:
+            resultQuery = rootElementQuery.activityIndicators
+        case .alerts:
+            resultQuery = rootElementQuery.alerts
+        case .browsers:
+            resultQuery = rootElementQuery.browsers
+        case .buttons:
+            resultQuery = rootElementQuery.buttons
+        case .cells:
+            resultQuery = rootElementQuery.cells
+        case .checkBoxes:
+            resultQuery = rootElementQuery.staticTexts
+        case .collectionViews:
+            resultQuery = rootElementQuery.collectionViews
+        case .colorWells:
+            resultQuery = rootElementQuery.colorWells
+        case .comboBoxes:
+            resultQuery = rootElementQuery.comboBoxes
+        case .datePickers:
+            resultQuery = rootElementQuery.datePickers
+        case .decrementArrows:
+            resultQuery = rootElementQuery.decrementArrows
+        case .dialogs:
+            resultQuery = rootElementQuery.dialogs
+        case .disclosureTriangles:
+            resultQuery = rootElementQuery.disclosureTriangles
+        case .disclosedChildRows:
+            resultQuery = rootElementQuery.disclosedChildRows
+        case .dockItems:
+            resultQuery = rootElementQuery.dockItems
+        case .drawers:
+            resultQuery = rootElementQuery.drawers
+        case .grids:
+            resultQuery = rootElementQuery.grids
+        case .groups:
+            resultQuery = rootElementQuery.groups
+        case .handles:
+            resultQuery = rootElementQuery.handles
+        case .helpTags:
+            resultQuery = rootElementQuery.helpTags
+        case .icons:
+            resultQuery = rootElementQuery.icons
+        case .images:
+            resultQuery = rootElementQuery.images
+        case .incrementArrows:
+            resultQuery = rootElementQuery.incrementArrows
+        case .keyboards:
+            resultQuery = rootElementQuery.keyboards
+        case .keys:
+            resultQuery = rootElementQuery.keys
+        case .layoutAreas:
+            resultQuery = rootElementQuery.layoutAreas
+        case .layoutItems:
+            resultQuery = rootElementQuery.layoutItems
+        case .levelIndicators:
+            resultQuery = rootElementQuery.levelIndicators
+        case .links:
+            resultQuery = rootElementQuery.links
+        case .maps:
+            resultQuery = rootElementQuery.maps
+        case .mattes:
+            resultQuery = rootElementQuery.mattes
+        case .menuBarItems:
+            resultQuery = rootElementQuery.menuBarItems
+        case .menuBars:
+            resultQuery = rootElementQuery.menuBars
+        case .menuButtons:
+            resultQuery = rootElementQuery.menuButtons
+        case .menuItems:
+            resultQuery = rootElementQuery.menuItems
+        case .menus:
+            resultQuery = rootElementQuery.menus
+        case .navigationBars:
+            resultQuery = rootElementQuery.navigationBars
+        case .otherElements:
+            resultQuery = rootElementQuery.otherElements
+        case .outlineRows:
+            resultQuery = rootElementQuery.outlineRows
+        case .outlines:
+            resultQuery = rootElementQuery.outlines
+        case .pageIndicators:
+            resultQuery = rootElementQuery.pageIndicators
+        case .pickerWheels:
+            resultQuery = rootElementQuery.pickerWheels
+        case .pickers:
+            resultQuery = rootElementQuery.pickers
+        case .popUpButtons:
+            resultQuery = rootElementQuery.popUpButtons
+        case .popovers:
+            resultQuery = rootElementQuery.popovers
+        case .progressIndicators:
+            resultQuery = rootElementQuery.progressIndicators
+        case .radioButtons:
+            resultQuery = rootElementQuery.radioButtons
+        case .radioGroups:
+            resultQuery = rootElementQuery.radioGroups
+        case .ratingIndicators:
+            resultQuery = rootElementQuery.ratingIndicators
+        case .relevanceIndicators:
+            resultQuery = rootElementQuery.relevanceIndicators
+        case .rulerMarkers:
+            resultQuery = rootElementQuery.rulerMarkers
+        case .rulers:
+            resultQuery = rootElementQuery.rulers
+        case .scrollBars:
+            resultQuery = rootElementQuery.scrollBars
+        case .scrollViews:
+            resultQuery = rootElementQuery.scrollViews
+        case .searchFields:
+            resultQuery = rootElementQuery.searchFields
+        case .secureTextFields:
+            resultQuery = rootElementQuery.secureTextFields
+        case .segmentedControls:
+            resultQuery = rootElementQuery.segmentedControls
+        case .sheets:
+            resultQuery = rootElementQuery.sheets
+        case .sliders:
+            resultQuery = rootElementQuery.sliders
+        case .splitGroups:
+            resultQuery = rootElementQuery.splitGroups
+        case .splitters:
+            resultQuery = rootElementQuery.splitters
+        case .statusBars:
+            resultQuery = rootElementQuery.statusBars
+        case .statusItems:
+            resultQuery = rootElementQuery.statusItems
+        case .steppers:
+            resultQuery = rootElementQuery.steppers
+        case .switches:
+            resultQuery = rootElementQuery.switches
+        case .tabBars:
+            resultQuery = rootElementQuery.tabBars
+        case .tabGroups:
+            resultQuery = rootElementQuery.tabGroups
+        case .tableColumns:
+            resultQuery = rootElementQuery.tableColumns
+        case .tableRows:
+            resultQuery = rootElementQuery.tableRows
+        case .tables:
+            resultQuery = rootElementQuery.tables
+        case .textFields:
+            resultQuery = rootElementQuery.textFields
+        case .textViews:
+            resultQuery = rootElementQuery.textViews
+        case .timelines:
+            resultQuery = rootElementQuery.timelines
+        case .toggles:
+            resultQuery = rootElementQuery.toggles
+        case .toolbarButtons:
+            resultQuery = rootElementQuery.toolbarButtons
+        case .toolbars:
+            resultQuery = rootElementQuery.toolbars
+        case .touchBars:
+            resultQuery = rootElementQuery.touchBars
+        case .valueIndicators:
+            resultQuery = rootElementQuery.valueIndicators
+        case .webViews:
+            resultQuery = rootElementQuery.webViews
+        case .windows:
+            resultQuery = rootElementQuery.windows
+        }
+        
+        return resultQuery
+    }
+    
+    func findElement(elementRequest: ElementRequest) throws -> XCUIElement {
+        
+        guard let rootQueryId = elementRequest.queryRoot,
+                let rootElementQuery = queryIds[rootQueryId] as? XCUIElementQuery else {
+            throw NSError(domain: "Query not found for element \(elementRequest.identifier)", code: 1)
+        }
+        
+        return rootElementQuery[elementRequest.identifier]
     }
     
     func addRoute<Request: Codable, Response: Codable>(_ route: String, handler: @escaping @MainActor (Request) async -> Response) async {

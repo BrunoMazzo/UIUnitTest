@@ -1,332 +1,109 @@
 //
 //  File 2.swift
-//  
+//
 //
 //  Created by Bruno Mazzo on 9/3/2023.
 //
 
 import Foundation
 
-public struct Query {
-    internal var matchers: [ElementMatcher] = []
-    
-    public func activityIndicators(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.activityIndicators(identifier: identifier)])
-    }
-    
-    public func alert(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.alerts(identifier: identifier)])
-    }
-    
-    public func browser(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.browsers(identifier: identifier)])
-    }
-    
-    public func button(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.button(identifier: identifier)])
-    }
-    
-    public func cells(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.cells(identifier: identifier)])
-    }
-    
-    public func checkBoxes(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.checkBoxes(identifier: identifier)])
-    }
-    
-    public func collectionViews(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.collectionViews(identifier: identifier)])
-    }
-    
-    public func colorWells(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.colorWells(identifier: identifier)])
-    }
-    
-    public func comboBoxes(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.comboBoxes(identifier: identifier)])
-    }
-    
-    public func datePickers(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.datePickers(identifier: identifier)])
-    }
-    
-    public func decrementArrows(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.decrementArrows(identifier: identifier)])
-    }
-    
-    public func dialogs(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.dialogs(identifier: identifier)])
-    }
-    
-    public func disclosureTriangles(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.disclosureTriangles(identifier: identifier)])
-    }
-    
-    public func disclosedChildRows(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.disclosedChildRows(identifier: identifier)])
-    }
-    
-    public func dockItems(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.dockItems(identifier: identifier)])
-    }
-    
-    public func drawers(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.drawers(identifier: identifier)])
-    }
-    
-    public func grids(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.grids(identifier: identifier)])
-    }
-    
-    public func groups(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.groups(identifier: identifier)])
-    }
-    
-    public func handles(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.handles(identifier: identifier)])
-    }
-    
-    public func helpTags(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.helpTags(identifier: identifier)])
-    }
-    
-    public func icons(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.icons(identifier: identifier)])
-    }
-    
-    public func images(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.images(identifier: identifier)])
-    }
-    
-    public func incrementArrows(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.incrementArrows(identifier: identifier)])
-    }
-    
-    public func keyboards(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.keyboards(identifier: identifier)])
-    }
-    
-    public func keys(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.keys(identifier: identifier)])
-    }
-    
-    public func layoutAreas(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.layoutAreas(identifier: identifier)])
-    }
-    
-    public func layoutItems(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.layoutItems(identifier: identifier)])
-    }
-    
-    public func levelIndicators(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.levelIndicators(identifier: identifier)])
-    }
-    
-    public func links(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.links(identifier: identifier)])
-    }
-    
-    public func maps(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.maps(identifier: identifier)])
-    }
-    
-    public func mattes(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.mattes(identifier: identifier)])
-    }
-    
-    public func menuBarItems(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.menuBarItems(identifier: identifier)])
-    }
-    
-    public func menuBars(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.menuBars(identifier: identifier)])
-    }
-    
-    public func menuButtons(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.menuButtons(identifier: identifier)])
-    }
-    
-    public func menuItems(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.menuItems(identifier: identifier)])
-    }
-    
-    public func menus(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.menus(identifier: identifier)])
-    }
-    
-    public func tables(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.tables(identifier: identifier)])
-    }
-    
-    public func staticText(label: String) -> Query {
-        Query(matchers: self.matchers + [.staticText(label: label)])
-    }
-    
-    public func textField(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.textField(identifier: identifier)])
-    }
-    
-    public func navigationBars(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.navigationBars(identifier: identifier)])
-    }
-    
-    public func otherElements(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.otherElements(identifier: identifier)])
-    }
-    
-    public func outlineRows(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.outlineRows(identifier: identifier)])
-    }
-    
-    public func outlines(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.outlines(identifier: identifier)])
-    }
-    
-    public func pageIndicators(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.pageIndicators(identifier: identifier)])
-    }
-    
-    public func pickerWheels(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.pickerWheels(identifier: identifier)])
-    }
-    
-    public func pickers(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.pickers(identifier: identifier)])
-    }
-    
-    public func popUpButtons(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.popUpButtons(identifier: identifier)])
-    }
-    
-    public func popovers(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.popovers(identifier: identifier)])
-    }
-    
-    public func progressIndicators(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.progressIndicators(identifier: identifier)])
-    }
+public class Query: ElementTypeQueryProvider {
     
-    public func radioButtons(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.radioButtons(identifier: identifier)])
-    }
+    public var queryServerId: UUID?
     
-    public func radioGroups(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.radioGroups(identifier: identifier)])
+    init(queryServerId: UUID) {
+        self.queryServerId = queryServerId
     }
     
-    public func ratingIndicators(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.ratingIndicators(identifier: identifier)])
+    init(queryRoot: UUID? = nil, elementType: Element.ElementType) async throws {
+        let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(queryRoot: queryRoot, elementType: elementType))
+        self.queryServerId = response.serverId
     }
     
-    public func relevanceIndicators(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.relevanceIndicators(identifier: identifier)])
+    deinit {
+        let serverId = queryServerId!
+        Task {
+            let _: Bool = try await callServer(path: "remove", request: RemoveServerItemRequest(queryRoot: serverId))
+        }
     }
     
-    public func rulerMarkers(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.rulerMarkers(identifier: identifier)])
+    public subscript(_ identifier: String) -> Element {
+        get async throws {
+            let response: ElementResponse = try await callServer(path: "element", request: ElementRequest(queryRoot: queryServerId, identifier: identifier))
+            return Element(serverId: response.serverId)
+        }
     }
+    /** Returns an element that will use the query for resolution. */
+    //    open var element: Element! {
+    //        get async throws {
+    //
+    //        }
+    //    }
+    //
     
-    public func rulers(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.rulers(identifier: identifier)])
-    }
+    /** Evaluates the query at the time it is called and returns the number of matches found. */
+    //    open var count: Int32 { get }
     
-    public func scrollBars(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.scrollBars(identifier: identifier)])
-    }
     
-    public func scrollViews(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.scrollViews(identifier: identifier)])
-    }
+    /** Returns an element that will resolve to the index into the query's result set. */
+    //    open func element(atIndex index: Any!) -> Element!
     
-    public func searchFields(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.searchFields(identifier: identifier)])
-    }
     
-    public func secureTextFields(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.secureTextFields(identifier: identifier)])
-    }
+    /** Returns an element that will use the index into the query's results to determine which underlying accessibility element it is matched with. */
+    //    open func element(boundByIndex index: Any!) -> Element!
     
-    public func segmentedControls(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.segmentedControls(identifier: identifier)])
-    }
     
-    public func sheets(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.sheets(identifier: identifier)])
-    }
+    /** Returns an element that matches the predicate. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
+    //    open func element(matchingPredicate predicate: Any!) -> Element!
     
-    public func sliders(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.sliders(identifier: identifier)])
-    }
     
-    public func splitGroups(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.splitGroups(identifier: identifier)])
-    }
+    /** Returns an element that matches the type and identifier. */
+    //    open func element(matchingType elementType: Any!, identifier: Any!) -> Element!
     
-    public func splitters(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.splitters(identifier: identifier)])
-    }
     
-    public func statusBars(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.statusBars(identifier: identifier)])
-    }
+    /** Keyed subscripting is implemented as a shortcut for matching an identifier only. For example, app.descendants["Foo"] -> XCUIElement. */
+    //    open subscript(key: Any!) -> Element! { get }
     
-    public func statusItems(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.statusItems(identifier: identifier)])
-    }
     
-    public func switches(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.switches(identifier: identifier)])
-    }
+    /** Returns a new query that finds the descendants of all the elements found by the receiver. */
+    //    open func descendants(matchingType type: Any!) -> Element!
     
-    public func tabBars(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.tabBars(identifier: identifier)])
-    }
     
-    public func tabGroups(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.tabGroups(identifier: identifier)])
-    }
+    /** Returns a new query that finds the direct children of all the elements found by the receiver. */
+    //    open func children(matchingType type: Any!) -> Element!
     
-    public func tableColumns(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.tableColumns(identifier: identifier)])
-    }
     
-    public func tableRows(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.tableRows(identifier: identifier)])
-    }
+    /** Returns a new query that applies the specified attributes or predicate to the receiver. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
+    //    open func matchingPredicate(_ predicate: Any!) -> Element!
     
-    public func textViews(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.textViews(identifier: identifier)])
-    }
+    //    open func matchingType(_ elementType: Any!, identifier: Any!) -> Element!
     
-    public func timelines(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.timelines(identifier: identifier)])
-    }
+    //    open func matchingIdentifier(_ identifier: Any!) -> Element!
     
-    public func toggles(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.toggles(identifier: identifier)])
-    }
     
-    public func toolbarButtons(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.toolbarButtons(identifier: identifier)])
-    }
+    /** Returns a new query for finding elements that contain a descendant matching the specification. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
+    //    open func containingPredicate(_ predicate: Any!) -> Element!
     
-    public func toolbars(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.toolbars(identifier: identifier)])
-    }
+    //    open func containingType(_ elementType: Any!, identifier: Any!) -> Element!
+}
 
-    public func touchBars(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.touchBars(identifier: identifier)])
-    }
 
-    public func valueIndicators(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.valueIndicators(identifier: identifier)])
-    }
-
-    public func webViews(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.webViews(identifier: identifier)])
-    }
-
-    public func windows(identifier: String) -> Query {
-        Query(matchers: self.matchers + [.windows(identifier: identifier)])
+public struct QueryRequest: Codable {
+    
+    public var queryRoot: UUID?
+    public var elementType: Element.ElementType
+    
+    init(queryRoot: UUID? = nil, elementType: Element.ElementType) {
+        self.queryRoot = queryRoot
+        self.elementType = elementType
     }
 }
+
+public struct QueryResponse: Codable {
+    public var serverId: UUID
+    
+    public init(serverId: UUID) {
+        self.serverId = serverId
+    }
+}
+

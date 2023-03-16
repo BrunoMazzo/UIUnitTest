@@ -7,9 +7,9 @@
 
 import Foundation
 
-extension Query {
+extension Element {
     public func doubleTap() async throws {
-        let activateRequestData = DoubleTapRequest(matchers: self.matchers)
+        let activateRequestData = DoubleTapRequest(elementServerId: serverId)
         
         let _: Bool = try await callServer(path: "doubleTap", request: activateRequestData)
     }
@@ -17,13 +17,9 @@ extension Query {
 
 public struct DoubleTapRequest: Codable {
     
-    public var matchers: [ElementMatcher]
+    public var elementServerId: UUID
     
-    public init(matcher: ElementMatcher) {
-        self.matchers = [matcher]
-    }
-    
-    public init(matchers: [ElementMatcher]) {
-        self.matchers = matchers
+    public init(elementServerId: UUID) {
+        self.elementServerId = elementServerId
     }
 }

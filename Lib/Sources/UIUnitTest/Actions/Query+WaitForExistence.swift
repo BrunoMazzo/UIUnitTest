@@ -6,23 +6,13 @@
 //
 import Foundation
 
-extension Query {
-    public func waitForExistence(timeout: TimeInterval) async throws -> Bool {
-        let activateRequestData = WaitForExistenceRequest(matchers: self.matchers, timeout: timeout)
-        
-        let response: WaitForExistenceResponse = try await callServer(path: "waitForExistence", request: activateRequestData)
-        
-        return response.elementExists
-    }
-}
-
 public struct WaitForExistenceRequest: Codable {
     
-    public var matchers: [ElementMatcher]
+    public var elementServerId: UUID
     public var timeout: TimeInterval
     
-    public init(matchers: [ElementMatcher], timeout: TimeInterval) {
-        self.matchers = matchers
+    public init(elementServerId: UUID, timeout: TimeInterval) {
+        self.elementServerId = elementServerId
         self.timeout = timeout
     }
 }
