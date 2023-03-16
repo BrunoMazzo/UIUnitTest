@@ -10,9 +10,6 @@ import XCTest
 final class UITestServerTest: XCTestCase {
     
     override func record(_ issue: XCTIssue) {
-        print(issue)
-        print(issue)
-        
         self.server.lastIssue = issue
     }
 

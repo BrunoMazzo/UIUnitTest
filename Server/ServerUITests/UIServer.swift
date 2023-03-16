@@ -65,6 +65,11 @@ class UIServer {
             element?.typeText(tapRequest.textToEnter)
         })
         
+        await addRoute("scroll", handler: { (tapRequest: ScrollRequest) in
+            let element = elementIds[tapRequest.elementServerId]
+            element?.scroll(byDeltaX: tapRequest.deltaX, deltaY: tapRequest.deltaY)
+        })
+        
         await addRoute("swipe", handler: { (tapRequest: SwipeRequest) in
             let element = elementIds[tapRequest.elementServerId]
             

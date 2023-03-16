@@ -158,30 +158,11 @@ public class Element: ElementTypeQueryProvider {
 //    open var debugDescription: String { get }
 //}
 //
-    
-    public func tap() async throws {
-        let tapElementResponse = TapElementRequest(elementServerId: self.serverId)
-        
-        let _: Bool = try await callServer(path: "tapElement", request: tapElementResponse)
+    public func scroll(byDeltaX deltaX: CGFloat, deltaY: CGFloat) async throws {
+        let activateRequestData = ScrollRequest(elementServerId: self.serverId, deltaX: deltaX, deltaY: deltaY)
+        let _: Bool = try await callServer(path: "scroll", request: activateRequestData)
     }
-    
-    public func twoFingerTap() async throws {
-        let activateRequestData = TapElementRequest(elementServerId: self.serverId, numberOfTouches: 2)
-        
-        let _: Bool = try await callServer(path: "tapElement", request: activateRequestData)
-    }
-    
-    public func tap(withNumberOfTaps numberOfTaps: Int, numberOfTouches: Int) async throws {
-        let activateRequestData = TapElementRequest(elementServerId: self.serverId, numberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
-        
-        let _: Bool = try await callServer(path: "tapElement", request: activateRequestData)
-    }
-    
-    public func press(forDuration duration: TimeInterval) async throws {
-        let activateRequestData = TapElementRequest(elementServerId: self.serverId, duration: duration)
-        
-        let _: Bool = try await callServer(path: "tapElement", request: activateRequestData)
-    }
+
     
     public func enterText(_ textToEnter: String) async throws {
         let activateRequestData = EnterTextRequest(elementServerId: self.serverId, textToEnter: textToEnter)
@@ -189,18 +170,15 @@ public class Element: ElementTypeQueryProvider {
     }
 }
 
-public struct TapElementRequest: Codable {
-    
+public struct ScrollRequest: Codable {
     public var elementServerId: UUID
-    public var duration: TimeInterval?
-    public var numberOfTaps: Int?
-    public var numberOfTouches: Int?
-
-    init(elementServerId: UUID, duration: TimeInterval? = nil, numberOfTaps: Int? = nil, numberOfTouches: Int? = nil) {
+    public var deltaX: CGFloat
+    public var deltaY: CGFloat
+    
+    init(elementServerId: UUID, deltaX: CGFloat, deltaY: CGFloat) {
         self.elementServerId = elementServerId
-        self.duration = duration
-        self.numberOfTaps = numberOfTaps
-        self.numberOfTouches = numberOfTouches
+        self.deltaX = deltaX
+        self.deltaY = deltaY
     }
 }
 
@@ -220,4 +198,23 @@ public struct ElementResponse: Codable {
 
 public struct RemoveServerItemRequest: Codable {
     public var queryRoot: UUID
+}
+
+public struct WaitForExistenceRequest: Codable {
+    
+    public var elementServerId: UUID
+    public var timeout: TimeInterval
+    
+    public init(elementServerId: UUID, timeout: TimeInterval) {
+        self.elementServerId = elementServerId
+        self.timeout = timeout
+    }
+}
+
+public struct WaitForExistenceResponse: Codable {
+    public var elementExists: Bool
+    
+    public init(elementExists: Bool) {
+        self.elementExists = elementExists
+    }
 }

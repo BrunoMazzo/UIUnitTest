@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Bruno Mazzo on 10/3/2023.
-//
-
 import Foundation
 
 public enum SwipeDirection: Codable {
