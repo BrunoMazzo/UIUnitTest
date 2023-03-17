@@ -144,7 +144,7 @@ The following table shows the API coverage at the moment:
 | func swipeUp(velocity: XCUIGestureVelocity) | ✅ | |
 | func swipeDown() | ✅ | |
 | func swipeDown(velocity: XCUIGestureVelocity) | ✅ | |
-| func pinch(withScale: CGFloat, velocity: CGFloat) | ❌ | Try to implement to version 1.0 |
+| func pinch(withScale: CGFloat, velocity: CGFloat) | ✅ | |
 | func rotate(CGFloat, withVelocity: CGFloat) | ❌ | Try to implement to version 1.0 |
 | var normalizedSliderPosition: CGFloat | ❌ |  | | | |
 | func adjust(toNormalizedSliderPosition: CGFloat) | ❌ | |

@@ -87,6 +87,11 @@ class UIServer {
             }
         })
         
+        await addRoute("pinch", handler: { (pinchRequest: PinchRequest) in
+            let element = elementIds[pinchRequest.elementServerId]
+            element?.pinch(withScale: pinchRequest.scale, velocity: pinchRequest.velocity)
+        })
+        
         await addRoute("waitForExistence", handler: { (tapRequest: WaitForExistenceRequest) in
             let element = elementIds[tapRequest.elementServerId]
             let exists = element?.waitForExistence(timeout: tapRequest.timeout) ?? false

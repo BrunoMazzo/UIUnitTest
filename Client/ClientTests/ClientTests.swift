@@ -172,6 +172,23 @@ final class ClientTests: XCTestCase {
         XCTAssert(wasntInBackgroudAfterBackground == true)
         
     }
-
+    
+    @MainActor
+        func testPinch() async throws {
+        let app = try await App()
+        
+        showView(PinchView())
+            
+        let didNotScale = try await app.staticTexts["Did scale? No"].exists
+        XCTAssert(didNotScale)
+        
+        try await app.staticTexts["PinchContainer"].pinch(withScale: 1.5, velocity: 1)
+        
+        let didScale = try await app.staticTexts["Did scale? Yes"].waitForExistence(timeout: 1)
+        XCTAssert(didScale == true)
+        
+    }
+    
+    
     
 }
