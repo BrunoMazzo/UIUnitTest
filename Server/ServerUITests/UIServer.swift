@@ -73,15 +73,17 @@ class UIServer {
         await addRoute("swipe", handler: { (tapRequest: SwipeRequest) in
             let element = elementIds[tapRequest.elementServerId]
             
+            let velocity = tapRequest.velocity.rawValue
+            
             switch tapRequest.swipeDirection {
             case .left:
-                element?.swipeLeft()
+                element?.swipeLeft(velocity: XCUIGestureVelocity(velocity))
             case .right:
-                element?.swipeRight()
+                element?.swipeRight(velocity: XCUIGestureVelocity(velocity))
             case .up:
-                element?.swipeUp()
+                element?.swipeUp(velocity: XCUIGestureVelocity(velocity))
             case .down:
-                element?.swipeDown()
+                element?.swipeDown(velocity: XCUIGestureVelocity(velocity))
             }
         })
         

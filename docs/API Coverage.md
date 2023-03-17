@@ -137,13 +137,13 @@ The following table shows the API coverage at the moment:
 | func twoFingerTap() | ✅ | |
 | func tap(withNumberOfTaps: Int, numberOfTouches: Int) | ✅ | |
 | func swipeLeft() | ✅ | |
-| func swipeLeft(velocity: XCUIGestureVelocity) | ❌ | Try to implement to version 1.0 |
+| func swipeLeft(velocity: XCUIGestureVelocity) | ✅ | |
 | func swipeRight() | ✅ | |
-| func swipeRight(velocity: XCUIGestureVelocity) | ❌ | Try to implement to version 1.0 |
+| func swipeRight(velocity: XCUIGestureVelocity) | ✅ | |
 | func swipeUp() | ✅ | |
-| func swipeUp(velocity: XCUIGestureVelocity) | ❌ | Try to implement to version 1.0 |
+| func swipeUp(velocity: XCUIGestureVelocity) | ✅ | |
 | func swipeDown() | ✅ | |
-| func swipeDown(velocity: XCUIGestureVelocity) | ❌ | Try to implement to version 1.0 |
+| func swipeDown(velocity: XCUIGestureVelocity) | ✅ | |
 | func pinch(withScale: CGFloat, velocity: CGFloat) | ❌ | Try to implement to version 1.0 |
 | func rotate(CGFloat, withVelocity: CGFloat) | ❌ | Try to implement to version 1.0 |
 | var normalizedSliderPosition: CGFloat | ❌ |  | | | |

@@ -1,10 +1,3 @@
-//
-//  ClientTests.swift
-//  ClientTests
-//
-//  Created by Bruno Mazzo on 5/3/2023.
-//
-
 import XCTest
 import UIUnitTest
 @testable import Client
@@ -113,9 +106,9 @@ final class ClientTests: XCTestCase {
         let messageExists = try await app.staticTexts["Hello world!"].exists
         XCTAssert(messageExists == false)
         
-        try! await app.buttons["Show Message"].tap()
+        try await app.buttons["Show Message"].tap()
         
-        let messageExistsAfterShow = try! await app.staticTexts["Hello world!"].waitForExistence(timeout: 2)
+        let messageExistsAfterShow = try await app.staticTexts["Hello world!"].waitForExistence(timeout: 2)
         XCTAssert(messageExistsAfterShow == true)
         
     }

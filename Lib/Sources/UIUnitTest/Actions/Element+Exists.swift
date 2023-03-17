@@ -1,5 +1,6 @@
 import Foundation
 
+
 public struct ExistsResponse: Codable {
     public var exists: Bool
     
@@ -15,8 +16,6 @@ public struct ExistsRequest: Codable {
         self.elementServerId = elementServerId
     }
 }
-
-
 
 public struct IsHittableResponse: Codable {
     public var isHittable: Bool
