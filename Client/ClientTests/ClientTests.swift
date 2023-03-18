@@ -174,11 +174,11 @@ final class ClientTests: XCTestCase {
     }
     
     @MainActor
-        func testPinch() async throws {
+    func testPinch() async throws {
         let app = try await App()
         
         showView(PinchView())
-            
+        
         let didNotScale = try await app.staticTexts["Did scale? No"].exists
         XCTAssert(didNotScale)
         
@@ -186,7 +186,21 @@ final class ClientTests: XCTestCase {
         
         let didScale = try await app.staticTexts["Did scale? Yes"].waitForExistence(timeout: 1)
         XCTAssert(didScale == true)
+    }
+    
+    @MainActor
+    func testRotate() async throws {
+        let app = try await App()
         
+        showView(RotateView())
+        
+        let didNotRotate = try await app.staticTexts["Did rotate? No"].exists
+        XCTAssert(didNotRotate)
+        
+        try await app.staticTexts["Rotate me!"].rotate(0.5, withVelocity: 1)
+        
+        let didRotate = try await app.staticTexts["Did rotate? Yes"].waitForExistence(timeout: 1)
+        XCTAssert(didRotate)
     }
     
     

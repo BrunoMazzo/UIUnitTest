@@ -21,6 +21,7 @@
 		1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */; };
 		1DE0F33E29BF265D0044AFFC /* TapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33D29BF265D0044AFFC /* TapView.swift */; };
 		1DE0F34529C52D4E0044AFFC /* PinchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F34429C52D4E0044AFFC /* PinchView.swift */; };
+		1DE0F34829C533B00044AFFC /* RotateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F34729C533B00044AFFC /* RotateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		1DE0F33929BDDBC70044AFFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1DE0F33D29BF265D0044AFFC /* TapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapView.swift; sourceTree = "<group>"; };
 		1DE0F34429C52D4E0044AFFC /* PinchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchView.swift; sourceTree = "<group>"; };
+		1DE0F34729C533B00044AFFC /* RotateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 				1D435E9029BB48250027CD1D /* SwipeView.swift */,
 				1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */,
 				1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */,
+				1DE0F34729C533B00044AFFC /* RotateView.swift */,
 				1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */,
 				1DE0F33D29BF265D0044AFFC /* TapView.swift */,
 				1DE0F34429C52D4E0044AFFC /* PinchView.swift */,
@@ -202,7 +205,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				1DE0F34229C2D51B0044AFFC /* PBXTargetDependency */,
+				1DE0F34B29C5389C0044AFFC /* PBXTargetDependency */,
 				1D136B7F29B45A4600465FB6 /* PBXTargetDependency */,
 			);
 			name = ClientTests;
@@ -311,6 +314,7 @@
 				1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */,
 				1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */,
 				1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */,
+				1DE0F34829C533B00044AFFC /* RotateView.swift in Sources */,
 				1DE0F33E29BF265D0044AFFC /* TapView.swift in Sources */,
 				1DE0F34529C52D4E0044AFFC /* PinchView.swift in Sources */,
 			);
@@ -346,9 +350,9 @@
 			target = 1D136B6B29B45A4600465FB6 /* Client */;
 			targetProxy = 1D136B8829B45A4600465FB6 /* PBXContainerItemProxy */;
 		};
-		1DE0F34229C2D51B0044AFFC /* PBXTargetDependency */ = {
+		1DE0F34B29C5389C0044AFFC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 1DE0F34129C2D51B0044AFFC /* UIUnitTestBuildPlugin */;
+			productRef = 1DE0F34A29C5389C0044AFFC /* UIUnitTestBuildPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -672,7 +676,7 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = UIUnitTest;
 		};
-		1DE0F34129C2D51B0044AFFC /* UIUnitTestBuildPlugin */ = {
+		1DE0F34A29C5389C0044AFFC /* UIUnitTestBuildPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "plugin:UIUnitTestBuildPlugin";
 		};

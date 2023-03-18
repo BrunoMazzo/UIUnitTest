@@ -92,6 +92,11 @@ class UIServer {
             element?.pinch(withScale: pinchRequest.scale, velocity: pinchRequest.velocity)
         })
         
+        await addRoute("rotate", handler: { (rotateRequest: RotateRequest) in
+            let element = elementIds[rotateRequest.elementServerId]
+            element?.rotate(rotateRequest.rotation, withVelocity: rotateRequest.velocity)
+        })
+        
         await addRoute("waitForExistence", handler: { (tapRequest: WaitForExistenceRequest) in
             let element = elementIds[tapRequest.elementServerId]
             let exists = element?.waitForExistence(timeout: tapRequest.timeout) ?? false
