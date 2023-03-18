@@ -95,7 +95,7 @@ The following table shows the API coverage at the moment:
 | var element: XCUIElement { get } | ❌ | |
 | var count: Int { get } | ✅ | |
 | func element(boundBy index: Int) -> XCUIElement | ❌ | |
-| func element(matching predicate: NSPredicate) -> XCUIElement | ❌ | |
+| func element(matching predicate: NSPredicate) -> XCUIElement | ✅ | Doesn't support NSPredicate with blocks |
 | func element(matching elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElement | ❌ | |
 | subscript(key: String) -> XCUIElement { get } | ✅ | |
 | var allElementsBoundByAccessibilityElement: [XCUIElement] { get } | ❌ | |

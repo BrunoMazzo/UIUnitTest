@@ -53,7 +53,10 @@ public class Query: ElementTypeQueryProvider {
     
     
     /** Returns an element that matches the predicate. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
-    //    open func element(matchingPredicate predicate: Any!) -> Element!
+    public func element(matching predicate: NSPredicate) async throws -> Element {
+        let response: ElementMatchingPredicateResponse = try await callServer(path: "elementMatchingPredicate", request: ElementMatchingPredicateRequest(serverId: self.queryServerId!, predicate: predicate))
+        return Element(serverId: response.elementServerId)
+    }
     
     
     /** Returns an element that matches the type and identifier. */
@@ -124,5 +127,48 @@ public struct CountResponse: Codable {
     
     public init(count: Int) {
         self.count = count
+    }
+}
+
+public struct ElementMatchingPredicateRequest: Codable {
+    public let serverId: UUID
+    public let predicate: NSPredicate
+            
+    public init(serverId: UUID, predicate: NSPredicate) {
+        self.serverId = serverId
+        self.predicate = predicate
+    }
+    
+    enum CodingKeys: CodingKey {
+        case serverId
+        case predicate
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        let data = try NSKeyedArchiver.archivedData(
+            withRootObject: predicate,
+            requiringSecureCoding: true
+        )
+        
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(serverId, forKey: .serverId)
+        try container.encode(data, forKey: .predicate)
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.serverId = try container.decode(UUID.self, forKey: .serverId)
+        
+        let data = try container.decode(Data.self, forKey: .predicate)
+        self.predicate = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as! NSPredicate
+    }
+}
+
+public struct ElementMatchingPredicateResponse: Codable {
+    public let elementServerId: UUID
+    
+    public init(elementServerId: UUID) {
+        self.elementServerId = elementServerId
     }
 }

@@ -27,6 +27,8 @@ class UIServer {
             self.app.activate()
         })
         
+        
+        
         await addRoute("firstMatch", handler: { (firstMatchRequest: FirstMatchRequest) in
             let query = queryIds[firstMatchRequest.queryRoot]
             let element = query?.firstMatch
@@ -36,6 +38,17 @@ class UIServer {
             elementIds[id] = element
           
             return FirstMatchResponse(elementServerId: id)
+        })
+        
+        await addRoute("elementMatchingPredicate", handler: { (elementMatchingPredicateRequest: ElementMatchingPredicateRequest) in
+            let query = queryIds[elementMatchingPredicateRequest.serverId] as! XCUIElementQuery
+            let element = query.element(matching: elementMatchingPredicateRequest.predicate)
+            let id = UUID()
+            
+            queryIds[id] = element
+            elementIds[id] = element
+            
+            return ElementMatchingPredicateResponse(elementServerId: id)
         })
         
         await addRoute("tapElement", handler: { (tapRequest: TapElementRequest) -> Bool in

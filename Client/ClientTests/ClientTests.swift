@@ -203,6 +203,20 @@ final class ClientTests: XCTestCase {
         XCTAssert(didRotate)
     }
     
+    @MainActor
+    func testMatchingWithPredicate() async throws {
+        let app = try await App()
+        
+        showView(SomethingView())
+        
+        let somethingView = try await app.staticTexts.element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel"))
+        
+        let somethingViewExists = try await somethingView.exists
+        XCTAssert(somethingViewExists)
+    }
+    
+    
+    
     
     
 }
