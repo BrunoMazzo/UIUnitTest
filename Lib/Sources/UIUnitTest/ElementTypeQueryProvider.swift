@@ -6,6 +6,13 @@ public protocol ElementTypeQueryProvider {
 
 public extension ElementTypeQueryProvider {
     
+    var firstMatch: Element {
+        get async throws {
+            let elementResponse: FirstMatchResponse = try await callServer(path: "firstMatch", request: FirstMatchRequest(queryRoot: self.queryServerId!))
+            return Element(serverId: elementResponse.elementServerId)
+        }
+    }
+    
     subscript(dynamicMember: Element.ElementType) -> Query {
         get async throws {
             try await Query(queryRoot: self.queryServerId, elementType: dynamicMember)
@@ -497,3 +504,25 @@ public extension ElementTypeQueryProvider {
         }
     }
 }
+
+public struct FirstMatchRequest: Codable {
+    public var queryRoot: UUID
+    
+    public init(queryRoot: UUID) {
+        self.queryRoot = queryRoot
+    }
+}
+
+
+public struct FirstMatchResponse: Codable {
+    public var elementServerId: UUID
+    
+    public init(elementServerId: UUID) {
+        self.elementServerId = elementServerId
+    }
+}
+
+
+
+
+

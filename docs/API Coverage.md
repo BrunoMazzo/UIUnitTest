@@ -5,7 +5,7 @@ The following table shows the API coverage at the moment:
 ## **XCUIElementTypeQueryProvider**
 | API | Coverage | Notes |
 | --- | --- | --- |
-| var firstMatch: XCUIElement | ❌ | |
+| var firstMatch: XCUIElement | ✅ | |
 | var activityIndicators: XCUIElementQuery | ✅ | |
 | var alerts: XCUIElementQuery | ✅ | |
 | var browsers: XCUIElementQuery | ✅ | |

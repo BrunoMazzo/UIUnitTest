@@ -27,6 +27,17 @@ class UIServer {
             self.app.activate()
         })
         
+        await addRoute("firstMatch", handler: { (firstMatchRequest: FirstMatchRequest) in
+            let query = queryIds[firstMatchRequest.queryRoot]
+            let element = query?.firstMatch
+            let id = UUID()
+            
+            queryIds[id] = element
+            elementIds[id] = element
+          
+            return FirstMatchResponse(elementServerId: id)
+        })
+        
         await addRoute("tapElement", handler: { (tapRequest: TapElementRequest) -> Bool in
             guard let element = elementIds[tapRequest.elementServerId] else {
                 return false
