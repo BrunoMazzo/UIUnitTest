@@ -94,6 +94,22 @@ final class ClientTests: XCTestCase {
         
         try await app.staticTexts["Swipe me"].swipeRight()
         exists = try await app.staticTexts["Direction: Right"].exists
+        
+        try await app.staticTexts["Swipe me"].swipeUp(velocity: 100)
+        exists = try await app.staticTexts["Direction: Up"].exists
+        XCTAssert(exists)
+        
+        try await app.staticTexts["Swipe me"].swipeDown(velocity: 100.5)
+        exists = try await app.staticTexts["Direction: Down"].exists
+        XCTAssert(exists)
+        
+        let velocityCGFloat: CGFloat = 500
+        try await app.staticTexts["Swipe me"].swipeLeft(velocity: GestureVelocity(velocityCGFloat))
+        exists = try await app.staticTexts["Direction: Left"].exists
+        XCTAssert(exists)
+        
+        try await app.staticTexts["Swipe me"].swipeRight(velocity: 600)
+        exists = try await app.staticTexts["Direction: Right"].exists
         XCTAssert(exists)
     }
     

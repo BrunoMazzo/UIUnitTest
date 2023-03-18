@@ -12,20 +12,20 @@ extension Element {
         let _: Bool = try await callServer(path: "swipe", request: swipeRequest)
     }
 
-    public func swipeUp() async throws {
-        try await self.swipe(direction: .up)
+    public func swipeUp(velocity: GestureVelocity = .default) async throws {
+        try await self.swipe(direction: .up, velocity: velocity)
     }
     
-    public func swipeDown() async throws {
-        try await self.swipe(direction: .down)
+    public func swipeDown(velocity: GestureVelocity = .default) async throws {
+        try await self.swipe(direction: .down, velocity: velocity)
     }
     
-    public func swipeLeft() async throws {
-        try await self.swipe(direction: .left)
+    public func swipeLeft(velocity: GestureVelocity = .default) async throws {
+        try await self.swipe(direction: .left, velocity: velocity)
     }
     
-    public func swipeRight() async throws {
-        try await self.swipe(direction: .right)
+    public func swipeRight(velocity: GestureVelocity = .default) async throws {
+        try await self.swipe(direction: .right, velocity: velocity)
     }
 }
 
