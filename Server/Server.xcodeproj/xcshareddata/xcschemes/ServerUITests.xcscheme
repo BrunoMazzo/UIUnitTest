@@ -14,7 +14,24 @@
       disableMainThreadChecker = "YES"
       systemAttachmentLifetime = "keepNever"
       userAttachmentLifetime = "keepAlways"
-      codeCoverageEnabled = "YES">
+      codeCoverageEnabled = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "YES">
+      <CodeCoverageTargets>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "UIUnitTest"
+            BuildableName = "UIUnitTest"
+            BlueprintName = "UIUnitTest"
+            ReferencedContainer = "container:..">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "1DA1934329B4260600322869"
+            BuildableName = "ServerUITests.xctest"
+            BlueprintName = "ServerUITests"
+            ReferencedContainer = "container:Server.xcodeproj">
+         </BuildableReference>
+      </CodeCoverageTargets>
       <Testables>
          <TestableReference
             skipped = "NO">
