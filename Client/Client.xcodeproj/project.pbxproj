@@ -205,7 +205,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				1DE0F34B29C5389C0044AFFC /* PBXTargetDependency */,
 				1D136B7F29B45A4600465FB6 /* PBXTargetDependency */,
 			);
 			name = ClientTests;
@@ -349,10 +348,6 @@
 			isa = PBXTargetDependency;
 			target = 1D136B6B29B45A4600465FB6 /* Client */;
 			targetProxy = 1D136B8829B45A4600465FB6 /* PBXContainerItemProxy */;
-		};
-		1DE0F34B29C5389C0044AFFC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 1DE0F34A29C5389C0044AFFC /* UIUnitTestBuildPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -675,10 +670,6 @@
 		1D435E8C29BB26240027CD1D /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UIUnitTest;
-		};
-		1DE0F34A29C5389C0044AFFC /* UIUnitTestBuildPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = "plugin:UIUnitTestBuildPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

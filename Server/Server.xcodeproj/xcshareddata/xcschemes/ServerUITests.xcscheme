@@ -13,7 +13,8 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       disableMainThreadChecker = "YES"
       systemAttachmentLifetime = "keepNever"
-      userAttachmentLifetime = "keepAlways">
+      userAttachmentLifetime = "keepAlways"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">

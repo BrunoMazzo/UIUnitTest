@@ -28,11 +28,12 @@ public class Query: ElementTypeQueryProvider {
     }
     
     /** Returns an element that will use the query for resolution. */
-    //    open var element: Element! {
-    //        get async throws {
-    //
-    //        }
-    //    }
+        open var element: Element! {
+            get async throws {
+                let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.queryServerId!))
+                return Element(serverId: elementResponse.serverId)
+            }
+        }
     //
     
     /** Evaluates the query at the time it is called and returns the number of matches found. */
@@ -54,8 +55,8 @@ public class Query: ElementTypeQueryProvider {
     
     /** Returns an element that matches the predicate. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
     public func element(matching predicate: NSPredicate) async throws -> Element {
-        let response: ElementMatchingPredicateResponse = try await callServer(path: "elementMatchingPredicate", request: ElementMatchingPredicateRequest(serverId: self.queryServerId!, predicate: predicate))
-        return Element(serverId: response.elementServerId)
+        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementMatchingPredicateRequest(serverId: self.queryServerId!, predicate: predicate))
+        return Element(serverId: response.serverId)
     }
     
     
@@ -165,10 +166,6 @@ public struct ElementMatchingPredicateRequest: Codable {
     }
 }
 
-public struct ElementMatchingPredicateResponse: Codable {
-    public let elementServerId: UUID
-    
-    public init(elementServerId: UUID) {
-        self.elementServerId = elementServerId
-    }
+public struct ElementFromQuery: Codable {
+    public let serverId: UUID
 }

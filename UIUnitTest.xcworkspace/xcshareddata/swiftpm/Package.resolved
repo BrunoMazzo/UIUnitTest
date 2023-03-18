@@ -1,12 +1,39 @@
 {
   "pins" : [
     {
+      "identity" : "commander",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kylef/Commander",
+      "state" : {
+        "revision" : "4a1f2fb82fb6cef613c4a25d2e38f702e4d812c2",
+        "version" : "0.9.2"
+      }
+    },
+    {
       "identity" : "flyingfox",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swhitty/FlyingFox.git",
       "state" : {
         "branch" : "main",
         "revision" : "f765ae38657f587e8fe763d98e10400f96610050"
+      }
+    },
+    {
+      "identity" : "spectre",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kylef/Spectre.git",
+      "state" : {
+        "revision" : "26cc5e9ae0947092c7139ef7ba612e34646086c7",
+        "version" : "0.10.1"
+      }
+    },
+    {
+      "identity" : "xccov2lcov",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/trax-retail/xccov2lcov",
+      "state" : {
+        "revision" : "fd0b15537f0b4b949d8e6b8a38eeef09a35d31ff",
+        "version" : "1.0.0"
       }
     }
   ],

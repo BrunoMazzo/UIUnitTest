@@ -40,6 +40,17 @@ class UIServer {
             return FirstMatchResponse(elementServerId: id)
         })
         
+        await addRoute("elementFromQuery", handler: { (elementFromQuery: ElementFromQuery) in
+            let query = queryIds[elementFromQuery.serverId] as! XCUIElementQuery
+            let element = query.element
+            let id = UUID()
+            
+            queryIds[id] = element
+            elementIds[id] = element
+            
+            return ElementResponse(serverId: id)
+        })
+        
         await addRoute("elementMatchingPredicate", handler: { (elementMatchingPredicateRequest: ElementMatchingPredicateRequest) in
             let query = queryIds[elementMatchingPredicateRequest.serverId] as! XCUIElementQuery
             let element = query.element(matching: elementMatchingPredicateRequest.predicate)
@@ -48,7 +59,7 @@ class UIServer {
             queryIds[id] = element
             elementIds[id] = element
             
-            return ElementMatchingPredicateResponse(elementServerId: id)
+            return ElementResponse(serverId: id)
         })
         
         await addRoute("tapElement", handler: { (tapRequest: TapElementRequest) -> Bool in
@@ -186,6 +197,14 @@ class UIServer {
             
             return self.buildResponse(true)
         }
+        
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
+            Task {
+                await self.server.stop(timeout: 10)
+            }
+            
+            return self.buildResponse(true)
+        }))
         
         try await server.start()
     }
