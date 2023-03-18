@@ -197,7 +197,7 @@ final class ClientTests: XCTestCase {
         let didNotRotate = try await app.staticTexts["Did rotate? No"].exists
         XCTAssert(didNotRotate)
         
-        try await app.staticTexts["Rotate me!"].rotate(0.5, withVelocity: 1)
+        try await app.staticTexts["Rotate me!"].rotate(0.2, withVelocity: 1)
         
         let didRotate = try await app.staticTexts["Did rotate? Yes"].waitForExistence(timeout: 1)
         XCTAssert(didRotate)
