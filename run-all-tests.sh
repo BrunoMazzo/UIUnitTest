@@ -13,6 +13,6 @@ xcrun xcresulttool merge build/Client.xcresult build/Server.xcresult --output-pa
 
 xcrun xccov view --report --json merged.xcresult > cov.json
 
-swift run xccov2lcov cov.json > lcov.info
+swift run xccov2lcov cov.json > coverage/lcov.info
 
 # xcrun xccov view merged.xcresult --report --only-targets
