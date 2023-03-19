@@ -2,6 +2,8 @@
 
 Run XCTest UI commands from your unit test.
 
+[![Coverage Status](https://coveralls.io/repos/github/BrunoMazzo/UIUnitTest/badge.svg?branch=main)](https://coveralls.io/github/BrunoMazzo/UIUnitTest?branch=main)
+
 # Still in development
 
 I am still working in the [API parity](docs/API%20Coverage.md) and stability of the server, so crashes may happen. At the moment, it only works with one simulator, and it need to be open before the building of the unit test.
