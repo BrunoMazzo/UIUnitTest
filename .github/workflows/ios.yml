@@ -19,6 +19,7 @@ jobs:
           platform: ${{ 'iOS Simulator' }}
         run: |
           # Get iPhone 14 iOS 16.2 UUID
+          # open -a Simulator
           deviceUUID=`xcrun simctl list | sed '1,/-- iOS 16.2 --/d' | grep "iPhone 14" | head -1 | grep -E '([0-9A-F]{4,}-?)+' -o`
           # Start simulator before building
           xcrun simctl bootstatus "$deviceUUID" -b       

@@ -5,6 +5,8 @@ rm -rf merged.xcresult
 rm -rf cov.json
 rm -rf lcov.info
 
+# Clean server because Xcode its getting confused with the packages
+xcodebuild -workspace UIUnitTest.xcworkspace -scheme Server clean
 
 serverCommand="xcodebuild -workspace UIUnitTest.xcworkspace -scheme ServerUITests test -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' -enableCodeCoverage YES -derivedDataPath build -resultBundlePath build/Server.xcresult -clonedSourcePackagesDirPath SourcePackages/server"
 clientCommand="xcodebuild -workspace UIUnitTest.xcworkspace -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' -enableCodeCoverage YES -derivedDataPath build -resultBundlePath build/Client.xcresult -clonedSourcePackagesDirPath SourcePackages/client"
