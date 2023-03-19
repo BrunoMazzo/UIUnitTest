@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D435E8A29BB25520027CD1D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D435E8929BB25520027CD1D /* UIUnitTest */; };
+		1D52DE1E29C6B99000B17758 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D52DE1D29C6B99000B17758 /* UIUnitTest */; };
 		1DA1932D29B4260500322869 /* ServerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1932C29B4260500322869 /* ServerApp.swift */; };
 		1DA1932F29B4260500322869 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1932E29B4260500322869 /* ContentView.swift */; };
 		1DA1935929B4267200322869 /* UIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1935729B4267200322869 /* UIServer.swift */; };
@@ -28,7 +28,7 @@
 /* Begin PBXFileReference section */
 		1D01C92A29B88A0700551803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1D01C92C29B898E700551803 /* Server.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Server.entitlements; sourceTree = "<group>"; };
-		1D01C93129B9CC4F00551803 /* UIUnitTest */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UIUnitTest; path = ..; sourceTree = "<group>"; };
+		1D52DE1C29C6B97F00B17758 /* UIUnitTest */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UIUnitTest; path = ..; sourceTree = "<group>"; };
 		1DA1932929B4260500322869 /* Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Server.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DA1932C29B4260500322869 /* ServerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerApp.swift; sourceTree = "<group>"; };
 		1DA1932E29B4260500322869 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -49,7 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D435E8A29BB25520027CD1D /* UIUnitTest in Frameworks */,
+				1D52DE1E29C6B99000B17758 /* UIUnitTest in Frameworks */,
 				1DA1935D29B4270F00322869 /* FlyingFox in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,10 +57,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1D01C92D29B9CC2800551803 /* Packages */ = {
+		1D52DE1B29C6B97F00B17758 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				1D01C93129B9CC4F00551803 /* UIUnitTest */,
+				1D52DE1C29C6B97F00B17758 /* UIUnitTest */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -68,7 +68,7 @@
 		1DA1932029B4260500322869 = {
 			isa = PBXGroup;
 			children = (
-				1D01C92D29B9CC2800551803 /* Packages */,
+				1D52DE1B29C6B97F00B17758 /* Packages */,
 				1DA1932B29B4260500322869 /* Server */,
 				1DA1934729B4260600322869 /* ServerUITests */,
 				1DA1932A29B4260500322869 /* Products */,
@@ -150,7 +150,7 @@
 			name = ServerUITests;
 			packageProductDependencies = (
 				1DA1935C29B4270F00322869 /* FlyingFox */,
-				1D435E8929BB25520027CD1D /* UIUnitTest */,
+				1D52DE1D29C6B99000B17758 /* UIUnitTest */,
 			);
 			productName = ServerUITests;
 			productReference = 1DA1934429B4260600322869 /* ServerUITests.xctest */;
@@ -530,7 +530,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1D435E8929BB25520027CD1D /* UIUnitTest */ = {
+		1D52DE1D29C6B99000B17758 /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UIUnitTest;
 		};
