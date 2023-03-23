@@ -1,47 +1,17 @@
+import ArgumentParser
 import Foundation
 
 @available(iOS 16.0, *)
 @main
-struct UserFetcher {
-    
-    static func getTempFolder() -> URL {
-        let tempDirectory = FileManager.default.temporaryDirectory
-        let tempUIUnitTestDirectory = tempDirectory.appendingPathComponent("UIUnitTest/")
-        if !FileManager.default.fileExists(atPath: tempUIUnitTestDirectory.relativePath) {
-            try! FileManager.default.createDirectory(at: tempUIUnitTestDirectory, withIntermediateDirectories: true)
-        }
-        
-        return tempUIUnitTestDirectory
-    }
-    
-    static func copyFile(file initialPath: URL, toFolder folder: URL)  -> URL {
-        let newPath = folder.appending(path: initialPath.lastPathComponent, directoryHint: .notDirectory)
-        
-        if FileManager.default.fileExists(atPath: newPath.relativePath) {
-            try? FileManager.default.removeItem(at: newPath)
-        }
-        
-        
-        
-        try! FileManager.default.copyItem(at: initialPath, to: newPath)
-        return newPath
-    }
-    
-    static func main() async throws {
-        let serverRunnerZip = Bundle.module.url(forResource: "Server", withExtension: ".zip")!
-        
-        let tempDirectory = getTempFolder()
-        
-        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: tempDirectory)
-
-        await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
-        
-        let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
-        
-        await executeShellCommand("xcrun simctl install booted \(rootFolder)/ServerUITests-Runner.app")
-        await executeShellCommand("xcrun simctl launch booted bruno.mazzo.ServerUITests.xctrunner")
-    }
+struct UIUnitTestCLI: AsyncParsableCommand {
+    static var configuration = CommandConfiguration(
+        abstract: "A utility for performing operations for UIUnitTest lib.",
+        version: "1.0.0",
+        subcommands: [SetupCommand.self, InstallCommand.self, StartServerCommand.self],
+        defaultSubcommand: SetupCommand.self)
 }
+
+
 
 @discardableResult
 func executeShellCommand(_ command: String) async -> Data {
