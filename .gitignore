@@ -96,3 +96,6 @@ SourcePackages/
 cov.json
 lcov.info
 coverage/
+
+
+.vscode/
