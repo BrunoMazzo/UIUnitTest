@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "commander",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kylef/Commander",
-      "state" : {
-        "revision" : "4a1f2fb82fb6cef613c4a25d2e38f702e4d812c2",
-        "version" : "0.9.2"
-      }
-    },
-    {
       "identity" : "flyingfox",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swhitty/FlyingFox.git",
@@ -19,21 +10,21 @@
       }
     },
     {
-      "identity" : "spectre",
+      "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kylef/Spectre.git",
+      "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "26cc5e9ae0947092c7139ef7ba612e34646086c7",
-        "version" : "0.10.1"
+        "revision" : "fee6933f37fde9a5e12a1e4aeaa93fe60116ff2a",
+        "version" : "1.2.2"
       }
     },
     {
-      "identity" : "xccov2lcov",
+      "identity" : "uiunittest",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/trax-retail/xccov2lcov",
+      "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
       "state" : {
-        "revision" : "fd0b15537f0b4b949d8e6b8a38eeef09a35d31ff",
-        "version" : "1.0.0"
+        "branch" : "main",
+        "revision" : "e898b7bd775cc6c1c932303ef5b2a347461d61ed"
       }
     }
   ],
