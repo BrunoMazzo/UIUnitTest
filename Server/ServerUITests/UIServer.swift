@@ -206,7 +206,13 @@ class UIServer {
             return self.buildResponse(true)
         }))
         
-        try await server.start()
+        let task = Task { try await server.start() }
+        
+        try await server.waitUntilListening()
+        
+        print("Server ready")
+        
+        _ = await task.result
     }
     
     func buildResponse(_ data: some Codable) -> HTTPResponse {
