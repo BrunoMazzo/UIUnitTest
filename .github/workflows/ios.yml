@@ -21,4 +21,4 @@ jobs:
           scheme: 'Client'
           platform: ${{ 'iOS Simulator' }}
         run: |
-          xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.4' test
+          xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' test
