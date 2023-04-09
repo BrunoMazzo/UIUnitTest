@@ -21,9 +21,10 @@ public class Query: ElementTypeQueryProvider {
     }
     
     deinit {
-        let serverId = queryServerId!
-        Task {
-            let _: Bool = try await callServer(path: "remove", request: RemoveServerItemRequest(queryRoot: serverId))
+        if let serverId = queryServerId {
+            Task {
+                let _: Bool = try await callServer(path: "remove", request: RemoveServerItemRequest(queryRoot: serverId))
+            }
         }
     }
     
