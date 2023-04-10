@@ -37,7 +37,9 @@ struct InstallCommand: AsyncParsableCommand {
     }
     
     func copyFile(file initialPath: URL, toFolder folder: URL)  -> URL {
-        let newPath = folder.appending(path: initialPath.lastPathComponent, directoryHint: .notDirectory)
+        let newPath = folder.appendingPathComponent(initialPath.lastPathComponent, isDirectory: false)
+        
+//        let newPath = folder.appending(path: initialPath.lastPathComponent, directoryHint: .notDirectory)
         
         if FileManager.default.fileExists(atPath: newPath.relativePath) {
             try? FileManager.default.removeItem(at: newPath)
