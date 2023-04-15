@@ -21,6 +21,9 @@ jobs:
           scheme: 'Client'
           platform: ${{ 'iOS Simulator' }}
         run: |
+          # Debug device list
+          xcrun xctrace list devices
+
           # Get iPhone 14 iOS 16.2 UUID
           deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE '([[A-F0-9]{4}\-?)*' | head -1`
 
