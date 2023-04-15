@@ -22,8 +22,8 @@ jobs:
           platform: ${{ 'iOS Simulator' }}
         run: |
           # Get iPhone 14 iOS 16.2 UUID
-          deviceUUID=`xcrun simctl list | sed '1,/-- iOS 16.2 --/d' | grep "iPhone 14" | head -1 | grep -E '([0-9A-F]{4,}-?)+' -o`
+          # deviceUUID=`xcrun simctl list | sed '1,/-- iOS 16.2 --/d' | grep "iPhone 14" | head -1 | grep -E '([0-9A-F]{4,}-?)+' -o`
 
           #run UIUnitTest server
           # mint run BrunoMazzo/UIUnitTest@main start-server-command --device-identifier $deviceUUID
-          xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination 'platform=iOS Simulator,id=$deviceUUID' test
+          xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination 'platform=iOS Simulator,name=iPhone 14' test
