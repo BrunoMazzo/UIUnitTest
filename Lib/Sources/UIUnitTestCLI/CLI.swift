@@ -62,19 +62,19 @@ func executeTestUntilServerStarts(_ command: String) async {
     task.arguments = ["-c", command]
     task.launch()
     
-    var data = Data()
-    
+    var lastLine = ""
+
     do {
         for try await line in pipe.fileHandleForReading.bytes {
-            data.append(Data(bytes: [line], count: 1))
-            
-            if let string = String(bytes: [line], encoding: .utf8) {
-                print(string, terminator: "")
-            }
-            
-            if let fullLog = String(data: data, encoding: .utf8) {
-                if fullLog.contains("Server ready") {
-                    return
+            if let newCharacter = String(bytes: [line], encoding: .utf8) {
+                print(newCharacter, terminator: "")
+                if newCharacter == "\n" {
+                    if lastLine.contains("Server ready") {
+                        return
+                    }
+                    lastLine = ""
+                } else {
+                    lastLine.append(newCharacter)
                 }
             }
         }
