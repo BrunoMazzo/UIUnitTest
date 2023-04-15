@@ -22,7 +22,7 @@ jobs:
           platform: ${{ 'iOS Simulator' }}
         run: |
           # Get iPhone 14 iOS 16.2 UUID
-          deviceUUID=device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
+          deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE '([[A-F0-9]{4}\-?)*' | head -1`
 
           #run UIUnitTest server
           mint run BrunoMazzo/UIUnitTest@main start-server-command --device-identifier $deviceUUID
