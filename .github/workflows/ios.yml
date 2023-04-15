@@ -24,6 +24,8 @@ jobs:
           # Get iPhone 14 iOS 16.2 UUID
           deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE '([[A-F0-9]{4}\-?)*' | head -1`
 
+          echo $deviceUUID
+
           #run UIUnitTest server
           mint run BrunoMazzo/UIUnitTest@main start-server-command --device-identifier $deviceUUID
           xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination 'platform=iOS Simulator,id=$deviceUUID' test
