@@ -18,7 +18,21 @@ I am still working in the [API parity](docs/API%20Coverage.md) and stability of 
 
 2. Add it to your Unit test target
 
-3. Add the plugin as a build step
+3. Add a server start on your test scheme pre action:
+
+   3.1 Select your test target on `Provide build settings from`
+   
+   3.2 Add the command: 
+    ```shell
+    /opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@main start-server-command --device-identifier $TARGET_DEVICE_IDENTIFIER
+    ```
+
+    ![Pre action panel](docs/pre-action.png)
+
+    3.3 Add post action to stop the server:
+    ```shell
+    curl http://localhost:22087/stop
+    ```
 
 4. Start coding
 
