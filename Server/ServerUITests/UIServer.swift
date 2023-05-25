@@ -6,8 +6,35 @@ import UIUnitTest
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
 
-var queryIds: [UUID: XCUIElementTypeQueryProvider] = [:]
-var elementIds: [UUID: XCUIElement] = [:]
+actor Cache {
+    private var queryIds: [UUID: XCUIElementTypeQueryProvider] = [:]
+    private var elementIds: [UUID: XCUIElement] = [:]
+
+    func addQuery(_ query: XCUIElementTypeQueryProvider?, id: UUID) {
+        queryIds[id] = query
+    }
+
+    func addElement(_ element: XCUIElement?, id: UUID) {
+        elementIds[id] = element
+    }
+
+    func removeQuery(_ id: UUID) {
+        queryIds[id] = nil
+    }
+
+    func removeElement(_ id: UUID) {
+        elementIds[id] = nil
+    }
+
+    func getQuery(_ id: UUID) -> XCUIElementTypeQueryProvider? {
+        return queryIds[id]
+    }
+
+    func getElement(_ id: UUID) -> XCUIElement? {
+        return elementIds[id]
+    }
+}
+
 
 class UIServer {
     var app: XCUIApplication!
@@ -15,6 +42,8 @@ class UIServer {
     var lastIssue: XCTIssue?
     
     var server: HTTPServer!
+
+    let cache = Cache()
     
     func start() async throws {
         let server = HTTPServer(address: .loopback(port: 22087))
@@ -26,44 +55,42 @@ class UIServer {
             }
             self.app.activate()
         })
-        
-        
-        
+    
         await addRoute("firstMatch", handler: { (firstMatchRequest: FirstMatchRequest) in
-            let query = queryIds[firstMatchRequest.queryRoot]
+            let query = await self.cache.getQuery(firstMatchRequest.queryRoot)
             let element = query?.firstMatch
             let id = UUID()
             
-            queryIds[id] = element
-            elementIds[id] = element
+            await self.cache.addQuery(element, id: id)
+            await self.cache.addElement(element, id: id)
           
             return FirstMatchResponse(elementServerId: id)
         })
         
         await addRoute("elementFromQuery", handler: { (elementFromQuery: ElementFromQuery) in
-            let query = queryIds[elementFromQuery.serverId] as! XCUIElementQuery
+            let query = await self.cache.getQuery(elementFromQuery.serverId) as! XCUIElementQuery
             let element = query.element
             let id = UUID()
             
-            queryIds[id] = element
-            elementIds[id] = element
+            await self.cache.addQuery(element, id: id)
+            await self.cache.addElement(element, id: id)
             
             return ElementResponse(serverId: id)
         })
         
         await addRoute("elementMatchingPredicate", handler: { (elementMatchingPredicateRequest: ElementMatchingPredicateRequest) in
-            let query = queryIds[elementMatchingPredicateRequest.serverId] as! XCUIElementQuery
+            let query = await self.cache.getQuery(elementMatchingPredicateRequest.serverId) as! XCUIElementQuery
             let element = query.element(matching: elementMatchingPredicateRequest.predicate)
             let id = UUID()
             
-            queryIds[id] = element
-            elementIds[id] = element
+            await self.cache.addQuery(element, id: id)
+            await self.cache.addElement(element, id: id)
             
             return ElementResponse(serverId: id)
         })
         
         await addRoute("tapElement", handler: { (tapRequest: TapElementRequest) -> Bool in
-            guard let element = elementIds[tapRequest.elementServerId] else {
+            guard let element = await self.cache.getElement(tapRequest.elementServerId) else {
                 return false
             }
             
@@ -84,29 +111,29 @@ class UIServer {
         })
         
         await addRoute("doubleTap", handler: { (tapRequest: DoubleTapRequest) in
-            let element = elementIds[tapRequest.elementServerId]
+            let element = await self.cache.getElement(tapRequest.elementServerId)
             element?.doubleTap()
         })
         
         await addRoute("exists", handler: { (tapRequest: ExistsRequest) in
-            let element = elementIds[tapRequest.elementServerId]
+            let element = await self.cache.getElement(tapRequest.elementServerId)
             let exists = element?.exists ?? false
             
             return ExistsResponse(exists: exists)
         })
         
         await addRoute("enterText", handler: { (tapRequest: EnterTextRequest) in
-            let element = elementIds[tapRequest.elementServerId]
+            let element = await self.cache.getElement(tapRequest.elementServerId)
             element?.typeText(tapRequest.textToEnter)
         })
         
         await addRoute("scroll", handler: { (tapRequest: ScrollRequest) in
-            let element = elementIds[tapRequest.elementServerId]
+            let element = await self.cache.getElement(tapRequest.elementServerId)
             element?.scroll(byDeltaX: tapRequest.deltaX, deltaY: tapRequest.deltaY)
         })
         
         await addRoute("swipe", handler: { (tapRequest: SwipeRequest) in
-            let element = elementIds[tapRequest.elementServerId]
+            let element = await self.cache.getElement(tapRequest.elementServerId)
             
             let velocity = tapRequest.velocity.rawValue
             
@@ -123,17 +150,17 @@ class UIServer {
         })
         
         await addRoute("pinch", handler: { (pinchRequest: PinchRequest) in
-            let element = elementIds[pinchRequest.elementServerId]
+            let element = await self.cache.getElement(pinchRequest.elementServerId)
             element?.pinch(withScale: pinchRequest.scale, velocity: pinchRequest.velocity)
         })
         
         await addRoute("rotate", handler: { (rotateRequest: RotateRequest) in
-            let element = elementIds[rotateRequest.elementServerId]
+            let element = await self.cache.getElement(rotateRequest.elementServerId)
             element?.rotate(rotateRequest.rotation, withVelocity: rotateRequest.velocity)
         })
         
         await addRoute("waitForExistence", handler: { (tapRequest: WaitForExistenceRequest) in
-            let element = elementIds[tapRequest.elementServerId]
+            let element = await self.cache.getElement(tapRequest.elementServerId)
             let exists = element?.waitForExistence(timeout: tapRequest.timeout) ?? false
             
             return WaitForExistenceResponse(elementExists: exists)
@@ -144,12 +171,12 @@ class UIServer {
         })
         
         await addRoute("isHittable", handler: { (isHittableRequest: IsHittableRequest) in
-            let isHittable = elementIds[isHittableRequest.elementServerId]?.isHittable
+            let isHittable = await self.cache.getElement(isHittableRequest.elementServerId)?.isHittable
             return IsHittableResponse(isHittable: isHittable ?? false)
         })
         
         await addRoute("count", handler: { (countRequest: CountRequest) in
-            let count: Int = (queryIds[countRequest.serverId] as? XCUIElementQuery)?.count ?? -1
+            let count: Int = (await self.cache.getQuery(countRequest.serverId) as? XCUIElementQuery)?.count ?? -1
             return CountResponse(count: count)
         })
         
@@ -160,11 +187,10 @@ class UIServer {
             
             let queryRequest = try decoder.decode(QueryRequest.self, from: request.body)
             
-            let newQuery = self.performQuery(queryRequest: queryRequest)
+            let newQuery = await self.performQuery(queryRequest: queryRequest)
             
             let serverId = UUID()
-            queryIds[serverId] = newQuery
-            
+            await self.cache.addQuery(newQuery, id: serverId)
             
             return self.buildResponse(QueryResponse(serverId: serverId))
         }
@@ -176,11 +202,11 @@ class UIServer {
             
             let queryRequest = try decoder.decode(ElementRequest.self, from: request.body)
             
-            let newElement = try! self.findElement(elementRequest: queryRequest)
+            let newElement = try! await self.findElement(elementRequest: queryRequest)
             
             let serverId = UUID()
-            queryIds[serverId] = newElement
-            elementIds[serverId] = newElement
+            await self.cache.addQuery(newElement, id: serverId)
+            await self.cache.addElement(newElement, id: serverId)
             
             return self.buildResponse(ElementResponse(serverId: serverId))
         }
@@ -192,8 +218,8 @@ class UIServer {
             
             let queryRequest = try decoder.decode(RemoveServerItemRequest.self, from: request.body)
             
-            queryIds.removeValue(forKey: queryRequest.queryRoot)
-            elementIds.removeValue(forKey: queryRequest.queryRoot)
+            await self.cache.removeQuery(queryRequest.queryRoot)
+            await self.cache.removeElement(queryRequest.queryRoot)
             
             return self.buildResponse(true)
         }
@@ -227,9 +253,9 @@ class UIServer {
         return HTTPResponse(statusCode: .badRequest, body: try! encoder.encode(UIResponse<Bool>(error: error)))
     }
     
-    func performQuery(queryRequest: QueryRequest) -> XCUIElementQuery {
+    func performQuery(queryRequest: QueryRequest) async -> XCUIElementQuery {
         var rootElementQuery: XCUIElementTypeQueryProvider = app
-        if let rootQueryId = queryRequest.queryRoot, let rootQuery = queryIds[rootQueryId] {
+        if let rootQueryId = queryRequest.queryRoot, let rootQuery = await self.cache.getQuery(rootQueryId) {
             rootElementQuery = rootQuery
         }
         
@@ -402,10 +428,10 @@ class UIServer {
         return resultQuery
     }
     
-    func findElement(elementRequest: ElementRequest) throws -> XCUIElement {
+    func findElement(elementRequest: ElementRequest) async throws -> XCUIElement {
         
         guard let rootQueryId = elementRequest.queryRoot,
-                let rootElementQuery = queryIds[rootQueryId] as? XCUIElementQuery else {
+              let rootElementQuery = await self.cache.getQuery(rootQueryId) as? XCUIElementQuery else {
             throw NSError(domain: "Query not found for element \(elementRequest.identifier)", code: 1)
         }
         
