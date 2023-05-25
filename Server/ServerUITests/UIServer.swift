@@ -9,27 +9,33 @@ let encoder = JSONEncoder()
 actor Cache {
     private var queryIds: [UUID: XCUIElementTypeQueryProvider] = [:]
     private var elementIds: [UUID: XCUIElement] = [:]
-
-    func addQuery(_ query: XCUIElementTypeQueryProvider?, id: UUID) {
+    
+    func add(query: XCUIElementTypeQueryProvider?) -> UUID {
+        let id = UUID()
         queryIds[id] = query
+        return id
     }
-
-    func addElement(_ element: XCUIElement?, id: UUID) {
+    
+    func add(element: XCUIElement?) -> UUID {
+        let id = UUID()
+        queryIds[id] = element
         elementIds[id] = element
+        return id
     }
-
+    
     func removeQuery(_ id: UUID) {
         queryIds[id] = nil
     }
-
+    
     func removeElement(_ id: UUID) {
+        queryIds[id] = nil
         elementIds[id] = nil
     }
-
+    
     func getQuery(_ id: UUID) -> XCUIElementTypeQueryProvider? {
         return queryIds[id]
     }
-
+    
     func getElement(_ id: UUID) -> XCUIElement? {
         return elementIds[id]
     }
@@ -42,7 +48,7 @@ class UIServer {
     var lastIssue: XCTIssue?
     
     var server: HTTPServer!
-
+    
     let cache = Cache()
     
     func start() async throws {
@@ -55,25 +61,23 @@ class UIServer {
             }
             self.app.activate()
         })
-    
+        
+        
+        
         await addRoute("firstMatch", handler: { (firstMatchRequest: FirstMatchRequest) in
             let query = await self.cache.getQuery(firstMatchRequest.queryRoot)
             let element = query?.firstMatch
-            let id = UUID()
             
-            await self.cache.addQuery(element, id: id)
-            await self.cache.addElement(element, id: id)
-          
+            let id = await self.cache.add(element: element)
+            
             return FirstMatchResponse(elementServerId: id)
         })
         
         await addRoute("elementFromQuery", handler: { (elementFromQuery: ElementFromQuery) in
             let query = await self.cache.getQuery(elementFromQuery.serverId) as! XCUIElementQuery
             let element = query.element
-            let id = UUID()
             
-            await self.cache.addQuery(element, id: id)
-            await self.cache.addElement(element, id: id)
+            let id = await self.cache.add(element: element)
             
             return ElementResponse(serverId: id)
         })
@@ -81,10 +85,8 @@ class UIServer {
         await addRoute("elementMatchingPredicate", handler: { (elementMatchingPredicateRequest: ElementMatchingPredicateRequest) in
             let query = await self.cache.getQuery(elementMatchingPredicateRequest.serverId) as! XCUIElementQuery
             let element = query.element(matching: elementMatchingPredicateRequest.predicate)
-            let id = UUID()
             
-            await self.cache.addQuery(element, id: id)
-            await self.cache.addElement(element, id: id)
+            let id = await self.cache.add(element: element)
             
             return ElementResponse(serverId: id)
         })
@@ -180,7 +182,7 @@ class UIServer {
             return CountResponse(count: count)
         })
         
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "query")) { request in
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "query"), handler: { request in
             defer {
                 self.lastIssue = nil
             }
@@ -189,13 +191,12 @@ class UIServer {
             
             let newQuery = await self.performQuery(queryRequest: queryRequest)
             
-            let serverId = UUID()
-            await self.cache.addQuery(newQuery, id: serverId)
+            let serverId = await self.cache.add(query: newQuery)
             
             return self.buildResponse(QueryResponse(serverId: serverId))
-        }
+        })
         
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "element")) { request in
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "element"), handler: { request in
             defer {
                 self.lastIssue = nil
             }
@@ -204,14 +205,12 @@ class UIServer {
             
             let newElement = try! await self.findElement(elementRequest: queryRequest)
             
-            let serverId = UUID()
-            await self.cache.addQuery(newElement, id: serverId)
-            await self.cache.addElement(newElement, id: serverId)
+            let id = await self.cache.add(element: newElement)
             
-            return self.buildResponse(ElementResponse(serverId: serverId))
-        }
+            return self.buildResponse(ElementResponse(serverId: id))
+        })
         
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "remove")) { request in
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "remove"), handler: { request in
             defer {
                 self.lastIssue = nil
             }
@@ -222,7 +221,7 @@ class UIServer {
             await self.cache.removeElement(queryRequest.queryRoot)
             
             return self.buildResponse(true)
-        }
+        })
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
             Task {
@@ -439,7 +438,7 @@ class UIServer {
     }
     
     func addRoute<Request: Codable, Response: Codable>(_ route: String, handler: @escaping @MainActor (Request) async -> Response) async {
-        await self.server.appendRoute(HTTPRoute(stringLiteral: route)) { request in
+        await self.server.appendRoute(HTTPRoute(stringLiteral: route), handler: { request in
             
             defer {
                 self.lastIssue = nil
@@ -450,19 +449,19 @@ class UIServer {
             let response = await handler(tapRequest)
             
             return self.buildResponse(response)
-        }
+        })
     }
     
     func addRoute<Request: Codable>(_ route: String, handler: @escaping @MainActor (Request) async -> Void) async {
-        await self.server.appendRoute(HTTPRoute(stringLiteral: route)) { request in
+        await self.server.appendRoute(HTTPRoute(stringLiteral: route), handler: { request in
             defer {
                 self.lastIssue = nil
             }
-
+            
             let tapRequest = try decoder.decode(Request.self, from: request.body)
             await handler(tapRequest)
             
             return self.buildResponse(true)
-        }
+        })
     }
 }
