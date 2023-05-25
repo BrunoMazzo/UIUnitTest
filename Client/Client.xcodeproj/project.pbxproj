@@ -14,6 +14,7 @@
 		1D136B8229B45A4600465FB6 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8129B45A4600465FB6 /* ClientTests.swift */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
 		1D456AA129E1264500A98076 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D456AA029E1264500A98076 /* UIUnitTest */; };
+		1DCC16182A1F6601006DC760 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1DCC16172A1F6601006DC760 /* UIUnitTest */; };
 		1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
 		1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */; };
 		1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */; };
@@ -82,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DCC16182A1F6601006DC760 /* UIUnitTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,11 +223,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				1D52DE2329C6B9B800B17758 /* PBXTargetDependency */,
 				1DE0F35729C58B320044AFFC /* PBXTargetDependency */,
 			);
 			name = LocalTests;
 			packageProductDependencies = (
+				1DCC16172A1F6601006DC760 /* UIUnitTest */,
 			);
 			productName = LocalTests;
 			productReference = 1DE0F35229C58B310044AFFC /* LocalTests.xctest */;
@@ -340,10 +342,6 @@
 			isa = PBXTargetDependency;
 			target = 1D136B6B29B45A4600465FB6 /* Client */;
 			targetProxy = 1D136B7E29B45A4600465FB6 /* PBXContainerItemProxy */;
-		};
-		1D52DE2329C6B9B800B17758 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 1D52DE2229C6B9B800B17758 /* UIUnitTestBuildPlugin */;
 		};
 		1DE0F35729C58B320044AFFC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -673,9 +671,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = UIUnitTest;
 		};
-		1D52DE2229C6B9B800B17758 /* UIUnitTestBuildPlugin */ = {
+		1DCC16172A1F6601006DC760 /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = "plugin:UIUnitTestBuildPlugin";
+			productName = UIUnitTest;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

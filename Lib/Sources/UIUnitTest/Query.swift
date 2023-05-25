@@ -55,6 +55,7 @@ public class Query: ElementTypeQueryProvider {
     
     
     /** Returns an element that matches the predicate. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
+    @MainActor
     public func element(matching predicate: NSPredicate) async throws -> Element {
         let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementMatchingPredicateRequest(serverId: self.queryServerId!, predicate: predicate))
         return Element(serverId: response.serverId)
@@ -163,7 +164,8 @@ public struct ElementMatchingPredicateRequest: Codable {
         self.serverId = try container.decode(UUID.self, forKey: .serverId)
         
         let data = try container.decode(Data.self, forKey: .predicate)
-        self.predicate = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as! NSPredicate
+
+        self.predicate = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSPredicate.self], from:data) as! NSPredicate
     }
 }
 
