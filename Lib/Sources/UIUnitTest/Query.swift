@@ -77,7 +77,12 @@ public class Query: ElementTypeQueryProvider {
     
     
     /** Returns a new query that finds the descendants of all the elements found by the receiver. */
-    //    open func descendants(matchingType type: Any!) -> Element!
+    func descendants(matching elementType: Element.ElementType) async throws -> Query {
+        let response: QueryResponse = try await callServer(path: "queryDescendants", request: DescendantsFromQuery(serverId: self.queryServerId!, elementType: elementType))
+        return Query(queryServerId: response.serverId)
+        
+    }
+
     
     
     /** Returns a new query that finds the direct children of all the elements found by the receiver. */
@@ -267,11 +272,22 @@ public struct ElementFromQuery: Codable {
         self.elementType = nil
         self.identifier = nil
     }
-
+    
     public init(serverId: UUID, elementType: Element.ElementType, identifier: String? = nil) {
         self.serverId = serverId
         self.elementType = elementType
         self.identifier = identifier
         self.index = nil
+    }
+}
+
+
+public struct DescendantsFromQuery: Codable {
+    public let serverId: UUID
+    public let elementType: Element.ElementType
+        
+    public init(serverId: UUID, elementType: Element.ElementType) {
+        self.serverId = serverId
+        self.elementType = elementType
     }
 }

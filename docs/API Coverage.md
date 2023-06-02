@@ -100,7 +100,7 @@ The following table shows the API coverage at the moment:
 | subscript(key: String) -> XCUIElement { get } | ✅ | |
 | var allElementsBoundByAccessibilityElement: [XCUIElement] { get } | ❌ | |
 | var allElementsBoundByIndex: [XCUIElement] { get } | ❌ | |
-| func descendants(matching type: XCUIElement.ElementType) -> XCUIElementQuery | ❌ | |
+| func descendants(matching type: XCUIElement.ElementType) -> XCUIElementQuery | ✅ | |
 | func children(matching type: XCUIElement.ElementType) -> XCUIElementQuery | ❌ | |
 | func matching(_ predicate: NSPredicate) -> XCUIElementQuery | ❌ | |
 | func matching(_ elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElementQuery | ❌ | |
@@ -117,7 +117,7 @@ The following table shows the API coverage at the moment:
 | var isHittable: Bool | ✅ |  | 
 | var debugDescription: String | ❌ | Try to implement to version 1.0 |
 | func children(matching: XCUIElement.ElementType) -> XCUIElementQuery | ❌ | |
-| func descendants(matching: XCUIElement.ElementType) -> XCUIElementQuery | ❌ | |
+| func descendants(matching: XCUIElement.ElementType) -> XCUIElementQuery | ✅ | |
 | func typeText(String) | ✅ | |
 | func typeKey(String, modifierFlags: XCUIElement.KeyModifierFlags) | ❌ | After version 1.0 |
 | func typeKey(XCUIKeyboardKey, modifierFlags: XCUIElement.KeyModifierFlags) | ❌ | After version 1.0 |

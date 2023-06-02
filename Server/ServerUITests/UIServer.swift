@@ -190,6 +190,28 @@ class UIServer {
             return CountResponse(count: count)
         })
         
+        await addRoute("queryDescendants", handler: { (countRequest: DescendantsFromQuery) in
+            let rootQuery = await self.cache.getQuery(countRequest.serverId) as! XCUIElementQuery
+            let descendantsQuery = rootQuery.descendants(matching: countRequest.elementType.toXCUIElementType())
+            
+            let id = await self.cache.add(query: descendantsQuery)
+            
+            return QueryResponse(serverId: id)
+        })
+        
+        
+        await addRoute("elementDescendants", handler: { (countRequest: DescendantsFromElement) in
+            let rootElement = await self.cache.getElement(countRequest.serverId)!
+            let descendantsQuery = rootElement.descendants(matching: countRequest.elementType.toXCUIElementType())
+            
+            let id = await self.cache.add(query: descendantsQuery)
+            
+            return QueryResponse(serverId: id)
+        })
+        
+        
+        
+        
         await self.server.appendRoute(HTTPRoute(stringLiteral: "query"), handler: { request in
             defer {
                 self.lastIssue = nil

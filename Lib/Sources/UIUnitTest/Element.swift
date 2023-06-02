@@ -49,10 +49,15 @@ public class Element: ElementTypeQueryProvider {
             return existsResponse.isHittable
         }
     }
-//
-//
-//    /** Returns a query for all descendants of the element matching the specified type. */
-//    open func descendants(matching type: Element.ElementType) -> ElementQuery
+
+    /** Returns a query for all descendants of the element matching the specified type. */
+    func descendants(matching type: Element.ElementType) async throws -> Query {
+        let descendantsFromElement = DescendantsFromElement(serverId: self.serverId, elementType: type)
+        
+        let queryResponse: QueryResponse = try await callServer(path: "elementDescendants", request: descendantsFromElement)
+        
+        return Query(queryServerId: queryResponse.serverId)
+    }
 //
 //
 //    /** Returns a query for direct children of the element matching the specified type. */
@@ -308,5 +313,15 @@ public struct WaitForExistenceResponse: Codable {
     
     public init(elementExists: Bool) {
         self.elementExists = elementExists
+    }
+}
+
+public struct DescendantsFromElement: Codable {
+    public let serverId: UUID
+    public let elementType: Element.ElementType
+    
+    public init(serverId: UUID, elementType: Element.ElementType) {
+        self.serverId = serverId
+        self.elementType = elementType
     }
 }
