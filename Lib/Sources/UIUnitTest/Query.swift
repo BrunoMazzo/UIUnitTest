@@ -15,8 +15,8 @@ public class Query: ElementTypeQueryProvider {
         self.queryServerId = queryServerId
     }
     
-    init(queryRoot: UUID? = nil, elementType: Element.ElementType) async throws {
-        let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(queryRoot: queryRoot, elementType: elementType))
+    init(queryRoot: UUID? = nil, queryType: QueryType) async throws {
+        let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(queryRoot: queryRoot, queryType: queryType))
         self.queryServerId = response.serverId
     }
     
@@ -29,12 +29,12 @@ public class Query: ElementTypeQueryProvider {
     }
     
     /** Returns an element that will use the query for resolution. */
-        open var element: Element! {
-            get async throws {
-                let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.queryServerId!))
-                return Element(serverId: elementResponse.serverId)
-            }
+    public var element: Element! {
+        get async throws {
+            let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.queryServerId!))
+            return Element(serverId: elementResponse.serverId)
         }
+    }
     //
     
     /** Evaluates the query at the time it is called and returns the number of matches found. */
@@ -45,17 +45,14 @@ public class Query: ElementTypeQueryProvider {
         }
     }
     
-    
-    /** Returns an element that will resolve to the index into the query's result set. */
-    //    open func element(atIndex index: Any!) -> Element!
-    
-    
     /** Returns an element that will use the index into the query's results to determine which underlying accessibility element it is matched with. */
-    //    open func element(boundByIndex index: Any!) -> Element!
+    public func element(boundByIndex index: Int) async throws -> Element {
+        let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.queryServerId!, index: index))
+        return Element(serverId: elementResponse.serverId)
+    }
     
     
     /** Returns an element that matches the predicate. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
-    @MainActor
     public func element(matching predicate: NSPredicate) async throws -> Element {
         let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementMatchingPredicateRequest(serverId: self.queryServerId!, predicate: predicate))
         return Element(serverId: response.serverId)
@@ -63,6 +60,10 @@ public class Query: ElementTypeQueryProvider {
     
     
     /** Returns an element that matches the type and identifier. */
+    public func element(matching elementType: Element.ElementType, identifier: String?) async throws -> Element {
+        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementFromQuery(serverId: self.queryServerId!, elementType: elementType, identifier: identifier))
+        return Element(serverId: response.serverId)
+    }
     //    open func element(matchingType elementType: Any!, identifier: Any!) -> Element!
     
     
@@ -97,15 +98,100 @@ public class Query: ElementTypeQueryProvider {
     //    open func containingType(_ elementType: Any!, identifier: Any!) -> Element!
 }
 
+extension Query {
+    public enum QueryType: Int, Codable {
+        case activityIndicators
+        case alerts
+        case browsers
+        case buttons
+        case cells
+        case checkBoxes
+        case collectionViews
+        case colorWells
+        case comboBoxes
+        case datePickers
+        case decrementArrows
+        case dialogs
+        case disclosureTriangles
+        case disclosedChildRows
+        case dockItems
+        case drawers
+        case grids
+        case groups
+        case handles
+        case helpTags
+        case icons
+        case images
+        case incrementArrows
+        case keyboards
+        case keys
+        case layoutAreas
+        case layoutItems
+        case levelIndicators
+        case links
+        case maps
+        case mattes
+        case menuBarItems
+        case menuBars
+        case menuButtons
+        case menuItems
+        case menus
+        case navigationBars
+        case otherElements
+        case outlineRows
+        case outlines
+        case pageIndicators
+        case pickerWheels
+        case pickers
+        case popUpButtons
+        case popovers
+        case progressIndicators
+        case radioButtons
+        case radioGroups
+        case ratingIndicators
+        case relevanceIndicators
+        case rulerMarkers
+        case rulers
+        case scrollBars
+        case scrollViews
+        case searchFields
+        case secureTextFields
+        case segmentedControls
+        case sheets
+        case sliders
+        case splitGroups
+        case splitters
+        case staticTexts
+        case statusBars
+        case statusItems
+        case steppers
+        case switches
+        case tabBars
+        case tabGroups
+        case tableColumns
+        case tableRows
+        case tables
+        case textFields
+        case textViews
+        case timelines
+        case toggles
+        case toolbarButtons
+        case toolbars
+        case touchBars
+        case valueIndicators
+        case webViews
+        case windows
+    }
+}
 
 public struct QueryRequest: Codable {
     
     public var queryRoot: UUID?
-    public var elementType: Element.ElementType
+    public var queryType: Query.QueryType
     
-    init(queryRoot: UUID? = nil, elementType: Element.ElementType) {
+    init(queryRoot: UUID? = nil, queryType: Query.QueryType) {
         self.queryRoot = queryRoot
-        self.elementType = elementType
+        self.queryType = queryType
     }
 }
 
@@ -171,4 +257,22 @@ public struct ElementMatchingPredicateRequest: Codable {
 
 public struct ElementFromQuery: Codable {
     public let serverId: UUID
+    public let index: Int?
+
+    public let elementType: Element.ElementType?
+    public let identifier: String?
+    
+    init(serverId: UUID, index: Int? = nil) {
+        self.serverId = serverId
+        self.index = index
+        self.elementType = nil
+        self.identifier = nil
+    }
+
+    init(serverId: UUID, elementType: Element.ElementType, identifier: String? = nil) {
+        self.serverId = serverId
+        self.elementType = elementType
+        self.identifier = identifier
+        self.index = nil
+    }
 }

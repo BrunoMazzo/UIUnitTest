@@ -13,9 +13,9 @@ public extension ElementTypeQueryProvider {
         }
     }
     
-    subscript(dynamicMember: Element.ElementType) -> Query {
+    subscript(dynamicMember: Query.QueryType) -> Query {
         get async throws {
-            try await Query(queryRoot: self.queryServerId, elementType: dynamicMember)
+            try await Query(queryRoot: self.queryServerId, queryType: dynamicMember)
         }
     }
     

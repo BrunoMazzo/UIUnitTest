@@ -75,7 +75,15 @@ class UIServer {
         
         await addRoute("elementFromQuery", handler: { (elementFromQuery: ElementFromQuery) in
             let query = await self.cache.getQuery(elementFromQuery.serverId) as! XCUIElementQuery
-            let element = query.element
+            
+            let element: XCUIElement
+            if let index = elementFromQuery.index {
+                element = query.element(boundBy: index)
+            } else if let type = elementFromQuery.elementType {
+                element = query.element(matching: type.toXCUIElementType(), identifier: elementFromQuery.identifier)
+            } else {
+                element = query.element
+            }
             
             let id = await self.cache.add(element: element)
             
@@ -259,7 +267,7 @@ class UIServer {
         }
         
         let resultQuery: XCUIElementQuery
-        switch queryRequest.elementType {
+        switch queryRequest.queryType {
         case .staticTexts:
             resultQuery = rootElementQuery.staticTexts
         case .activityIndicators:

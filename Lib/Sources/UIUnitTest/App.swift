@@ -1,8 +1,9 @@
 import Foundation
+import XCTest
 
 public class App: ElementTypeQueryProvider {
     public var queryServerId: UUID? = nil
-
+    
     let appId: String
     
     public init(appId: String) async throws {
@@ -31,7 +32,7 @@ public struct ErrorResponse: Codable {
 }
 
 public struct UIResponse<T: Codable>: Codable {
-
+    
     public let response: Response
     
     public init(response: T) {
