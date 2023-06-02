@@ -258,18 +258,17 @@ public struct ElementMatchingPredicateRequest: Codable {
 public struct ElementFromQuery: Codable {
     public let serverId: UUID
     public let index: Int?
-
     public let elementType: Element.ElementType?
     public let identifier: String?
     
-    init(serverId: UUID, index: Int? = nil) {
+    public init(serverId: UUID, index: Int? = nil) {
         self.serverId = serverId
         self.index = index
         self.elementType = nil
         self.identifier = nil
     }
 
-    init(serverId: UUID, elementType: Element.ElementType, identifier: String? = nil) {
+    public init(serverId: UUID, elementType: Element.ElementType, identifier: String? = nil) {
         self.serverId = serverId
         self.elementType = elementType
         self.identifier = identifier

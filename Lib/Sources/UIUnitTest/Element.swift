@@ -87,8 +87,8 @@ public class Element: ElementTypeQueryProvider {
     }
 }
 
-extension Element {
-    public enum ElementType : UInt, @unchecked Sendable, Codable {
+public extension Element {
+    enum ElementType : UInt, @unchecked Sendable, Codable {
     
         case any = 0
         
