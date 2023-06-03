@@ -50,8 +50,6 @@ public class Query: ElementTypeQueryProvider {
         }
     }
     
-    //
-    
     /** Evaluates the query at the time it is called and returns the number of matches found. */
     public var count: Int {
         get async throws {
@@ -66,21 +64,17 @@ public class Query: ElementTypeQueryProvider {
         return Element(serverId: elementResponse.serverId)
     }
     
-    
     /** Returns an element that matches the predicate. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
     public func element(matching predicate: NSPredicate) async throws -> Element {
-        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementMatchingPredicateRequest(serverId: self.queryServerId!, predicate: predicate))
+        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: PredicateRequest(serverId: self.queryServerId!, predicate: predicate))
         return Element(serverId: response.serverId)
     }
-    
     
     /** Returns an element that matches the type and identifier. */
     public func element(matching elementType: Element.ElementType, identifier: String?) async throws -> Element {
         let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementFromQuery(serverId: self.queryServerId!, elementType: elementType, identifier: identifier))
         return Element(serverId: response.serverId)
     }
-    //    open func element(matchingType elementType: Any!, identifier: Any!) -> Element!
-    
     
     /** Keyed subscripting is implemented as a shortcut for matching an identifier only. For example, app.descendants["Foo"] -> XCUIElement. */
     public subscript(_ identifier: String) -> Element {
@@ -90,7 +84,6 @@ public class Query: ElementTypeQueryProvider {
         }
     }
     
-    
     /** Returns a new query that finds the descendants of all the elements found by the receiver. */
     func descendants(matching elementType: Element.ElementType) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "queryDescendants", request: DescendantsFromQuery(serverId: self.queryServerId!, elementType: elementType))
@@ -98,11 +91,24 @@ public class Query: ElementTypeQueryProvider {
         
     }
 
-    
-    
     /** Returns a new query that finds the direct children of all the elements found by the receiver. */
-    //    open func children(matchingType type: Any!) -> Element!
+    public func children(matching type: Element.ElementType) async throws -> Query {
+        let request = ChildrenMatchinType(serverId: self.queryServerId!, elementType: type)
+        
+        let queryResponse: QueryResponse = try await callServer(path: "children", request: request)
+        
+        return Query(queryServerId: queryResponse.serverId)
+    }
     
+    func matching(_ predicate: NSPredicate) async throws -> Query {
+        let response: QueryResponse = try await callServer(path: "matchingPredicate", request: PredicateRequest(serverId: self.queryServerId!, predicate: predicate))
+        return Query(queryServerId: response.serverId)
+    }
+    
+    func matching(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
+        let response: QueryResponse = try await callServer(path: "matchingElementType", request: ElementTypeRequest(serverId: self.queryServerId!, elementType: elementType, identifier: identifier))
+        return Query(queryServerId: response.serverId)
+    }
     
     /** Returns a new query that applies the specified attributes or predicate to the receiver. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
     //    open func matchingPredicate(_ predicate: Any!) -> Element!
@@ -239,7 +245,7 @@ public struct CountResponse: Codable {
     }
 }
 
-public struct ElementMatchingPredicateRequest: Codable {
+public struct PredicateRequest: Codable {
     public let serverId: UUID
     public let predicate: NSPredicate
             

@@ -90,13 +90,20 @@ class UIServer {
             return ElementResponse(serverId: id)
         })
         
-        await addRoute("elementMatchingPredicate", handler: { (elementMatchingPredicateRequest: ElementMatchingPredicateRequest) in
-            let query = await self.cache.getQuery(elementMatchingPredicateRequest.serverId) as! XCUIElementQuery
-            let element = query.element(matching: elementMatchingPredicateRequest.predicate)
+        await addRoute("elementMatchingPredicate", handler: { (predicateRequest: PredicateRequest) in
+            let query = await self.cache.getQuery(predicateRequest.serverId) as! XCUIElementQuery
+            let element = query.element(matching: predicateRequest.predicate)
             
             let id = await self.cache.add(element: element)
             
             return ElementResponse(serverId: id)
+        })
+        
+        await addRoute("matchingPredicate", handler: { (predicateRequest: PredicateRequest) in
+            let query = await self.cache.getQuery(predicateRequest.serverId) as! XCUIElementQuery
+            let matching = query.matching(predicateRequest.predicate)
+            let id = await self.cache.add(query: matching)
+            return QueryResponse(serverId: id)
         })
         
         await addRoute("tapElement", handler: { (tapRequest: TapElementRequest) -> Bool in
@@ -200,12 +207,19 @@ class UIServer {
         })
         
         
-        await addRoute("elementDescendants", handler: { (countRequest: DescendantsFromElement) in
+        await addRoute("elementDescendants", handler: { (countRequest: ElementTypeRequest) in
             let rootElement = await self.cache.getElement(countRequest.serverId)!
             let descendantsQuery = rootElement.descendants(matching: countRequest.elementType.toXCUIElementType())
             
             let id = await self.cache.add(query: descendantsQuery)
             
+            return QueryResponse(serverId: id)
+        })
+        
+        await addRoute("matchingElementType", handler: { (countRequest: ElementTypeRequest) in
+            let rootQuery = await self.cache.getQuery(countRequest.serverId) as! XCUIElementQuery
+            let descendantsQuery = rootQuery.matching(countRequest.elementType.toXCUIElementType(), identifier: countRequest.identifier)
+            let id = await self.cache.add(query: descendantsQuery)
             return QueryResponse(serverId: id)
         })
         
@@ -235,6 +249,19 @@ class UIServer {
             return ElementArrayResponse(serversId: ids)
         })
         
+        await addRoute("children", handler: { (countRequest: ChildrenMatchinType) in
+            var childrenQuery: XCUIElementQuery!
+            
+            if let rootQuery = await self.cache.getQuery(countRequest.serverId) as? XCUIElementQuery {
+                childrenQuery = rootQuery.children(matching: countRequest.elementType.toXCUIElementType())
+            } else if let rootElement = await self.cache.getQuery(countRequest.serverId) as? XCUIElement {
+                childrenQuery = rootElement.children(matching: countRequest.elementType.toXCUIElementType())
+            }
+            
+            let id = await self.cache.add(query: childrenQuery)
+            
+            return QueryResponse(serverId: id)
+        })
         
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "query"), handler: { request in
@@ -242,7 +269,7 @@ class UIServer {
                 self.lastIssue = nil
             }
             
-            let queryRequest = try decoder.decode(QueryRequest.self, from: request.body)
+            let queryRequest = try await decoder.decode(QueryRequest.self, from: request.bodyData)
             
             let newQuery = await self.performQuery(queryRequest: queryRequest)
             
@@ -256,7 +283,7 @@ class UIServer {
                 self.lastIssue = nil
             }
             
-            let queryRequest = try decoder.decode(ElementRequest.self, from: request.body)
+            let queryRequest = try await decoder.decode(ElementRequest.self, from: request.bodyData)
             
             let newElement = try! await self.findElement(elementRequest: queryRequest)
             
@@ -270,7 +297,7 @@ class UIServer {
                 self.lastIssue = nil
             }
             
-            let queryRequest = try decoder.decode(RemoveServerItemRequest.self, from: request.body)
+            let queryRequest = try await decoder.decode(RemoveServerItemRequest.self, from: request.bodyData)
             
             await self.cache.removeQuery(queryRequest.queryRoot)
             await self.cache.removeElement(queryRequest.queryRoot)
@@ -499,7 +526,7 @@ class UIServer {
                 self.lastIssue = nil
             }
             
-            let tapRequest = try decoder.decode(Request.self, from: request.body)
+            let tapRequest = try await decoder.decode(Request.self, from: request.bodyData)
             
             let response = await handler(tapRequest)
             
@@ -513,7 +540,7 @@ class UIServer {
                 self.lastIssue = nil
             }
             
-            let tapRequest = try decoder.decode(Request.self, from: request.body)
+            let tapRequest = try await decoder.decode(Request.self, from: request.bodyData)
             await handler(tapRequest)
             
             return self.buildResponse(true)
