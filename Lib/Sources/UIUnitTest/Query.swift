@@ -36,14 +36,14 @@ public class Query: ElementTypeQueryProvider {
         }
     }
     
-    var allElementsBoundByAccessibilityElement: [Element] {
+    public var allElementsBoundByAccessibilityElement: [Element] {
         get async throws {
             let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByAccessibilityElement", request: ElementsByAccessibility(serverId: self.queryServerId!))
             return elementResponse.serversId.map { Element(serverId: $0) }
         }
     }
     
-    var allElementsBoundByIndex: [Element] {
+    public var allElementsBoundByIndex: [Element] {
         get async throws {
             let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByIndex", request: ElementsByAccessibility(serverId: self.queryServerId!))
             return elementResponse.serversId.map { Element(serverId: $0) }
@@ -85,7 +85,7 @@ public class Query: ElementTypeQueryProvider {
     }
     
     /** Returns a new query that finds the descendants of all the elements found by the receiver. */
-    func descendants(matching elementType: Element.ElementType) async throws -> Query {
+    public func descendants(matching elementType: Element.ElementType) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "queryDescendants", request: DescendantsFromQuery(serverId: self.queryServerId!, elementType: elementType))
         return Query(queryServerId: response.serverId)
         
@@ -100,12 +100,12 @@ public class Query: ElementTypeQueryProvider {
         return Query(queryServerId: queryResponse.serverId)
     }
     
-    func matching(_ predicate: NSPredicate) async throws -> Query {
+    public func matching(_ predicate: NSPredicate) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingPredicate", request: PredicateRequest(serverId: self.queryServerId!, predicate: predicate))
         return Query(queryServerId: response.serverId)
     }
     
-    func matching(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
+    public func matching(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingElementType", request: ElementTypeRequest(serverId: self.queryServerId!, elementType: elementType, identifier: identifier))
         return Query(queryServerId: response.serverId)
     }

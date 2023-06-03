@@ -40,7 +40,7 @@ public class Element: ElementTypeQueryProvider {
 
 
     /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
-    open var isHittable: Bool {
+    public var isHittable: Bool {
         get async throws {
             let existsRequestData = IsHittableRequest(elementServerId: serverId)
             
