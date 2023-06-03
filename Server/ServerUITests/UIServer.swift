@@ -209,6 +209,31 @@ class UIServer {
             return QueryResponse(serverId: id)
         })
         
+        await addRoute("allElementsBoundByAccessibilityElement", handler: { (countRequest: ElementsByAccessibility) in
+            let rootQuery = await self.cache.getQuery(countRequest.serverId) as! XCUIElementQuery
+            let allElements = rootQuery.allElementsBoundByAccessibilityElement
+            
+            var ids = [UUID]()
+            for element in allElements {
+                let id = await self.cache.add(element: element)
+                ids.append(id)
+            }
+            
+            return ElementArrayResponse(serversId: ids)
+        })
+        
+        await addRoute("allElementsBoundByIndex", handler: { (countRequest: ElementsByAccessibility) in
+            let rootQuery = await self.cache.getQuery(countRequest.serverId) as! XCUIElementQuery
+            let allElements = rootQuery.allElementsBoundByIndex
+            
+            var ids = [UUID]()
+            for element in allElements {
+                let id = await self.cache.add(element: element)
+                ids.append(id)
+            }
+            
+            return ElementArrayResponse(serversId: ids)
+        })
         
         
         

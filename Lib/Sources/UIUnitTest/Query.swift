@@ -35,6 +35,21 @@ public class Query: ElementTypeQueryProvider {
             return Element(serverId: elementResponse.serverId)
         }
     }
+    
+    var allElementsBoundByAccessibilityElement: [Element] {
+        get async throws {
+            let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByAccessibilityElement", request: ElementsByAccessibility(serverId: self.queryServerId!))
+            return elementResponse.serversId.map { Element(serverId: $0) }
+        }
+    }
+    
+    var allElementsBoundByIndex: [Element] {
+        get async throws {
+            let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByIndex", request: ElementsByAccessibility(serverId: self.queryServerId!))
+            return elementResponse.serversId.map { Element(serverId: $0) }
+        }
+    }
+    
     //
     
     /** Evaluates the query at the time it is called and returns the number of matches found. */
@@ -285,9 +300,19 @@ public struct ElementFromQuery: Codable {
 public struct DescendantsFromQuery: Codable {
     public let serverId: UUID
     public let elementType: Element.ElementType
-        
+    
     public init(serverId: UUID, elementType: Element.ElementType) {
         self.serverId = serverId
         self.elementType = elementType
     }
 }
+
+public struct ElementsByAccessibility: Codable {
+    public let serverId: UUID
+    
+    public init(serverId: UUID) {
+        self.serverId = serverId
+    }
+}
+
+

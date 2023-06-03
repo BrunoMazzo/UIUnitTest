@@ -98,8 +98,8 @@ The following table shows the API coverage at the moment:
 | func element(matching predicate: NSPredicate) -> XCUIElement | ✅ | Doesn't support NSPredicate with blocks |
 | func element(matching elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElement | ✅ | |
 | subscript(key: String) -> XCUIElement { get } | ✅ | |
-| var allElementsBoundByAccessibilityElement: [XCUIElement] { get } | ❌ | |
-| var allElementsBoundByIndex: [XCUIElement] { get } | ❌ | |
+| var allElementsBoundByAccessibilityElement: [XCUIElement] { get } | ✅ | |
+| var allElementsBoundByIndex: [XCUIElement] { get } | ✅ | |
 | func descendants(matching type: XCUIElement.ElementType) -> XCUIElementQuery | ✅ | |
 | func children(matching type: XCUIElement.ElementType) -> XCUIElementQuery | ❌ | |
 | func matching(_ predicate: NSPredicate) -> XCUIElementQuery | ❌ | |

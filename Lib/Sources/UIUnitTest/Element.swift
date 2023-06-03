@@ -292,6 +292,15 @@ public struct ElementResponse: Codable {
     }
 }
 
+public struct ElementArrayResponse: Codable {
+    public var serversId: [UUID]
+    
+    public init(serversId: [UUID]) {
+        self.serversId = serversId
+    }
+}
+
+
 
 public struct RemoveServerItemRequest: Codable {
     public var queryRoot: UUID
