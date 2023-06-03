@@ -13,7 +13,6 @@ struct SetupCommand: AsyncParsableCommand {
         try await installCommand.run()
         
         var startServerCommand = StartServerCommand()
-        
         try await startServerCommand.run()
     }   
 }

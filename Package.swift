@@ -34,6 +34,7 @@ let package = Package(
             path: "Lib/Sources/UIUnitTestCLI",
             resources: [
                 .copy("Resources/Server.zip"),
+                .copy("Resources/PreBuild.zip"),
             ]
         ),
         .target(
