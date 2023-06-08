@@ -26,4 +26,3 @@ struct GoToBackgroundAndBackView: View {
         }
     }
 }
-
