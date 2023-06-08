@@ -10,7 +10,7 @@ rm -rf lcov.info
 
 # serverCommand="xcodebuild -workspace UIUnitTest.xcworkspace -scheme ServerUITests test -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' -enableCodeCoverage YES -derivedDataPath build -resultBundlePath build/Server.xcresult -clonedSourcePackagesDirPath SourcePackages/server"
 # clientCommand="
-xcodebuild -workspace UIUnitTest.xcworkspace -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' -derivedDataPath build -resultBundlePath build/Client.xcresult -clonedSourcePackagesDirPath SourcePackages/client
+xcodebuild -workspace UIUnitTest.xcworkspace -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 13 Pro,OS=15.0' -derivedDataPath build -resultBundlePath build/Client.xcresult -clonedSourcePackagesDirPath SourcePackages/client
 
 
 # eval "sleep 20 && $clientCommand"
