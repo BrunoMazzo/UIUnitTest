@@ -30,7 +30,7 @@ TODO: Add long description of the pod here.
 
   s.swift_versions = '5.8'
 
-  s.ios.deployment_target = '16.0'
+  s.ios.deployment_target = '15.0'
 
   s.source_files = 'Lib/Sources/UIUnitTest/**/*'
 
