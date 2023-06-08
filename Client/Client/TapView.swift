@@ -16,17 +16,26 @@ struct TapView: View {
     var body: some View {
         VStack {
             Text("Two fingers tap")
-                .overlay(TappableView(accessibilityIdentifier: "TwoFingersView") { gesture in
-                    twoFingersTap = true
-                })
+// TODO: Investigate why it doesn't work on iOS 15
+//                .overlay(TappableView(accessibilityIdentifier: "TwoFingersView") { gesture in
+//                    twoFingersTap = true
+//                })
+                
+            TappableView(accessibilityIdentifier: "TwoFingersView") { gesture in
+                twoFingersTap = true
+            }
+            
             if twoFingersTap {
                 Text("Two fingers tapped")
             }
             
-            Text("Three fingers tap")
-                .overlay(TappableView(numberOfTouches: 3, accessibilityIdentifier: "ThreeFingersView") { gesture in
-                    threeFingersTap = true
-                })
+//            Text("Three fingers tap")
+//                .overlay(TappableView(numberOfTouches: 3, accessibilityIdentifier: "ThreeFingersView") { gesture in
+//                    threeFingersTap = true
+//                })
+            TappableView(numberOfTouches: 3, accessibilityIdentifier: "ThreeFingersView") { gesture in
+                threeFingersTap = true
+            }
             if threeFingersTap {
                 Text("Three fingers tapped")
             }

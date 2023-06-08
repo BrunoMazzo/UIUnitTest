@@ -48,11 +48,10 @@ final class ClientTests: XCTestCase {
         
         try await app.staticTexts["Double tap"].doubleTap()
         
-        let exists = try await app.staticTexts["Value: Double tap"].exists
+        let exists = try await app.staticTexts["Value: Double tap"].waitForExistence(timeout: 1)
         
         XCTAssert(exists)
     }
-    
     
     @MainActor
     func testEnterText() async throws {
@@ -169,6 +168,8 @@ final class ClientTests: XCTestCase {
         
         showView(TapView())
         
+        let exists = try await app.otherElements["TwoFingersView"].exists
+        XCTAssertTrue(exists)
         try await app.otherElements["TwoFingersView"].twoFingerTap()
         
         let wasntInBackgroudAfterBackground = try await app.staticTexts["Two fingers tapped"].waitForExistence(timeout: 1)

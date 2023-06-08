@@ -20,6 +20,7 @@ struct ClientApp: App {
 struct MySettingTable: View {
     
     @State var navigationStack: [String] = []
+    @State var isDoubleTap = false
     
     var body: some View {
         
@@ -54,8 +55,9 @@ struct MySettingTable: View {
                     NavigationLink("TextField", destination: TextFieldsView())
                     Text("Double tap")
                         .onTapGesture(count: 2) {
-                            navigationStack.append("Double tap")
+                            isDoubleTap = true
                         }
+                    NavigationLink("Double tap w", destination: StringView(value: "Double tap"), isActive: $isDoubleTap)
                 }
             }
         }
