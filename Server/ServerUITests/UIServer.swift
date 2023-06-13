@@ -6,42 +6,7 @@ import UIUnitTest
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
 
-actor Cache {
-    private var queryIds: [UUID: XCUIElementTypeQueryProvider] = [:]
-    private var elementIds: [UUID: XCUIElement] = [:]
-    
-    func add(query: XCUIElementTypeQueryProvider?) -> UUID {
-        let id = UUID()
-        queryIds[id] = query
-        return id
-    }
-    
-    func add(element: XCUIElement?) -> UUID {
-        let id = UUID()
-        queryIds[id] = element
-        elementIds[id] = element
-        return id
-    }
-    
-    func removeQuery(_ id: UUID) {
-        queryIds[id] = nil
-    }
-    
-    func removeElement(_ id: UUID) {
-        queryIds[id] = nil
-        elementIds[id] = nil
-    }
-    
-    func getQuery(_ id: UUID) -> XCUIElementTypeQueryProvider? {
-        return queryIds[id]
-    }
-    
-    func getElement(_ id: UUID) -> XCUIElement? {
-        return elementIds[id]
-    }
-}
-
-
+//@Server
 class UIServer {
     var app: XCUIApplication!
     
@@ -50,6 +15,41 @@ class UIServer {
     var server: HTTPServer!
     
     let cache = Cache()
+    
+    func firstMatch(firstMatchRequest: FirstMatchRequest) async -> FirstMatchResponse {
+        let query = await self.cache.getQuery(firstMatchRequest.queryRoot)
+        let element = query?.firstMatch
+        
+        let id = await self.cache.add(element: element)
+        
+        return FirstMatchResponse(elementServerId: id)
+    }
+    
+    func elementFromQuery(elementFromQuery: ElementFromQuery) async -> ElementResponse {
+        let query = await self.cache.getQuery(elementFromQuery.serverId) as! XCUIElementQuery
+        
+        let element: XCUIElement
+        if let index = elementFromQuery.index {
+            element = query.element(boundBy: index)
+        } else if let type = elementFromQuery.elementType {
+            element = query.element(matching: type.toXCUIElementType(), identifier: elementFromQuery.identifier)
+        } else {
+            element = query.element
+        }
+        
+        let id = await self.cache.add(element: element)
+        
+        return ElementResponse(serverId: id)
+    }
+    
+    func elementMatchingPredicate(predicateRequest: PredicateRequest) async -> ElementResponse {
+        let query = await self.cache.getQuery(predicateRequest.serverId) as! XCUIElementQuery
+        let element = query.element(matching: predicateRequest.predicate)
+        
+        let id = await self.cache.add(element: element)
+        
+        return ElementResponse(serverId: id)
+    }
     
     func start() async throws {
         let server = HTTPServer(address: .loopback(port: 22087))
@@ -61,43 +61,10 @@ class UIServer {
             }
             self.app.activate()
         })
-        
-        
-        
-        await addRoute("firstMatch", handler: { (firstMatchRequest: FirstMatchRequest) in
-            let query = await self.cache.getQuery(firstMatchRequest.queryRoot)
-            let element = query?.firstMatch
-            
-            let id = await self.cache.add(element: element)
-            
-            return FirstMatchResponse(elementServerId: id)
-        })
-        
-        await addRoute("elementFromQuery", handler: { (elementFromQuery: ElementFromQuery) in
-            let query = await self.cache.getQuery(elementFromQuery.serverId) as! XCUIElementQuery
-            
-            let element: XCUIElement
-            if let index = elementFromQuery.index {
-                element = query.element(boundBy: index)
-            } else if let type = elementFromQuery.elementType {
-                element = query.element(matching: type.toXCUIElementType(), identifier: elementFromQuery.identifier)
-            } else {
-                element = query.element
-            }
-            
-            let id = await self.cache.add(element: element)
-            
-            return ElementResponse(serverId: id)
-        })
-        
-        await addRoute("elementMatchingPredicate", handler: { (predicateRequest: PredicateRequest) in
-            let query = await self.cache.getQuery(predicateRequest.serverId) as! XCUIElementQuery
-            let element = query.element(matching: predicateRequest.predicate)
-            
-            let id = await self.cache.add(element: element)
-            
-            return ElementResponse(serverId: id)
-        })
+
+        await addRoute("firstMatch", handler: self.firstMatch(firstMatchRequest:))
+        await addRoute("elementFromQuery", handler: self.elementFromQuery(elementFromQuery:))
+        await addRoute("elementMatchingPredicate", handler: self.elementMatchingPredicate(predicateRequest:))
         
         await addRoute("matchingPredicate", handler: { (predicateRequest: PredicateRequest) in
             let query = await self.cache.getQuery(predicateRequest.serverId) as! XCUIElementQuery
@@ -132,11 +99,18 @@ class UIServer {
             element?.doubleTap()
         })
         
-        await addRoute("exists", handler: { (tapRequest: ExistsRequest) in
+        await addRoute("exists", handler: { (tapRequest: ElementRequest) in
             let element = await self.cache.getElement(tapRequest.elementServerId)
             let exists = element?.exists ?? false
             
             return ExistsResponse(exists: exists)
+        })
+        
+        await addRoute("value", handler: { (tapRequest: ElementRequest) in
+            let element = await self.cache.getElement(tapRequest.elementServerId)
+            let value = element?.value as? String
+            
+            return ValueResponse(value: value)
         })
         
         await addRoute("enterText", handler: { (tapRequest: EnterTextRequest) in
@@ -187,7 +161,7 @@ class UIServer {
             XCUIDevice.shared.press(.home)
         })
         
-        await addRoute("isHittable", handler: { (isHittableRequest: IsHittableRequest) in
+        await addRoute("isHittable", handler: { (isHittableRequest: ElementRequest) in
             let isHittable = await self.cache.getElement(isHittableRequest.elementServerId)?.isHittable
             return IsHittableResponse(isHittable: isHittable ?? false)
         })
@@ -283,7 +257,7 @@ class UIServer {
                 self.lastIssue = nil
             }
             
-            let queryRequest = try await decoder.decode(ElementRequest.self, from: request.bodyData)
+            let queryRequest = try await decoder.decode(ElementByIdRequest.self, from: request.bodyData)
             
             let newElement = try! await self.findElement(elementRequest: queryRequest)
             
@@ -509,7 +483,7 @@ class UIServer {
         return resultQuery
     }
     
-    func findElement(elementRequest: ElementRequest) async throws -> XCUIElement {
+    func findElement(elementRequest: ElementByIdRequest) async throws -> XCUIElement {
         
         guard let rootQueryId = elementRequest.queryRoot,
               let rootElementQuery = await self.cache.getQuery(rootQueryId) as? XCUIElementQuery else {

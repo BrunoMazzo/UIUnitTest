@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D2C63902A3403B80012BB5A /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2C638F2A3403B80012BB5A /* Cache.swift */; };
 		1D456A9F29E1243500A98076 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D456A9E29E1243500A98076 /* UIUnitTest */; };
 		1DA1932D29B4260500322869 /* ServerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1932C29B4260500322869 /* ServerApp.swift */; };
 		1DA1932F29B4260500322869 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1932E29B4260500322869 /* ContentView.swift */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		1D01C92A29B88A0700551803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1D01C92C29B898E700551803 /* Server.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Server.entitlements; sourceTree = "<group>"; };
+		1D2C638F2A3403B80012BB5A /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		1D456A9729E1220A00A98076 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		1DA1932929B4260500322869 /* Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Server.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DA1932C29B4260500322869 /* ServerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerApp.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			children = (
 				1DA1935729B4267200322869 /* UIServer.swift */,
 				1DA1935829B4267200322869 /* UITestServerTest.swift */,
+				1D2C638F2A3403B80012BB5A /* Cache.swift */,
 			);
 			path = ServerUITests;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DA1935A29B4267200322869 /* UITestServerTest.swift in Sources */,
+				1D2C63902A3403B80012BB5A /* Cache.swift in Sources */,
 				1DA1935929B4267200322869 /* UIServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

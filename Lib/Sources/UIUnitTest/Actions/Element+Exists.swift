@@ -9,7 +9,15 @@ public struct ExistsResponse: Codable {
     }
 }
 
-public struct ExistsRequest: Codable {
+public struct ValueResponse: Codable {
+    public var value: String?
+    
+    public init(value: String?) {
+        self.value = value
+    }
+}
+
+public struct ElementRequest: Codable {
     public var elementServerId: UUID
     
     init(elementServerId: UUID) {
@@ -24,12 +32,3 @@ public struct IsHittableResponse: Codable {
         self.isHittable = isHittable
     }
 }
-
-public struct IsHittableRequest: Codable {
-    public var elementServerId: UUID
-    
-    init(elementServerId: UUID) {
-        self.elementServerId = elementServerId
-    }
-}
-

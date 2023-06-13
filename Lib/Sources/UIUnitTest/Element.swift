@@ -21,7 +21,7 @@ public class Element: ElementTypeQueryProvider {
     
     public var exists: Bool {
         get async throws {
-            let existsRequestData = ExistsRequest(elementServerId: serverId)
+            let existsRequestData = ElementRequest(elementServerId: serverId)
             
             let existsResponse: ExistsResponse = try await callServer(path: "exists", request: existsRequestData)
             
@@ -42,11 +42,22 @@ public class Element: ElementTypeQueryProvider {
     /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
     public var isHittable: Bool {
         get async throws {
-            let existsRequestData = IsHittableRequest(elementServerId: serverId)
+            let existsRequestData = ElementRequest(elementServerId: serverId)
             
             let existsResponse: IsHittableResponse = try await callServer(path: "isHittable", request: existsRequestData)
             
             return existsResponse.isHittable
+        }
+    }
+    
+    // Need better way to represent any :c
+    public var value: String? {
+        get async throws {
+            let valueRequest = ElementRequest(elementServerId: serverId)
+            
+            let valueResponse: ValueResponse = try await callServer(path: "value", request: valueRequest)
+            
+            return valueResponse.value
         }
     }
 
@@ -284,7 +295,7 @@ public struct ScrollRequest: Codable {
     }
 }
 
-public struct ElementRequest: Codable {
+public struct ElementByIdRequest: Codable {
     public var queryRoot: UUID?
     public var identifier: String
 }

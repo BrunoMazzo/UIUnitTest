@@ -79,7 +79,7 @@ public class Query: ElementTypeQueryProvider {
     /** Keyed subscripting is implemented as a shortcut for matching an identifier only. For example, app.descendants["Foo"] -> XCUIElement. */
     public subscript(_ identifier: String) -> Element {
         get async throws {
-            let response: ElementResponse = try await callServer(path: "element", request: ElementRequest(queryRoot: queryServerId, identifier: identifier))
+            let response: ElementResponse = try await callServer(path: "element", request: ElementByIdRequest(queryRoot: queryServerId, identifier: identifier))
             return Element(serverId: response.serverId)
         }
     }
