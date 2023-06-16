@@ -6,7 +6,7 @@
       "location" : "https://github.com/swhitty/FlyingFox.git",
       "state" : {
         "branch" : "main",
-        "revision" : "a8301df174a8660f5c464bee16c6452a7b58063d"
+        "revision" : "11692149205a8fe72e713d4374630449d1e9af7d"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
       "state" : {
         "branch" : "main",
-        "revision" : "7cdc7b28c99fc8bf688097b81322ce49f8e99416"
+        "revision" : "98e1a3b1b05e42d535316cfcfd82a7a466733ca4"
       }
     }
   ],

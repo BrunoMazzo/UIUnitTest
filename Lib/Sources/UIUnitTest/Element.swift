@@ -300,6 +300,11 @@ public struct ElementByIdRequest: Codable {
     public var identifier: String
 }
 
+public struct QueryByIdRequest: Codable {
+    public var queryRoot: UUID
+    public var identifier: String
+}
+
 public struct ElementResponse: Codable {
     public var serverId: UUID
     

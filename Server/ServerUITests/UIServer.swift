@@ -58,6 +58,13 @@ class UIServer {
         return QueryResponse(serverId: id)
     }
     
+    func matchingByIdentifier(request: QueryByIdRequest) async -> QueryResponse {
+        let query = await self.cache.getQuery(request.queryRoot) as! XCUIElementQuery
+        let matching = query.matching(identifier: request.identifier)
+        let id = await self.cache.add(query: matching)
+        return QueryResponse(serverId: id)
+    }
+    
     func tapElement(tapRequest: TapElementRequest) async -> Bool {
         guard let element = await self.cache.getElement(tapRequest.elementServerId) else {
             return false
@@ -242,6 +249,7 @@ class UIServer {
         await addRoute("elementFromQuery", handler: self.elementFromQuery(elementFromQuery:))
         await addRoute("elementMatchingPredicate", handler: self.elementMatchingPredicate(predicateRequest:))
         await addRoute("matchingPredicate", handler: self.matchingPredicate(predicateRequest:) )
+        await addRoute("matchingByIdentifier", handler: self.matchingByIdentifier(request:) )
         await addRoute("tapElement", handler: self.tapElement(tapRequest:))
         await addRoute("doubleTap", handler: self.doubleTap(tapRequest:))
         await addRoute("exists", handler: self.exists(request:))

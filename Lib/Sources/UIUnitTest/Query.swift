@@ -115,7 +115,10 @@ public class Query: ElementTypeQueryProvider {
     
     //    open func matchingType(_ elementType: Any!, identifier: Any!) -> Element!
     
-    //    open func matchingIdentifier(_ identifier: Any!) -> Element!
+    open func matching(identifier: String) async throws -> Query {
+        let response: QueryResponse = try await callServer(path: "matchingByIdentifier", request: QueryByIdRequest(queryRoot: self.queryServerId!, identifier: identifier))
+        return Query(queryServerId: response.serverId)
+    }
     
     
     /** Returns a new query for finding elements that contain a descendant matching the specification. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
