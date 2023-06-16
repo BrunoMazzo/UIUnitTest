@@ -71,6 +71,24 @@ class UIServer {
     }
     
     @MainActor
+    func containingPredicate(request: PredicateRequest) async -> QueryResponse {
+        let query = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
+        let matching = query.containing(request.predicate)
+        let id = await self.cache.add(query: matching)
+        return QueryResponse(serverId: id)
+    }
+    
+    @MainActor
+    func containingElementType(request: ElementTypeRequest) async -> QueryResponse {
+        let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
+        let query = rootQuery.containing(request.elementType.toXCUIElementType(), identifier: request.identifier)
+        
+        let id = await self.cache.add(query: query)
+        
+        return QueryResponse(serverId: id)
+    }
+    
+    @MainActor
     func tapElement(tapRequest: TapElementRequest) async -> Bool {
         guard let element = await self.cache.getElement(tapRequest.elementServerId) else {
             return false
@@ -260,6 +278,19 @@ class UIServer {
         return true
     }
     
+    @MainActor
+    func debugDescription(request: ElementRequest) async -> ValueResponse {
+        var debugDescription: String!
+        
+        if let rootQuery = await self.cache.getQuery(request.elementServerId) as? XCUIElementQuery {
+            debugDescription = rootQuery.debugDescription
+        } else if let rootElement = await self.cache.getQuery(request.elementServerId) as? XCUIElement {
+            debugDescription = rootElement.debugDescription
+        }
+        
+        return ValueResponse(value: debugDescription)
+    }
+    
     func start() async throws {
         let server = HTTPServer(address: .loopback(port: 22087))
         self.server = server
@@ -274,8 +305,10 @@ class UIServer {
         await addRoute("firstMatch", handler: self.firstMatch(firstMatchRequest:))
         await addRoute("elementFromQuery", handler: self.elementFromQuery(elementFromQuery:))
         await addRoute("elementMatchingPredicate", handler: self.elementMatchingPredicate(predicateRequest:))
-        await addRoute("matchingPredicate", handler: self.matchingPredicate(predicateRequest:) )
-        await addRoute("matchingByIdentifier", handler: self.matchingByIdentifier(request:) )
+        await addRoute("matchingPredicate", handler: self.matchingPredicate(predicateRequest:))
+        await addRoute("matchingByIdentifier", handler: self.matchingByIdentifier(request:))
+        await addRoute("containingPredicate", handler: self.containingPredicate(request:))
+        await addRoute("containingElementType", handler: self.containingElementType(request:))
         await addRoute("tapElement", handler: self.tapElement(tapRequest:))
         await addRoute("doubleTap", handler: self.doubleTap(tapRequest:))
         await addRoute("exists", handler: self.exists(request:))
@@ -302,6 +335,8 @@ class UIServer {
         await addRoute("query", handler: self.query(request:))
         await addRoute("element", handler: self.element(request:))
         await addRoute("remove", handler: self.remove(request:))
+        await addRoute("debugDescription", handler: self.debugDescription(request:))
+        
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
             Task {

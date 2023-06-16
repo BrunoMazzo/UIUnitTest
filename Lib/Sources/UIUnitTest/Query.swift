@@ -110,21 +110,27 @@ public class Query: ElementTypeQueryProvider {
         return Query(queryServerId: response.serverId)
     }
     
-    /** Returns a new query that applies the specified attributes or predicate to the receiver. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
-    //    open func matchingPredicate(_ predicate: Any!) -> Element!
-    
-    //    open func matchingType(_ elementType: Any!, identifier: Any!) -> Element!
-    
     open func matching(identifier: String) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingByIdentifier", request: QueryByIdRequest(queryRoot: self.queryServerId!, identifier: identifier))
         return Query(queryServerId: response.serverId)
     }
     
+    func containing(_ predicate: NSPredicate) async throws -> Query {
+        let response: QueryResponse = try await callServer(path: "containingPredicate", request: PredicateRequest(serverId: self.queryServerId!, predicate: predicate))
+        return Query(queryServerId: response.serverId)
+    }
     
-    /** Returns a new query for finding elements that contain a descendant matching the specification. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
-    //    open func containingPredicate(_ predicate: Any!) -> Element!
+    func containing(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
+        let response: QueryResponse = try await callServer(path: "containingElementType", request: ElementTypeRequest(serverId: self.queryServerId!, elementType: elementType, identifier: identifier))
+        return Query(queryServerId: response.serverId)
+    }
     
-    //    open func containingType(_ elementType: Any!, identifier: Any!) -> Element!
+    var debugDescription: String {
+         get async throws {
+             let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.queryServerId!))
+            return valueResponse.value!
+        }
+    }
 }
 
 extension Query {

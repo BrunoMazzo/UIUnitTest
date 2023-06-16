@@ -105,9 +105,9 @@ The following table shows the API coverage at the moment:
 | func matching(_ predicate: NSPredicate) -> XCUIElementQuery | ✅ | |
 | func matching(_ elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElementQuery | ✅ | |
 | func matching(identifier: String) -> XCUIElementQuery | ✅ | |
-| func containing(_ predicate: NSPredicate) -> XCUIElementQuery | ❌ | |
-| func containing(_ elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElementQuery | ❌ | |
-| var debugDescription: String { get } | ❌ | |
+| func containing(_ predicate: NSPredicate) -> XCUIElementQuery | ✅ | |
+| func containing(_ elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElementQuery | ✅ | |
+| var debugDescription: String { get } | ✅ | |
 
 ## **XCUIElement**
 | API | Coverage | Notes |
@@ -115,7 +115,7 @@ The following table shows the API coverage at the moment:
 | func waitForExistence(timeout: TimeInterval) -> Bool | ✅ | |
 | var exists: Bool | ✅ | | 
 | var isHittable: Bool | ✅ |  | 
-| var debugDescription: String | ❌ | Try to implement to version 1.0 |
+| var debugDescription: String | ✅ |  |
 | func children(matching: XCUIElement.ElementType) -> XCUIElementQuery | ✅ | |
 | func descendants(matching: XCUIElement.ElementType) -> XCUIElementQuery | ✅ | |
 | func typeText(String) | ✅ | |

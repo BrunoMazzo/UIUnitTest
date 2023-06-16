@@ -106,6 +106,13 @@ public class Element: ElementTypeQueryProvider {
         let activateRequestData = EnterTextRequest(elementServerId: self.serverId, textToEnter: textToEnter)
         let _: Bool = try await callServer(path: "enterText", request: activateRequestData)
     }
+    
+    var debugDescription: String {
+        get async throws {
+            let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.queryServerId!))
+            return valueResponse.value!
+        }
+    }
 }
 
 public extension Element {
