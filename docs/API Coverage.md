@@ -146,9 +146,24 @@ The following table shows the API coverage at the moment:
 | func swipeDown(velocity: XCUIGestureVelocity) | ✅ | |
 | func pinch(withScale: CGFloat, velocity: CGFloat) | ✅ | |
 | func rotate(CGFloat, withVelocity: CGFloat) | ✅ | |
-| var normalizedSliderPosition: CGFloat | ❌ |  | | | |
+| var normalizedSliderPosition: CGFloat | ❌ | |
 | func adjust(toNormalizedSliderPosition: CGFloat) | ❌ | |
 | func adjust(toPickerWheelValue: String) | ❌ | |
 | func coordinate(withNormalizedOffset: CGVector) -> XCUICoordinate | ❌ | |
 
 
+## **XCUIElementAttributes**
+| API | Coverage | Notes |
+| --- | --- | --- |
+| var identifier: String { get } | ❌ |  | 
+| var frame: CGRect { get } | ❌ |  | 
+| var value: Any? { get } | ❌ | Added support for String value, but need to work on other types | 
+| var title: String { get } | ❌ |  | 
+| var label: String { get } | ❌ |  | 
+| var elementType: XCUIElement.ElementType { get } | ❌ |  | 
+| var isEnabled: Bool { get } | ❌ |  | 
+| var horizontalSizeClass: XCUIElement.SizeClass { get } | ❌ |  | 
+| var verticalSizeClass: XCUIElement.SizeClass { get } | ❌ |  | 
+| var placeholderValue: String? { get } | ❌ |  | 
+| var isSelected: Bool { get } | ❌ |  | 
+| var hasFocus: Bool { get } | ❌ |  | 
