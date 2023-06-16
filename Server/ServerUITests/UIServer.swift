@@ -90,6 +90,143 @@ class UIServer {
         return ExistsResponse(exists: exists)
     }
     
+    func enterText(request: EnterTextRequest) async -> Void {
+        let element = await self.cache.getElement(request.elementServerId)
+        element?.typeText(request.textToEnter)
+    }
+    
+    func value(request: ElementRequest) async -> ValueResponse {
+        let element = await self.cache.getElement(request.elementServerId)
+        let value = element?.value as? String
+        
+        return ValueResponse(value: value)
+    }
+    
+    func scroll(request: ScrollRequest) async -> Void {
+        let element = await self.cache.getElement(request.elementServerId)
+        element?.scroll(byDeltaX: request.deltaX, deltaY: request.deltaY)
+    }
+    
+    func swipe(request: SwipeRequest) async -> Void {
+        let element = await self.cache.getElement(request.elementServerId)
+        
+        let velocity = request.velocity.rawValue
+        
+        switch request.swipeDirection {
+        case .left:
+            element?.swipeLeft(velocity: XCUIGestureVelocity(velocity))
+        case .right:
+            element?.swipeRight(velocity: XCUIGestureVelocity(velocity))
+        case .up:
+            element?.swipeUp(velocity: XCUIGestureVelocity(velocity))
+        case .down:
+            element?.swipeDown(velocity: XCUIGestureVelocity(velocity))
+        }
+    }
+    
+    func pinch(request: PinchRequest) async -> Void {
+        let element = await self.cache.getElement(request.elementServerId)
+        element?.pinch(withScale: request.scale, velocity: request.velocity)
+    }
+    
+    func rotate(request: RotateRequest) async -> Void {
+        let element = await self.cache.getElement(request.elementServerId)
+        element?.rotate(request.rotation, withVelocity: request.velocity)
+    }
+    
+    func waitForExistence(request: WaitForExistenceRequest) async -> WaitForExistenceResponse {
+        let element = await self.cache.getElement(request.elementServerId)
+        let exists = element?.waitForExistence(timeout: request.timeout) ?? false
+        
+        return WaitForExistenceResponse(elementExists: exists)
+    }
+    
+    func isHittable(request: ElementRequest) async -> IsHittableResponse {
+        let isHittable = await self.cache.getElement(request.elementServerId)?.isHittable
+        return IsHittableResponse(isHittable: isHittable ?? false)
+    }
+    
+    func count(request: CountRequest) async -> CountResponse {
+        let count: Int = (await self.cache.getQuery(request.serverId) as? XCUIElementQuery)?.count ?? -1
+        return CountResponse(count: count)
+    }
+    
+    func queryDescendants(request: DescendantsFromQuery) async -> QueryResponse {
+        let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
+        let descendantsQuery = rootQuery.descendants(matching: request.elementType.toXCUIElementType())
+        
+        let id = await self.cache.add(query: descendantsQuery)
+        
+        return QueryResponse(serverId: id)
+    }
+    
+    func elementDescendants(request: ElementTypeRequest) async -> QueryResponse {
+        let rootElement = await self.cache.getElement(request.serverId)!
+        let descendantsQuery = rootElement.descendants(matching: request.elementType.toXCUIElementType())
+        
+        let id = await self.cache.add(query: descendantsQuery)
+        
+        return QueryResponse(serverId: id)
+    }
+    
+    func matchingElementType(request: ElementTypeRequest) async -> QueryResponse {
+        let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
+        let descendantsQuery = rootQuery.matching(request.elementType.toXCUIElementType(), identifier: request.identifier)
+        let id = await self.cache.add(query: descendantsQuery)
+        return QueryResponse(serverId: id)
+    }
+    
+    func allElementsBoundByAccessibilityElement(request: ElementsByAccessibility) async -> ElementArrayResponse {
+        let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
+        let allElements = rootQuery.allElementsBoundByAccessibilityElement
+        
+        var ids = await self.cache.add(elements: allElements)
+        
+        return ElementArrayResponse(serversId: ids)
+    }
+    
+    func allElementsBoundByIndex(request: ElementsByAccessibility) async -> ElementArrayResponse {
+        let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
+        let allElements = rootQuery.allElementsBoundByIndex
+        
+        var ids = await self.cache.add(elements: allElements)
+        
+        return ElementArrayResponse(serversId: ids)
+    }
+    
+    func children(request: ChildrenMatchinType) async -> QueryResponse {
+        var childrenQuery: XCUIElementQuery!
+        
+        if let rootQuery = await self.cache.getQuery(request.serverId) as? XCUIElementQuery {
+            childrenQuery = rootQuery.children(matching: request.elementType.toXCUIElementType())
+        } else if let rootElement = await self.cache.getQuery(request.serverId) as? XCUIElement {
+            childrenQuery = rootElement.children(matching: request.elementType.toXCUIElementType())
+        }
+        
+        let id = await self.cache.add(query: childrenQuery)
+        
+        return QueryResponse(serverId: id)
+    }
+    
+    func element(request: ElementByIdRequest) async -> ElementResponse {
+        let newElement = try! await self.findElement(elementRequest: request)
+        let id = await self.cache.add(element: newElement)
+        return ElementResponse(serverId: id)
+    }
+    
+    func query(request: QueryRequest) async -> QueryResponse {
+        let newQuery = await self.performQuery(queryRequest: request)
+        let serverId = await self.cache.add(query: newQuery)
+        return QueryResponse(serverId: serverId)
+    }
+    
+    func remove(request: RemoveServerItemRequest) async -> Bool {
+        await self.cache.removeQuery(request.queryRoot)
+        await self.cache.removeElement(request.queryRoot)
+        
+        return true
+    }
+    
     func start() async throws {
         let server = HTTPServer(address: .loopback(port: 22087))
         self.server = server
@@ -108,157 +245,29 @@ class UIServer {
         await addRoute("tapElement", handler: self.tapElement(tapRequest:))
         await addRoute("doubleTap", handler: self.doubleTap(tapRequest:))
         await addRoute("exists", handler: self.exists(request:))
-        
-        await addRoute("value", handler: { (tapRequest: ElementRequest) in
-            let element = await self.cache.getElement(tapRequest.elementServerId)
-            let value = element?.value as? String
-            
-            return ValueResponse(value: value)
-        })
-        
-        await addRoute("enterText", handler: { (tapRequest: EnterTextRequest) in
-            let element = await self.cache.getElement(tapRequest.elementServerId)
-            element?.typeText(tapRequest.textToEnter)
-        })
-        
-        await addRoute("scroll", handler: { (tapRequest: ScrollRequest) in
-            let element = await self.cache.getElement(tapRequest.elementServerId)
-            element?.scroll(byDeltaX: tapRequest.deltaX, deltaY: tapRequest.deltaY)
-        })
-        
-        await addRoute("swipe", handler: { (tapRequest: SwipeRequest) in
-            let element = await self.cache.getElement(tapRequest.elementServerId)
-            
-            let velocity = tapRequest.velocity.rawValue
-            
-            switch tapRequest.swipeDirection {
-            case .left:
-                element?.swipeLeft(velocity: XCUIGestureVelocity(velocity))
-            case .right:
-                element?.swipeRight(velocity: XCUIGestureVelocity(velocity))
-            case .up:
-                element?.swipeUp(velocity: XCUIGestureVelocity(velocity))
-            case .down:
-                element?.swipeDown(velocity: XCUIGestureVelocity(velocity))
-            }
-        })
-        
-        await addRoute("pinch", handler: { (pinchRequest: PinchRequest) in
-            let element = await self.cache.getElement(pinchRequest.elementServerId)
-            element?.pinch(withScale: pinchRequest.scale, velocity: pinchRequest.velocity)
-        })
-        
-        await addRoute("rotate", handler: { (rotateRequest: RotateRequest) in
-            let element = await self.cache.getElement(rotateRequest.elementServerId)
-            element?.rotate(rotateRequest.rotation, withVelocity: rotateRequest.velocity)
-        })
-        
-        await addRoute("waitForExistence", handler: { (tapRequest: WaitForExistenceRequest) in
-            let element = await self.cache.getElement(tapRequest.elementServerId)
-            let exists = element?.waitForExistence(timeout: tapRequest.timeout) ?? false
-            
-            return WaitForExistenceResponse(elementExists: exists)
-        })
+        await addRoute("value", handler: self.value(request:))
+        await addRoute("enterText", handler: self.enterText(request:))
+        await addRoute("scroll", handler: self.scroll(request:))
+        await addRoute("swipe", handler: self.swipe(request:))
+        await addRoute("pinch", handler: self.pinch(request:))
+        await addRoute("rotate", handler: self.rotate(request:))
+        await addRoute("waitForExistence", handler: self.waitForExistence(request:))
         
         await addRoute("HomeButton", handler: { (tapRequest: HomeButtonRequest) in
             XCUIDevice.shared.press(.home)
         })
         
-        await addRoute("isHittable", handler: { (isHittableRequest: ElementRequest) in
-            let isHittable = await self.cache.getElement(isHittableRequest.elementServerId)?.isHittable
-            return IsHittableResponse(isHittable: isHittable ?? false)
-        })
-        
-        await addRoute("count", handler: { (countRequest: CountRequest) in
-            let count: Int = (await self.cache.getQuery(countRequest.serverId) as? XCUIElementQuery)?.count ?? -1
-            return CountResponse(count: count)
-        })
-        
-        await addRoute("queryDescendants", handler: { (countRequest: DescendantsFromQuery) in
-            let rootQuery = await self.cache.getQuery(countRequest.serverId) as! XCUIElementQuery
-            let descendantsQuery = rootQuery.descendants(matching: countRequest.elementType.toXCUIElementType())
-            
-            let id = await self.cache.add(query: descendantsQuery)
-            
-            return QueryResponse(serverId: id)
-        })
-        
-        
-        await addRoute("elementDescendants", handler: { (countRequest: ElementTypeRequest) in
-            let rootElement = await self.cache.getElement(countRequest.serverId)!
-            let descendantsQuery = rootElement.descendants(matching: countRequest.elementType.toXCUIElementType())
-            
-            let id = await self.cache.add(query: descendantsQuery)
-            
-            return QueryResponse(serverId: id)
-        })
-        
-        await addRoute("matchingElementType", handler: { (countRequest: ElementTypeRequest) in
-            let rootQuery = await self.cache.getQuery(countRequest.serverId) as! XCUIElementQuery
-            let descendantsQuery = rootQuery.matching(countRequest.elementType.toXCUIElementType(), identifier: countRequest.identifier)
-            let id = await self.cache.add(query: descendantsQuery)
-            return QueryResponse(serverId: id)
-        })
-        
-        await addRoute("allElementsBoundByAccessibilityElement", handler: { (countRequest: ElementsByAccessibility) in
-            let rootQuery = await self.cache.getQuery(countRequest.serverId) as! XCUIElementQuery
-            let allElements = rootQuery.allElementsBoundByAccessibilityElement
-            
-            var ids = [UUID]()
-            for element in allElements {
-                let id = await self.cache.add(element: element)
-                ids.append(id)
-            }
-            
-            return ElementArrayResponse(serversId: ids)
-        })
-        
-        await addRoute("allElementsBoundByIndex", handler: { (countRequest: ElementsByAccessibility) in
-            let rootQuery = await self.cache.getQuery(countRequest.serverId) as! XCUIElementQuery
-            let allElements = rootQuery.allElementsBoundByIndex
-            
-            var ids = [UUID]()
-            for element in allElements {
-                let id = await self.cache.add(element: element)
-                ids.append(id)
-            }
-            
-            return ElementArrayResponse(serversId: ids)
-        })
-        
-        await addRoute("children", handler: { (countRequest: ChildrenMatchinType) in
-            var childrenQuery: XCUIElementQuery!
-            
-            if let rootQuery = await self.cache.getQuery(countRequest.serverId) as? XCUIElementQuery {
-                childrenQuery = rootQuery.children(matching: countRequest.elementType.toXCUIElementType())
-            } else if let rootElement = await self.cache.getQuery(countRequest.serverId) as? XCUIElement {
-                childrenQuery = rootElement.children(matching: countRequest.elementType.toXCUIElementType())
-            }
-            
-            let id = await self.cache.add(query: childrenQuery)
-            
-            return QueryResponse(serverId: id)
-        })
-        
-        
-        await addRoute("query", handler: { (queryRequest: QueryRequest) in
-            let newQuery = await self.performQuery(queryRequest: queryRequest)
-            let serverId = await self.cache.add(query: newQuery)
-            return QueryResponse(serverId: serverId)
-        })
-        
-        await addRoute("element", handler: { (queryRequest: ElementByIdRequest) in
-            let newElement = try! await self.findElement(elementRequest: queryRequest)
-            let id = await self.cache.add(element: newElement)
-            return ElementResponse(serverId: id)
-        })
-
-        await addRoute("remove", handler: { (removeItemRequest: RemoveServerItemRequest) in
-            await self.cache.removeQuery(removeItemRequest.queryRoot)
-            await self.cache.removeElement(removeItemRequest.queryRoot)
-            
-            return true
-        })
+        await addRoute("isHittable", handler: self.isHittable(request:))
+        await addRoute("count", handler: self.count(request:))
+        await addRoute("queryDescendants", handler: self.queryDescendants(request:))
+        await addRoute("elementDescendants", handler: self.elementDescendants(request:))
+        await addRoute("matchingElementType", handler: self.matchingElementType(request:))
+        await addRoute("allElementsBoundByAccessibilityElement", handler: self.allElementsBoundByAccessibilityElement(request:))
+        await addRoute("allElementsBoundByIndex", handler: self.allElementsBoundByIndex(request:))
+        await addRoute("children", handler: self.children(request:))
+        await addRoute("query", handler: self.query(request:))
+        await addRoute("element", handler: self.element(request:))
+        await addRoute("remove", handler: self.remove(request:))
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
             Task {

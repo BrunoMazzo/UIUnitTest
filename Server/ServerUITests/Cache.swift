@@ -18,6 +18,16 @@ actor Cache {
         return id
     }
     
+    func add(elements: [XCUIElement?]) -> [UUID] {
+        var ids = [UUID]()
+        for element in elements {
+            let id = self.add(element: element)
+            ids.append(id)
+        }
+        
+        return ids
+    }
+    
     func removeQuery(_ id: UUID) {
         queryIds[id] = nil
     }
