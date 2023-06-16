@@ -51,6 +51,45 @@ class UIServer {
         return ElementResponse(serverId: id)
     }
     
+    func matchingPredicate(predicateRequest: PredicateRequest) async -> QueryResponse {
+        let query = await self.cache.getQuery(predicateRequest.serverId) as! XCUIElementQuery
+        let matching = query.matching(predicateRequest.predicate)
+        let id = await self.cache.add(query: matching)
+        return QueryResponse(serverId: id)
+    }
+    
+    func tapElement(tapRequest: TapElementRequest) async -> Bool {
+        guard let element = await self.cache.getElement(tapRequest.elementServerId) else {
+            return false
+        }
+        
+        if let duration = tapRequest.duration {
+            element.press(forDuration: duration)
+        } else if let numberOfTouches = tapRequest.numberOfTouches {
+            if let numberOfTaps = tapRequest.numberOfTaps {
+                element.tap(withNumberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
+            } else {
+                element.twoFingerTap()
+            }
+        } else  {
+            element.tap()
+        }
+        
+        return true
+    }
+    
+    func doubleTap(tapRequest: DoubleTapRequest) async -> Void {
+        let element = await self.cache.getElement(tapRequest.elementServerId)
+        element?.doubleTap()
+    }
+    
+    func exists(request: ElementRequest) async -> ExistsResponse {
+        let element = await self.cache.getElement(request.elementServerId)
+        let exists = element?.exists ?? false
+        
+        return ExistsResponse(exists: exists)
+    }
+    
     func start() async throws {
         let server = HTTPServer(address: .loopback(port: 22087))
         self.server = server
@@ -65,46 +104,10 @@ class UIServer {
         await addRoute("firstMatch", handler: self.firstMatch(firstMatchRequest:))
         await addRoute("elementFromQuery", handler: self.elementFromQuery(elementFromQuery:))
         await addRoute("elementMatchingPredicate", handler: self.elementMatchingPredicate(predicateRequest:))
-        
-        await addRoute("matchingPredicate", handler: { (predicateRequest: PredicateRequest) in
-            let query = await self.cache.getQuery(predicateRequest.serverId) as! XCUIElementQuery
-            let matching = query.matching(predicateRequest.predicate)
-            let id = await self.cache.add(query: matching)
-            return QueryResponse(serverId: id)
-        })
-        
-        await addRoute("tapElement", handler: { (tapRequest: TapElementRequest) -> Bool in
-            guard let element = await self.cache.getElement(tapRequest.elementServerId) else {
-                return false
-            }
-            
-            if let duration = tapRequest.duration {
-                element.press(forDuration: duration)
-            } else if let numberOfTouches = tapRequest.numberOfTouches {
-                if let numberOfTaps = tapRequest.numberOfTaps {
-                    element.tap(withNumberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
-                } else {
-                    element.twoFingerTap()
-                }
-            } else  {
-                element.tap()
-            }
-            
-            return true
-            
-        })
-        
-        await addRoute("doubleTap", handler: { (tapRequest: DoubleTapRequest) in
-            let element = await self.cache.getElement(tapRequest.elementServerId)
-            element?.doubleTap()
-        })
-        
-        await addRoute("exists", handler: { (tapRequest: ElementRequest) in
-            let element = await self.cache.getElement(tapRequest.elementServerId)
-            let exists = element?.exists ?? false
-            
-            return ExistsResponse(exists: exists)
-        })
+        await addRoute("matchingPredicate", handler: self.matchingPredicate(predicateRequest:) )
+        await addRoute("tapElement", handler: self.tapElement(tapRequest:))
+        await addRoute("doubleTap", handler: self.doubleTap(tapRequest:))
+        await addRoute("exists", handler: self.exists(request:))
         
         await addRoute("value", handler: { (tapRequest: ElementRequest) in
             let element = await self.cache.getElement(tapRequest.elementServerId)
@@ -238,45 +241,23 @@ class UIServer {
         })
         
         
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "query"), handler: { request in
-            defer {
-                self.lastIssue = nil
-            }
-            
-            let queryRequest = try await decoder.decode(QueryRequest.self, from: request.bodyData)
-            
+        await addRoute("query", handler: { (queryRequest: QueryRequest) in
             let newQuery = await self.performQuery(queryRequest: queryRequest)
-            
             let serverId = await self.cache.add(query: newQuery)
-            
-            return self.buildResponse(QueryResponse(serverId: serverId))
+            return QueryResponse(serverId: serverId)
         })
         
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "element"), handler: { request in
-            defer {
-                self.lastIssue = nil
-            }
-            
-            let queryRequest = try await decoder.decode(ElementByIdRequest.self, from: request.bodyData)
-            
+        await addRoute("element", handler: { (queryRequest: ElementByIdRequest) in
             let newElement = try! await self.findElement(elementRequest: queryRequest)
-            
             let id = await self.cache.add(element: newElement)
-            
-            return self.buildResponse(ElementResponse(serverId: id))
+            return ElementResponse(serverId: id)
         })
-        
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "remove"), handler: { request in
-            defer {
-                self.lastIssue = nil
-            }
+
+        await addRoute("remove", handler: { (removeItemRequest: RemoveServerItemRequest) in
+            await self.cache.removeQuery(removeItemRequest.queryRoot)
+            await self.cache.removeElement(removeItemRequest.queryRoot)
             
-            let queryRequest = try await decoder.decode(RemoveServerItemRequest.self, from: request.bodyData)
-            
-            await self.cache.removeQuery(queryRequest.queryRoot)
-            await self.cache.removeElement(queryRequest.queryRoot)
-            
-            return self.buildResponse(true)
+            return true
         })
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
