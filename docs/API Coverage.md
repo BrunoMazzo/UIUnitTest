@@ -104,7 +104,7 @@ The following table shows the API coverage at the moment:
 | func children(matching type: XCUIElement.ElementType) -> XCUIElementQuery | ✅ | |
 | func matching(_ predicate: NSPredicate) -> XCUIElementQuery | ✅ | |
 | func matching(_ elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElementQuery | ✅ | |
-| func matching(identifier: String) -> XCUIElementQuery | ❌ | |
+| func matching(identifier: String) -> XCUIElementQuery | ✅ | |
 | func containing(_ predicate: NSPredicate) -> XCUIElementQuery | ❌ | |
 | func containing(_ elementType: XCUIElement.ElementType, identifier: String?) -> XCUIElementQuery | ❌ | |
 | var debugDescription: String { get } | ❌ | |

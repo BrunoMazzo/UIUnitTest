@@ -187,7 +187,7 @@ class UIServer {
         let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
         let allElements = rootQuery.allElementsBoundByAccessibilityElement
         
-        var ids = await self.cache.add(elements: allElements)
+        let ids = await self.cache.add(elements: allElements)
         
         return ElementArrayResponse(serversId: ids)
     }
@@ -196,7 +196,7 @@ class UIServer {
         let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
         let allElements = rootQuery.allElementsBoundByIndex
         
-        var ids = await self.cache.add(elements: allElements)
+        let ids = await self.cache.add(elements: allElements)
         
         return ElementArrayResponse(serversId: ids)
     }
