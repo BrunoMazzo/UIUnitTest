@@ -16,6 +16,7 @@ class UIServer {
     
     let cache = Cache()
     
+    @MainActor
     func firstMatch(firstMatchRequest: FirstMatchRequest) async -> FirstMatchResponse {
         let query = await self.cache.getQuery(firstMatchRequest.queryRoot)
         let element = query?.firstMatch
@@ -25,6 +26,7 @@ class UIServer {
         return FirstMatchResponse(elementServerId: id)
     }
     
+    @MainActor
     func elementFromQuery(elementFromQuery: ElementFromQuery) async -> ElementResponse {
         let query = await self.cache.getQuery(elementFromQuery.serverId) as! XCUIElementQuery
         
@@ -42,6 +44,7 @@ class UIServer {
         return ElementResponse(serverId: id)
     }
     
+    @MainActor
     func elementMatchingPredicate(predicateRequest: PredicateRequest) async -> ElementResponse {
         let query = await self.cache.getQuery(predicateRequest.serverId) as! XCUIElementQuery
         let element = query.element(matching: predicateRequest.predicate)
@@ -51,6 +54,7 @@ class UIServer {
         return ElementResponse(serverId: id)
     }
     
+    @MainActor
     func matchingPredicate(predicateRequest: PredicateRequest) async -> QueryResponse {
         let query = await self.cache.getQuery(predicateRequest.serverId) as! XCUIElementQuery
         let matching = query.matching(predicateRequest.predicate)
@@ -58,6 +62,7 @@ class UIServer {
         return QueryResponse(serverId: id)
     }
     
+    @MainActor
     func matchingByIdentifier(request: QueryByIdRequest) async -> QueryResponse {
         let query = await self.cache.getQuery(request.queryRoot) as! XCUIElementQuery
         let matching = query.matching(identifier: request.identifier)
@@ -65,6 +70,7 @@ class UIServer {
         return QueryResponse(serverId: id)
     }
     
+    @MainActor
     func tapElement(tapRequest: TapElementRequest) async -> Bool {
         guard let element = await self.cache.getElement(tapRequest.elementServerId) else {
             return false
@@ -85,11 +91,13 @@ class UIServer {
         return true
     }
     
+    @MainActor
     func doubleTap(tapRequest: DoubleTapRequest) async -> Void {
         let element = await self.cache.getElement(tapRequest.elementServerId)
         element?.doubleTap()
     }
     
+    @MainActor
     func exists(request: ElementRequest) async -> ExistsResponse {
         let element = await self.cache.getElement(request.elementServerId)
         let exists = element?.exists ?? false
@@ -97,11 +105,13 @@ class UIServer {
         return ExistsResponse(exists: exists)
     }
     
+    @MainActor
     func enterText(request: EnterTextRequest) async -> Void {
         let element = await self.cache.getElement(request.elementServerId)
         element?.typeText(request.textToEnter)
     }
     
+    @MainActor
     func value(request: ElementRequest) async -> ValueResponse {
         let element = await self.cache.getElement(request.elementServerId)
         let value = element?.value as? String
@@ -109,11 +119,13 @@ class UIServer {
         return ValueResponse(value: value)
     }
     
+    @MainActor
     func scroll(request: ScrollRequest) async -> Void {
         let element = await self.cache.getElement(request.elementServerId)
         element?.scroll(byDeltaX: request.deltaX, deltaY: request.deltaY)
     }
     
+    @MainActor
     func swipe(request: SwipeRequest) async -> Void {
         let element = await self.cache.getElement(request.elementServerId)
         
@@ -131,16 +143,19 @@ class UIServer {
         }
     }
     
+    @MainActor
     func pinch(request: PinchRequest) async -> Void {
         let element = await self.cache.getElement(request.elementServerId)
         element?.pinch(withScale: request.scale, velocity: request.velocity)
     }
     
+    @MainActor
     func rotate(request: RotateRequest) async -> Void {
         let element = await self.cache.getElement(request.elementServerId)
         element?.rotate(request.rotation, withVelocity: request.velocity)
     }
     
+    @MainActor
     func waitForExistence(request: WaitForExistenceRequest) async -> WaitForExistenceResponse {
         let element = await self.cache.getElement(request.elementServerId)
         let exists = element?.waitForExistence(timeout: request.timeout) ?? false
@@ -148,16 +163,19 @@ class UIServer {
         return WaitForExistenceResponse(elementExists: exists)
     }
     
+    @MainActor
     func isHittable(request: ElementRequest) async -> IsHittableResponse {
         let isHittable = await self.cache.getElement(request.elementServerId)?.isHittable
         return IsHittableResponse(isHittable: isHittable ?? false)
     }
     
+    @MainActor
     func count(request: CountRequest) async -> CountResponse {
         let count: Int = (await self.cache.getQuery(request.serverId) as? XCUIElementQuery)?.count ?? -1
         return CountResponse(count: count)
     }
     
+    @MainActor
     func queryDescendants(request: DescendantsFromQuery) async -> QueryResponse {
         let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
         let descendantsQuery = rootQuery.descendants(matching: request.elementType.toXCUIElementType())
@@ -167,6 +185,7 @@ class UIServer {
         return QueryResponse(serverId: id)
     }
     
+    @MainActor
     func elementDescendants(request: ElementTypeRequest) async -> QueryResponse {
         let rootElement = await self.cache.getElement(request.serverId)!
         let descendantsQuery = rootElement.descendants(matching: request.elementType.toXCUIElementType())
@@ -176,6 +195,7 @@ class UIServer {
         return QueryResponse(serverId: id)
     }
     
+    @MainActor
     func matchingElementType(request: ElementTypeRequest) async -> QueryResponse {
         let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
         let descendantsQuery = rootQuery.matching(request.elementType.toXCUIElementType(), identifier: request.identifier)
@@ -183,6 +203,7 @@ class UIServer {
         return QueryResponse(serverId: id)
     }
     
+    @MainActor
     func allElementsBoundByAccessibilityElement(request: ElementsByAccessibility) async -> ElementArrayResponse {
         let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
         let allElements = rootQuery.allElementsBoundByAccessibilityElement
@@ -192,6 +213,7 @@ class UIServer {
         return ElementArrayResponse(serversId: ids)
     }
     
+    @MainActor
     func allElementsBoundByIndex(request: ElementsByAccessibility) async -> ElementArrayResponse {
         let rootQuery = await self.cache.getQuery(request.serverId) as! XCUIElementQuery
         let allElements = rootQuery.allElementsBoundByIndex
@@ -201,6 +223,7 @@ class UIServer {
         return ElementArrayResponse(serversId: ids)
     }
     
+    @MainActor
     func children(request: ChildrenMatchinType) async -> QueryResponse {
         var childrenQuery: XCUIElementQuery!
         
@@ -215,18 +238,21 @@ class UIServer {
         return QueryResponse(serverId: id)
     }
     
+    @MainActor
     func element(request: ElementByIdRequest) async -> ElementResponse {
         let newElement = try! await self.findElement(elementRequest: request)
         let id = await self.cache.add(element: newElement)
         return ElementResponse(serverId: id)
     }
     
+    @MainActor
     func query(request: QueryRequest) async -> QueryResponse {
         let newQuery = await self.performQuery(queryRequest: request)
         let serverId = await self.cache.add(query: newQuery)
         return QueryResponse(serverId: serverId)
     }
     
+    @MainActor
     func remove(request: RemoveServerItemRequest) async -> Bool {
         await self.cache.removeQuery(request.queryRoot)
         await self.cache.removeElement(request.queryRoot)
@@ -306,6 +332,7 @@ class UIServer {
         return HTTPResponse(statusCode: .badRequest, body: try! encoder.encode(UIResponse<Bool>(error: error)))
     }
     
+    @MainActor
     func performQuery(queryRequest: QueryRequest) async -> XCUIElementQuery {
         var rootElementQuery: XCUIElementTypeQueryProvider = app
         if let rootQueryId = queryRequest.queryRoot, let rootQuery = await self.cache.getQuery(rootQueryId) {
