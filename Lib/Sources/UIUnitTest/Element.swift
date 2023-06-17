@@ -107,10 +107,52 @@ public class Element: ElementTypeQueryProvider {
         let _: Bool = try await callServer(path: "enterText", request: activateRequestData)
     }
     
-    var debugDescription: String {
+    public var debugDescription: String {
         get async throws {
             let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.queryServerId!))
             return valueResponse.value!
+        }
+    }
+    
+    public var identifier: String {
+        get async throws {
+            return try await callServer(path: "identifier", request: ElementRequest(elementServerId: self.queryServerId!))
+        }
+    }
+    
+    public var title: String {
+        get async throws {
+            return try await callServer(path: "title", request: ElementRequest(elementServerId: self.queryServerId!))
+        }
+    }
+    
+    public var label: String {
+        get async throws {
+            return try await callServer(path: "label", request: ElementRequest(elementServerId: self.queryServerId!))
+        }
+    }
+    
+    public var placeholderValue: String? {
+        get async throws {
+            return try await callServer(path: "placeholderValue", request: ElementRequest(elementServerId: self.queryServerId!))
+        }
+    }
+    
+    public var isSelected: Bool {
+        get async throws {
+            return try await callServer(path: "isSelected", request: ElementRequest(elementServerId: self.queryServerId!))
+        }
+    }
+    
+    public var hasFocus: Bool {
+        get async throws {
+            return try await callServer(path: "hasFocus", request: ElementRequest(elementServerId: self.queryServerId!))
+        }
+    }
+    
+    public var isEnabled: Bool {
+        get async throws {
+            return try await callServer(path: "isEnabled", request: ElementRequest(elementServerId: self.queryServerId!))
         }
     }
 }

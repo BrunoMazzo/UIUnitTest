@@ -291,6 +291,48 @@ class UIServer {
         return ValueResponse(value: debugDescription)
     }
     
+    @MainActor
+    func identifier(request: ElementRequest) async -> String {
+        let rootElement = await self.cache.getQuery(request.elementServerId) as! XCUIElement
+        return rootElement.identifier
+    }
+    
+    @MainActor
+    func title(request: ElementRequest) async -> String {
+        let rootElement = await self.cache.getQuery(request.elementServerId) as! XCUIElement
+        return rootElement.title
+    }
+    
+    @MainActor
+    func label(request: ElementRequest) async -> String {
+        let rootElement = await self.cache.getQuery(request.elementServerId) as! XCUIElement
+        return rootElement.label
+    }
+    
+    @MainActor
+    func placeholderValue(request: ElementRequest) async -> String? {
+        let rootElement = await self.cache.getQuery(request.elementServerId) as! XCUIElement
+        return rootElement.placeholderValue
+    }
+    
+    @MainActor
+    func isSelected(request: ElementRequest) async -> Bool {
+        let rootElement = await self.cache.getQuery(request.elementServerId) as! XCUIElement
+        return rootElement.isSelected
+    }
+    
+    @MainActor
+    func hasFocus(request: ElementRequest) async -> Bool {
+        let rootElement = await self.cache.getQuery(request.elementServerId) as! XCUIElement
+        return rootElement.hasFocus
+    }
+    
+    @MainActor
+    func isEnabled(request: ElementRequest) async -> Bool {
+        let rootElement = await self.cache.getQuery(request.elementServerId) as! XCUIElement
+        return rootElement.isEnabled
+    }
+    
     func start() async throws {
         let server = HTTPServer(address: .loopback(port: 22087))
         self.server = server
@@ -337,6 +379,13 @@ class UIServer {
         await addRoute("remove", handler: self.remove(request:))
         await addRoute("debugDescription", handler: self.debugDescription(request:))
         
+        await addRoute("identifier", handler: self.identifier(request:))
+        await addRoute("title", handler: self.title(request:))
+        await addRoute("label", handler: self.label(request:))
+        await addRoute("placeholderValue", handler: self.placeholderValue(request:))
+        await addRoute("isSelected", handler: self.isSelected(request:))
+        await addRoute("hasFocus", handler: self.hasFocus(request:))
+        await addRoute("isEnabled", handler: self.isEnabled(request:))
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
             Task {
