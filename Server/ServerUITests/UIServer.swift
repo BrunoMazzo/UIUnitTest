@@ -279,7 +279,7 @@ class UIServer {
     }
     
     @MainActor
-    func debugDescription(request: ElementRequest) async -> ValueResponse {
+    func debugDescription(request: ElementRequest) async -> String {
         var debugDescription: String!
         
         if let rootQuery = await self.cache.getQuery(request.elementServerId) as? XCUIElementQuery {
@@ -288,7 +288,7 @@ class UIServer {
             debugDescription = rootElement.debugDescription
         }
         
-        return ValueResponse(value: debugDescription)
+        return debugDescription
     }
     
     @MainActor

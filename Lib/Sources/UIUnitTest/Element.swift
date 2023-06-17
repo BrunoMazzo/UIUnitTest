@@ -109,8 +109,7 @@ public class Element: ElementTypeQueryProvider {
     
     public var debugDescription: String {
         get async throws {
-            let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.queryServerId!))
-            return valueResponse.value!
+            try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.queryServerId!))
         }
     }
     
