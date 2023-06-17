@@ -41,7 +41,11 @@ actor Cache {
         return queryIds[id]
     }
     
-    func getElement(_ id: UUID) -> XCUIElement? {
-        return elementIds[id]
+    func getElement(_ id: UUID) throws -> XCUIElement {
+        guard let element = elementIds[id] else {
+            throw ElementNotFoundError(elementServerId: id.uuidString)
+        }
+        
+        return element
     }
 }

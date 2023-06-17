@@ -33,10 +33,13 @@ final class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
+        let isHittable = try await app.staticTexts["Hello world button"].isHittable
+        XCTAssert(isHittable)
+        
         try await app.buttons["Hello world button"].tap()
         
-        let exists = try await app.staticTexts["Value: Hello world"].exists
         
+        let exists = try await app.staticTexts["Value: Hello world"].exists
         XCTAssert(exists)
     }
     
