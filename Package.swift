@@ -40,8 +40,7 @@ let package = Package(
         .target(
             name: "UIUnitTest",
             dependencies: [],
-            path: "Lib/Sources/UIUnitTest",
-            linkerSettings: [.linkedFramework("XCTest")]
+            path: "Lib/Sources/UIUnitTest"
         ),
         .plugin(
             name: "UIUnitTestBuildPlugin",

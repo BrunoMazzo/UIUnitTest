@@ -1,5 +1,4 @@
 import Foundation
-import XCTest
 
 public enum SwipeDirection: Codable {
     case up, down, left, right
@@ -42,7 +41,16 @@ public struct SwipeRequest: Codable {
     }
 }
 
-public struct GestureVelocity : Hashable, Equatable, RawRepresentable, @unchecked Sendable, Codable {
+public enum GestureVelocity: Hashable, Equatable, @unchecked Sendable, Codable {
+    case `default`, slow, fast
+    case custom(CGFloat)
+    
+    public init(_ value: CGFloat) {
+        self = .custom(value)
+    }
+}
+
+public struct GestureVelocity2 : Hashable, Equatable, RawRepresentable, @unchecked Sendable, Codable {
     
     public let rawValue: CGFloat
     
@@ -58,7 +66,7 @@ public struct GestureVelocity : Hashable, Equatable, RawRepresentable, @unchecke
 extension GestureVelocity : ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: Int) {
-        self.init(CGFloat(value))
+        self = .custom(CGFloat(value))
     }
     
     public typealias IntegerLiteralType = Int
@@ -69,14 +77,14 @@ extension GestureVelocity : ExpressibleByFloatLiteral {
     public typealias FloatLiteralType = CGFloat.NativeType
     
     public init(floatLiteral value: GestureVelocity.FloatLiteralType) {
-        self.init(value)
+        self = .custom(value)
     }
 }
-extension GestureVelocity {
-    
-    public static let `default` = GestureVelocity(XCUIGestureVelocity.default.rawValue)
-    
-    public static let slow =  GestureVelocity(XCUIGestureVelocity.slow.rawValue)
-    
-    public static let fast = GestureVelocity(XCUIGestureVelocity.fast.rawValue)
-}
+//extension GestureVelocity {
+//    
+//    public static let `default` = GestureVelocity(XCUIGestureVelocity.default.rawValue)
+//    
+//    public static let slow =  GestureVelocity(XCUIGestureVelocity.slow.rawValue)
+//    
+//    public static let fast = GestureVelocity(XCUIGestureVelocity.fast.rawValue)
+//}

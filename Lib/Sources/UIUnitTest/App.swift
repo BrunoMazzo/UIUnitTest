@@ -1,5 +1,4 @@
 import Foundation
-import XCTest
 
 public class App: ElementTypeQueryProvider {
     public var queryServerId: UUID? = nil

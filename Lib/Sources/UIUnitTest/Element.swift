@@ -1,5 +1,4 @@
 import Foundation
-import XCTest
 
 public class Element: ElementTypeQueryProvider {
     public var queryServerId: UUID? {
@@ -313,9 +312,9 @@ public extension Element {
         
         case statusItem = 82
         
-        public func toXCUIElementType() -> XCUIElement.ElementType {
-            XCUIElement.ElementType(rawValue: self.rawValue)!
-        }
+//        public func toXCUIElementType() -> XCUIElement.ElementType {
+//            XCUIElement.ElementType(rawValue: self.rawValue)!
+//        }
     }
 }
 
