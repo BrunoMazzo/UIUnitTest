@@ -82,18 +82,6 @@ public class Element: ElementTypeQueryProvider {
 //
 //    /** Creates and returns a new coordinate that will compute its screen point by adding the offset multiplied by the size of the element’s frame to the origin of the element’s frame. */
 //    open func coordinate(withNormalizedOffset normalizedOffset: CGVector) -> XCUICoordinate
-//
-//
-//    /**
-//     @discussion
-//     Provides debugging information about the element. The data in the string will vary based on the
-//     time at which it is captured, but it may include any of the following as well as additional data:
-//     • Values for the elements attributes.
-//     • The entire tree of descendants rooted at the element.
-//     • The element's query.
-//     This data should be used for debugging only - depending on any of the data as part of a test is unsupported.
-//     */
-//    open var debugDescription: String { get }
 //}
 //
     public func scroll(byDeltaX deltaX: CGFloat, deltaY: CGFloat) async throws {
