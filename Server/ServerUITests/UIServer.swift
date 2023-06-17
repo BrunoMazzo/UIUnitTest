@@ -155,17 +155,17 @@ class UIServer {
     func swipe(request: SwipeRequest) async throws -> Void {
         let element = try await self.cache.getElement(request.elementServerId)
         
-        let velocity = request.velocity.rawValue
+        let velocity = request.velocity.xcUIGestureVelocity
         
         switch request.swipeDirection {
         case .left:
-            element.swipeLeft(velocity: XCUIGestureVelocity(velocity))
+            element.swipeLeft(velocity: velocity)
         case .right:
-            element.swipeRight(velocity: XCUIGestureVelocity(velocity))
+            element.swipeRight(velocity: velocity)
         case .up:
-            element.swipeUp(velocity: XCUIGestureVelocity(velocity))
+            element.swipeUp(velocity: velocity)
         case .down:
-            element.swipeDown(velocity: XCUIGestureVelocity(velocity))
+            element.swipeDown(velocity: velocity)
         }
     }
     
@@ -645,5 +645,26 @@ class UIServer {
             
             
         })
+    }
+}
+
+public extension Element.ElementType {
+    func toXCUIElementType() -> XCUIElement.ElementType {
+        XCUIElement.ElementType(rawValue: self.rawValue)!
+    }
+}
+
+public extension GestureVelocity {
+    var xcUIGestureVelocity: XCUIGestureVelocity {
+        switch self {
+        case .slow:
+            return .slow
+        case .fast:
+            return .fast
+        case .default:
+            return .default
+        case .custom(let value):
+            return XCUIGestureVelocity(rawValue: value) 
+        }
     }
 }

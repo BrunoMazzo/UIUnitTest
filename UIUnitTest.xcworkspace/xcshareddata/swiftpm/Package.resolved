@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "flyingfox",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swhitty/FlyingFox.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "5bbbb4bef2857d8d85562986d075e6117d065d97"
-      }
-    },
-    {
       "identity" : "spectre",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kylef/Spectre.git",
