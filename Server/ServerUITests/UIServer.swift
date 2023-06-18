@@ -135,7 +135,7 @@ class UIServer {
     }
     
     @MainActor
-    func doubleTap(tapRequest: DoubleTapRequest) async throws -> Void {
+    func doubleTap(tapRequest: ElementRequest) async throws -> Void {
         let element = try await self.cache.getElement(tapRequest.elementServerId)
         element.doubleTap()
     }
