@@ -80,11 +80,3 @@ extension GestureVelocity : ExpressibleByFloatLiteral {
         self = .custom(value)
     }
 }
-//extension GestureVelocity {
-//    
-//    public static let `default` = GestureVelocity(XCUIGestureVelocity.default.rawValue)
-//    
-//    public static let slow =  GestureVelocity(XCUIGestureVelocity.slow.rawValue)
-//    
-//    public static let fast = GestureVelocity(XCUIGestureVelocity.fast.rawValue)
-//}

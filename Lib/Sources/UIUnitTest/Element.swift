@@ -77,12 +77,7 @@ public class Element: ElementTypeQueryProvider {
         
         return Query(queryServerId: queryResponse.serverId)
     }
-//
-//
-//    /** Creates and returns a new coordinate that will compute its screen point by adding the offset multiplied by the size of the element’s frame to the origin of the element’s frame. */
-//    open func coordinate(withNormalizedOffset normalizedOffset: CGVector) -> XCUICoordinate
-//}
-//
+
     public func scroll(byDeltaX deltaX: CGFloat, deltaY: CGFloat) async throws {
         let activateRequestData = ScrollRequest(elementServerId: self.serverId, deltaX: deltaX, deltaY: deltaY)
         let _: Bool = try await callServer(path: "scroll", request: activateRequestData)

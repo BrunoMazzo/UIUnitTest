@@ -37,8 +37,12 @@ actor Cache {
         elementIds[id] = nil
     }
     
-    func getQuery(_ id: UUID) -> XCUIElementTypeQueryProvider? {
-        return queryIds[id]
+    func getQuery(_ id: UUID) throws -> XCUIElementTypeQueryProvider {
+        guard let query = queryIds[id] else {
+            throw QueryNotFoundError(queryServerId: id.uuidString)
+        }
+        
+        return query
     }
     
     func getElement(_ id: UUID) throws -> XCUIElement {
@@ -47,5 +51,15 @@ actor Cache {
         }
         
         return element
+    }
+    
+    func getElementQuery(_ id: UUID) throws -> XCUIElementQuery {
+        let rootQuery = try self.getQuery(id)
+        
+        guard let query = rootQuery as? XCUIElementQuery else {
+            throw WrongQueryTypeFoundError(queryServerId: id.uuidString)
+        }
+        
+        return query
     }
 }

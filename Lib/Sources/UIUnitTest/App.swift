@@ -21,9 +21,9 @@ public class App: ElementTypeQueryProvider {
     }
 }
 
-public enum Response {
+public enum Response<T: Codable> {
     case error(error: ErrorResponse)
-    case success(data: Codable)
+    case success(data: T)
 }
 
 public struct ErrorResponse: Codable {
@@ -32,7 +32,7 @@ public struct ErrorResponse: Codable {
 
 public struct UIResponse<T: Codable>: Codable {
     
-    public let response: Response
+    public let response: Response<T>
     
     public init(response: T) {
         self.response = .success(data: response)
@@ -88,7 +88,7 @@ internal func callServer<RequestData: Codable, ResponseData: Codable>(path: Stri
     
     switch result.response {
     case .success(data: let response):
-        return response as! ResponseData
+        return response
     case .error(error: let error):
         
         print(error.error)
