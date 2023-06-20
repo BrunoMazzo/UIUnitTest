@@ -110,22 +110,22 @@ public class Query: ElementTypeQueryProvider {
         return Query(queryServerId: response.serverId)
     }
     
-    open func matching(identifier: String) async throws -> Query {
+    public func matching(identifier: String) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingByIdentifier", request: QueryByIdRequest(queryRoot: self.queryServerId!, identifier: identifier))
         return Query(queryServerId: response.serverId)
     }
     
-    func containing(_ predicate: NSPredicate) async throws -> Query {
+    public func containing(_ predicate: NSPredicate) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "containingPredicate", request: PredicateRequest(serverId: self.queryServerId!, predicate: predicate))
         return Query(queryServerId: response.serverId)
     }
     
-    func containing(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
+    public func containing(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "containingElementType", request: ElementTypeRequest(serverId: self.queryServerId!, elementType: elementType, identifier: identifier))
         return Query(queryServerId: response.serverId)
     }
     
-    var debugDescription: String {
+    public var debugDescription: String {
          get async throws {
              let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.queryServerId!))
             return valueResponse.value!
@@ -133,8 +133,8 @@ public class Query: ElementTypeQueryProvider {
     }
 }
 
-extension Query {
-    public enum QueryType: Int, Codable {
+public extension Query {
+    enum QueryType: Int, Codable {
         case activityIndicators
         case alerts
         case browsers
