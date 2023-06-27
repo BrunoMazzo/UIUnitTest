@@ -179,11 +179,11 @@ The following table shows the API coverage at the moment:
 | func doubleClick() | ❌ |  | 
 | func rightClick() | ❌ |  | 
 | func scroll(byDeltaX: CGFloat, deltaY: CGFloat) | ❌ |  | 
-| func tap() | ❌ |  | 
-| func doubleTap() | ❌ |  | 
-| func press(forDuration: TimeInterval) | ❌ |  | 
-| func press(forDuration: TimeInterval, thenDragTo: XCUICoordinate) | ❌ |  | 
-| func press(forDuration: TimeInterval, thenDragTo: XCUICoordinate, withVelocity: XCUIGestureVelocity, thenHoldForDuration: TimeInterval) | ❌ |  |  
+| func tap() | ✅ |  | 
+| func doubleTap() | ✅ |  | 
+| func press(forDuration: TimeInterval) | ✅ |  | 
+| func press(forDuration: TimeInterval, thenDragTo: XCUICoordinate) | ✅ |  | 
+| func press(forDuration: TimeInterval, thenDragTo: XCUICoordinate, withVelocity: XCUIGestureVelocity, thenHoldForDuration: TimeInterval) | ✅ |  |  
 | func swipeLeft() | ❌ |  | 
 | func swipeLeft(velocity: XCUIGestureVelocity) | ❌ |  | 
 | func swipeRight() | ❌ |  | 

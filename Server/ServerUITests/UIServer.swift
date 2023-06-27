@@ -394,6 +394,28 @@ class UIServer {
         return CoordinateResponse(coordinate: Coordinate(serverId: coordinateUUID, referencedElement: Element(serverId: elementUUID), screenPoint: coordinate.screenPoint))
     }
     
+    @MainActor
+    func coordinateTap(request: TapCoordinateRequest) async throws -> Bool {
+        let rootCoordinate = try await self.cache.getCoordinate(request.elementServerId)
+        
+        switch request.type {
+        case .tap:
+            rootCoordinate.tap()
+        case .doubleTap:
+            rootCoordinate.doubleTap()
+        case .press(forDuration: let duration):
+            rootCoordinate.press(forDuration: duration)
+        case .pressAndDrag(forDuration: let duration, thenDragTo: let coordinate):
+            let coordinate = try await self.cache.getCoordinate(coordinate.serverId)
+            rootCoordinate.press(forDuration: duration, thenDragTo: coordinate)
+        case .pressDragAndHold(forDuration: let duration, thenDragTo: let coordinate, withVelocity: let velocity, thenHoldForDuration: let holdDuration):
+            let coordinate = try await self.cache.getCoordinate(coordinate.serverId)
+            rootCoordinate.press(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity.xcUIGestureVelocity, thenHoldForDuration: holdDuration)
+        }
+        
+        return true
+    }
+    
     func start() async throws {
         let server = HTTPServer(address: .loopback(port: 22087))
         self.server = server
@@ -450,7 +472,7 @@ class UIServer {
         
         await addRoute("coordinate", handler: self.coordinate(request:))
         await addRoute("coordinateWithOffset", handler: self.coordinateWithOffset(request:))
-        
+        await addRoute("coordinateTap", handler: self.coordinateTap(request:))
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
             Task {

@@ -1,7 +1,7 @@
 import Foundation
 
 public class Coordinate: Codable {
-    var serverId: UUID
+    public var serverId: UUID
     
     var referencedElement: Element
     var screenPoint: CGPoint
@@ -24,6 +24,31 @@ public class Coordinate: Codable {
         let response: CoordinateResponse = try await callServer(path: "coordinateWithOffset", request: request)
         return response.coordinate
     }
+    
+    func tap() async throws {
+        let request = TapCoordinateRequest(elementServerId: self.serverId, type: .tap)
+        let _: Bool = try await callServer(path: "coordinateTap", request: request)
+    }
+    
+    func doubleTap() async throws {
+        let request = TapCoordinateRequest(elementServerId: self.serverId, type: .doubleTap)
+        let _: Bool = try await callServer(path: "coordinateTap", request: request)
+    }
+    
+    public func press(forDuration duration: TimeInterval) async throws {
+        let request = TapCoordinateRequest(elementServerId: self.serverId, type: .press(forDuration: duration))
+        let _: Bool = try await callServer(path: "coordinateTap", request: request)
+    }
+    
+    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) async throws {
+        let request = TapCoordinateRequest(elementServerId: self.serverId, type: .pressAndDrag(forDuration: duration, thenDragTo: coordinate))
+        let _: Bool = try await callServer(path: "coordinateTap", request: request)
+    }
+    
+    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocity, thenHoldForDuration holdDuration: TimeInterval) async throws {
+        let request = TapCoordinateRequest(elementServerId: self.serverId, type: .pressDragAndHold(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity, thenHoldForDuration: holdDuration) )
+        let _: Bool = try await callServer(path: "coordinateTap", request: request)
+    }
 
 }
 
@@ -42,6 +67,27 @@ public struct CoordinateResponse: Codable {
     
     public init(coordinate: Coordinate) {
         self.coordinate = coordinate
+    }
+}
+
+
+
+public struct TapCoordinateRequest: Codable {
+    
+    public enum TapType: Codable {
+        case tap
+        case doubleTap
+        case press(forDuration: TimeInterval)
+        case pressAndDrag(forDuration: TimeInterval, thenDragTo: Coordinate)
+        case pressDragAndHold(forDuration: TimeInterval, thenDragTo: Coordinate, withVelocity: GestureVelocity, thenHoldForDuration: TimeInterval)
+    }
+    
+    public var elementServerId: UUID
+    public var type: TapType
+    
+    init(elementServerId: UUID, type: TapType) {
+        self.elementServerId = elementServerId
+        self.type = type
     }
 }
 
