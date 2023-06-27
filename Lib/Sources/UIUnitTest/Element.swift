@@ -1,13 +1,13 @@
 import Foundation
 
-public class Element: ElementTypeQueryProvider {
+public class Element: ElementTypeQueryProvider, Codable {
     public var queryServerId: UUID? {
         serverId
     }
     
     var serverId: UUID
     
-    init(serverId: UUID) {
+    public init(serverId: UUID) {
         self.serverId = serverId
     }
     
@@ -135,6 +135,14 @@ public class Element: ElementTypeQueryProvider {
         get async throws {
             return try await callServer(path: "isEnabled", request: ElementRequest(elementServerId: self.queryServerId!))
         }
+    }
+    
+    public func coordinate(withNormalizedOffset normalizedOffset: CGVector) async throws -> Coordinate {
+        let request = CoordinateRequest(serverId: self.serverId, normalizedOffset: normalizedOffset)
+        
+        let response: CoordinateResponse = try await callServer(path: "coordinate", request: request)
+        
+        return response.coordinate
     }
 }
 

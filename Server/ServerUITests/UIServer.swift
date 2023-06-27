@@ -22,6 +22,14 @@ struct QueryNotFoundError: Error, LocalizedError {
     }
 }
 
+struct CoordinateNotFoundError: Error, LocalizedError {
+    var coordinateId: String
+    
+    var errorDescription: String? {
+        return "Coordinate with id \(coordinateId) not found"
+    }
+}
+
 struct WrongQueryTypeFoundError: Error, LocalizedError {
     var queryServerId: String
     
@@ -301,6 +309,7 @@ class UIServer {
     func remove(request: RemoveServerItemRequest) async -> Bool {
         await self.cache.removeQuery(request.queryRoot)
         await self.cache.removeElement(request.queryRoot)
+        await self.cache.removeCoordinate(request.queryRoot)
         
         return true
     }
@@ -362,6 +371,29 @@ class UIServer {
         return rootElement.isEnabled
     }
     
+    @MainActor
+    func coordinate(request: CoordinateRequest) async throws -> CoordinateResponse {
+        //withNormalizedOffset: CGVector
+        let rootElement = try await self.cache.getElement(request.serverId)
+        let coordinate = rootElement.coordinate(withNormalizedOffset: request.normalizedOffset)
+        
+        let coordinateUUID = await cache.add(coordinate: coordinate)
+        let elementUUID = await cache.add(element: coordinate.referencedElement)
+        
+        return CoordinateResponse(coordinate: Coordinate(serverId: coordinateUUID, referencedElement: Element(serverId: elementUUID), screenPoint: coordinate.screenPoint))
+    }
+    
+    @MainActor
+    func coordinateWithOffset(request: CoordinateOffsetRequest) async throws -> CoordinateResponse {
+        let rootCoordinate = try await self.cache.getCoordinate(request.coordinatorId)
+        let coordinate = rootCoordinate.withOffset(request.vector)
+        
+        let coordinateUUID = await cache.add(coordinate: coordinate)
+        let elementUUID = await cache.add(element: coordinate.referencedElement)
+        
+        return CoordinateResponse(coordinate: Coordinate(serverId: coordinateUUID, referencedElement: Element(serverId: elementUUID), screenPoint: coordinate.screenPoint))
+    }
+    
     func start() async throws {
         let server = HTTPServer(address: .loopback(port: 22087))
         self.server = server
@@ -415,6 +447,10 @@ class UIServer {
         await addRoute("isSelected", handler: self.isSelected(request:))
         await addRoute("hasFocus", handler: self.hasFocus(request:))
         await addRoute("isEnabled", handler: self.isEnabled(request:))
+        
+        await addRoute("coordinate", handler: self.coordinate(request:))
+        await addRoute("coordinateWithOffset", handler: self.coordinateWithOffset(request:))
+        
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
             Task {

@@ -149,8 +149,7 @@ The following table shows the API coverage at the moment:
 | var normalizedSliderPosition: CGFloat | ❌ | |
 | func adjust(toNormalizedSliderPosition: CGFloat) | ❌ | |
 | func adjust(toPickerWheelValue: String) | ❌ | |
-| func coordinate(withNormalizedOffset: CGVector) -> XCUICoordinate | ❌ | |
-
+| func coordinate(withNormalizedOffset: CGVector) -> XCUICoordinate | ✅ | |
 
 ## **XCUIElementAttributes**
 | API | Coverage | Notes |
@@ -167,3 +166,30 @@ The following table shows the API coverage at the moment:
 | var placeholderValue: String? { get } | ✅ |  | 
 | var isSelected: Bool { get } | ✅ |  | 
 | var hasFocus: Bool { get } | ✅ |  | 
+
+## **XCUICoordinate**
+| API | Coverage | Notes |
+| --- | --- | --- |
+| var referencedElement: XCUIElement | ✅ |  | 
+| var screenPoint: CGPoint | ✅ |  | 
+| func hover() | ❌ |  | 
+| func click() | ❌ |  | 
+| func click(forDuration: TimeInterval, thenDragTo: XCUICoordinate) | ❌ |  | 
+| func click(forDuration: TimeInterval, thenDragTo: XCUICoordinate, withVelocity: XCUIGestureVelocity, thenHoldForDuration: TimeInterval) | ❌ |  | 
+| func doubleClick() | ❌ |  | 
+| func rightClick() | ❌ |  | 
+| func scroll(byDeltaX: CGFloat, deltaY: CGFloat) | ❌ |  | 
+| func tap() | ❌ |  | 
+| func doubleTap() | ❌ |  | 
+| func press(forDuration: TimeInterval) | ❌ |  | 
+| func press(forDuration: TimeInterval, thenDragTo: XCUICoordinate) | ❌ |  | 
+| func press(forDuration: TimeInterval, thenDragTo: XCUICoordinate, withVelocity: XCUIGestureVelocity, thenHoldForDuration: TimeInterval) | ❌ |  |  
+| func swipeLeft() | ❌ |  | 
+| func swipeLeft(velocity: XCUIGestureVelocity) | ❌ |  | 
+| func swipeRight() | ❌ |  | 
+| func swipeRight(velocity: XCUIGestureVelocity) | ❌ |  | 
+| func swipeUp() | ❌ |  | 
+| func swipeUp(velocity: XCUIGestureVelocity) | ❌ |  | 
+| func swipeDown() | ❌ |  | 
+| func swipeDown(velocity: XCUIGestureVelocity) | ❌ |  | 
+| func withOffset(CGVector) -> XCUICoordinate | ✅ |  | 
