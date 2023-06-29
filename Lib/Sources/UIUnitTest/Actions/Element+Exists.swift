@@ -18,10 +18,10 @@ public struct ValueResponse: Codable {
 }
 
 public struct ElementRequest: Codable {
-    public var elementServerId: UUID
+    public var serverId: UUID
     
-    init(elementServerId: UUID) {
-        self.elementServerId = elementServerId
+    init(serverId: UUID) {
+        self.serverId = serverId
     }
 }
 

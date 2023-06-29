@@ -129,7 +129,7 @@ class UIServer {
     
     @MainActor
     func tapElement(tapRequest: TapElementRequest) async throws -> Bool {
-        guard let element = try? await self.cache.getElement(tapRequest.elementServerId) else {
+        guard let element = try? await self.cache.getElement(tapRequest.serverId) else {
             return false
         }
         
@@ -150,13 +150,13 @@ class UIServer {
     
     @MainActor
     func doubleTap(tapRequest: ElementRequest) async throws -> Void {
-        let element = try await self.cache.getElement(tapRequest.elementServerId)
+        let element = try await self.cache.getElement(tapRequest.serverId)
         element.doubleTap()
     }
     
     @MainActor
     func exists(request: ElementRequest) async throws -> ExistsResponse {
-        let element = try await self.cache.getElement(request.elementServerId)
+        let element = try await self.cache.getElement(request.serverId)
         let exists = element.exists
         
         return ExistsResponse(exists: exists)
@@ -164,13 +164,13 @@ class UIServer {
     
     @MainActor
     func enterText(request: EnterTextRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.elementServerId)
+        let element = try await self.cache.getElement(request.serverId)
         element.typeText(request.textToEnter)
     }
     
     @MainActor
     func value(request: ElementRequest) async throws -> ValueResponse {
-        let element = try await self.cache.getElement(request.elementServerId)
+        let element = try await self.cache.getElement(request.serverId)
         let value = element.value as? String
         
         return ValueResponse(value: value)
@@ -178,13 +178,13 @@ class UIServer {
     
     @MainActor
     func scroll(request: ScrollRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.elementServerId)
+        let element = try await self.cache.getElement(request.serverId)
         element.scroll(byDeltaX: request.deltaX, deltaY: request.deltaY)
     }
     
     @MainActor
     func swipe(request: SwipeRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.elementServerId)
+        let element = try await self.cache.getElement(request.serverId)
         
         let velocity = request.velocity.xcUIGestureVelocity
         
@@ -202,19 +202,19 @@ class UIServer {
     
     @MainActor
     func pinch(request: PinchRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.elementServerId)
+        let element = try await self.cache.getElement(request.serverId)
         element.pinch(withScale: request.scale, velocity: request.velocity)
     }
     
     @MainActor
     func rotate(request: RotateRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.elementServerId)
+        let element = try await self.cache.getElement(request.serverId)
         element.rotate(request.rotation, withVelocity: request.velocity)
     }
     
     @MainActor
     func waitForExistence(request: WaitForExistenceRequest) async throws -> WaitForExistenceResponse {
-        let element = try await self.cache.getElement(request.elementServerId)
+        let element = try await self.cache.getElement(request.serverId)
         let exists = element.waitForExistence(timeout: request.timeout)
         
         return WaitForExistenceResponse(elementExists: exists)
@@ -222,7 +222,7 @@ class UIServer {
     
     @MainActor
     func isHittable(request: ElementRequest) async throws -> IsHittableResponse {
-        let isHittable = try await self.cache.getElement(request.elementServerId).isHittable
+        let isHittable = try await self.cache.getElement(request.serverId).isHittable
         return IsHittableResponse(isHittable: isHittable)
     }
     
@@ -313,7 +313,7 @@ class UIServer {
     
     @MainActor
     func remove(request: RemoveServerItemRequest) async -> Bool {
-        await self.cache.remove(request.queryRoot)
+        await self.cache.remove(request.serverId)
         
         return true
     }
@@ -322,12 +322,12 @@ class UIServer {
     func debugDescription(request: ElementRequest) async throws -> String {
         var debugDescription: String!
         
-        if let rootQuery = try? await self.cache.getElementQuery(request.elementServerId) {
+        if let rootQuery = try? await self.cache.getElementQuery(request.serverId) {
             debugDescription = rootQuery.debugDescription
-        } else if let rootElement = try? await self.cache.getElement(request.elementServerId) {
+        } else if let rootElement = try? await self.cache.getElement(request.serverId) {
             debugDescription = rootElement.debugDescription
         } else {
-            throw ElementNotFoundError(serverId: request.elementServerId.uuidString)
+            throw ElementNotFoundError(serverId: request.serverId.uuidString)
         }
         
         return debugDescription
@@ -335,43 +335,43 @@ class UIServer {
     
     @MainActor
     func identifier(request: ElementRequest) async throws -> String {
-        let rootElement = try await self.cache.getElement(request.elementServerId)
+        let rootElement = try await self.cache.getElement(request.serverId)
         return rootElement.identifier
     }
     
     @MainActor
     func title(request: ElementRequest) async throws -> String {
-        let rootElement = try await self.cache.getElement(request.elementServerId)
+        let rootElement = try await self.cache.getElement(request.serverId)
         return rootElement.title
     }
     
     @MainActor
     func label(request: ElementRequest) async throws -> String {
-        let rootElement = try await self.cache.getElement(request.elementServerId)
+        let rootElement = try await self.cache.getElement(request.serverId)
         return rootElement.label
     }
     
     @MainActor
     func placeholderValue(request: ElementRequest) async throws -> String? {
-        let rootElement = try await self.cache.getElement(request.elementServerId)
+        let rootElement = try await self.cache.getElement(request.serverId)
         return rootElement.placeholderValue
     }
     
     @MainActor
     func isSelected(request: ElementRequest) async throws -> Bool {
-        let rootElement = try await self.cache.getElement(request.elementServerId)
+        let rootElement = try await self.cache.getElement(request.serverId)
         return rootElement.isSelected
     }
     
     @MainActor
     func hasFocus(request: ElementRequest) async throws -> Bool {
-        let rootElement = try await self.cache.getElement(request.elementServerId)
+        let rootElement = try await self.cache.getElement(request.serverId)
         return rootElement.hasFocus
     }
     
     @MainActor
     func isEnabled(request: ElementRequest) async throws -> Bool {
-        let rootElement = try await self.cache.getElement(request.elementServerId)
+        let rootElement = try await self.cache.getElement(request.serverId)
         return rootElement.isEnabled
     }
     
@@ -400,7 +400,7 @@ class UIServer {
     
     @MainActor
     func coordinateTap(request: TapCoordinateRequest) async throws -> Bool {
-        let rootCoordinate = try await self.cache.getCoordinate(request.elementServerId)
+        let rootCoordinate = try await self.cache.getCoordinate(request.serverId)
         
         switch request.type {
         case .tap:
@@ -516,7 +516,7 @@ class UIServer {
     
     @MainActor
     func performQuery(queryRequest: QueryRequest) async throws -> XCUIElementQuery {
-        let rootElementQuery = try await self.cache.getQuery(queryRequest.queryRoot)
+        let rootElementQuery = try await self.cache.getQuery(queryRequest.serverId)
         
         let resultQuery: XCUIElementQuery
         switch queryRequest.queryType {

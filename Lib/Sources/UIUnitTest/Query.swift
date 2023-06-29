@@ -11,19 +11,18 @@ public class Query: ElementTypeQueryProvider {
     
     public var serverId: UUID
     
-    init(queryServerId: UUID) {
-        self.serverId = queryServerId
+    init(serverId: UUID) {
+        self.serverId = serverId
     }
     
-    init(queryRoot: UUID, queryType: QueryType) async throws {
-        let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(queryRoot: queryRoot, queryType: queryType))
+    init(serverId: UUID, queryType: QueryType) async throws {
+        let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(serverId: serverId, queryType: queryType))
         self.serverId = response.serverId
     }
     
     deinit {
-        let serverId = serverId
-        Task {
-            let _: Bool = try await callServer(path: "remove", request: RemoveServerItemRequest(queryRoot: serverId))
+        Task { [serverId] in
+            let _: Bool = try await callServer(path: "remove", request: RemoveServerItemRequest(serverId: serverId))
         }
     }
     
@@ -86,7 +85,7 @@ public class Query: ElementTypeQueryProvider {
     /** Returns a new query that finds the descendants of all the elements found by the receiver. */
     public func descendants(matching elementType: Element.ElementType) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "queryDescendants", request: DescendantsFromQuery(serverId: self.serverId, elementType: elementType))
-        return Query(queryServerId: response.serverId)
+        return Query(serverId: response.serverId)
         
     }
 
@@ -96,37 +95,37 @@ public class Query: ElementTypeQueryProvider {
         
         let queryResponse: QueryResponse = try await callServer(path: "children", request: request)
         
-        return Query(queryServerId: queryResponse.serverId)
+        return Query(serverId: queryResponse.serverId)
     }
     
     public func matching(_ predicate: NSPredicate) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingPredicate", request: PredicateRequest(serverId: self.serverId, predicate: predicate))
-        return Query(queryServerId: response.serverId)
+        return Query(serverId: response.serverId)
     }
     
     public func matching(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingElementType", request: ElementTypeRequest(serverId: self.serverId, elementType: elementType, identifier: identifier))
-        return Query(queryServerId: response.serverId)
+        return Query(serverId: response.serverId)
     }
     
     public func matching(identifier: String) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingByIdentifier", request: QueryByIdRequest(queryRoot: self.serverId, identifier: identifier))
-        return Query(queryServerId: response.serverId)
+        return Query(serverId: response.serverId)
     }
     
     public func containing(_ predicate: NSPredicate) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "containingPredicate", request: PredicateRequest(serverId: self.serverId, predicate: predicate))
-        return Query(queryServerId: response.serverId)
+        return Query(serverId: response.serverId)
     }
     
     public func containing(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "containingElementType", request: ElementTypeRequest(serverId: self.serverId, elementType: elementType, identifier: identifier))
-        return Query(queryServerId: response.serverId)
+        return Query(serverId: response.serverId)
     }
     
     public var debugDescription: String {
          get async throws {
-             let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.serverId))
+             let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(serverId: self.serverId))
             return valueResponse.value!
         }
     }
@@ -220,11 +219,11 @@ public extension Query {
 
 public struct QueryRequest: Codable {
     
-    public var queryRoot: UUID
+    public var serverId: UUID
     public var queryType: Query.QueryType
     
-    init(queryRoot: UUID, queryType: Query.QueryType) {
-        self.queryRoot = queryRoot
+    init(serverId: UUID, queryType: Query.QueryType) {
+        self.serverId = serverId
         self.queryType = queryType
     }
 }

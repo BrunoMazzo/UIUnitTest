@@ -136,11 +136,11 @@ public struct HomeButtonRequest: Codable {
 
 public struct EnterTextRequest: Codable {
     
-    public var elementServerId: UUID
+    public var serverId: UUID
     public var textToEnter: String
     
-    public init(elementServerId: UUID, textToEnter: String) {
-        self.elementServerId = elementServerId
+    public init(serverId: UUID, textToEnter: String) {
+        self.serverId = serverId
         self.textToEnter = textToEnter
     }
 }

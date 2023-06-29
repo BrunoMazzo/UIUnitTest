@@ -6,7 +6,7 @@ public enum SwipeDirection: Codable {
 
 extension Element {
     public func swipe(direction: SwipeDirection, velocity: GestureVelocity = .default) async throws {
-        let swipeRequest = SwipeRequest(elementServerId: serverId, direction: direction, velocity: velocity)
+        let swipeRequest = SwipeRequest(serverId: serverId, direction: direction, velocity: velocity)
         
         let _: Bool = try await callServer(path: "swipe", request: swipeRequest)
     }
@@ -30,12 +30,12 @@ extension Element {
 
 public struct SwipeRequest: Codable {
     
-    public var elementServerId: UUID
+    public var serverId: UUID
     public var swipeDirection: SwipeDirection
     public var velocity: GestureVelocity
     
-    public init(elementServerId: UUID, direction: SwipeDirection, velocity: GestureVelocity) {
-        self.elementServerId = elementServerId
+    public init(serverId: UUID, direction: SwipeDirection, velocity: GestureVelocity) {
+        self.serverId = serverId
         self.swipeDirection = direction
         self.velocity = velocity
     }
