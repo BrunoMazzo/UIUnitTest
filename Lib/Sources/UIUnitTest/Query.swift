@@ -9,43 +9,42 @@ import Foundation
 
 public class Query: ElementTypeQueryProvider {
     
-    public var queryServerId: UUID?
+    public var serverId: UUID
     
     init(queryServerId: UUID) {
-        self.queryServerId = queryServerId
+        self.serverId = queryServerId
     }
     
-    init(queryRoot: UUID? = nil, queryType: QueryType) async throws {
+    init(queryRoot: UUID, queryType: QueryType) async throws {
         let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(queryRoot: queryRoot, queryType: queryType))
-        self.queryServerId = response.serverId
+        self.serverId = response.serverId
     }
     
     deinit {
-        if let serverId = queryServerId {
-            Task {
-                let _: Bool = try await callServer(path: "remove", request: RemoveServerItemRequest(queryRoot: serverId))
-            }
+        let serverId = serverId
+        Task {
+            let _: Bool = try await callServer(path: "remove", request: RemoveServerItemRequest(queryRoot: serverId))
         }
     }
     
     /** Returns an element that will use the query for resolution. */
     public var element: Element! {
         get async throws {
-            let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.queryServerId!))
+            let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.serverId))
             return Element(serverId: elementResponse.serverId)
         }
     }
     
     public var allElementsBoundByAccessibilityElement: [Element] {
         get async throws {
-            let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByAccessibilityElement", request: ElementsByAccessibility(serverId: self.queryServerId!))
+            let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByAccessibilityElement", request: ElementsByAccessibility(serverId: self.serverId))
             return elementResponse.serversId.map { Element(serverId: $0) }
         }
     }
     
     public var allElementsBoundByIndex: [Element] {
         get async throws {
-            let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByIndex", request: ElementsByAccessibility(serverId: self.queryServerId!))
+            let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByIndex", request: ElementsByAccessibility(serverId: self.serverId))
             return elementResponse.serversId.map { Element(serverId: $0) }
         }
     }
@@ -53,47 +52,47 @@ public class Query: ElementTypeQueryProvider {
     /** Evaluates the query at the time it is called and returns the number of matches found. */
     public var count: Int {
         get async throws {
-            let response: CountResponse = try await callServer(path: "count", request: CountRequest(serverId: self.queryServerId!))
+            let response: CountResponse = try await callServer(path: "count", request: CountRequest(serverId: self.serverId))
             return response.count
         }
     }
     
     /** Returns an element that will use the index into the query's results to determine which underlying accessibility element it is matched with. */
     public func element(boundByIndex index: Int) async throws -> Element {
-        let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.queryServerId!, index: index))
+        let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.serverId, index: index))
         return Element(serverId: elementResponse.serverId)
     }
     
     /** Returns an element that matches the predicate. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
     public func element(matching predicate: NSPredicate) async throws -> Element {
-        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: PredicateRequest(serverId: self.queryServerId!, predicate: predicate))
+        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: PredicateRequest(serverId: self.serverId, predicate: predicate))
         return Element(serverId: response.serverId)
     }
     
     /** Returns an element that matches the type and identifier. */
     public func element(matching elementType: Element.ElementType, identifier: String?) async throws -> Element {
-        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementFromQuery(serverId: self.queryServerId!, elementType: elementType, identifier: identifier))
+        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementFromQuery(serverId: self.serverId, elementType: elementType, identifier: identifier))
         return Element(serverId: response.serverId)
     }
     
     /** Keyed subscripting is implemented as a shortcut for matching an identifier only. For example, app.descendants["Foo"] -> XCUIElement. */
     public subscript(_ identifier: String) -> Element {
         get async throws {
-            let response: ElementResponse = try await callServer(path: "element", request: ElementByIdRequest(queryRoot: queryServerId, identifier: identifier))
+            let response: ElementResponse = try await callServer(path: "element", request: ElementByIdRequest(queryRoot: serverId, identifier: identifier))
             return Element(serverId: response.serverId)
         }
     }
     
     /** Returns a new query that finds the descendants of all the elements found by the receiver. */
     public func descendants(matching elementType: Element.ElementType) async throws -> Query {
-        let response: QueryResponse = try await callServer(path: "queryDescendants", request: DescendantsFromQuery(serverId: self.queryServerId!, elementType: elementType))
+        let response: QueryResponse = try await callServer(path: "queryDescendants", request: DescendantsFromQuery(serverId: self.serverId, elementType: elementType))
         return Query(queryServerId: response.serverId)
         
     }
 
     /** Returns a new query that finds the direct children of all the elements found by the receiver. */
     public func children(matching type: Element.ElementType) async throws -> Query {
-        let request = ChildrenMatchinType(serverId: self.queryServerId!, elementType: type)
+        let request = ChildrenMatchinType(serverId: self.serverId, elementType: type)
         
         let queryResponse: QueryResponse = try await callServer(path: "children", request: request)
         
@@ -101,33 +100,33 @@ public class Query: ElementTypeQueryProvider {
     }
     
     public func matching(_ predicate: NSPredicate) async throws -> Query {
-        let response: QueryResponse = try await callServer(path: "matchingPredicate", request: PredicateRequest(serverId: self.queryServerId!, predicate: predicate))
+        let response: QueryResponse = try await callServer(path: "matchingPredicate", request: PredicateRequest(serverId: self.serverId, predicate: predicate))
         return Query(queryServerId: response.serverId)
     }
     
     public func matching(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
-        let response: QueryResponse = try await callServer(path: "matchingElementType", request: ElementTypeRequest(serverId: self.queryServerId!, elementType: elementType, identifier: identifier))
+        let response: QueryResponse = try await callServer(path: "matchingElementType", request: ElementTypeRequest(serverId: self.serverId, elementType: elementType, identifier: identifier))
         return Query(queryServerId: response.serverId)
     }
     
     public func matching(identifier: String) async throws -> Query {
-        let response: QueryResponse = try await callServer(path: "matchingByIdentifier", request: QueryByIdRequest(queryRoot: self.queryServerId!, identifier: identifier))
+        let response: QueryResponse = try await callServer(path: "matchingByIdentifier", request: QueryByIdRequest(queryRoot: self.serverId, identifier: identifier))
         return Query(queryServerId: response.serverId)
     }
     
     public func containing(_ predicate: NSPredicate) async throws -> Query {
-        let response: QueryResponse = try await callServer(path: "containingPredicate", request: PredicateRequest(serverId: self.queryServerId!, predicate: predicate))
+        let response: QueryResponse = try await callServer(path: "containingPredicate", request: PredicateRequest(serverId: self.serverId, predicate: predicate))
         return Query(queryServerId: response.serverId)
     }
     
     public func containing(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
-        let response: QueryResponse = try await callServer(path: "containingElementType", request: ElementTypeRequest(serverId: self.queryServerId!, elementType: elementType, identifier: identifier))
+        let response: QueryResponse = try await callServer(path: "containingElementType", request: ElementTypeRequest(serverId: self.serverId, elementType: elementType, identifier: identifier))
         return Query(queryServerId: response.serverId)
     }
     
     public var debugDescription: String {
          get async throws {
-             let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.queryServerId!))
+             let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.serverId))
             return valueResponse.value!
         }
     }
@@ -221,10 +220,10 @@ public extension Query {
 
 public struct QueryRequest: Codable {
     
-    public var queryRoot: UUID?
+    public var queryRoot: UUID
     public var queryType: Query.QueryType
     
-    init(queryRoot: UUID? = nil, queryType: Query.QueryType) {
+    init(queryRoot: UUID, queryType: Query.QueryType) {
         self.queryRoot = queryRoot
         self.queryType = queryType
     }

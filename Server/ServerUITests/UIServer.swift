@@ -6,42 +6,48 @@ import UIUnitTest
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
 
-struct ElementNotFoundError: Error, LocalizedError {
-    var elementServerId: String
+struct ApplicationNotFoundError: Error, LocalizedError {    
+    var serverId: String
     
     var errorDescription: String? {
-        return "Element with id \(elementServerId) not found"
+        return "Application with id \(serverId) not found"
+    }
+}
+
+struct ElementNotFoundError: Error, LocalizedError {
+    var serverId: String
+    
+    var errorDescription: String? {
+        return "Element with id \(serverId) not found"
     }
 }
 
 struct QueryNotFoundError: Error, LocalizedError {
-    var queryServerId: String
+    var serverId: String
     
     var errorDescription: String? {
-        return "Query with id \(queryServerId) not found"
+        return "Query with id \(serverId) not found"
     }
 }
 
 struct CoordinateNotFoundError: Error, LocalizedError {
-    var coordinateId: String
+    var serverId: String
     
     var errorDescription: String? {
-        return "Coordinate with id \(coordinateId) not found"
+        return "Coordinate with id \(serverId) not found"
     }
 }
 
 struct WrongQueryTypeFoundError: Error, LocalizedError {
-    var queryServerId: String
+    var serverId: String
     
     var errorDescription: String? {
-        return "Query with id \(queryServerId) is not an XCUIElementQuery"
+        return "Query with id \(serverId) is not an XCUIElementQuery"
     }
 }
 
 //@Server
 class UIServer {
-    var app: XCUIApplication!
-    
     var lastIssue: XCTIssue?
     
     var server: HTTPServer!
@@ -50,12 +56,12 @@ class UIServer {
     
     @MainActor
     func firstMatch(firstMatchRequest: FirstMatchRequest) async throws -> FirstMatchResponse {
-        let query = try await self.cache.getQuery(firstMatchRequest.queryRoot)
+        let query = try await self.cache.getQuery(firstMatchRequest.serverId)
         let element = query.firstMatch
         
         let id = await self.cache.add(element: element)
         
-        return FirstMatchResponse(elementServerId: id)
+        return FirstMatchResponse(serverId: id)
     }
     
     @MainActor
@@ -283,7 +289,7 @@ class UIServer {
         } else if let rootElement = try? await self.cache.getElement(request.serverId) {
             childrenQuery = rootElement.children(matching: request.elementType.toXCUIElementType())
         } else {
-            throw ElementNotFoundError(elementServerId: request.serverId.uuidString)
+            throw ElementNotFoundError(serverId: request.serverId.uuidString)
         }
         
         let id = await self.cache.add(query: childrenQuery)
@@ -307,9 +313,7 @@ class UIServer {
     
     @MainActor
     func remove(request: RemoveServerItemRequest) async -> Bool {
-        await self.cache.removeQuery(request.queryRoot)
-        await self.cache.removeElement(request.queryRoot)
-        await self.cache.removeCoordinate(request.queryRoot)
+        await self.cache.remove(request.queryRoot)
         
         return true
     }
@@ -323,7 +327,7 @@ class UIServer {
         } else if let rootElement = try? await self.cache.getElement(request.elementServerId) {
             debugDescription = rootElement.debugDescription
         } else {
-            throw ElementNotFoundError(elementServerId: request.elementServerId.uuidString)
+            throw ElementNotFoundError(serverId: request.elementServerId.uuidString)
         }
         
         return debugDescription
@@ -420,11 +424,18 @@ class UIServer {
         let server = HTTPServer(address: .loopback(port: 22087))
         self.server = server
         
-        await addRoute("Activate", handler: { (activateRequest: ActivateRequest) in
-            if self.app == nil {
-                self.app = XCUIApplication(bundleIdentifier: activateRequest.appId)
+        await addRoute("createApp", handler: { (request: CreateApplicationRequest) in
+            let app = XCUIApplication(bundleIdentifier: request.appId)
+            await self.cache.add(application: app, id: request.serverId)
+            
+            if request.activate {
+                app.activate()
             }
-            self.app.activate()
+        })
+        
+        await addRoute("Activate", handler: { (activateRequest: ActivateRequest) in
+            let app = try await self.cache.getApplication(activateRequest.serverId)
+            app.activate()
         })
         
         await addRoute("firstMatch", handler: self.firstMatch(firstMatchRequest:))
@@ -505,10 +516,7 @@ class UIServer {
     
     @MainActor
     func performQuery(queryRequest: QueryRequest) async throws -> XCUIElementQuery {
-        var rootElementQuery: XCUIElementTypeQueryProvider = app
-        if let rootQueryId = queryRequest.queryRoot {
-            rootElementQuery = try await self.cache.getQuery(rootQueryId)
-        }
+        let rootElementQuery = try await self.cache.getQuery(queryRequest.queryRoot)
         
         let resultQuery: XCUIElementQuery
         switch queryRequest.queryType {
@@ -680,10 +688,7 @@ class UIServer {
     }
     
     func findElement(elementRequest: ElementByIdRequest) async throws -> XCUIElement {
-        guard let rootQueryId = elementRequest.queryRoot else {
-            throw NSError(domain: "Query not found for element \(elementRequest.identifier)", code: 1)
-        }
-        let rootElementQuery = try await self.cache.getElementQuery(rootQueryId)
+        let rootElementQuery = try await self.cache.getElementQuery(elementRequest.queryRoot)
         
         return rootElementQuery[elementRequest.identifier]
     }

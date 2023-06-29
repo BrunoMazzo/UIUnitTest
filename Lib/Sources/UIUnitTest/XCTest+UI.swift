@@ -6,7 +6,6 @@ public func showView(_ view: some View) {
     let window = getKeyWindow()
     let hostingViewController = UIHostingController(rootView: view)
     window.rootViewController = hostingViewController
-//    window.makeKeyAndVisible()
 }
 
 @MainActor

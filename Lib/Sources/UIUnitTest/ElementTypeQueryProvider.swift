@@ -1,21 +1,21 @@
 import Foundation
 
 public protocol ElementTypeQueryProvider {
-    var queryServerId: UUID? { get }
+    var serverId: UUID { get }
 }
 
 public extension ElementTypeQueryProvider {
     
     var firstMatch: Element {
         get async throws {
-            let elementResponse: FirstMatchResponse = try await callServer(path: "firstMatch", request: FirstMatchRequest(queryRoot: self.queryServerId!))
-            return Element(serverId: elementResponse.elementServerId)
+            let elementResponse: FirstMatchResponse = try await callServer(path: "firstMatch", request: FirstMatchRequest(serverId: self.serverId))
+            return Element(serverId: elementResponse.serverId)
         }
     }
     
     subscript(dynamicMember: Query.QueryType) -> Query {
         get async throws {
-            try await Query(queryRoot: self.queryServerId, queryType: dynamicMember)
+            try await Query(queryRoot: self.serverId, queryType: dynamicMember)
         }
     }
     
@@ -506,19 +506,19 @@ public extension ElementTypeQueryProvider {
 }
 
 public struct FirstMatchRequest: Codable {
-    public var queryRoot: UUID
+    public var serverId: UUID
     
-    public init(queryRoot: UUID) {
-        self.queryRoot = queryRoot
+    public init(serverId: UUID) {
+        self.serverId = serverId
     }
 }
 
 
 public struct FirstMatchResponse: Codable {
-    public var elementServerId: UUID
+    public var serverId: UUID
     
-    public init(elementServerId: UUID) {
-        self.elementServerId = elementServerId
+    public init(serverId: UUID) {
+        self.serverId = serverId
     }
 }
 

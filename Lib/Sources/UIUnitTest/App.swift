@@ -1,13 +1,17 @@
 import Foundation
 
-public class App: ElementTypeQueryProvider {
-    public var queryServerId: UUID? = nil
-    
+public class App: Element {
     let appId: String
     
-    public init(appId: String) async throws {
+    public init(appId: String, activate: Bool = true) async throws {
         self.appId = appId
-        try await self.activate()
+        super.init(serverId: UUID())
+        
+        try await self.create(activate: activate)
+    }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
     
     public func pressHomeButton() async throws {
@@ -15,9 +19,15 @@ public class App: ElementTypeQueryProvider {
     }
     
     public func activate() async throws {
-        let activateRequestData = ActivateRequest(appId: appId)
+        let activateRequestData = ActivateRequest(serverId: self.serverId)
         
         let _: Bool = try await callServer(path: "Activate", request: activateRequestData)
+    }
+    
+    private func create(activate: Bool) async throws {
+        let request = CreateApplicationRequest(appId: self.appId, serverId: self.serverId, activate: activate)
+        
+        let _: Bool = try await callServer(path: "createApp", request: request)
     }
 }
 
@@ -97,11 +107,25 @@ internal func callServer<RequestData: Codable, ResponseData: Codable>(path: Stri
     }
 }
 
-public struct ActivateRequest: Codable {
-    public var appId: String
+public struct CreateApplicationRequest: Codable {
     
-    public init(appId: String) {
+    public let serverId: UUID
+    public let appId: String
+    public let activate: Bool
+    
+    public init(appId: String, serverId: UUID, activate: Bool) {
         self.appId = appId
+        self.serverId = serverId
+        self.activate = activate
+    }
+}
+
+public struct ActivateRequest: Codable {
+    
+    public let serverId: UUID
+    
+    public init(serverId: UUID) {
+        self.serverId = serverId
     }
 }
 

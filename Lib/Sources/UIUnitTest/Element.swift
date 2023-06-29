@@ -1,11 +1,7 @@
 import Foundation
 
 public class Element: ElementTypeQueryProvider, Codable {
-    public var queryServerId: UUID? {
-        serverId
-    }
-    
-    var serverId: UUID
+    public var serverId: UUID
     
     public init(serverId: UUID) {
         self.serverId = serverId
@@ -91,49 +87,49 @@ public class Element: ElementTypeQueryProvider, Codable {
     
     public var debugDescription: String {
         get async throws {
-            try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.queryServerId!))
+            try await callServer(path: "debugDescription", request: ElementRequest(elementServerId: self.serverId))
         }
     }
     
     public var identifier: String {
         get async throws {
-            return try await callServer(path: "identifier", request: ElementRequest(elementServerId: self.queryServerId!))
+            return try await callServer(path: "identifier", request: ElementRequest(elementServerId: self.serverId))
         }
     }
     
     public var title: String {
         get async throws {
-            return try await callServer(path: "title", request: ElementRequest(elementServerId: self.queryServerId!))
+            return try await callServer(path: "title", request: ElementRequest(elementServerId: self.serverId))
         }
     }
     
     public var label: String {
         get async throws {
-            return try await callServer(path: "label", request: ElementRequest(elementServerId: self.queryServerId!))
+            return try await callServer(path: "label", request: ElementRequest(elementServerId: self.serverId))
         }
     }
     
     public var placeholderValue: String? {
         get async throws {
-            return try await callServer(path: "placeholderValue", request: ElementRequest(elementServerId: self.queryServerId!))
+            return try await callServer(path: "placeholderValue", request: ElementRequest(elementServerId: self.serverId))
         }
     }
     
     public var isSelected: Bool {
         get async throws {
-            return try await callServer(path: "isSelected", request: ElementRequest(elementServerId: self.queryServerId!))
+            return try await callServer(path: "isSelected", request: ElementRequest(elementServerId: self.serverId))
         }
     }
     
     public var hasFocus: Bool {
         get async throws {
-            return try await callServer(path: "hasFocus", request: ElementRequest(elementServerId: self.queryServerId!))
+            return try await callServer(path: "hasFocus", request: ElementRequest(elementServerId: self.serverId))
         }
     }
     
     public var isEnabled: Bool {
         get async throws {
-            return try await callServer(path: "isEnabled", request: ElementRequest(elementServerId: self.queryServerId!))
+            return try await callServer(path: "isEnabled", request: ElementRequest(elementServerId: self.serverId))
         }
     }
     
@@ -314,10 +310,6 @@ public extension Element {
         case touchBar = 81
         
         case statusItem = 82
-        
-//        public func toXCUIElementType() -> XCUIElement.ElementType {
-//            XCUIElement.ElementType(rawValue: self.rawValue)!
-//        }
     }
 }
 
@@ -334,7 +326,7 @@ public struct ScrollRequest: Codable {
 }
 
 public struct ElementByIdRequest: Codable {
-    public var queryRoot: UUID?
+    public var queryRoot: UUID
     public var identifier: String
 }
 
