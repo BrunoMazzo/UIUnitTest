@@ -420,6 +420,30 @@ class UIServer {
         return true
     }
     
+    @MainActor
+    func frame(request: ElementRequest) async throws -> CGRect {
+        let element = try await self.cache.getElement(request.serverId)
+        return element.frame
+    }
+    
+    @MainActor
+    func horizontalSizeClass(request: ElementRequest) async throws -> SizeClass {
+        let element = try await self.cache.getElement(request.serverId)
+        return SizeClass(rawValue: element.horizontalSizeClass.rawValue)!
+    }
+    
+    @MainActor
+    func verticalSizeClass(request: ElementRequest) async throws -> SizeClass {
+        let element = try await self.cache.getElement(request.serverId)
+        return SizeClass(rawValue: element.verticalSizeClass.rawValue)!
+    }
+    
+    @MainActor
+    func elementType(request: ElementRequest) async throws -> Element.ElementType {
+        let element = try await self.cache.getElement(request.serverId)
+        return Element.ElementType(rawValue: element.elementType.rawValue)!
+    }
+    
     func start() async throws {
         let server = HTTPServer(address: .loopback(port: 22087))
         self.server = server
@@ -484,6 +508,11 @@ class UIServer {
         await addRoute("coordinate", handler: self.coordinate(request:))
         await addRoute("coordinateWithOffset", handler: self.coordinateWithOffset(request:))
         await addRoute("coordinateTap", handler: self.coordinateTap(request:))
+        
+        await addRoute("frame", handler: self.frame(request:))
+        await addRoute("horizontalSizeClass", handler: self.horizontalSizeClass(request:))
+        await addRoute("verticalSizeClass", handler: self.verticalSizeClass(request:))
+        await addRoute("elementType", handler: self.elementType(request:))
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
             Task {

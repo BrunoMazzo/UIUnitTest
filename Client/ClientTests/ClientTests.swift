@@ -234,9 +234,4 @@ final class ClientTests: XCTestCase {
         let somethingViewExists = try await somethingView.exists
         XCTAssert(somethingViewExists)
     }
-    
-    
-    
-    
-    
 }

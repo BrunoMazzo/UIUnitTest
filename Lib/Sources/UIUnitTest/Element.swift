@@ -139,6 +139,30 @@ public class Element: ElementTypeQueryProvider, Codable {
         
         return response.coordinate
     }
+    
+    public var frame: CGRect {
+        get async throws {
+            return try await callServer(path: "frame", request: ElementRequest(serverId: self.serverId))
+        }
+    }
+    
+    public var horizontalSizeClass: SizeClass {
+        get async throws {
+            return try await callServer(path: "horizontalSizeClass", request: ElementRequest(serverId: self.serverId))
+        }
+    }
+    
+    public var verticalSizeClass: SizeClass {
+        get async throws {
+            return try await callServer(path: "verticalSizeClass", request: ElementRequest(serverId: self.serverId))
+        }
+    }
+    
+    public var elementType: ElementType {
+        get async throws {
+            return try await callServer(path: "elementType", request: ElementRequest(serverId: self.serverId))
+        }
+    }
 }
 
 public extension Element {
@@ -393,4 +417,11 @@ public struct ChildrenMatchinType: Codable {
         self.serverId = serverId
         self.elementType = elementType
     }
+}
+
+
+public enum SizeClass: Int, Codable {
+    case unspecified = 0
+    case compact     = 1
+    case regular     = 2
 }
