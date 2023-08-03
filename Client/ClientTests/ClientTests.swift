@@ -66,7 +66,7 @@ final class ClientTests: XCTestCase {
         
         try! await app.textFields["TextField-Default"].tap()
         
-        try! await app.textFields["TextField-Default"].enterText("Hello world")
+        try! await app.textFields["TextField-Default"].typeText("Hello world")
         
         let exists = try! await app.staticTexts["Text value: Hello world"].exists
         

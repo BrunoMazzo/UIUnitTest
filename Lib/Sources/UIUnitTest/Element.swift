@@ -77,11 +77,10 @@ public class Element: ElementTypeQueryProvider, Codable {
         let activateRequestData = ScrollRequest(serverId: self.serverId, deltaX: deltaX, deltaY: deltaY)
         let _: Bool = try await callServer(path: "scroll", request: activateRequestData)
     }
-
     
-    public func enterText(_ textToEnter: String) async throws {
-        let activateRequestData = EnterTextRequest(serverId: self.serverId, textToEnter: textToEnter)
-        let _: Bool = try await callServer(path: "enterText", request: activateRequestData)
+    public func typeText(_ text: String) async throws {
+        let activateRequestData = EnterTextRequest(serverId: self.serverId, textToEnter: text)
+        let _: Bool = try await callServer(path: "typeText", request: activateRequestData)
     }
     
     public var debugDescription: String {

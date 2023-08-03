@@ -163,7 +163,7 @@ class UIServer {
     }
     
     @MainActor
-    func enterText(request: EnterTextRequest) async throws -> Void {
+    func typeText(request: EnterTextRequest) async throws -> Void {
         let element = try await self.cache.getElement(request.serverId)
         element.typeText(request.textToEnter)
     }
@@ -473,7 +473,7 @@ class UIServer {
         await addRoute("doubleTap", handler: self.doubleTap(tapRequest:))
         await addRoute("exists", handler: self.exists(request:))
         await addRoute("value", handler: self.value(request:))
-        await addRoute("enterText", handler: self.enterText(request:))
+        await addRoute("typeText", handler: self.typeText(request:))
         await addRoute("scroll", handler: self.scroll(request:))
         await addRoute("swipe", handler: self.swipe(request:))
         await addRoute("pinch", handler: self.pinch(request:))
