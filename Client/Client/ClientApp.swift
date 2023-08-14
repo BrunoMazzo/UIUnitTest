@@ -1,10 +1,3 @@
-//
-//  ClientApp.swift
-//  Client
-//
-//  Created by Bruno Mazzo on 5/3/2023.
-//
-
 import SwiftUI
 
 @main
@@ -15,7 +8,6 @@ struct ClientApp: App {
         }
     }
 }
-
 
 struct MySettingTable: View {
     

@@ -1,10 +1,3 @@
-//
-//  UIUnitTestUITests.swift
-//  UIUnitTestUITests
-//
-//  Created by Bruno Mazzo on 5/3/2023.
-//
-
 import XCTest
 
 final class UITestServerTest: XCTestCase {

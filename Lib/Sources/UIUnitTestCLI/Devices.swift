@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Bruno Mazzo on 5/3/2023.
-//
-
 import Foundation
 
 struct DeviceList: Codable {

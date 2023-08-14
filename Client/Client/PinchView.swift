@@ -1,10 +1,3 @@
-//
-//  PinchView.swift
-//  Client
-//
-//  Created by Bruno Mazzo on 18/3/2023.
-//
-
 import Foundation
 import SwiftUI
 

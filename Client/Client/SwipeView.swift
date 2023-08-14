@@ -1,10 +1,3 @@
-//
-//  SwipeView.swift
-//  Client
-//
-//  Created by Bruno Mazzo on 10/3/2023.
-//
-
 import SwiftUI
 
 enum SwipeDirection {

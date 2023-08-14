@@ -1,10 +1,3 @@
-//
-//  WaitForExistenceView.swift
-//  Client
-//
-//  Created by Bruno Mazzo on 12/3/2023.
-//
-
 import Foundation
 import SwiftUI
 

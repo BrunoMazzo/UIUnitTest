@@ -1,10 +1,3 @@
-//
-//  TapView.swift
-//  Client
-//
-//  Created by Bruno Mazzo on 13/3/2023.
-//
-
 import Foundation
 import SwiftUI
 
@@ -42,7 +35,6 @@ struct TapView: View {
         }
     }
 }
-
 
 struct TappableView: UIViewRepresentable {
     var numberOfTouches: Int = 2
