@@ -20,7 +20,6 @@ public struct Executor: @unchecked Sendable {
     }
     
     func execute<T>(function: String = #function, _ block: @escaping () async throws -> T) -> T {
-        let waiter = XCTWaiter()
         let expectation = XCTestExpectation(description: function)
         Task { @UIUnitTestActor in
             defer {
@@ -28,7 +27,7 @@ public struct Executor: @unchecked Sendable {
             }
             self.box.value = try await block()
         }
-        waiter.wait(for: [expectation])
+        _ = XCTWaiter.wait(for: [expectation])
         return box.value as! T
     }
 }
