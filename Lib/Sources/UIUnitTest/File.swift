@@ -27,7 +27,8 @@ public struct Executor: @unchecked Sendable {
             }
             self.box.value = try await block()
         }
-        _ = XCTWaiter.wait(for: [expectation])
+        // TODO: Find out why no timeout doesn't work on CI
+        _ = XCTWaiter.wait(for: [expectation], timeout: 10)
         return box.value as! T
     }
 }
