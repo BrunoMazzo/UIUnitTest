@@ -19,6 +19,7 @@ public struct Executor: @unchecked Sendable {
         return executor.execute(function: function, block)
     }
     
+    // TODO: Think about a better way to handle errors. Maybe just fail the test?
     func execute<T>(function: String = #function, _ block: @escaping () async throws -> T) -> T {
         let expectation = XCTestExpectation(description: function)
         Task { @UIUnitTestActor in
@@ -27,8 +28,7 @@ public struct Executor: @unchecked Sendable {
             }
             self.box.value = try await block()
         }
-        // TODO: Find out why no timeout doesn't work on CI
-        _ = XCTWaiter.wait(for: [expectation], timeout: 10)
+        _ = XCTWaiter.wait(for: [expectation])
         return box.value as! T
     }
 }
