@@ -13,9 +13,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install mint
+      - name: Install mint and xcbeautify
         run: |
           brew install mint
+          brew install xcbeautify
       - name: Build & Test
         env:
           scheme: 'Client'
@@ -31,4 +32,4 @@ jobs:
 
           #run UIUnitTest server
           mint run BrunoMazzo/UIUnitTest@main start-server-command --device-identifier $deviceUUID
-          xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test
+          xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test | xcbeautify
