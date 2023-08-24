@@ -26,6 +26,32 @@ extension Element {
     }
 }
 
+extension SyncElement {
+    public func tap() {
+        self.executor.execute {
+            try await self.element.tap()
+        }
+    }
+    
+    public func twoFingerTap() {
+        self.executor.execute {
+            try await self.element.twoFingerTap()
+        }
+    }
+    
+    public func tap(withNumberOfTaps numberOfTaps: Int, numberOfTouches: Int) {
+        self.executor.execute {
+            try await self.element.tap(withNumberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
+        }
+    }
+    
+    public func press(forDuration duration: TimeInterval) {
+        self.executor.execute {
+            try await self.element.press(forDuration: duration)
+        }
+    }
+}
+
 public struct TapElementRequest: Codable {
     
     public var serverId: UUID

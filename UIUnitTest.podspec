@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'UIUnitTest'
-  s.version          = '0.2.3'
+  s.version          = '0.3.0'
   s.summary          = 'A short description of UIUnitTest.'
 
 # This description is used to generate tags and improve search results.
@@ -34,7 +34,7 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'Lib/Sources/UIUnitTest/**/*'
 
-  s.framework = "XCTest"
+  s.framework = 'XCTest'
   
   # s.resource_bundles = {
   #   'UIUnitTest' => ['UIUnitTest/Assets/*.png']

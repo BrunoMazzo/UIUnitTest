@@ -8,6 +8,14 @@ public extension Element {
     }
 }
 
+public extension SyncElement {
+    func pinch(withScale scale: CGFloat, velocity: CGFloat) {
+        self.executor.execute {
+            try await self.element.pinch(withScale: scale, velocity: velocity)
+        }
+    }
+}
+
 public struct PinchRequest: Codable {
     
     public var serverId: UUID

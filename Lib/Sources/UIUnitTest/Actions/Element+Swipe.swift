@@ -10,7 +10,7 @@ extension Element {
         
         let _: Bool = try await callServer(path: "swipe", request: swipeRequest)
     }
-
+    
     public func swipeUp(velocity: GestureVelocity = .default) async throws {
         try await self.swipe(direction: .up, velocity: velocity)
     }
@@ -25,6 +25,30 @@ extension Element {
     
     public func swipeRight(velocity: GestureVelocity = .default) async throws {
         try await self.swipe(direction: .right, velocity: velocity)
+    }
+}
+
+extension SyncElement {
+    public func swipe(direction: SwipeDirection, velocity: GestureVelocity = .default) {
+        self.executor.execute {
+            try await self.element.swipe(direction: direction, velocity: velocity)
+        }
+    }
+    
+    public func swipeUp(velocity: GestureVelocity = .default) {
+        self.swipe(direction: .up, velocity: velocity)
+    }
+    
+    public func swipeDown(velocity: GestureVelocity = .default) {
+        self.swipe(direction: .down, velocity: velocity)
+    }
+    
+    public func swipeLeft(velocity: GestureVelocity = .default) {
+        self.swipe(direction: .left, velocity: velocity)
+    }
+    
+    public func swipeRight(velocity: GestureVelocity = .default) {
+        self.swipe(direction: .right, velocity: velocity)
     }
 }
 

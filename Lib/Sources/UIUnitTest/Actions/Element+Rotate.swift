@@ -10,6 +10,15 @@ public extension Element {
     }
 }
 
+public extension SyncElement {
+    func rotate(_ rotation: CGFloat, withVelocity velocity: CGFloat)  {
+        self.executor.execute {
+            try await self.element.rotate(rotation, withVelocity: velocity)
+        }
+    }
+}
+
+
 public struct RotateRequest: Codable {
     
     public var serverId: UUID
