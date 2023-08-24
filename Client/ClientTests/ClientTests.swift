@@ -6,11 +6,10 @@ extension App {
     convenience init() async throws {
         try await self.init(appId: "bruno.mazzo.Client")
     }
-}
 
-extension SyncApp {
-    convenience init(xctest: XCTestCase) {
-        self.init(xctest: xctest, appId: "bruno.mazzo.Client")
+    @available(*, noasync)
+    convenience init() {
+        self.init(appId: "bruno.mazzo.Client")
     }
 }
 
@@ -22,13 +21,13 @@ final class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
-        let somethingButton = try await app.buttons["Something"]
-        let isHittable = try await somethingButton.isHittable
+        let somethingButton = try await app.buttons("Something")
+        let isHittable = try await somethingButton.isHittable()
         XCTAssert(isHittable)
         
         try await somethingButton.tap()
         
-        let exists = try await app.staticTexts["Something View"].exists
+        let exists = try await app.staticTexts("Something View").exists()
         
         XCTAssert(exists)
     }
@@ -39,13 +38,13 @@ final class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
-        let isHittable = try await app.staticTexts["Hello world button"].isHittable
+        let isHittable = try await app.staticTexts("Hello world button").isHittable()
         XCTAssert(isHittable)
         
-        try await app.buttons["Hello world button"].tap()
+        try await app.buttons("Hello world button").tap()
         
         
-        let exists = try await app.staticTexts["Value: Hello world"].exists
+        let exists = try await app.staticTexts("Value: Hello world").exists()
         XCTAssert(exists)
     }
     
@@ -55,9 +54,9 @@ final class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
-        try await app.staticTexts["Double tap"].doubleTap()
+        try await app.staticTexts("Double tap").doubleTap()
         
-        let exists = try await app.staticTexts["Value: Double tap"].waitForExistence(timeout: 1)
+        let exists = try await app.staticTexts("Value: Double tap").waitForExistence(timeout: 1)
         
         XCTAssert(exists)
     }
@@ -68,13 +67,13 @@ final class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
-        try! await app.buttons["TextField"].tap()
+        try! await app.buttons("TextField").tap()
         
-        try! await app.textFields["TextField-Default"].tap()
+        try! await app.textFields("TextField-Default").tap()
         
-        try! await app.textFields["TextField-Default"].typeText("Hello world")
+        try! await app.textFields("TextField-Default").typeText("Hello world")
         
-        let exists = try! await app.staticTexts["Text value: Hello world"].exists
+        let exists = try! await app.staticTexts("Text value: Hello world").exists()
         
         XCTAssert(exists)
     }
@@ -85,39 +84,39 @@ final class ClientTests: XCTestCase {
         
         showView(SwipeView())
         
-        let noSwipeLabel = try await app.staticTexts["Direction: No swipe detected"].exists
+        let noSwipeLabel = try await app.staticTexts("Direction: No swipe detected").exists()
         XCTAssert(noSwipeLabel)
         
-        try await app.staticTexts["Swipe me"].swipeUp()
-        var exists = try await app.staticTexts["Direction: Up"].exists
+        try await app.staticTexts("Swipe me").swipeUp()
+        var exists = try await app.staticTexts("Direction: Up").exists()
         XCTAssert(exists)
         
-        try await app.staticTexts["Swipe me"].swipeDown()
-        exists = try await app.staticTexts["Direction: Down"].exists
+        try await app.staticTexts("Swipe me").swipeDown()
+        exists = try await app.staticTexts("Direction: Down").exists()
         XCTAssert(exists)
         
-        try await app.staticTexts["Swipe me"].swipeLeft()
-        exists = try await app.staticTexts["Direction: Left"].exists
+        try await app.staticTexts("Swipe me").swipeLeft()
+        exists = try await app.staticTexts("Direction: Left").exists()
         XCTAssert(exists)
         
-        try await app.staticTexts["Swipe me"].swipeRight()
-        exists = try await app.staticTexts["Direction: Right"].exists
+        try await app.staticTexts("Swipe me").swipeRight()
+        exists = try await app.staticTexts("Direction: Right").exists()
         
-        try await app.staticTexts["Swipe me"].swipeUp(velocity: 100)
-        exists = try await app.staticTexts["Direction: Up"].exists
+        try await app.staticTexts("Swipe me").swipeUp(velocity: 100)
+        exists = try await app.staticTexts("Direction: Up").exists()
         XCTAssert(exists)
         
-        try await app.staticTexts["Swipe me"].swipeDown(velocity: 100.5)
-        exists = try await app.staticTexts["Direction: Down"].exists
+        try await app.staticTexts("Swipe me").swipeDown(velocity: 100.5)
+        exists = try await app.staticTexts("Direction: Down").exists()
         XCTAssert(exists)
         
         let velocityCGFloat: CGFloat = 500
-        try await app.staticTexts["Swipe me"].swipeLeft(velocity: GestureVelocity(velocityCGFloat))
-        exists = try await app.staticTexts["Direction: Left"].exists
+        try await app.staticTexts("Swipe me").swipeLeft(velocity: GestureVelocity(velocityCGFloat))
+        exists = try await app.staticTexts("Direction: Left").exists()
         XCTAssert(exists)
         
-        try await app.staticTexts["Swipe me"].swipeRight(velocity: 600)
-        exists = try await app.staticTexts["Direction: Right"].exists
+        try await app.staticTexts("Swipe me").swipeRight(velocity: 600)
+        exists = try await app.staticTexts("Direction: Right").exists()
         XCTAssert(exists)
     }
     
@@ -127,12 +126,12 @@ final class ClientTests: XCTestCase {
         
         showView(WaitForExistenceView())
         
-        let messageExists = try await app.staticTexts["Hello world!"].exists
+        let messageExists = try await app.staticTexts("Hello world!").exists()
         XCTAssert(messageExists == false)
         
-        try await app.buttons["Show Message"].tap()
+        try await app.buttons("Show Message").tap()
         
-        let messageExistsAfterShow = try await app.staticTexts["Hello world!"].waitForExistence(timeout: 2)
+        let messageExistsAfterShow = try await app.staticTexts("Hello world!").waitForExistence(timeout: 2)
         XCTAssert(messageExistsAfterShow == true)
         
     }
@@ -144,12 +143,12 @@ final class ClientTests: XCTestCase {
         
         showView(PressAndHoldView())
         
-        let messageExists = try await app.staticTexts["Hello world!"].exists
+        let messageExists = try await app.staticTexts("Hello world!").exists()
         XCTAssert(messageExists == false)
         
-        try await app.staticTexts["Press and hold"].press(forDuration: 2.5)
+        try await app.staticTexts("Press and hold").press(forDuration: 2.5)
         
-        let messageExistsAfterShow = try await app.staticTexts["Hello world!"].exists
+        let messageExistsAfterShow = try await app.staticTexts("Hello world!").exists()
         XCTAssert(messageExistsAfterShow == true)
         
     }
@@ -160,13 +159,13 @@ final class ClientTests: XCTestCase {
         
         showView(GoToBackgroundAndBackView())
         
-        let wasntInBackgroud = try await app.staticTexts["WasInBackground: false"].exists
+        let wasntInBackgroud = try await app.staticTexts("WasInBackground: false").exists()
         XCTAssert(wasntInBackgroud == true)
         
         try await app.pressHomeButton()
         try await app.activate()
         
-        let wasntInBackgroudAfterBackground = try await app.staticTexts["WasInBackground: true"].waitForExistence(timeout: 1)
+        let wasntInBackgroudAfterBackground = try await app.staticTexts("WasInBackground: true").waitForExistence(timeout: 1)
         XCTAssert(wasntInBackgroudAfterBackground == true)
         
     }
@@ -177,11 +176,11 @@ final class ClientTests: XCTestCase {
         
         showView(TapView())
         
-        let exists = try await app.otherElements["TwoFingersView"].exists
+        let exists = try await app.otherElements("TwoFingersView").exists()
         XCTAssertTrue(exists)
-        try await app.otherElements["TwoFingersView"].twoFingerTap()
+        try await app.otherElements("TwoFingersView").twoFingerTap()
         
-        let wasntInBackgroudAfterBackground = try await app.staticTexts["Two fingers tapped"].waitForExistence(timeout: 1)
+        let wasntInBackgroudAfterBackground = try await app.staticTexts("Two fingers tapped").waitForExistence(timeout: 1)
         XCTAssert(wasntInBackgroudAfterBackground == true)
         
     }
@@ -192,9 +191,9 @@ final class ClientTests: XCTestCase {
         
         showView(TapView())
         
-        try await app.otherElements["ThreeFingersView"].tap(withNumberOfTaps: 1, numberOfTouches: 3)
+        try await app.otherElements("ThreeFingersView").tap(withNumberOfTaps: 1, numberOfTouches: 3)
         
-        let wasntInBackgroudAfterBackground = try await app.staticTexts["Three fingers tapped"].waitForExistence(timeout: 1)
+        let wasntInBackgroudAfterBackground = try await app.staticTexts("Three fingers tapped").waitForExistence(timeout: 1)
         XCTAssert(wasntInBackgroudAfterBackground == true)
         
     }
@@ -205,12 +204,12 @@ final class ClientTests: XCTestCase {
         
         showView(PinchView())
         
-        let didNotScale = try await app.staticTexts["Did scale? No"].exists
+        let didNotScale = try await app.staticTexts("Did scale? No").exists()
         XCTAssert(didNotScale)
         
-        try await app.staticTexts["PinchContainer"].pinch(withScale: 1.5, velocity: 1)
+        try await app.staticTexts("PinchContainer").pinch(withScale: 1.5, velocity: 1)
         
-        let didScale = try await app.staticTexts["Did scale? Yes"].waitForExistence(timeout: 1)
+        let didScale = try await app.staticTexts("Did scale? Yes").waitForExistence(timeout: 1)
         XCTAssert(didScale == true)
     }
     
@@ -220,12 +219,12 @@ final class ClientTests: XCTestCase {
         
         showView(RotateView())
         
-        let didNotRotate = try await app.staticTexts["Did rotate? No"].exists
+        let didNotRotate = try await app.staticTexts("Did rotate? No").exists()
         XCTAssert(didNotRotate)
         
-        try await app.staticTexts["Rotate me!"].rotate(0.2, withVelocity: 1)
+        try await app.staticTexts("Rotate me!").rotate(0.2, withVelocity: 1)
         
-        let didRotate = try await app.staticTexts["Did rotate? Yes"].waitForExistence(timeout: 1)
+        let didRotate = try await app.staticTexts("Did rotate? Yes").waitForExistence(timeout: 1)
         XCTAssert(didRotate)
     }
     
@@ -235,15 +234,15 @@ final class ClientTests: XCTestCase {
         
         showView(SomethingView())
         
-        let somethingView = try await app.staticTexts.element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel"))
+        let somethingView = try await app.staticTexts().element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel"))
         
-        let somethingViewExists = try await somethingView.exists
+        let somethingViewExists = try await somethingView.exists()
         XCTAssert(somethingViewExists)
     }
     
     @MainActor
     func testTapSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(MySettingTable())
         
@@ -260,7 +259,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testExistsSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(MySettingTable())
         
@@ -276,7 +275,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testDoubleTapSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(MySettingTable())
         
@@ -289,7 +288,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testEnterTextSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(MySettingTable())
         
@@ -306,7 +305,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testSwipeActionsSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(SwipeView())
         
@@ -348,7 +347,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testWaitForExistenceSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(WaitForExistenceView())
         
@@ -365,7 +364,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testPressWithDurationSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(PressAndHoldView())
         
@@ -381,7 +380,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testHomeButtonAndLaunchSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(GoToBackgroundAndBackView())
         
@@ -398,7 +397,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testTwoFingerTapSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(TapView())
         
@@ -413,7 +412,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testThreeFingerTapSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(TapView())
         
@@ -426,7 +425,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testPinchSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(PinchView())
         
@@ -441,7 +440,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testRotateSync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(RotateView())
         
@@ -456,7 +455,7 @@ final class ClientTests: XCTestCase {
     
     @MainActor
     func testMatchingWithPredicateAsync() {
-        let app = SyncApp(xctest: self)
+        let app = App()
         
         showView(SomethingView())
         

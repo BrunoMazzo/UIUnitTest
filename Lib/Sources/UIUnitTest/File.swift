@@ -11,682 +11,892 @@ public struct UIUnitTestActor {
     public static let shared = MyActor()
 }
 
-public class Executor {
-    var box = Box()
-    let xctest: XCTestCase
+public struct Executor: @unchecked Sendable {
+    private var box = Box()
     
-    init(xctest: XCTestCase) {
-        self.xctest = xctest
+    static func execute<T>(function: String = #function, _ block: @escaping () async throws -> T) -> T {
+        let executor = Executor()
+        return executor.execute(function: function, block)
     }
     
     func execute<T>(function: String = #function, _ block: @escaping () async throws -> T) -> T {
-        let expectation = xctest.expectation(description: function)
+        let waiter = XCTWaiter()
+        let expectation = XCTestExpectation(description: function)
         Task { @UIUnitTestActor in
             defer {
                 expectation.fulfill()
             }
             self.box.value = try await block()
         }
-        
-        xctest.wait(for: [expectation])
+        waiter.wait(for: [expectation])
         return box.value as! T
     }
 }
 
-public protocol SyncElementTypeQueryProvider {
-    var elementProvider: ElementTypeQueryProvider { get }
-    var executor: Executor { get }
-}
-
-public class SyncElement: SyncElementTypeQueryProvider {
-    var element: Element {
-        elementProvider as! Element
-    }
-    public var elementProvider: ElementTypeQueryProvider
-    public let executor: Executor
+extension Element {
     
-    init(element: ElementTypeQueryProvider, executor: Executor) {
-        self.elementProvider = element
-        self.executor = executor
-    }
-    
+    @available(*, noasync)
     public var exists: Bool {
-        self.executor.execute {
-            try await self.element.exists
+        Executor.execute {
+            try await self.exists()
         }
     }
     
-    /** Waits the specified amount of time for the element's exist property to be true and returns false if the timeout expires without the element coming into existence. */
+    @available(*, noasync)
     public func waitForExistence(timeout: TimeInterval) -> Bool {
-        self.executor.execute {
-            try await self.element.waitForExistence(timeout: timeout)
+        Executor.execute {
+            try await self.waitForExistence(timeout: timeout)
         }
     }
     
-    
-    /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
+    @available(*, noasync)
     public var isHittable: Bool {
-        self.executor.execute {
-            try await self.element.isHittable
+        Executor.execute {
+            try await self.isHittable()
         }
     }
     
-    // Need better way to represent any :c
+    @available(*, noasync)
     public var value: String? {
-        self.executor.execute {
-            try await self.element.value
+        Executor.execute {
+            try await self.value()
         }
     }
     
-    /** Returns a query for all descendants of the element matching the specified type. */
-    public func descendants(matching type: Element.ElementType) -> SyncQuery {
-        let query = self.executor.execute {
-            try await self.element.descendants(matching: type)
+    @available(*, noasync)
+    public func descendants(matching type: Element.ElementType) -> Query {
+        Executor.execute {
+            try await self.descendants(matching: type)
         }
-        return SyncQuery(query: query, executor: self.executor)
     }
     
-    /** Returns a query for direct children of the element matching the specified type. */
-    public func children(matching type: Element.ElementType) -> SyncQuery {
-        let query = self.executor.execute {
-            try await self.element.children(matching: type)
+    @available(*, noasync)
+    public func children(matching type: Element.ElementType) -> Query {
+        Executor.execute {
+            try await self.children(matching: type)
         }
-        return SyncQuery(query: query, executor: self.executor)
     }
     
+    @available(*, noasync)
     public func scroll(byDeltaX deltaX: CGFloat, deltaY: CGFloat) {
-        self.executor.execute {
-            try await self.element.scroll(byDeltaX: deltaX, deltaY: deltaY)
+        Executor.execute {
+            try await self.scroll(byDeltaX: deltaX, deltaY: deltaY)
         }
     }
     
+    @available(*, noasync)
     public func typeText(_ text: String) {
-        self.executor.execute {
-            try await self.element.typeText(text)
+        Executor.execute {
+            try await self.typeText(text)
         }
     }
     
+    @available(*, noasync)
     public var debugDescription: String {
-        self.executor.execute {
-            try await self.element.debugDescription
+        Executor.execute {
+            try await self.debugDescription()
         }
     }
     
+    @available(*, noasync)
     public var identifier: String {
-        self.executor.execute {
-            try await self.element.identifier
+        Executor.execute {
+            try await self.identifier()
         }
     }
     
+    @available(*, noasync)
     public var title: String {
-        self.executor.execute {
-            try await self.element.title
+        Executor.execute {
+            try await self.title()
         }
     }
     
+    @available(*, noasync)
     public var label: String {
-        self.executor.execute {
-            try await self.element.label
+        Executor.execute {
+            try await self.label()
         }
     }
     
+    @available(*, noasync)
     public var placeholderValue: String? {
-        self.executor.execute {
-            try await self.element.placeholderValue
+        Executor.execute {
+            try await self.placeholderValue()
         }
     }
     
+    @available(*, noasync)
     public var isSelected: Bool {
-        self.executor.execute {
-            try await self.element.isSelected
+        Executor.execute {
+            try await self.isSelected()
         }
     }
     
+    @available(*, noasync)
     public var hasFocus: Bool {
-        self.executor.execute {
-            try await self.element.hasFocus
+        Executor.execute {
+            try await self.hasFocus()
         }
     }
     
+    @available(*, noasync)
     public var isEnabled: Bool {
-        self.executor.execute {
-            try await self.element.isEnabled
+        Executor.execute {
+            try await self.isEnabled()
         }
     }
     
+    @available(*, noasync)
     public func coordinate(withNormalizedOffset normalizedOffset: CGVector) -> Coordinate {
-        self.executor.execute {
-            try await self.element.coordinate(withNormalizedOffset: normalizedOffset)
+        Executor.execute {
+            try await self.coordinate(withNormalizedOffset: normalizedOffset)
         }
     }
     
+    @available(*, noasync)
     public var frame: CGRect {
-        self.executor.execute {
-            try await self.element.frame
+        Executor.execute {
+            try await self.frame()
         }
     }
     
+    @available(*, noasync)
     public var horizontalSizeClass: SizeClass {
-        self.executor.execute {
-            try await self.element.horizontalSizeClass
+        Executor.execute {
+            try await self.horizontalSizeClass()
         }
     }
     
+    @available(*, noasync)
     public var verticalSizeClass: SizeClass {
-        self.executor.execute {
-            try await self.element.verticalSizeClass
+        Executor.execute {
+            try await self.verticalSizeClass()
         }
     }
     
+    @available(*, noasync)
     public var elementType: Element.ElementType {
-        self.executor.execute {
-            try await self.element.elementType
+        Executor.execute {
+            try await self.elementType()
         }
     }
 }
 
-public class SyncApp: SyncElement {
-    var app: App {
-        self.element as! App
-    }
+extension App {
     
-    public init(xctest: XCTestCase, appId: String) {
-        let executor = Executor(xctest: xctest)
-        let app = executor.execute({
-            try await App(appId: appId)
-        })
-        super.init(element: app, executor: executor)
-    }
-    
+    @available(*, noasync)
     public func pressHomeButton() {
-        self.executor.execute {
-            try await self.app.pressHomeButton()
+        Executor.execute {
+            try await self.pressHomeButton()
         }
     }
     
+    @available(*, noasync)
     public func activate() {
-        self.executor.execute {
-            try await self.app.activate()
+        Executor.execute {
+            try await self.activate()
         }
     }
 }
 
-public class SyncQuery: SyncElementTypeQueryProvider {
-    public var elementProvider: ElementTypeQueryProvider
-    public let executor: Executor
+extension Query {
     
-    var query: Query {
-        elementProvider as! Query
-    }
-
-    init(query: Query, executor: Executor) {
-        self.elementProvider = query
-        self.executor = executor
-    }
-    
-    public var element: SyncElement! {
-        let element = self.executor.execute {
-            try await self.query.element
-        }
-        return SyncElement(element: element!, executor: executor)
-    }
-    
-    public var allElementsBoundByAccessibilityElement: [SyncElement] {
-        let elements = self.executor.execute {
-            try await self.query.allElementsBoundByAccessibilityElement
-        }
-        
-        return elements.map { element in
-            SyncElement(element: element, executor: executor)
+    @available(*, noasync)
+    public var element: Element! {
+        Executor.execute {
+            try await self.element()
         }
     }
     
-    public var allElementsBoundByIndex: [SyncElement] {
-        let elements = self.executor.execute {
-            try await self.query.allElementsBoundByIndex
-        }
-        return elements.map { element in
-            SyncElement(element: element, executor: executor)
+    @available(*, noasync)
+    public var allElementsBoundByAccessibilityElement: [Element] {
+        Executor.execute {
+            try await self.allElementsBoundByAccessibilityElement()
         }
     }
     
-    /** Evaluates the query at the time it is called and returns the number of matches found. */
+    @available(*, noasync)
+    public var allElementsBoundByIndex: [Element] {
+        Executor.execute {
+            try await self.allElementsBoundByIndex()
+        }
+    }
+    
+    @available(*, noasync)
     public var count: Int {
-        self.executor.execute {
-            try await self.query.count
+        Executor.execute {
+            try await self.count()
         }
     }
     
-    /** Returns an element that will use the index into the query's results to determine which underlying accessibility element it is matched with. */
-    public func element(boundByIndex index: Int) -> SyncElement {
-        let element = self.executor.execute {
-            try await self.query.element(boundByIndex: index)
+    @available(*, noasync)
+    public func element(boundByIndex index: Int) -> Element {
+        Executor.execute {
+            try await self.element(boundByIndex: index)
         }
-        return SyncElement(element: element, executor: executor)
     }
     
-    /** Returns an element that matches the predicate. The predicate will be evaluated against objects of type id<XCUIElementAttributes>. */
-    public func element(matching predicate: NSPredicate) -> SyncElement {
-        let element = self.executor.execute {
-            try await self.query.element(matching: predicate)
+    @available(*, noasync)
+    public func element(matching predicate: NSPredicate) -> Element {
+        Executor.execute {
+            try await self.element(matching: predicate)
         }
-        return SyncElement(element: element, executor: executor)
     }
     
-    /** Returns an element that matches the type and identifier. */
-    public func element(matching elementType: Element.ElementType, identifier: String?) -> SyncElement {
-        let element = self.executor.execute {
-            try await self.query.element(matching: elementType, identifier: identifier)
+    @available(*, noasync)
+    public func element(matching elementType: Element.ElementType, identifier: String?) -> Element {
+        Executor.execute {
+            try await self.element(matching: elementType, identifier: identifier)
         }
-        return SyncElement(element: element, executor: executor)
     }
     
-    /** Keyed subscripting is implemented as a shortcut for matching an identifier only. For example, app.descendants["Foo"] -> XCUIElement. */
-    public subscript(_ identifier: String) -> SyncElement {
-        let element = self.executor.execute {
-            try await self.query[identifier]
+    @available(*, noasync)
+    public subscript(_ identifier: String) -> Element {
+        Executor.execute {
+            try await self(identifier: identifier)
         }
-        return SyncElement(element: element, executor: executor)
     }
     
-    /** Returns a new query that finds the descendants of all the elements found by the receiver. */
-    public func descendants(matching elementType: Element.ElementType) -> SyncQuery {
-        let query = self.executor.execute {
-            try await self.query.descendants(matching: elementType)
+    @available(*, noasync)
+    public func descendants(matching elementType: Element.ElementType) -> Query {
+        Executor.execute {
+            try await self.descendants(matching: elementType)
         }
-        
-        return SyncQuery(query: query, executor: executor)
-        
     }
     
-    /** Returns a new query that finds the direct children of all the elements found by the receiver. */
-    public func children(matching type: Element.ElementType) -> SyncQuery {
-        let query = self.executor.execute {
-            try await self.query.children(matching: type)
+    @available(*, noasync)
+    public func children(matching type: Element.ElementType) -> Query {
+        Executor.execute {
+            try await self.children(matching: type)
         }
-        return SyncQuery(query: query, executor: executor)
     }
     
-    public func matching(_ predicate: NSPredicate) -> SyncQuery {
-        let query = self.executor.execute {
-            try await self.query.matching(predicate)
+    @available(*, noasync)
+    public func matching(_ predicate: NSPredicate) -> Query {
+        Executor.execute {
+            try await self.matching(predicate)
         }
-        return SyncQuery(query: query, executor: executor)
     }
     
-    public func matching(_ elementType: Element.ElementType, identifier: String?) -> SyncQuery {
-        let query = self.executor.execute {
-            try await self.query.matching(elementType, identifier: identifier)
+    @available(*, noasync)
+    public func matching(_ elementType: Element.ElementType, identifier: String?) -> Query {
+        Executor.execute {
+            try await self.matching(elementType, identifier: identifier)
         }
-        return SyncQuery(query: query, executor: executor)
     }
     
-    public func matching(identifier: String) -> SyncQuery {
-        let query = self.executor.execute {
-            try await self.query.matching(identifier: identifier)
+    @available(*, noasync)
+    public func matching(identifier: String) -> Query {
+        Executor.execute {
+            try await self.matching(identifier: identifier)
         }
-        return SyncQuery(query: query, executor: executor)
     }
     
-    public func containing(_ predicate: NSPredicate) -> SyncQuery {
-        let query = self.executor.execute {
-            try await self.query.containing(predicate)
+    @available(*, noasync)
+    public func containing(_ predicate: NSPredicate) -> Query {
+        Executor.execute {
+            try await self.containing(predicate)
         }
-        return SyncQuery(query: query, executor: executor)
     }
     
-    public func containing(_ elementType: Element.ElementType, identifier: String?) -> SyncQuery {
-        let query = self.executor.execute {
-            try await self.query.containing(elementType, identifier: identifier)
+    @available(*, noasync)
+    public func containing(_ elementType: Element.ElementType, identifier: String?) -> Query {
+        Executor.execute {
+            try await self.containing(elementType, identifier: identifier)
         }
-        return SyncQuery(query: query, executor: executor)
     }
     
+    @available(*, noasync)
     public var debugDescription: String {
-        self.executor.execute {
-            try await self.query.debugDescription
+        Executor.execute {
+            try await self.debugDescription()
         }
     }
 }
 
 
-public extension SyncElementTypeQueryProvider {
+public extension ElementTypeQueryProvider {
     
-    var firstMatch: SyncElement {
-        let element = self.executor.execute {
-            try await self.elementProvider.firstMatch
+    @available(*, noasync)
+    var firstMatch: Element {
+        Executor.execute {
+            try await self.firstMatch()
         }
-        
-        return SyncElement(element: element, executor: self.executor)
     }
     
-    subscript(dynamicMember: Query.QueryType) -> SyncQuery {
-        let query = self.executor.execute {
-            try await Query(serverId: self.elementProvider.serverId, queryType: dynamicMember)
+    @available(*, noasync)
+    subscript(dynamicMember: Query.QueryType) -> Query {
+        Executor.execute {
+            try await Query(serverId: self.serverId, queryType: dynamicMember)
         }
-        return SyncQuery(query: query, executor: self.executor)
     }
     
-    var activityIndicators: SyncQuery {
-        self[.activityIndicators]
+    @available(*, noasync)
+    var activityIndicators: Query {
+        Executor.execute {
+            try await self(.activityIndicators)
+        }
     }
     
-    var alerts: SyncQuery {
-        self[.alerts]
+    @available(*, noasync)
+    var alerts: Query {
+        Executor.execute {
+            try await self(.alerts)
+        }
     }
     
-    var browsers: SyncQuery {
-       self[.browsers]
+    @available(*, noasync)
+    var browsers: Query {
+        Executor.execute {
+            try await self(.browsers)
+        }
     }
     
-    var buttons: SyncQuery {
-       self[.buttons]
+    @available(*, noasync)
+    var buttons: Query {
+        Executor.execute {
+            try await self(.buttons)
+        }
     }
     
-    var cells: SyncQuery {
-       self[.cells]
+    @available(*, noasync)
+    var cells: Query {
+        Executor.execute {
+            try await self(.cells)
+        }
     }
     
-    var checkBoxes: SyncQuery {
-       self[.checkBoxes]
+    @available(*, noasync)
+    var checkBoxes: Query {
+        Executor.execute {
+            try await self(.checkBoxes)
+        }
     }
     
-    var collectionViews: SyncQuery {
-       self[.collectionViews]
+    @available(*, noasync)
+    var collectionViews: Query {
+        Executor.execute {
+            try await self(.collectionViews)
+        }
     }
     
-    var colorWells: SyncQuery {
-       self[.colorWells]
+    @available(*, noasync)
+    var colorWells: Query {
+        Executor.execute {
+            try await self(.colorWells)
+        }
     }
     
-    var comboBoxes: SyncQuery {
-       self[.comboBoxes]
+    @available(*, noasync)
+    var comboBoxes: Query {
+        Executor.execute {
+            try await self(.comboBoxes)
+        }
     }
     
-    var datePickers: SyncQuery {
-       self[.datePickers]
+    @available(*, noasync)
+    var datePickers: Query {
+        Executor.execute {
+            try await self(.datePickers)
+        }
     }
     
-    var decrementArrows: SyncQuery {
-       self[.decrementArrows]
+    @available(*, noasync)
+    var decrementArrows: Query {
+        Executor.execute {
+            try await self(.decrementArrows)
+        }
     }
     
-    var dialogs: SyncQuery {
-       self[.dialogs]
+    @available(*, noasync)
+    var dialogs: Query {
+        Executor.execute {
+            try await self(.dialogs)
+        }
     }
     
-    var disclosureTriangles: SyncQuery {
-       self[.disclosureTriangles]
+    @available(*, noasync)
+    var disclosureTriangles: Query {
+        Executor.execute {
+            try await self(.disclosureTriangles)
+        }
     }
     
-    var disclosedChildRows: SyncQuery {
-       self[.disclosedChildRows]
+    @available(*, noasync)
+    var disclosedChildRows: Query {
+        Executor.execute {
+            try await self(.disclosedChildRows)
+        }
     }
     
-    var dockItems: SyncQuery {
-       self[.dockItems]
+    @available(*, noasync)
+    var dockItems: Query {
+        Executor.execute {
+            try await self(.dockItems)
+        }
     }
     
-    var drawers: SyncQuery {
-       self[.drawers]
+    @available(*, noasync)
+    var drawers: Query {
+        Executor.execute {
+            try await self(.drawers)
+        }
     }
     
-    var grids: SyncQuery {
-       self[.grids]
+    @available(*, noasync)
+    var grids: Query {
+        Executor.execute {
+            try await self(.grids)
+        }
     }
     
-    var groups: SyncQuery {
-       self[.groups]
+    @available(*, noasync)
+    var groups: Query {
+        Executor.execute {
+            try await self(.groups)
+        }
     }
     
-    var handles: SyncQuery {
-       self[.handles]
+    @available(*, noasync)
+    var handles: Query {
+        Executor.execute {
+            try await self(.handles)
+        }
     }
     
-    var helpTags: SyncQuery {
-       self[.helpTags]
+    @available(*, noasync)
+    var helpTags: Query {
+        Executor.execute {
+            try await self(.helpTags)
+        }
     }
     
-    var icons: SyncQuery {
-       self[.icons]
+    @available(*, noasync)
+    var icons: Query {
+        Executor.execute {
+            try await self(.icons)
+        }
     }
     
-    var images: SyncQuery {
-       self[.images]
+    @available(*, noasync)
+    var images: Query {
+        Executor.execute {
+            try await self(.images)
+        }
     }
     
-    var incrementArrows: SyncQuery {
-       self[.incrementArrows]
+    @available(*, noasync)
+    var incrementArrows: Query {
+        Executor.execute {
+            try await self(.incrementArrows)
+        }
     }
     
-    var keyboards: SyncQuery {
-       self[.keyboards]
+    @available(*, noasync)
+    var keyboards: Query {
+        Executor.execute {
+            try await self(.keyboards)
+        }
     }
     
-    var keys: SyncQuery {
-       self[.keys]
+    @available(*, noasync)
+    var keys: Query {
+        Executor.execute {
+            try await self(.keys)
+        }
     }
     
-    var layoutAreas: SyncQuery {
-       self[.layoutAreas]
+    @available(*, noasync)
+    var layoutAreas: Query {
+        Executor.execute {
+            try await self(.layoutAreas)
+        }
     }
     
-    var layoutItems: SyncQuery {
-       self[.layoutItems]
+    @available(*, noasync)
+    var layoutItems: Query {
+        Executor.execute {
+            try await self(.layoutItems)
+        }
     }
     
-    var levelIndicators: SyncQuery {
-       self[.levelIndicators]
+    @available(*, noasync)
+    var levelIndicators: Query {
+        Executor.execute {
+            try await self(.levelIndicators)
+        }
     }
     
-    var links: SyncQuery {
-       self[.links]
+    @available(*, noasync)
+    var links: Query {
+        Executor.execute {
+            try await self(.links)
+        }
     }
     
-    var maps: SyncQuery {
-       self[.maps]
+    @available(*, noasync)
+    var maps: Query {
+        Executor.execute {
+            try await self(.maps)
+        }
     }
     
-    var mattes: SyncQuery {
-       self[.mattes]
+    @available(*, noasync)
+    var mattes: Query {
+        Executor.execute {
+            try await self(.mattes)
+        }
     }
     
-    var menuBarItems: SyncQuery {
-       self[.menuBarItems]
+    @available(*, noasync)
+    var menuBarItems: Query {
+        Executor.execute {
+            try await self(.menuBarItems)
+        }
     }
     
-    var menuBars: SyncQuery {
-       self[.menuBars]
+    @available(*, noasync)
+    var menuBars: Query {
+        Executor.execute {
+            try await self(.menuBars)
+        }
     }
     
-    var menuButtons: SyncQuery {
-       self[.menuButtons]
+    @available(*, noasync)
+    var menuButtons: Query {
+        Executor.execute {
+            try await self(.menuButtons)
+        }
     }
     
-    var menuItems: SyncQuery {
-       self[.menuItems]
+    @available(*, noasync)
+    var menuItems: Query {
+        Executor.execute {
+            try await self(.menuItems)
+        }
     }
     
-    var menus: SyncQuery {
-       self[.menus]
+    @available(*, noasync)
+    var menus: Query {
+        Executor.execute {
+            try await self(.menus)
+        }
     }
     
-    var navigationBars: SyncQuery {
-       self[.navigationBars]
+    @available(*, noasync)
+    var navigationBars: Query {
+        Executor.execute {
+            try await self(.navigationBars)
+        }
     }
     
-    var otherElements: SyncQuery {
-       self[.otherElements]
+    @available(*, noasync)
+    var otherElements: Query {
+        Executor.execute {
+            try await self(.otherElements)
+        }
     }
     
-    var outlineRows: SyncQuery {
-       self[.outlineRows]
+    @available(*, noasync)
+    var outlineRows: Query {
+        Executor.execute {
+            try await self(.outlineRows)
+        }
     }
     
-    var outlines: SyncQuery {
-       self[.outlines]
+    @available(*, noasync)
+    var outlines: Query {
+        Executor.execute {
+            try await self(.outlines)
+        }
     }
     
-    var pageIndicators: SyncQuery {
-       self[.pageIndicators]
+    @available(*, noasync)
+    var pageIndicators: Query {
+        Executor.execute {
+            try await self(.pageIndicators)
+        }
     }
     
-    var pickerWheels: SyncQuery {
-       self[.pickerWheels]
+    @available(*, noasync)
+    var pickerWheels: Query {
+        Executor.execute {
+            try await self(.pickerWheels)
+        }
     }
     
-    var pickers: SyncQuery {
-       self[.pickers]
+    @available(*, noasync)
+    var pickers: Query {
+        Executor.execute {
+            try await self(.pickers)
+        }
     }
     
-    var popUpButtons: SyncQuery {
-       self[.popUpButtons]
+    @available(*, noasync)
+    var popUpButtons: Query {
+        Executor.execute {
+            try await self(.popUpButtons)
+        }
     }
     
-    var popovers: SyncQuery {
-       self[.popovers]
+    @available(*, noasync)
+    var popovers: Query {
+        Executor.execute {
+            try await self(.popovers)
+        }
     }
     
-    var progressIndicators: SyncQuery {
-       self[.progressIndicators]
+    @available(*, noasync)
+    var progressIndicators: Query {
+        Executor.execute {
+            try await self(.progressIndicators)
+        }
     }
     
-    var radioButtons: SyncQuery {
-       self[.radioButtons]
+    @available(*, noasync)
+    var radioButtons: Query {
+        Executor.execute {
+            try await self(.radioButtons)
+        }
     }
     
-    var radioGroups: SyncQuery {
-       self[.radioGroups]
+    @available(*, noasync)
+    var radioGroups: Query {
+        Executor.execute {
+            try await self(.radioGroups)
+        }
     }
     
-    var ratingIndicators: SyncQuery {
-       self[.ratingIndicators]
+    @available(*, noasync)
+    var ratingIndicators: Query {
+        Executor.execute {
+            try await self(.ratingIndicators)
+        }
     }
     
-    var relevanceIndicators: SyncQuery {
-       self[.relevanceIndicators]
+    @available(*, noasync)
+    var relevanceIndicators: Query {
+        Executor.execute {
+            try await self(.relevanceIndicators)
+        }
     }
     
-    var rulerMarkers: SyncQuery {
-       self[.rulerMarkers]
+    @available(*, noasync)
+    var rulerMarkers: Query {
+        Executor.execute {
+            try await self(.rulerMarkers)
+        }
     }
     
-    var rulers: SyncQuery {
-       self[.rulers]
+    @available(*, noasync)
+    var rulers: Query {
+        Executor.execute {
+            try await self(.rulers)
+        }
     }
     
-    var scrollBars: SyncQuery {
-       self[.scrollBars]
+    @available(*, noasync)
+    var scrollBars: Query {
+        Executor.execute {
+            try await self(.scrollBars)
+        }
     }
     
-    var scrollViews: SyncQuery {
-       self[.scrollViews]
+    @available(*, noasync)
+    var scrollViews: Query {
+        Executor.execute {
+            try await self(.scrollViews)
+        }
     }
-    var searchFields: SyncQuery {
-       self[.searchFields]
+    
+    @available(*, noasync)
+    var searchFields: Query {
+        Executor.execute {
+            try await self(.searchFields)
+        }
     }
     
-    var secureTextFields: SyncQuery {
-       self[.secureTextFields]
+    @available(*, noasync)
+    var secureTextFields: Query {
+        Executor.execute {
+            try await self(.secureTextFields)
+        }
     }
     
-    var segmentedControls: SyncQuery {
-       self[.segmentedControls]
+    @available(*, noasync)
+    var segmentedControls: Query {
+        Executor.execute {
+            try await self(.segmentedControls)
+        }
     }
     
-    var sheets: SyncQuery {
-       self[.sheets]
+    @available(*, noasync)
+    var sheets: Query {
+        Executor.execute {
+            try await self(.sheets)
+        }
     }
     
-    var sliders: SyncQuery {
-       self[.sliders]
+    @available(*, noasync)
+    var sliders: Query {
+        Executor.execute {
+            try await self(.sliders)
+        }
     }
     
-    var splitGroups: SyncQuery {
-       self[.splitGroups]
+    @available(*, noasync)
+    var splitGroups: Query {
+        Executor.execute {
+            try await self(.splitGroups)
+        }
     }
     
-    var splitters: SyncQuery {
-       self[.splitters]
+    @available(*, noasync)
+    var splitters: Query {
+        Executor.execute {
+            try await self(.splitters)
+        }
     }
     
-    var staticTexts: SyncQuery {
-       self[.staticTexts]
+    @available(*, noasync)
+    var staticTexts: Query {
+        Executor.execute {
+            try await self(.staticTexts)
+        }
     }
     
-    var statusBars: SyncQuery {
-       self[.statusBars]
+    @available(*, noasync)
+    var statusBars: Query {
+        Executor.execute {
+            try await self(.statusBars)
+        }
     }
     
-    var statusItems: SyncQuery {
-       self[.statusItems]
+    @available(*, noasync)
+    var statusItems: Query {
+        Executor.execute {
+            try await self(.statusItems)
+        }
     }
     
-    var steppers: SyncQuery {
-       self[.steppers]
+    @available(*, noasync)
+    var steppers: Query {
+        Executor.execute {
+            try await self(.steppers)
+        }
     }
     
-    var switches: SyncQuery {
-       self[.switches]
+    @available(*, noasync)
+    var switches: Query {
+        Executor.execute {
+            try await self(.switches)
+        }
     }
     
-    var tabBars: SyncQuery {
-       self[.tabBars]
+    @available(*, noasync)
+    var tabBars: Query {
+        Executor.execute {
+            try await self(.tabBars)
+        }
     }
     
-    var tabGroups: SyncQuery {
-       self[.tabGroups]
+    @available(*, noasync)
+    var tabGroups: Query {
+        Executor.execute {
+            try await self(.tabGroups)
+        }
     }
     
-    var tableColumns: SyncQuery {
-       self[.tableColumns]
+    @available(*, noasync)
+    var tableColumns: Query {
+        Executor.execute {
+            try await self(.tableColumns)
+        }
     }
     
-    var tableRows: SyncQuery {
-       self[.tableRows]
+    @available(*, noasync)
+    var tableRows: Query {
+        Executor.execute {
+            try await self(.tableRows)
+        }
     }
     
-    var tables: SyncQuery {
-       self[.tables]
+    @available(*, noasync)
+    var tables: Query {
+        Executor.execute {
+            try await self(.tables)
+        }
     }
     
-    var textFields: SyncQuery {
-       self[.textFields]
+    @available(*, noasync)
+    var textFields: Query {
+        Executor.execute {
+            try await self(.textFields)
+        }
     }
     
-    var textViews: SyncQuery {
-       self[.textViews]
+    @available(*, noasync)
+    var textViews: Query {
+        Executor.execute {
+            try await self(.textViews)
+        }
     }
     
-    var timelines: SyncQuery {
-       self[.timelines]
+    @available(*, noasync)
+    var timelines: Query {
+        Executor.execute {
+            try await self(.timelines)
+        }
     }
     
-    var toggles: SyncQuery {
-       self[.toggles]
+    @available(*, noasync)
+    var toggles: Query {
+        Executor.execute {
+            try await self(.toggles)
+        }
     }
     
-    var toolbarButtons: SyncQuery {
-       self[.toolbarButtons]
+    @available(*, noasync)
+    var toolbarButtons: Query {
+        Executor.execute {
+            try await self(.toolbarButtons)
+        }
     }
     
-    var toolbars: SyncQuery {
-       self[.toolbars]
+    @available(*, noasync)
+    var toolbars: Query {
+        Executor.execute {
+            try await self(.toolbars)
+        }
     }
     
-    var touchBars: SyncQuery {
-       self[.touchBars]
+    @available(*, noasync)
+    var touchBars: Query {
+        Executor.execute {
+            try await self(.touchBars)
+        }
     }
     
-    var valueIndicators: SyncQuery {
-       self[.valueIndicators]
+    @available(*, noasync)
+    var valueIndicators: Query {
+        Executor.execute {
+            try await self(.valueIndicators)
+        }
     }
     
-    var webViews: SyncQuery {
-       self[.webViews]
+    @available(*, noasync)
+    var webViews: Query {
+        Executor.execute {
+            try await self(.webViews)
+        }
     }
     
-    var windows: SyncQuery {
-       self[.windows]
+    @available(*, noasync)
+    var windows: Query {
+        Executor.execute {
+            try await self(.windows)
+        }
     }
 }
+

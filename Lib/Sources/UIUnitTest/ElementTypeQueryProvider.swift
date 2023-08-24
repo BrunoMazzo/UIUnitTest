@@ -6,502 +6,644 @@ public protocol ElementTypeQueryProvider {
 
 public extension ElementTypeQueryProvider {
     
-    var firstMatch: Element {
-        get async throws {
-            let elementResponse: FirstMatchResponse = try await callServer(path: "firstMatch", request: FirstMatchRequest(serverId: self.serverId))
-            return Element(serverId: elementResponse.serverId)
-        }
+    func firstMatch() async throws -> Element  {
+        let elementResponse: FirstMatchResponse = try await callServer(path: "firstMatch", request: FirstMatchRequest(serverId: self.serverId))
+        return Element(serverId: elementResponse.serverId)
     }
     
-    subscript(dynamicMember: Query.QueryType) -> Query {
-        get async throws {
-            try await Query(serverId: self.serverId, queryType: dynamicMember)
-        }
+    func callAsFunction(_ dynamicMember: Query.QueryType) async throws -> Query {
+        try await Query(serverId: self.serverId, queryType: dynamicMember)
     }
     
-    var activityIndicators: Query {
-        get async throws {
-            try await self[.activityIndicators]
-        }
+    func activityIndicators() async throws -> Query  {
+        try await self(.activityIndicators)
     }
     
-    var alerts: Query {
-        get async throws {
-            try await self[.alerts]
-        }
+    func activityIndicators(_ identifier: String) async throws -> Element {
+        try await self(.activityIndicators)(identifier: identifier)
     }
     
-    var browsers: Query {
-        get async throws {
-            try await self[.browsers]
-        }
+    func alerts() async throws -> Query  {
+        try await self(.alerts)
     }
     
-    var buttons: Query {
-        get async throws {
-            try await self[.buttons]
-        }
+    func browsers() async throws -> Query{
+        try await self(.browsers)
     }
     
-    var cells: Query {
-        get async throws {
-            try await self[.cells]
-        }
+    func browsers(_ identifier: String) async throws -> Element {
+        try await self(.browsers)(identifier: identifier)
     }
     
-    var checkBoxes: Query {
-        get async throws {
-            try await self[.checkBoxes]
-        }
+    func buttons() async throws -> Query{
+        try await self(.buttons)
     }
     
-    var collectionViews: Query {
-        get async throws {
-            try await self[.collectionViews]
-        }
+    func buttons(_ identifier: String) async throws -> Element {
+        try await self(.buttons)(identifier: identifier)
     }
     
-    var colorWells: Query {
-        get async throws {
-            try await self[.colorWells]
-        }
+    func cells() async throws -> Query{
+        try await self(.cells)
     }
     
-    var comboBoxes: Query {
-        get async throws {
-            try await self[.comboBoxes]
-        }
+    func cells(_ identifier: String) async throws -> Element {
+        try await self(.cells)(identifier: identifier)
     }
     
-    var datePickers: Query {
-        get async throws {
-            try await self[.datePickers]
-        }
+    func checkBoxes() async throws -> Query {
+        try await self(.checkBoxes)
     }
     
-    var decrementArrows: Query {
-        get async throws {
-            try await self[.decrementArrows]
-        }
+    func checkBoxes(_ identifier: String) async throws -> Element {
+        try await self(.checkBoxes)(identifier: identifier)
     }
     
-    var dialogs: Query {
-        get async throws {
-            try await self[.dialogs]
-        }
+    func collectionViews() async throws -> Query{
+        try await self(.collectionViews)
     }
     
-    var disclosureTriangles: Query {
-        get async throws {
-            try await self[.disclosureTriangles]
-        }
+    func collectionViews(_ identifier: String) async throws -> Element {
+        try await self(.collectionViews)(identifier: identifier)
     }
     
-    var disclosedChildRows: Query {
-        get async throws {
-            try await self[.disclosedChildRows]
-        }
+    func colorWells() async throws -> Query{
+        try await self(.colorWells)
     }
     
-    var dockItems: Query {
-        get async throws {
-            try await self[.dockItems]
-        }
+    func colorWells(_ identifier: String) async throws -> Element {
+        try await self(.colorWells)(identifier: identifier)
     }
     
-    var drawers: Query {
-        get async throws {
-            try await self[.drawers]
-        }
+    func comboBoxes() async throws -> Query{
+        try await self(.comboBoxes)
     }
     
-    var grids: Query {
-        get async throws {
-            try await self[.grids]
-        }
+    func comboBoxes(_ identifier: String) async throws -> Element {
+        try await self(.comboBoxes)(identifier: identifier)
     }
     
-    var groups: Query {
-        get async throws {
-            try await self[.groups]
-        }
+    func datePickers() async throws -> Query{
+        try await self(.datePickers)
     }
     
-    var handles: Query {
-        get async throws {
-            try await self[.handles]
-        }
+    func datePickers(_ identifier: String) async throws -> Element {
+        try await self(.datePickers)(identifier: identifier)
     }
     
-    var helpTags: Query {
-        get async throws {
-            try await self[.helpTags]
-        }
+    func decrementArrows() async throws -> Query{
+        try await self(.decrementArrows)
     }
     
-    var icons: Query {
-        get async throws {
-            try await self[.icons]
-        }
+    func decrementArrows(_ identifier: String) async throws -> Element {
+        try await self(.decrementArrows)(identifier: identifier)
     }
     
-    var images: Query {
-        get async throws {
-            try await self[.images]
-        }
+    func dialogs() async throws -> Query{
+        try await self(.dialogs)
     }
     
-    var incrementArrows: Query {
-        get async throws {
-            try await self[.incrementArrows]
-        }
+    func dialogs(_ identifier: String) async throws -> Element {
+        try await self(.dialogs)(identifier: identifier)
     }
     
-    var keyboards: Query {
-        get async throws {
-            try await self[.keyboards]
-        }
+    func disclosureTriangles() async throws -> Query{
+        try await self(.disclosureTriangles)
     }
     
-    var keys: Query {
-        get async throws {
-            try await self[.keys]
-        }
+    func disclosureTriangles(_ identifier: String) async throws -> Element {
+        try await self(.disclosureTriangles)(identifier: identifier)
     }
     
-    var layoutAreas: Query {
-        get async throws {
-            try await self[.layoutAreas]
-        }
+    func disclosedChildRows() async throws -> Query{
+        try await self(.disclosedChildRows)
     }
     
-    var layoutItems: Query {
-        get async throws {
-            try await self[.layoutItems]
-        }
+    func disclosedChildRows(_ identifier: String) async throws -> Element {
+        try await self(.disclosedChildRows)(identifier: identifier)
     }
     
-    var levelIndicators: Query {
-        get async throws {
-            try await self[.levelIndicators]
-        }
+    func dockItems() async throws -> Query{
+        try await self(.dockItems)
     }
     
-    var links: Query {
-        get async throws {
-            try await self[.links]
-        }
+    func dockItems(_ identifier: String) async throws -> Element {
+        try await self(.dockItems)(identifier: identifier)
     }
     
-    var maps: Query {
-        get async throws {
-            try await self[.maps]
-        }
+    func drawers() async throws -> Query{
+        try await self(.drawers)
     }
     
-    var mattes: Query {
-        get async throws {
-            try await self[.mattes]
-        }
+    func drawers(_ identifier: String) async throws -> Element {
+        try await self(.drawers)(identifier: identifier)
     }
     
-    var menuBarItems: Query {
-        get async throws {
-            try await self[.menuBarItems]
-        }
+    func grids() async throws -> Query{
+        try await self(.grids)
     }
     
-    var menuBars: Query {
-        get async throws {
-            try await self[.menuBars]
-        }
+    func grids(_ identifier: String) async throws -> Element {
+        try await self(.grids)(identifier: identifier)
     }
     
-    var menuButtons: Query {
-        get async throws {
-            try await self[.menuButtons]
-        }
+    func groups() async throws -> Query{
+        try await self(.groups)
     }
     
-    var menuItems: Query {
-        get async throws {
-            try await self[.menuItems]
-        }
+    func groups(_ identifier: String) async throws -> Element {
+        try await self(.groups)(identifier: identifier)
     }
     
-    var menus: Query {
-        get async throws {
-            try await self[.menus]
-        }
+    func handles() async throws -> Query{
+        try await self(.handles)
     }
     
-    var navigationBars: Query {
-        get async throws {
-            try await self[.navigationBars]
-        }
+    func handles(_ identifier: String) async throws -> Element {
+        try await self(.handles)(identifier: identifier)
     }
     
-    var otherElements: Query {
-        get async throws {
-            try await self[.otherElements]
-        }
+    func helpTags() async throws -> Query{
+        try await self(.helpTags)
     }
     
-    var outlineRows: Query {
-        get async throws {
-            try await self[.outlineRows]
-        }
+    func helpTags(_ identifier: String) async throws -> Element {
+        try await self(.helpTags)(identifier: identifier)
     }
     
-    var outlines: Query {
-        get async throws {
-            try await self[.outlines]
-        }
+    func icons() async throws -> Query{
+        try await self(.icons)
     }
     
-    var pageIndicators: Query {
-        get async throws {
-            try await self[.pageIndicators]
-        }
+    func icons(_ identifier: String) async throws -> Element {
+        try await self(.icons)(identifier: identifier)
     }
     
-    var pickerWheels: Query {
-        get async throws {
-            try await self[.pickerWheels]
-        }
+    func images() async throws -> Query{
+        try await self(.images)
     }
     
-    var pickers: Query {
-        get async throws {
-            try await self[.pickers]
-        }
+    func images(_ identifier: String) async throws -> Element {
+        try await self(.images)(identifier: identifier)
     }
     
-    var popUpButtons: Query {
-        get async throws {
-            try await self[.popUpButtons]
-        }
+    func incrementArrows() async throws -> Query{
+        try await self(.incrementArrows)
     }
     
-    var popovers: Query {
-        get async throws {
-            try await self[.popovers]
-        }
+    func incrementArrows(_ identifier: String) async throws -> Element {
+        try await self(.incrementArrows)(identifier: identifier)
     }
     
-    var progressIndicators: Query {
-        get async throws {
-            try await self[.progressIndicators]
-        }
+    func keyboards() async throws -> Query{
+        try await self(.keyboards)
     }
     
-    var radioButtons: Query {
-        get async throws {
-            try await self[.radioButtons]
-        }
+    func keyboards(_ identifier: String) async throws -> Element {
+        try await self(.keyboards)(identifier: identifier)
     }
     
-    var radioGroups: Query {
-        get async throws {
-            try await self[.radioGroups]
-        }
+    func keys() async throws -> Query{
+        try await self(.keys)
     }
     
-    var ratingIndicators: Query {
-        get async throws {
-            try await self[.ratingIndicators]
-        }
+    func keys(_ identifier: String) async throws -> Element {
+        try await self(.keys)(identifier: identifier)
     }
     
-    var relevanceIndicators: Query {
-        get async throws {
-            try await self[.relevanceIndicators]
-        }
+    func layoutAreas() async throws -> Query{
+        try await self(.layoutAreas)
     }
     
-    var rulerMarkers: Query {
-        get async throws {
-            try await self[.rulerMarkers]
-        }
+    func layoutAreas(_ identifier: String) async throws -> Element {
+        try await self(.layoutAreas)(identifier: identifier)
     }
     
-    var rulers: Query {
-        get async throws {
-            try await self[.rulers]
-        }
+    func layoutItems() async throws -> Query{
+        try await self(.layoutItems)
     }
     
-    var scrollBars: Query {
-        get async throws {
-            try await self[.scrollBars]
-        }
+    func layoutItems(_ identifier: String) async throws -> Element {
+        try await self(.layoutItems)(identifier: identifier)
     }
     
-    var scrollViews: Query {
-        get async throws {
-            try await self[.scrollViews]
-        }
+    func levelIndicators() async throws -> Query{
+        try await self(.levelIndicators)
     }
-    var searchFields: Query {
-        get async throws {
-            try await self[.searchFields]
-        }
+    
+    func levelIndicators(_ identifier: String) async throws -> Element {
+        try await self(.levelIndicators)(identifier: identifier)
+    }
+    
+    func links() async throws -> Query{
+        try await self(.links)
+    }
+    
+    func links(_ identifier: String) async throws -> Element {
+        try await self(.links)(identifier: identifier)
+    }
+    
+    func maps() async throws -> Query{
+        try await self(.maps)
+    }
+    
+    func maps(_ identifier: String) async throws -> Element {
+        try await self(.maps)(identifier: identifier)
+    }
+    
+    func mattes() async throws -> Query{
+        try await self(.mattes)
+    }
+    
+    func mattes(_ identifier: String) async throws -> Element {
+        try await self(.mattes)(identifier: identifier)
+    }
+    
+    func menuBarItems() async throws -> Query{
+        try await self(.menuBarItems)
+    }
+    
+    func menuBarItems(_ identifier: String) async throws -> Element {
+        try await self(.menuBarItems)(identifier: identifier)
+    }
+    
+    func menuBars() async throws -> Query{
+        try await self(.menuBars)
+    }
+    
+    func menuBars(_ identifier: String) async throws -> Element {
+        try await self(.menuBars)(identifier: identifier)
+    }
+    
+    func menuButtons() async throws -> Query{
+        try await self(.menuButtons)
+    }
+    
+    func menuButtons(_ identifier: String) async throws -> Element {
+        try await self(.menuButtons)(identifier: identifier)
+    }
+    
+    func menuItems() async throws -> Query{
+        try await self(.menuItems)
+    }
+    
+    func menuItems(_ identifier: String) async throws -> Element {
+        try await self(.menuItems)(identifier: identifier)
+    }
+    
+    func menus() async throws -> Query{
+        try await self(.menus)
+    }
+    
+    func menus(_ identifier: String) async throws -> Element {
+        try await self(.menus)(identifier: identifier)
+    }
+    
+    func navigationBars() async throws -> Query{
+        try await self(.navigationBars)
+    }
+    
+    func navigationBars(_ identifier: String) async throws -> Element {
+        try await self(.navigationBars)(identifier: identifier)
+    }
+    
+    func otherElements() async throws -> Query{
+        try await self(.otherElements)
+    }
+    
+    func otherElements(_ identifier: String) async throws -> Element {
+        try await self(.otherElements)(identifier: identifier)
+    }
+    
+    func outlineRows() async throws -> Query{
+        try await self(.outlineRows)
+    }
+    
+    func outlineRows(_ identifier: String) async throws -> Element {
+        try await self(.outlineRows)(identifier: identifier)
+    }
+    
+    func outlines() async throws -> Query{
+        try await self(.outlines)
+    }
+    
+    func outlines(_ identifier: String) async throws -> Element {
+        try await self(.outlines)(identifier: identifier)
+    }
+    
+    func pageIndicators() async throws -> Query{
+        try await self(.pageIndicators)
+    }
+    
+    func pageIndicators(_ identifier: String) async throws -> Element {
+        try await self(.pageIndicators)(identifier: identifier)
+    }
+    
+    func pickerWheels() async throws -> Query{
+        try await self(.pickerWheels)
+    }
+    
+    func pickerWheels(_ identifier: String) async throws -> Element {
+        try await self(.pickerWheels)(identifier: identifier)
+    }
+    
+    func pickers() async throws -> Query{
+        try await self(.pickers)
+    }
+    
+    func pickers(_ identifier: String) async throws -> Element {
+        try await self(.pickers)(identifier: identifier)
+    }
+    
+    func popUpButtons() async throws -> Query{
+        try await self(.popUpButtons)
+    }
+    
+    func popUpButtons(_ identifier: String) async throws -> Element {
+        try await self(.popUpButtons)(identifier: identifier)
+    }
+    
+    func popovers() async throws -> Query{
+        try await self(.popovers)
+    }
+    
+    func popovers(_ identifier: String) async throws -> Element {
+        try await self(.popovers)(identifier: identifier)
+    }
+    
+    func progressIndicators() async throws -> Query{
+        try await self(.progressIndicators)
+    }
+    
+    func progressIndicators(_ identifier: String) async throws -> Element {
+        try await self(.progressIndicators)(identifier: identifier)
+    }
+    
+    func radioButtons() async throws -> Query{
+        try await self(.radioButtons)
+    }
+    
+    func radioButtons(_ identifier: String) async throws -> Element {
+        try await self(.radioButtons)(identifier: identifier)
+    }
+    
+    func radioGroups() async throws -> Query{
+        try await self(.radioGroups)
+    }
+    
+    func radioGroups(_ identifier: String) async throws -> Element {
+        try await self(.radioGroups)(identifier: identifier)
+    }
+    
+    func ratingIndicators() async throws -> Query{
+        try await self(.ratingIndicators)
+    }
+    
+    func ratingIndicators(_ identifier: String) async throws -> Element {
+        try await self(.ratingIndicators)(identifier: identifier)
+    }
+    
+    func relevanceIndicators() async throws -> Query{
+        try await self(.relevanceIndicators)
+    }
+    
+    func relevanceIndicators(_ identifier: String) async throws -> Element {
+        try await self(.relevanceIndicators)(identifier: identifier)
+    }
+    
+    func rulerMarkers() async throws -> Query{
+        try await self(.rulerMarkers)
+    }
+    
+    func rulerMarkers(_ identifier: String) async throws -> Element {
+        try await self(.rulerMarkers)(identifier: identifier)
+    }
+    
+    func rulers() async throws -> Query{
+        try await self(.rulers)
+    }
+    
+    func rulers(_ identifier: String) async throws -> Element {
+        try await self(.rulers)(identifier: identifier)
+    }
+    
+    func scrollBars() async throws -> Query{
+        try await self(.scrollBars)
+    }
+    
+    func scrollBars(_ identifier: String) async throws -> Element {
+        try await self(.scrollBars)(identifier: identifier)
+    }
+    
+    func scrollViews() async throws -> Query{
+        try await self(.scrollViews)
+    }
+    
+    func scrollViews(_ identifier: String) async throws -> Element {
+        try await self(.scrollViews)(identifier: identifier)
+    }
+    func searchFields() async throws -> Query{
+        try await self(.searchFields)
+    }
+    
+    func searchFields(_ identifier: String) async throws -> Element {
+        try await self(.searchFields)(identifier: identifier)
+    }
+    
+    func secureTextFields() async throws -> Query{
+        try await self(.secureTextFields)
+    }
+    
+    func secureTextFields(_ identifier: String) async throws -> Element {
+        try await self(.secureTextFields)(identifier: identifier)
+    }
+    
+    func segmentedControls() async throws -> Query{
+        try await self(.segmentedControls)
+    }
+    
+    func segmentedControls(_ identifier: String) async throws -> Element {
+        try await self(.segmentedControls)(identifier: identifier)
+    }
+    
+    func sheets() async throws -> Query{
+        try await self(.sheets)
+    }
+    
+    func sheets(_ identifier: String) async throws -> Element {
+        try await self(.sheets)(identifier: identifier)
+    }
+    
+    func sliders() async throws -> Query{
+        try await self(.sliders)
+    }
+    
+    func sliders(_ identifier: String) async throws -> Element {
+        try await self(.sliders)(identifier: identifier)
+    }
+    
+    func splitGroups() async throws -> Query{
+        try await self(.splitGroups)
+    }
+    
+    func splitGroups(_ identifier: String) async throws -> Element {
+        try await self(.splitGroups)(identifier: identifier)
+    }
+    
+    func splitters() async throws -> Query{
+        try await self(.splitters)
+    }
+    
+    func splitters(_ identifier: String) async throws -> Element {
+        try await self(.splitters)(identifier: identifier)
+    }
+    
+    func staticTexts() async throws -> Query{
+        try await self(.staticTexts)
+    }
+    
+    func staticTexts(_ identifier: String) async throws -> Element {
+        try await self(.staticTexts)(identifier: identifier)
+    }
+    
+    func statusBars() async throws -> Query{
+        try await self(.statusBars)
+    }
+    
+    func statusBars(_ identifier: String) async throws -> Element {
+        try await self(.statusBars)(identifier: identifier)
+    }
+    
+    func statusItems() async throws -> Query{
+        try await self(.statusItems)
+    }
+    
+    func statusItems(_ identifier: String) async throws -> Element {
+        try await self(.statusItems)(identifier: identifier)
+    }
+    
+    func steppers() async throws -> Query{
+        try await self(.steppers)
+    }
+    
+    func steppers(_ identifier: String) async throws -> Element {
+        try await self(.steppers)(identifier: identifier)
+    }
+    
+    func switches() async throws -> Query{
+        try await self(.switches)
+    }
+    
+    func switches(_ identifier: String) async throws -> Element {
+        try await self(.switches)(identifier: identifier)
+    }
+    
+    func tabBars() async throws -> Query{
+        try await self(.tabBars)
     }
     
-    var secureTextFields: Query {
-        get async throws {
-            try await self[.secureTextFields]
-        }
+    func tabBars(_ identifier: String) async throws -> Element {
+        try await self(.tabBars)(identifier: identifier)
     }
     
-    var segmentedControls: Query {
-        get async throws {
-            try await self[.segmentedControls]
-        }
+    func tabGroups() async throws -> Query{
+        try await self(.tabGroups)
     }
     
-    var sheets: Query {
-        get async throws {
-            try await self[.sheets]
-        }
+    func tabGroups(_ identifier: String) async throws -> Element {
+        try await self(.tabGroups)(identifier: identifier)
     }
     
-    var sliders: Query {
-        get async throws {
-            try await self[.sliders]
-        }
+    func tableColumns() async throws -> Query{
+        try await self(.tableColumns)
     }
     
-    var splitGroups: Query {
-        get async throws {
-            try await self[.splitGroups]
-        }
+    func tableColumns(_ identifier: String) async throws -> Element {
+        try await self(.tableColumns)(identifier: identifier)
     }
     
-    var splitters: Query {
-        get async throws {
-            try await self[.splitters]
-        }
+    func tableRows() async throws -> Query{
+        try await self(.tableRows)
     }
     
-    var staticTexts: Query {
-        get async throws {
-            try await self[.staticTexts]
-        }
+    func tableRows(_ identifier: String) async throws -> Element {
+        try await self(.tableRows)(identifier: identifier)
     }
     
-    var statusBars: Query {
-        get async throws {
-            try await self[.statusBars]
-        }
+    func tables() async throws -> Query{
+        try await self(.tables)
     }
     
-    var statusItems: Query {
-        get async throws {
-            try await self[.statusItems]
-        }
+    func tables(_ identifier: String) async throws -> Element {
+        try await self(.tables)(identifier: identifier)
     }
     
-    var steppers: Query {
-        get async throws {
-            try await self[.steppers]
-        }
+    func textFields() async throws -> Query{
+        try await self(.textFields)
     }
     
-    var switches: Query {
-        get async throws {
-            try await self[.switches]
-        }
+    func textFields(_ identifier: String) async throws -> Element {
+        try await self(.textFields)(identifier: identifier)
     }
     
-    var tabBars: Query {
-        get async throws {
-            try await self[.tabBars]
-        }
+    func textViews() async throws -> Query{
+        try await self(.textViews)
     }
     
-    var tabGroups: Query {
-        get async throws {
-            try await self[.tabGroups]
-        }
+    func textViews(_ identifier: String) async throws -> Element {
+        try await self(.textViews)(identifier: identifier)
     }
     
-    var tableColumns: Query {
-        get async throws {
-            try await self[.tableColumns]
-        }
+    func timelines() async throws -> Query{
+        try await self(.timelines)
     }
     
-    var tableRows: Query {
-        get async throws {
-            try await self[.tableRows]
-        }
+    func timelines(_ identifier: String) async throws -> Element {
+        try await self(.timelines)(identifier: identifier)
     }
     
-    var tables: Query {
-        get async throws {
-            try await self[.tables]
-        }
+    func toggles() async throws -> Query{
+        try await self(.toggles)
     }
     
-    var textFields: Query {
-        get async throws {
-            try await self[.textFields]
-        }
+    func toggles(_ identifier: String) async throws -> Element {
+        try await self(.toggles)(identifier: identifier)
     }
     
-    var textViews: Query {
-        get async throws {
-            try await self[.textViews]
-        }
+    func toolbarButtons() async throws -> Query{
+        try await self(.toolbarButtons)
     }
     
-    var timelines: Query {
-        get async throws {
-            try await self[.timelines]
-        }
+    func toolbarButtons(_ identifier: String) async throws -> Element {
+        try await self(.toolbarButtons)(identifier: identifier)
     }
     
-    var toggles: Query {
-        get async throws {
-            try await self[.toggles]
-        }
+    func toolbars() async throws -> Query{
+        try await self(.toolbars)
     }
     
-    var toolbarButtons: Query {
-        get async throws {
-            try await self[.toolbarButtons]
-        }
+    func toolbars(_ identifier: String) async throws -> Element {
+        try await self(.toolbars)(identifier: identifier)
     }
     
-    var toolbars: Query {
-        get async throws {
-            try await self[.toolbars]
-        }
+    func touchBars() async throws -> Query{
+        try await self(.touchBars)
     }
     
-    var touchBars: Query {
-        get async throws {
-            try await self[.touchBars]
-        }
+    func touchBars(_ identifier: String) async throws -> Element {
+        try await self(.touchBars)(identifier: identifier)
     }
     
-    var valueIndicators: Query {
-        get async throws {
-            try await self[.valueIndicators]
-        }
+    func valueIndicators() async throws -> Query  {
+        try await self(.valueIndicators)
     }
     
-    var webViews: Query {
-        get async throws {
-            try await self[.webViews]
-        }
+    func webViews() async throws -> Query  {
+        try await self(.webViews)
     }
     
-    var windows: Query {
-        get async throws {
-            try await self[.windows]
-        }
+    func windows() async throws -> Query  {
+        try await self(.windows)
     }
 }
 
@@ -521,6 +663,7 @@ public struct FirstMatchResponse: Codable {
         self.serverId = serverId
     }
 }
+
 
 
 

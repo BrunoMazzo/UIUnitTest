@@ -6,12 +6,11 @@ extension Element {
         
         let _: Bool = try await callServer(path: "doubleTap", request: activateRequestData)
     }
-}
-
-extension SyncElement {
+    
+    @available(*, noasync)
     public func doubleTap() {
-        self.executor.execute {
-            try await self.element.doubleTap()
+        Executor.execute {
+            try await self.doubleTap()
         }
     }
 }

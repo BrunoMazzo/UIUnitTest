@@ -2,12 +2,22 @@ import Foundation
 
 public class App: Element {
     let appId: String
+    let executor = Executor()
     
     public init(appId: String, activate: Bool = true) async throws {
         self.appId = appId
         super.init(serverId: UUID())
         
         try await self.create(activate: activate)
+    }
+    
+    @available(*, noasync)
+    public init(appId: String, activate: Bool = true) {
+        self.appId = appId
+        super.init(serverId: UUID())
+        Executor.execute {
+            try await self.create(activate: activate)
+        }
     }
     
     required init(from decoder: Decoder) throws {

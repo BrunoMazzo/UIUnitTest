@@ -1,8 +1,8 @@
 import Foundation
 
-public class Query: ElementTypeQueryProvider {
+public final class Query: ElementTypeQueryProvider, Sendable {
     
-    public var serverId: UUID
+    public let serverId: UUID
     
     init(serverId: UUID) {
         self.serverId = serverId
@@ -20,33 +20,27 @@ public class Query: ElementTypeQueryProvider {
     }
     
     /** Returns an element that will use the query for resolution. */
-    public var element: Element! {
-        get async throws {
-            let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.serverId))
+    public func element() async throws -> Element!  {
+        let elementResponse: ElementResponse = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: self.serverId))
             return Element(serverId: elementResponse.serverId)
-        }
+        
     }
     
-    public var allElementsBoundByAccessibilityElement: [Element] {
-        get async throws {
-            let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByAccessibilityElement", request: ElementsByAccessibility(serverId: self.serverId))
-            return elementResponse.serversId.map { Element(serverId: $0) }
-        }
+    public func allElementsBoundByAccessibilityElement() async throws -> [Element] {
+        let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByAccessibilityElement", request: ElementsByAccessibility(serverId: self.serverId))
+        return elementResponse.serversId.map { Element(serverId: $0) }
     }
     
-    public var allElementsBoundByIndex: [Element] {
-        get async throws {
-            let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByIndex", request: ElementsByAccessibility(serverId: self.serverId))
-            return elementResponse.serversId.map { Element(serverId: $0) }
-        }
+    public func allElementsBoundByIndex() async throws -> [Element] {
+        let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByIndex", request: ElementsByAccessibility(serverId: self.serverId))
+        return elementResponse.serversId.map { Element(serverId: $0) }
     }
     
     /** Evaluates the query at the time it is called and returns the number of matches found. */
-    public var count: Int {
-        get async throws {
-            let response: CountResponse = try await callServer(path: "count", request: CountRequest(serverId: self.serverId))
+    public func count() async throws -> Int  {
+        let response: CountResponse = try await callServer(path: "count", request: CountRequest(serverId: self.serverId))
             return response.count
-        }
+        
     }
     
     /** Returns an element that will use the index into the query's results to determine which underlying accessibility element it is matched with. */
@@ -68,11 +62,9 @@ public class Query: ElementTypeQueryProvider {
     }
     
     /** Keyed subscripting is implemented as a shortcut for matching an identifier only. For example, app.descendants["Foo"] -> XCUIElement. */
-    public subscript(_ identifier: String) -> Element {
-        get async throws {
-            let response: ElementResponse = try await callServer(path: "element", request: ElementByIdRequest(queryRoot: serverId, identifier: identifier))
-            return Element(serverId: response.serverId)
-        }
+    public func callAsFunction(identifier: String) async throws -> Element {
+        let response: ElementResponse = try await callServer(path: "element", request: ElementByIdRequest(queryRoot: serverId, identifier: identifier))
+        return Element(serverId: response.serverId)
     }
     
     /** Returns a new query that finds the descendants of all the elements found by the receiver. */
@@ -116,11 +108,9 @@ public class Query: ElementTypeQueryProvider {
         return Query(serverId: response.serverId)
     }
     
-    public var debugDescription: String {
-         get async throws {
-             let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(serverId: self.serverId))
-            return valueResponse.value!
-        }
+    public func debugDescription() async throws -> String {
+        let valueResponse: ValueResponse = try await callServer(path: "debugDescription", request: ElementRequest(serverId: self.serverId))
+        return valueResponse.value!
     }
 }
 

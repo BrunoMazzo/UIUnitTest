@@ -26,27 +26,30 @@ extension Element {
     public func swipeRight(velocity: GestureVelocity = .default) async throws {
         try await self.swipe(direction: .right, velocity: velocity)
     }
-}
 
-extension SyncElement {
+    @available(*, noasync)
     public func swipe(direction: SwipeDirection, velocity: GestureVelocity = .default) {
-        self.executor.execute {
-            try await self.element.swipe(direction: direction, velocity: velocity)
+        Executor.execute {
+            try await self.swipe(direction: direction, velocity: velocity)
         }
     }
     
+    @available(*, noasync)
     public func swipeUp(velocity: GestureVelocity = .default) {
         self.swipe(direction: .up, velocity: velocity)
     }
     
+    @available(*, noasync)
     public func swipeDown(velocity: GestureVelocity = .default) {
         self.swipe(direction: .down, velocity: velocity)
     }
     
+    @available(*, noasync)
     public func swipeLeft(velocity: GestureVelocity = .default) {
         self.swipe(direction: .left, velocity: velocity)
     }
     
+    @available(*, noasync)
     public func swipeRight(velocity: GestureVelocity = .default) {
         self.swipe(direction: .right, velocity: velocity)
     }
