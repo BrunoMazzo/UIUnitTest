@@ -20,7 +20,7 @@ public struct Executor: @unchecked Sendable {
     }
     
     // TODO: Think about a better way to handle errors. Maybe just fail the test?
-    func execute<T>(function: String = #function, _ block: @escaping () async throws -> T) -> T {
+    public func execute<T>(function: String = #function, _ block: @escaping () async throws -> T) -> T {
         let expectation = XCTestExpectation(description: function)
         Task { @UIUnitTestActor in
             defer {
