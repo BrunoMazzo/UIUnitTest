@@ -5,9 +5,6 @@
       location = "group:generate-zip.sh">
    </FileRef>
    <FileRef
-      location = "group:Server/Server.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Client/Client.xcodeproj">
    </FileRef>
 </Workspace>

@@ -25,9 +25,23 @@ public class Coordinate: Codable {
         return response.coordinate
     }
     
+    @available(*, noasync)
+    public func withOffset(_ vector: CGVector) -> Coordinate {
+        Executor.execute {
+            try await self.withOffset(vector)
+        }
+    }
+    
     func tap() async throws {
         let request = TapCoordinateRequest(serverId: self.serverId, type: .tap)
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
+    }
+    
+    @available(*, noasync)
+    public func tap() {
+        Executor.execute {
+            try await self.tap()
+        }
     }
     
     func doubleTap() async throws {
@@ -35,9 +49,23 @@ public class Coordinate: Codable {
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
     
+    @available(*, noasync)
+    public func doubleTap() {
+        Executor.execute {
+            try await self.doubleTap()
+        }
+    }
+    
     public func press(forDuration duration: TimeInterval) async throws {
         let request = TapCoordinateRequest(serverId: self.serverId, type: .press(forDuration: duration))
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
+    }
+    
+    @available(*, noasync)
+    public func press(forDuration duration: TimeInterval) {
+        Executor.execute {
+            try await self.press(forDuration: duration)
+        }
     }
     
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) async throws {
@@ -45,11 +73,24 @@ public class Coordinate: Codable {
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
     
+    @available(*, noasync)
+    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) {
+        Executor.execute {
+            try await self.press(forDuration: duration, thenDragTo: coordinate)
+        }
+    }
+    
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocity, thenHoldForDuration holdDuration: TimeInterval) async throws {
         let request = TapCoordinateRequest(serverId: self.serverId, type: .pressDragAndHold(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity, thenHoldForDuration: holdDuration) )
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
 
+    @available(*, noasync)
+    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocity, thenHoldForDuration holdDuration: TimeInterval) {
+        Executor.execute {
+            try await self.press(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity, thenHoldForDuration: holdDuration)
+        }
+    }
 }
 
 public struct CoordinateRequest: Codable {

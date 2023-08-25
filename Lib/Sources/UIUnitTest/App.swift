@@ -15,9 +15,7 @@ public class App: Element {
     public init(appId: String, activate: Bool = true) {
         self.appId = appId
         super.init(serverId: UUID())
-        Executor.execute {
-            try await self.create(activate: activate)
-        }
+        self.create(activate: activate)
     }
     
     required init(from decoder: Decoder) throws {
@@ -28,10 +26,24 @@ public class App: Element {
         let _: Bool = try await callServer(path: "HomeButton", request: HomeButtonRequest())
     }
     
+    @available(*, noasync)
+    public func pressHomeButton() {
+        Executor.execute {
+            try await self.pressHomeButton()
+        }
+    }
+    
     public func activate() async throws {
         let activateRequestData = ActivateRequest(serverId: self.serverId)
         
         let _: Bool = try await callServer(path: "Activate", request: activateRequestData)
+    }
+    
+    @available(*, noasync)
+    public func activate() {
+        Executor.execute {
+            try await self.activate()
+        }
     }
     
     private func create(activate: Bool) async throws {
@@ -39,81 +51,12 @@ public class App: Element {
         
         let _: Bool = try await callServer(path: "createApp", request: request)
     }
-}
-
-public enum Response<T: Codable> {
-    case error(error: ErrorResponse)
-    case success(data: T)
-}
-
-public struct ErrorResponse: Codable {
-    var error: String
-}
-
-public struct UIResponse<T: Codable>: Codable {
     
-    public let response: Response<T>
-    
-    public init(response: T) {
-        self.response = .success(data: response)
-    }
-    
-    public init(error: String) {
-        self.response = .error(error: ErrorResponse(error: error))
-    }
-    
-    enum CodingKeys: CodingKey {
-        case data
-        case error
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        if let error = try container.decodeIfPresent(ErrorResponse.self, forKey: .error) {
-            self.response = .error(error: error)
-        } else if let response = try container.decodeIfPresent(T.self, forKey: .data) {
-            self.response = .success(data: response)
-        } else {
-            fatalError("Invalid response")
+    @available(*, noasync)
+    public func create(activate: Bool) {
+        Executor.execute {
+            try await self.create(activate: activate)
         }
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        switch self.response {
-        case .error(error: let error):
-            try container.encode(error, forKey: .error)
-        case .success(data: let data):
-            try container.encode(data, forKey: .data)
-        }
-    }
-    
-}
-
-internal func callServer<RequestData: Codable, ResponseData: Codable>(path: String, request: RequestData) async throws -> ResponseData {
-    let encoder = JSONEncoder()
-    
-    let activateUrl = URL(string: "http://localhost:22087/\(path)")!
-    var activateRequest = URLRequest(url: activateUrl)
-    activateRequest.httpMethod = "POST"
-    activateRequest.httpBody = try encoder.encode(request)
-    
-    let (data, _) = try await URLSession.shared.data(for: activateRequest)
-    
-    let decoder = JSONDecoder()
-    
-    let result = try decoder.decode(UIResponse<ResponseData>.self, from: data)
-    
-    switch result.response {
-    case .success(data: let response):
-        return response
-    case .error(error: let error):
-        
-        print(error.error)
-        
-        throw NSError(domain: "Test", code: 1, userInfo: ["reason": error])
     }
 }
 
