@@ -6,7 +6,7 @@
       "location" : "https://github.com/swhitty/FlyingFox.git",
       "state" : {
         "branch" : "main",
-        "revision" : "4b925ad5e1fea4fca5cf53b0a4d980b29637560e"
+        "revision" : "ed86fc6d68ec1467aaab3e494b581e66dd7a4512"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "fee6933f37fde9a5e12a1e4aeaa93fe60116ff2a",
-        "version" : "1.2.2"
+        "revision" : "8f4d2753f0e4778c76d5f05ad16c74f707390531",
+        "version" : "1.2.3"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
       "state" : {
         "branch" : "main",
-        "revision" : "a3a46d4a9295e1aed0a0665a65d64a90be18fcba"
+        "revision" : "95abc24d073ae0ad3a3d8b5baa25cdcd9538beba"
       }
     }
   ],

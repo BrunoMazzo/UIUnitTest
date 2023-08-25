@@ -102,7 +102,7 @@ class UIServer {
     }
     
     @MainActor
-    func matchingByIdentifier(request: QueryByIdRequest) async throws -> QueryResponse {
+    func matchingByIdentifier(request: ByIdRequest) async throws -> QueryResponse {
         let query = try await self.cache.getElementQuery(request.queryRoot)
         let matching = query.matching(identifier: request.identifier)
         let id = await self.cache.add(query: matching)
@@ -298,7 +298,7 @@ class UIServer {
     }
     
     @MainActor
-    func element(request: ElementByIdRequest) async -> ElementResponse {
+    func element(request: ByIdRequest) async -> ElementResponse {
         let newElement = try! await self.findElement(elementRequest: request)
         let id = await self.cache.add(element: newElement)
         return ElementResponse(serverId: id)
@@ -716,7 +716,7 @@ class UIServer {
         return resultQuery
     }
     
-    func findElement(elementRequest: ElementByIdRequest) async throws -> XCUIElement {
+    func findElement(elementRequest: ByIdRequest) async throws -> XCUIElement {
         let rootElementQuery = try await self.cache.getElementQuery(elementRequest.queryRoot)
         
         return rootElementQuery[elementRequest.identifier]
