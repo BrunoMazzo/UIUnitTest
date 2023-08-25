@@ -14,13 +14,10 @@ let package = Package(
         .library(
             name: "UIUnitTest",
             targets: ["UIUnitTest"]),
-        .plugin(name: "UIUnitTestBuildPlugin", targets: ["UIUnitTestBuildPlugin"])
-//        .library(name: "Test", targets: ["UIUnitTestBundle"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/trax-retail/xccov2lcov", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0"),
     ],
     targets: [
@@ -43,11 +40,5 @@ let package = Package(
             path: "Lib/Sources/UIUnitTest",
             linkerSettings: [.linkedFramework("XCTest")]
         ),
-        .plugin(
-            name: "UIUnitTestBuildPlugin",
-            capability: .buildTool(),
-            dependencies: [.target(name: "UIUnitTestCLI")],
-            path: "Lib/Sources/UIUnitTestBuildPlugin"
-        )
     ]
 )
