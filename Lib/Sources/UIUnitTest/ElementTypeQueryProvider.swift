@@ -1,9 +1,5 @@
 import Foundation
 
-public protocol ElementTypeQueryProvider {
-    var serverId: UUID { get }
-}
-
 public extension ElementTypeQueryProvider {
     
     func firstMatch() async throws -> Element  {
@@ -655,7 +651,6 @@ public struct FirstMatchRequest: Codable {
     }
 }
 
-
 public struct FirstMatchResponse: Codable {
     public var serverId: UUID
     
@@ -664,8 +659,6 @@ public struct FirstMatchResponse: Codable {
     }
 }
 
-
-
-
-
-
+public protocol ElementTypeQueryProvider {
+    var serverId: UUID { get }
+}
