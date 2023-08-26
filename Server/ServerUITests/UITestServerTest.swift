@@ -18,22 +18,31 @@ final class UITestServerTest: XCTestCase {
     
     @MainActor
     func testStart() async throws {
-        let deviceName = UIDevice.current.name
-        
-        var deviceId = 0
-        if let devicesNameMatch = deviceName.range(of: "Clone (\\d*) of .*", options: .regularExpression) {
-            let deviceIdString = String(deviceName[devicesNameMatch])
-            deviceId = Int(deviceIdString) ?? 0
-        }
-        
+    
         self.server = UIServer()
         
         do {
-            try await self.server.start(portIndex: UInt16(deviceId))
+            try await self.server.start(portIndex: UInt16(deviceId()))
         } catch {
             print("SERVER ERROR ----------------------------------")
             print(error.localizedDescription)
             print("SERVER ERROR ----------------------------------")
         }
+    }
+    
+    func deviceId() -> Int {
+        let deviceName = UIDevice.current.name
+        
+        var deviceId = 0
+        let regulerExpression = try! NSRegularExpression(pattern: "Clone (\\d*) of .*")
+        
+        if let devicesNameMatch = regulerExpression.firstMatch(in: deviceName, range: NSRange(location: 0, length: deviceName.utf16.count)) {
+            if let swiftRange = Range(devicesNameMatch.range(at: 1), in: deviceName) {
+                let deviceIdString = deviceName[swiftRange]
+                deviceId = Int(deviceIdString) ?? 0
+            }
+        }
+        
+        return deviceId
     }
 }
