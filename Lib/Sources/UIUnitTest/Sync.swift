@@ -26,7 +26,11 @@ public struct Executor: @unchecked Sendable {
             defer {
                 expectation.fulfill()
             }
-            self.box.value = try await block()
+            do {
+                self.box.value = try await block()
+            } catch {
+                print(error)
+            }
         }
         _ = XCTWaiter.wait(for: [expectation])
         return box.value as! T

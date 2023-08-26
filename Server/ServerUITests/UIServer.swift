@@ -448,6 +448,8 @@ class UIServer {
         let server = HTTPServer(address: .loopback(port: 22087 + portIndex))
         self.server = server
         
+        
+        
         await addRoute("createApp", handler: { (request: CreateApplicationRequest) in
             let app = XCUIApplication(bundleIdentifier: request.appId)
             await self.cache.add(application: app, id: request.serverId)
@@ -519,6 +521,10 @@ class UIServer {
                 await self.server.stop(timeout: 10)
             }
             
+            return self.buildResponse(true)
+        }))
+        
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "alive"), to: ClosureHTTPHandler({ request in
             return self.buildResponse(true)
         }))
         

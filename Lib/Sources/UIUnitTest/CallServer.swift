@@ -13,8 +13,6 @@ func deviceId() -> Int {
             deviceId = Int(deviceIdString) ?? 0
         }
     }
-    
-    print(deviceId)
     return deviceId
 }
 
