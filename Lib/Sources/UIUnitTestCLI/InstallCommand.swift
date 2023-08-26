@@ -33,9 +33,9 @@ struct InstallCommand: AsyncParsableCommand {
             
             let result: String = await executeShellCommand("xcrun simctl --set testing listapps \(deviceIdentifier)")
             
-            let appInstalled = result.contains("bruno.mazzo.ServerUITests.xctrunner")
-            
-            if !appInstalled || forceInstall {
+//            let appInstalled = result.contains("bruno.mazzo.ServerUITests.xctrunner")
+//
+//            if !appInstalled || forceInstall {
                 let serverRunnerZip = Bundle.module.url(forResource: "PreBuild", withExtension: ".zip")!
                 
                 let tempDirectory = getTempFolder()
@@ -47,7 +47,7 @@ struct InstallCommand: AsyncParsableCommand {
                 let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
                 
                 await executeShellCommand("xcrun simctl --set testing install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
-            }
+//            }
             
             await executeShellCommand("xcrun simctl --set testing launch \(deviceIdentifier) bruno.mazzo.ServerUITests.xctrunner")
         }
