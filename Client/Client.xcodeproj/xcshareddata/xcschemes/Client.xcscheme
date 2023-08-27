@@ -33,7 +33,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;exec &gt; /Users/brunomazzo/Documents/OpenSource/UIUnitTest/logfile.txt&#10;&#10;#/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@main install-server-command --device-identifier $TARGET_DEVICE_IDENTIFIER&#10;&#10;/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@parallel-testing install-command&#10;&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;exec &gt; /Users/brunomazzo/Documents/OpenSource/UIUnitTest/logfile.txt&#10;&#10;#/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@main install-server-command --device-identifier $TARGET_DEVICE_IDENTIFIER&#10;&#10;/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@parallel-testing install-command &amp;&#10;&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
@@ -51,7 +51,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;curl http://localhost:22087/stop&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;curl http://localhost:22087/stop&#10;curl http://localhost:22088/stop&#10;curl http://localhost:22089/stop&#10;curl http://localhost:22090/stop&#10;curl http://localhost:22091/stop&#10;">
             </ActionContent>
          </ExecutionAction>
       </PostActions>

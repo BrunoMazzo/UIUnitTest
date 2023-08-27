@@ -18,6 +18,8 @@ struct InstallCommand: AsyncParsableCommand {
         let timeInterval: TimeInterval = 120
         let beginTime = Date()
         
+        var installedDevices = [Int]()
+        
         while Date().timeIntervalSince(beginTime) < timeInterval {
             let cloneDeviceLists: String = await executeShellCommand("xcrun simctl --set testing list")
             
@@ -58,9 +60,11 @@ struct InstallCommand: AsyncParsableCommand {
                     await executeShellCommand("xcrun simctl --set testing install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
                 }
                 
-                if await !self.isServerRunning(for: deviceID) {
+                if await !self.isServerRunning(for: deviceID) && !installedDevices.contains(deviceID) {
                     await executeShellCommand("xcrun simctl --set testing launch \(deviceIdentifier) bruno.mazzo.ServerUITests.xctrunner")
                 }
+                
+                installedDevices.append(deviceID)
             }
             
             try await Task.sleep(nanoseconds: 500_000_000)

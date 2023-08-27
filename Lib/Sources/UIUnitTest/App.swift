@@ -53,6 +53,9 @@ public class App: Element {
                 let request = CreateApplicationRequest(appId: self.appId, serverId: self.serverId, activate: activate)
                 
                 let _: Bool = try await callServer(path: "createApp", request: request)
+                if retries != 3 {
+                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                }
                 return
             } catch {
                 retries -= 1

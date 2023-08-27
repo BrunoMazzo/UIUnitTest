@@ -448,8 +448,6 @@ class UIServer {
         let server = HTTPServer(address: .loopback(port: 22087 + portIndex))
         self.server = server
         
-        
-        
         await addRoute("createApp", handler: { (request: CreateApplicationRequest) in
             let app = XCUIApplication(bundleIdentifier: request.appId)
             await self.cache.add(application: app, id: request.serverId)

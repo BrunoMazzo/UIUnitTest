@@ -252,7 +252,7 @@ final class ClientTests: XCTestCase {
         
         somethingButton.tap()
         
-        let exists = app.staticTexts["Something View"].exists
+        let exists = app.staticTexts["Something View"].waitForExistence(timeout: 1)
         
         XCTAssert(exists)
     }
