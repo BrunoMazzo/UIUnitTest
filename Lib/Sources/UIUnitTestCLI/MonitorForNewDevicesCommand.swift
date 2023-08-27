@@ -3,16 +3,16 @@ import Foundation
 
 
 @available(macCatalyst 16.0, *)
-struct InstallCommand: AsyncParsableCommand {
+struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     @Flag(help: "Reinstall the server even if the server already installed")
     var forceInstall = false
     
-//  DEVICE_NAME
+    //  DEVICE_NAME
     var deviceName: String = "iPhone 14"
     
-//  TARGET_DEVICE_OS_VERSION
+    //  TARGET_DEVICE_OS_VERSION
     var osVersion: String = "16.2"
-
+    
     mutating func run() async throws {
         
         let timeInterval: TimeInterval = 120
@@ -20,8 +20,10 @@ struct InstallCommand: AsyncParsableCommand {
         
         var installedDevices = [Int]()
         
-        // Start server on already openned devices
-        try await installAndStartOnAllCloneDevices(installedDevices: &installedDevices)
+        while Date().timeIntervalSince(beginTime) < timeInterval {
+            try await installAndStartOnAllCloneDevices(installedDevices: &installedDevices)
+            try await Task.sleep(nanoseconds: 500_000_000)
+        }
     }
     
     func installAndStartOnAllCloneDevices(installedDevices: inout [Int]) async throws {
@@ -83,7 +85,7 @@ struct InstallCommand: AsyncParsableCommand {
     func copyFile(file initialPath: URL, toFolder folder: URL)  -> URL {
         let newPath = folder.appendingPathComponent(initialPath.lastPathComponent, isDirectory: false)
         
-//        let newPath = folder.appending(path: initialPath.lastPathComponent, directoryHint: .notDirectory)
+        //        let newPath = folder.appending(path: initialPath.lastPathComponent, directoryHint: .notDirectory)
         
         if FileManager.default.fileExists(atPath: newPath.relativePath) {
             try? FileManager.default.removeItem(at: newPath)
