@@ -21,11 +21,14 @@ struct InstallCommand: AsyncParsableCommand {
         while Date().timeIntervalSince(beginTime) < timeInterval {
             let cloneDeviceLists: String = await executeShellCommand("xcrun simctl --set testing list")
             
-            let versionsRegex = try! Regex("-- iOS \(osVersion.replacingOccurrences(of: ".", with: "\\.")) --\\n([\\n\\sA-Za-z\\d\\(\\)-]*)\\n--")
+            guard let versionsRegex = try? Regex("-- iOS \(osVersion.replacingOccurrences(of: ".", with: "\\.")) --\\n([\\n\\sA-Za-z\\d\\(\\)-]*)\\n--") else {
+                try await Task.sleep(nanoseconds: 500_000_000)
+                continue
+            }
             
             guard let devices = try? versionsRegex.firstMatch(in: cloneDeviceLists)?.output[0] else {
-                print("Error regex")
-                return
+                try await Task.sleep(nanoseconds: 500_000_000)
+                continue
             }
             
             let allDevices = String(cloneDeviceLists[devices.range!])
