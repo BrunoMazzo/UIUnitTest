@@ -42,6 +42,11 @@ struct InstallCommand: AsyncParsableCommand {
         let deviceRegex = try! Regex("Clone ([0-9]*) of \(deviceName) \\(([0-9A-F-]*)\\) \\(Booted\\)")
         for match in allDevices.matches(of: deviceRegex) {
             let deviceID = Int(String(allDevices[match.output[1].range!])) ?? 0
+            
+            guard !installedDevices.contains(deviceID) else {
+                continue
+            }
+            
             let deviceIdentifier = String(allDevices[match.output[2].range!])
             
             let result: String = await executeShellCommand("xcrun simctl --set testing listapps \(deviceIdentifier)")
@@ -62,8 +67,9 @@ struct InstallCommand: AsyncParsableCommand {
                 await executeShellCommand("xcrun simctl --set testing install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
             }
             
-            if await !self.isServerRunning(for: deviceID) && !installedDevices.contains(deviceID) {
+            if await !self.isServerRunning(for: deviceID) {
                 await executeShellCommand("xcrun simctl --set testing launch \(deviceIdentifier) bruno.mazzo.ServerUITests.xctrunner")
+                await waitForServerToStart(deviceID: deviceID)
             }
             
             installedDevices.append(deviceID)
@@ -91,6 +97,12 @@ struct InstallCommand: AsyncParsableCommand {
         
         try! FileManager.default.copyItem(at: initialPath, to: newPath)
         return newPath
+    }
+    
+    func waitForServerToStart(deviceID: Int) async {
+        while await !self.isServerRunning(for: deviceID) {
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+        }
     }
     
     func isServerRunning(for deviceId: Int) async -> Bool {
