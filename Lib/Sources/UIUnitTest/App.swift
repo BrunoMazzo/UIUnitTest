@@ -47,9 +47,18 @@ public class App: Element {
     }
     
     private func create(activate: Bool) async throws {
-        let request = CreateApplicationRequest(appId: self.appId, serverId: self.serverId, activate: activate)
-        
-        let _: Bool = try await callServer(path: "createApp", request: request)
+        var retries = 3
+        while retries > 0 {
+            do {
+                let request = CreateApplicationRequest(appId: self.appId, serverId: self.serverId, activate: activate)
+                
+                let _: Bool = try await callServer(path: "createApp", request: request)
+                return
+            } catch {
+                retries -= 1
+                try await Task.sleep(nanoseconds: 1_000_000_000)
+            }
+        }
     }
     
     @available(*, noasync)
