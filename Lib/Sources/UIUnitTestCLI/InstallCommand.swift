@@ -4,19 +4,21 @@ import Foundation
 
 @available(macCatalyst 16.0, *)
 struct InstallCommand: AsyncParsableCommand {
+    
     @Flag(help: "Reinstall the server even if the server already installed")
     var forceInstall = false
     
 //  DEVICE_NAME
-    var deviceName: String = "iPhone 14"
+    @Option
+    var deviceName: String
     
 //  TARGET_DEVICE_OS_VERSION
-    var osVersion: String = "16.2"
+    @Option
+    var osVersion: String
 
     mutating func run() async throws {
         
-        let timeInterval: TimeInterval = 120
-        let beginTime = Date()
+        print(ProcessInfo.processInfo.environment)
         
         var installedDevices = [Int]()
         
@@ -67,14 +69,16 @@ struct InstallCommand: AsyncParsableCommand {
                 await executeShellCommand("xcrun simctl --set testing install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
             }
             
-            if await !self.isServerRunning(for: deviceID) {
-                await executeShellCommand("xcrun simctl --set testing launch \(deviceIdentifier) bruno.mazzo.ServerUITests.xctrunner")
+            if await !isServerRunning(for: deviceID) {
+                await launchUIServer(deviceIdentifier: deviceIdentifier, isCloneDevice: true)
                 await waitForServerToStart(deviceID: deviceID)
             }
             
             installedDevices.append(deviceID)
         }
     }
+    
+//    kill $(ps aux | grep "[U]IUnitTestCLI monitor-for-new-devices-command" | awk '{print $2}')
     
     func getTempFolder() -> URL {
         let tempDirectory = FileManager.default.temporaryDirectory
@@ -98,20 +102,25 @@ struct InstallCommand: AsyncParsableCommand {
         try! FileManager.default.copyItem(at: initialPath, to: newPath)
         return newPath
     }
-    
-    func waitForServerToStart(deviceID: Int) async {
-        while await !self.isServerRunning(for: deviceID) {
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-        }
+}
+
+
+func waitForServerToStart(deviceID: Int) async {
+    while await !isServerRunning(for: deviceID) {
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
     }
-    
-    func isServerRunning(for deviceId: Int) async -> Bool {
-        let defaultPort = 22087
-        do {
-            let _ = try await URLSession.shared.data(for: URLRequest(url: URL(string: "http://localhost:\(defaultPort + deviceId)/alive")!))
-            return true
-        } catch {
-            return false
-        }
+}
+
+func isServerRunning(for deviceId: Int) async -> Bool {
+    let defaultPort = 22087
+    do {
+        let _ = try await URLSession.shared.data(for: URLRequest(url: URL(string: "http://localhost:\(defaultPort + deviceId)/alive")!))
+        return true
+    } catch {
+        return false
     }
+}
+
+func launchUIServer(deviceIdentifier: String, isCloneDevice: Bool = false) async {
+    await executeShellCommand("xcrun simctl \(isCloneDevice ? "--set testing" : "") launch \(deviceIdentifier) bruno.mazzo.ServerUITests.xctrunner")
 }

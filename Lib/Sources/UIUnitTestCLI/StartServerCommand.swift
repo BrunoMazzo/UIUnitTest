@@ -36,7 +36,7 @@ struct StartServerCommand: AsyncParsableCommand {
                 await executeShellCommand("xcrun simctl install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
             }
             
-            await executeShellCommand("xcrun simctl launch \(deviceIdentifier) bruno.mazzo.ServerUITests.xctrunner")
+            await launchUIServer(deviceIdentifier: deviceIdentifier, isCloneDevice: false)
         } else {
             let serverRunnerZip = Bundle.module.url(forResource: "Server", withExtension: ".zip")!
             

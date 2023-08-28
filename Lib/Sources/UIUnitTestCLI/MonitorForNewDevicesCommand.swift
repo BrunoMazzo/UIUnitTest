@@ -8,19 +8,17 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     var forceInstall = false
     
     //  DEVICE_NAME
-    var deviceName: String = "iPhone 14"
+    @Option
+    var deviceName: String
     
     //  TARGET_DEVICE_OS_VERSION
-    var osVersion: String = "16.2"
+    @Option
+    var osVersion: String
     
     mutating func run() async throws {
-        
-        let timeInterval: TimeInterval = 120
-        let beginTime = Date()
-        
         var installedDevices = [Int]()
         
-        while Date().timeIntervalSince(beginTime) < timeInterval {
+        while true {
             try await installAndStartOnAllCloneDevices(installedDevices: &installedDevices)
             try await Task.sleep(nanoseconds: 500_000_000)
         }
@@ -69,8 +67,8 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
                 await executeShellCommand("xcrun simctl --set testing install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
             }
             
-            if await !self.isServerRunning(for: deviceID) {
-                await executeShellCommand("xcrun simctl --set testing launch \(deviceIdentifier) bruno.mazzo.ServerUITests.xctrunner")
+            if await !isServerRunning(for: deviceID) {
+                await launchUIServer(deviceIdentifier: deviceIdentifier, isCloneDevice: true)
                 await waitForServerToStart(deviceID: deviceID)
             }
             
@@ -99,21 +97,5 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         
         try! FileManager.default.copyItem(at: initialPath, to: newPath)
         return newPath
-    }
-    
-    func waitForServerToStart(deviceID: Int) async {
-        while await !self.isServerRunning(for: deviceID) {
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-        }
-    }
-    
-    func isServerRunning(for deviceId: Int) async -> Bool {
-        let defaultPort = 22087
-        do {
-            let _ = try await URLSession.shared.data(for: URLRequest(url: URL(string: "http://localhost:\(defaultPort + deviceId)/alive")!))
-            return true
-        } catch {
-            return false
-        }
     }
 }
