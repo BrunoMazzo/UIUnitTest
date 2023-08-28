@@ -39,7 +39,12 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         
         print(allDevices)
         
-        let deviceRegex = try! Regex("Clone ([0-9]*) of \(deviceName) \\(([0-9A-F-]*)\\) \\(Booted\\)")
+        let safeDeviceName = osVersion
+            .replacingOccurrences(of: ".", with: "\\.")
+            .replacingOccurrences(of: "(", with: "\\(")
+            .replacingOccurrences(of: ")", with: "\\)")
+        
+        let deviceRegex = try! Regex("Clone ([0-9]*) of \(safeDeviceName) \\(([0-9A-F-]*)\\) \\(Booted\\)")
         for match in allDevices.matches(of: deviceRegex) {
             let deviceID = Int(String(allDevices[match.output[1].range!])) ?? 0
             
