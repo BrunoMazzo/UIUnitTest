@@ -7,19 +7,22 @@ struct InstallCommand: AsyncParsableCommand {
     
     @Flag(help: "Reinstall the server even if the server already installed")
     var forceInstall = false
-    
-//  DEVICE_NAME
-    @Option
-    var deviceName: String
-    
-//  TARGET_DEVICE_OS_VERSION
-    @Option
-    var osVersion: String
 
+    @Option(name: .customLong("device-name"))
+    var _deviceName: String?
+    
+    var deviceName: String {
+        _deviceName ?? ProcessInfo.processInfo.environment["DEVICE_NAME"]!
+    }
+    
+    @Option(name: .customLong("os-version"))
+    var _osVersion: String?
+    
+    var osVersion: String {
+        _osVersion ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_OS_VERSION"]!
+    }
+    
     mutating func run() async throws {
-        
-        print(ProcessInfo.processInfo.environment)
-        
         var installedDevices = [Int]()
         
         // Start server on already openned devices
@@ -60,9 +63,7 @@ struct InstallCommand: AsyncParsableCommand {
             
             let deviceIdentifier = String(allDevices[match.output[2].range!])
             
-            let result: String = await executeShellCommand("xcrun simctl --set testing listapps \(deviceIdentifier)")
-            
-            let appInstalled = result.contains("bruno.mazzo.ServerUITests.xctrunner")
+            let appInstalled = await deviceContainsUIServerApp(deviceIdentifier: deviceIdentifier, isCloneDevice: true)
             //
             if !appInstalled || forceInstall {
                 let serverRunnerZip = Bundle.module.url(forResource: "PreBuild", withExtension: ".zip")!
@@ -75,7 +76,7 @@ struct InstallCommand: AsyncParsableCommand {
                 
                 let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
                 
-                await executeShellCommand("xcrun simctl --set testing install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
+                await installUIServer(rootFolder: rootFolder, deviceIdentifier: deviceIdentifier, isCloneDevice: true)
             }
             
             if await !isServerRunning(for: deviceID) {
@@ -113,6 +114,14 @@ struct InstallCommand: AsyncParsableCommand {
     }
 }
 
+func deviceContainsUIServerApp(deviceIdentifier: String, isCloneDevice: Bool = false) async -> Bool {
+    let listOfApps = await listOfApps(deviceIdentifier: deviceIdentifier, isCloneDevice: isCloneDevice)
+    return listOfApps.contains("bruno.mazzo.ServerUITests.xctrunner")
+}
+
+func listOfApps(deviceIdentifier: String, isCloneDevice: Bool = false) async -> String {
+    return await executeShellCommand("xcrun simctl \(isCloneDevice ? "--set testing" : "") listapps \(deviceIdentifier)")
+}
 
 func waitForServerToStart(deviceID: Int) async {
     while await !isServerRunning(for: deviceID) {
@@ -128,6 +137,10 @@ func isServerRunning(for deviceId: Int) async -> Bool {
     } catch {
         return false
     }
+}
+
+func installUIServer(rootFolder: String, deviceIdentifier: String, isCloneDevice: Bool = false) async {
+    await executeShellCommand("xcrun simctl \(isCloneDevice ? "--set testing" : "") install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
 }
 
 func launchUIServer(deviceIdentifier: String, isCloneDevice: Bool = false) async {
