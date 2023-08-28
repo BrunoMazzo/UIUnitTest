@@ -39,7 +39,7 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         
         print(allDevices)
         
-        let safeDeviceName = osVersion
+        let safeDeviceName = deviceName
             .replacingOccurrences(of: ".", with: "\\.")
             .replacingOccurrences(of: "(", with: "\\(")
             .replacingOccurrences(of: ")", with: "\\)")

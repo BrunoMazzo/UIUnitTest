@@ -41,13 +41,16 @@ struct InstallCommand: AsyncParsableCommand {
         
         print(allDevices)
         
-        let safeDeviceName = osVersion
+        let safeDeviceName = deviceName
             .replacingOccurrences(of: ".", with: "\\.")
             .replacingOccurrences(of: "(", with: "\\(")
             .replacingOccurrences(of: ")", with: "\\)")
         
+        print(safeDeviceName)
         
         let deviceRegex = try! Regex("Clone ([0-9]*) of \(safeDeviceName) \\(([0-9A-F-]*)\\) \\(Booted\\)")
+        
+        
         for match in allDevices.matches(of: deviceRegex) {
             let deviceID = Int(String(allDevices[match.output[1].range!])) ?? 0
             
