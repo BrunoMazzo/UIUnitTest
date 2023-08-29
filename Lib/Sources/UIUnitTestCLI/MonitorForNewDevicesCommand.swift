@@ -1,19 +1,24 @@
 import ArgumentParser
 import Foundation
 
-
-@available(macCatalyst 16.0, *)
+@available(macOS 13.0, *)
 struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     @Flag(help: "Reinstall the server even if the server already installed")
     var forceInstall = false
     
-    //  DEVICE_NAME
-    @Option
-    var deviceName: String
+    @Option(name: .customLong("device-name"))
+    var _deviceName: String?
     
-    //  TARGET_DEVICE_OS_VERSION
-    @Option
-    var osVersion: String
+    var deviceName: String {
+        _deviceName ?? ProcessInfo.processInfo.environment["DEVICE_NAME"]!
+    }
+    
+    @Option(name: .customLong("os-version"))
+    var _osVersion: String?
+    
+    var osVersion: String {
+        _osVersion ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_OS_VERSION"]!
+    }
     
     mutating func run() async throws {
         var installedDevices = [Int]()
@@ -25,82 +30,22 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     }
     
     func installAndStartOnAllCloneDevices(installedDevices: inout [Int]) async throws {
-        let cloneDeviceLists: String = await executeShellCommand("xcrun simctl --set testing list")
+        let devices = await getDevices(osVersion: osVersion, deviceName: deviceName, excludeDevices: installedDevices)
         
-        guard let versionsRegex = try? Regex("-- iOS \(osVersion.replacingOccurrences(of: ".", with: "\\.")) --\\n([\\n\\sA-Za-z\\d\\(\\)-]*)\\n--") else {
-            return
-        }
-        
-        guard let devices = try? versionsRegex.firstMatch(in: cloneDeviceLists)?.output[0] else {
-            return
-        }
-        
-        let allDevices = String(cloneDeviceLists[devices.range!])
-        
-        print(allDevices)
-        
-        let safeDeviceName = deviceName
-            .replacingOccurrences(of: ".", with: "\\.")
-            .replacingOccurrences(of: "(", with: "\\(")
-            .replacingOccurrences(of: ")", with: "\\)")
-        
-        let deviceRegex = try! Regex("Clone ([0-9]*) of \(safeDeviceName) \\(([0-9A-F-]*)\\) \\(Booted\\)")
-        for match in allDevices.matches(of: deviceRegex) {
-            let deviceID = Int(String(allDevices[match.output[1].range!])) ?? 0
+        for device in devices {
             
-            guard !installedDevices.contains(deviceID) else {
-                continue
-            }
+            let appInstalled = await device.deviceContainsUIServerApp()
             
-            let deviceIdentifier = String(allDevices[match.output[2].range!])
-            
-            let result: String = await executeShellCommand("xcrun simctl --set testing listapps \(deviceIdentifier)")
-            
-            let appInstalled = result.contains("bruno.mazzo.ServerUITests.xctrunner")
-            //
             if !appInstalled || forceInstall {
-                let serverRunnerZip = Bundle.module.url(forResource: "PreBuild", withExtension: ".zip")!
-                
-                let tempDirectory = getTempFolder()
-                
-                let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: tempDirectory)
-                
-                await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
-                
-                let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
-                
-                await executeShellCommand("xcrun simctl --set testing install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
+                await device.installUIServer()
             }
             
-            if await !isServerRunning(for: deviceID) {
-                await launchUIServer(deviceIdentifier: deviceIdentifier, isCloneDevice: true)
-                await waitForServerToStart(deviceID: deviceID)
+            if await !device.isServerRunning() {
+                await device.launchUIServer()
+                await device.waitForServerToStart()
             }
             
-            installedDevices.append(deviceID)
+            installedDevices.append(device.deviceID)
         }
-    }
-    
-    func getTempFolder() -> URL {
-        let tempDirectory = FileManager.default.temporaryDirectory
-        let tempUIUnitTestDirectory = tempDirectory.appendingPathComponent("UIUnitTest/")
-        if !FileManager.default.fileExists(atPath: tempUIUnitTestDirectory.relativePath) {
-            try! FileManager.default.createDirectory(at: tempUIUnitTestDirectory, withIntermediateDirectories: true)
-        }
-        
-        return tempUIUnitTestDirectory
-    }
-    
-    func copyFile(file initialPath: URL, toFolder folder: URL)  -> URL {
-        let newPath = folder.appendingPathComponent(initialPath.lastPathComponent, isDirectory: false)
-        
-        //        let newPath = folder.appending(path: initialPath.lastPathComponent, directoryHint: .notDirectory)
-        
-        if FileManager.default.fileExists(atPath: newPath.relativePath) {
-            try? FileManager.default.removeItem(at: newPath)
-        }
-        
-        try! FileManager.default.copyItem(at: initialPath, to: newPath)
-        return newPath
     }
 }

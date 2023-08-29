@@ -7,8 +7,26 @@ enum UIUnitTestErrors: Error {
 
 struct StartServerCommand: AsyncParsableCommand {
     
-    @Option
-    var deviceIdentifier: String
+    @Option(name: .customLong("device-identifier"))
+    var _deviceIdentifier: String?
+    
+    var deviceIdentifier: String {
+        _deviceIdentifier ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_IDENTIFIER"]!
+    }
+    
+    @Option(name: .customLong("device-name"))
+    var _deviceName: String?
+    
+    var deviceName: String {
+        _deviceName ?? ProcessInfo.processInfo.environment["DEVICE_NAME"]!
+    }
+    
+    @Option(name: .customLong("os-version"))
+    var _osVersion: String?
+    
+    var osVersion: String {
+        _osVersion ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_OS_VERSION"]!
+    }
     
     @Flag
     var forceInstall = false
@@ -29,11 +47,11 @@ struct StartServerCommand: AsyncParsableCommand {
                 
                 let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: tempDirectory)
                 
-                await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
+                let _: Data = await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
                 
                 let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
                 
-                await executeShellCommand("xcrun simctl install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
+                let _: Data = await executeShellCommand("xcrun simctl install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
             }
             
             await launchUIServer(deviceIdentifier: deviceIdentifier, isCloneDevice: false)
@@ -44,10 +62,9 @@ struct StartServerCommand: AsyncParsableCommand {
             
             let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: tempDirectory)
             
-            await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
+            let _: Data = await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
             
             let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
-            
             
             await executeTestUntilServerStarts("""
                 xcodebuild -project \(rootFolder)/Server.xcodeproj \
@@ -92,5 +109,9 @@ struct StartServerCommand: AsyncParsableCommand {
         }
         print(machine)
         return machine == "arm64"
+    }
+    
+    func launchUIServer(deviceIdentifier: String, isCloneDevice: Bool) async {
+        let _: Data = await executeShellCommand("xcrun simctl \(isCloneDevice ? "--set testing" : "") launch \(deviceIdentifier) bruno.mazzo.ServerUITests.xctrunner")
     }
 }
