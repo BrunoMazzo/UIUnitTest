@@ -30,8 +30,45 @@ struct Device {
         }
     }
     
+    func buildUIServer() async -> String {
+        let serverRunnerZip = Bundle.module.url(forResource: "Server", withExtension: ".zip")!
+        
+        let tempDirectory = getTempFolder()
+        
+        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: tempDirectory)
+        
+        let _: Data = await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
+        
+        let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
+        
+        let _: Data = await executeShellCommand("""
+                xcodebuild -project \(rootFolder)/Server.xcodeproj \
+                    -scheme ServerUITests -sdk iphonesimulator \
+                    -destination "platform=iOS Simulator,id=\(deviceIdentifier)" \
+                    -IDEBuildLocationStyle=Custom \
+                    -IDECustomBuildLocationType=Absolute \
+                    -IDECustomBuildProductsPath="\(rootFolder)/build/Products" \
+                    build-for-testing
+                """)
+        
+        return URL(string: rootFolder)!.appending(path: "build/Products/Release-iphonesimulator").absoluteString
+    }
+    
+    func buildAndInstallUIServer() async {
+        let rootFolder = await buildUIServer()
+        await installUIServer(rootFolder: rootFolder)
+    }
+    
+    func installServer(usePreBuilderServer: Bool = true) async {
+        if isArmMac() && usePreBuilderServer {
+            await self.installPreBuildUIServer()
+        } else {
+            await self.buildAndInstallUIServer()
+        }
+    }
+    
     // Only for m1 for now
-    func installUIServer() async {
+    func installPreBuildUIServer() async {
         let serverRunnerZip = Bundle.module.url(forResource: "PreBuild", withExtension: ".zip")!
         
         let tempDirectory = getTempFolder()
@@ -42,6 +79,10 @@ struct Device {
         
         let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
         
+        await installUIServer(rootFolder: rootFolder)
+    }
+    
+    func installUIServer(rootFolder: String) async {
         let _: Data = await executeShellCommand("xcrun simctl \(isCloneDevice ? "--set testing" : "") install \(deviceIdentifier) \(rootFolder)/ServerUITests-Runner.app")
     }
     

@@ -30,14 +30,14 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     }
     
     func installAndStartOnAllCloneDevices(installedDevices: inout [Int]) async throws {
-        let devices = await getDevices(osVersion: osVersion, deviceName: deviceName, excludeDevices: installedDevices)
+        let devices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName, excludeDevices: installedDevices)
         
         for device in devices {
             
             let appInstalled = await device.deviceContainsUIServerApp()
             
             if !appInstalled || forceInstall {
-                await device.installUIServer()
+                await device.installPreBuildUIServer()
             }
             
             if await !device.isServerRunning() {

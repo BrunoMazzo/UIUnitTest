@@ -28,14 +28,14 @@ struct InstallCommand: AsyncParsableCommand {
     }
     
     func installAndStartOnAllCloneDevices(installedDevices: inout [Int]) async throws {
-        let devices = await getDevices(osVersion: osVersion, deviceName: deviceName, excludeDevices: installedDevices)
+        let devices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName, excludeDevices: installedDevices)
         
         for device in devices {
             
             let appInstalled = await device.deviceContainsUIServerApp()
             
             if !appInstalled || forceInstall {
-                await device.installUIServer()
+                await device.installServer()
             }
             
             if await !device.isServerRunning() {
@@ -48,7 +48,11 @@ struct InstallCommand: AsyncParsableCommand {
     }
 }
 
-func getDevices(osVersion: String, deviceName: String, excludeDevices: [Int]) async -> [Device] {
+func getTestingDevice(deviceUUID: String) async -> Device {
+    return Device(deviceIdentifier: deviceUUID, isCloneDevice: false, deviceID: 0)
+}
+
+func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int]) async -> [Device] {
     let cloneDeviceLists: String = await executeShellCommand("xcrun simctl --set testing list")
     
     guard let versionsRegex = try? Regex("-- iOS \(osVersion.replacingOccurrences(of: ".", with: "\\.")) --\\n([\\n\\sA-Za-z\\d\\(\\)-]*)\\n--") else {
