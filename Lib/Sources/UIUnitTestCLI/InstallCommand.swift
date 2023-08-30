@@ -25,12 +25,13 @@ struct InstallCommand: AsyncParsableCommand {
         
         // Start server on already openned devices
         try await installAndStartOnAllCloneDevices(installedDevices: &installedDevices)
-        
-        let programPath = ProcessInfo.processInfo.arguments[0]
-        
-        executeBackgroundShellCommand("""
-            \(programPath) monitor-for-new-devices-command --device-name "\(deviceName)" --os-version "\(osVersion)"
-        """)
+//        let programPath = ProcessInfo.processInfo.arguments[0]
+//
+//        executeBackgroundShellCommand("""
+//            \(programPath) monitor-for-new-devices-command --device-name "\(deviceName)" --os-version "\(osVersion)"
+//            """)
+//
+//        try await Task.sleep(for: .seconds(20))
     }
     
     func installAndStartOnAllCloneDevices(installedDevices: inout [Int]) async throws {
@@ -58,7 +59,7 @@ func getTestingDevice(deviceUUID: String) async -> Device {
     return Device(deviceIdentifier: deviceUUID, isCloneDevice: false, deviceID: 0)
 }
 
-func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int]) async -> [Device] {
+func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int] = []) async -> [Device] {
     let cloneDeviceLists: String = await executeShellCommand("xcrun simctl --set testing list")
     
     guard let versionsRegex = try? Regex("-- iOS \(osVersion.replacingOccurrences(of: ".", with: "\\.")) --\\n([\\n\\sA-Za-z\\d\\(\\)-]*)\\n--") else {

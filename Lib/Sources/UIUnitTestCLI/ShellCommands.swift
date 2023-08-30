@@ -37,15 +37,22 @@ func executeShellCommand(_ command: String) async -> Data {
 func executeBackgroundShellCommand(_ command: String) {
     print("Executing command: \(command)")
     
-    let task = Process()
-    let pipe = Pipe()
-    
-    task.standardOutput = pipe
-    task.standardError = pipe
-    task.executableURL = URL(fileURLWithPath: "/bin/zsh") //<--updated
-    task.standardInput = nil
-    task.arguments = ["-c", command]
-    task.launch()
+    Task {
+        let task = Process()
+        let pipe = Pipe()
+        
+        task.standardOutput = pipe
+        task.standardError = pipe
+        task.executableURL = URL(fileURLWithPath: "/bin/zsh") //<--updated
+        task.standardInput = nil
+        task.arguments = ["-c", command]
+        task.terminationHandler = { (process) in
+            print(process)
+            print("\ndidFinish: \(!process.isRunning)")
+        }
+        task.launch()
+        task.waitUntilExit()
+    }
 }
 
 func executeTestUntilServerStarts(_ command: String) async {

@@ -14,6 +14,20 @@ struct StartServerCommand: AsyncParsableCommand {
         _deviceIdentifier ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_IDENTIFIER"]!
     }
     
+    @Option(name: .customLong("device-name"))
+    var _deviceName: String?
+    
+    var deviceName: String {
+        _deviceName ?? ProcessInfo.processInfo.environment["DEVICE_NAME"]!
+    }
+    
+    @Option(name: .customLong("os-version"))
+    var _osVersion: String?
+    
+    var osVersion: String {
+        _osVersion ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_OS_VERSION"]!
+    }
+    
     @Flag
     var forceInstall = false
     
@@ -21,15 +35,22 @@ struct StartServerCommand: AsyncParsableCommand {
     var notPrebuildServer = false
     
     mutating func run() async throws {
-        let device = await getTestingDevice(deviceUUID: deviceIdentifier)
+        let selectedDevice = await getTestingDevice(deviceUUID: deviceIdentifier)
+        let cloneDevices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName)
         
-        let appInstalled = await device.deviceContainsUIServerApp()
-        
-        if !appInstalled || forceInstall {
-            await device.installServer(usePreBuilderServer: !notPrebuildServer)
+        for device in [selectedDevice] + cloneDevices {
+            
+            let appInstalled = await device.deviceContainsUIServerApp()
+            
+            if !appInstalled || forceInstall {
+                await device.installServer()
+            }
+            
+            if await !device.isServerRunning() {
+                await device.launchUIServer()
+                await device.waitForServerToStart()
+            }
         }
-        
-        await device.launchUIServer()
     }
 }
 
