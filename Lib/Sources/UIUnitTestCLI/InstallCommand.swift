@@ -25,6 +25,12 @@ struct InstallCommand: AsyncParsableCommand {
         
         // Start server on already openned devices
         try await installAndStartOnAllCloneDevices(installedDevices: &installedDevices)
+        
+        let programPath = ProcessInfo.processInfo.arguments[0]
+        
+        executeBackgroundShellCommand("""
+            \(programPath) monitor-for-new-devices-command --device-name "\(deviceName)" --os-version "\(osVersion)"
+        """)
     }
     
     func installAndStartOnAllCloneDevices(installedDevices: inout [Int]) async throws {
