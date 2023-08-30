@@ -31,5 +31,5 @@ jobs:
           deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
 
           #run UIUnitTest server
-          mint run BrunoMazzo/UIUnitTest@main start-server-command --device-identifier $deviceUUID
+          # mint run BrunoMazzo/UIUnitTest@main start-server-command --device-identifier $deviceUUID
           set -o pipefail && xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test | xcbeautify
