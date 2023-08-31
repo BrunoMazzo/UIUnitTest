@@ -35,6 +35,8 @@ struct StartServerCommand: AsyncParsableCommand {
     var notPrebuildServer = false
     
     mutating func run() async throws {
+        print("Running StartServerCommand")
+        
         let selectedDevice = await getTestingDevice(deviceUUID: deviceIdentifier)
         let cloneDevices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName)
         
@@ -48,7 +50,7 @@ struct StartServerCommand: AsyncParsableCommand {
             
             if await !device.isServerRunning() {
                 await device.launchUIServer()
-                await device.waitForServerToStart()
+//                await device.waitForServerToStart()
             }
         }
     }
