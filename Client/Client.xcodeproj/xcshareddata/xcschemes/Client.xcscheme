@@ -33,7 +33,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;exec &gt; /Users/brunomazzo/Documents/OpenSource/UIUnitTest/logfile.txt&#10;&#10;/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@parallel-testing stop-command&#10;&#10;#/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@parallel-testing start-server-command&#10;&#10;/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@parallel-testing monitor-for-new-devices-command &amp;&#10;&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;exec &gt; /Users/brunomazzo/Documents/OpenSource/UIUnitTest/logfile.txt&#10;&#10;/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@parallel-testing stop-command&#10;&#10;#/usr/bin/swift run --package-path /Users/brunomazzo/Documents/OpenSource/UIUnitTest UIUnitTestCLI start-server-command&#10;&#10;/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@parallel-testing start-server-command&#10;&#10;/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@parallel-testing monitor-for-new-devices-command &amp;&#10;&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
