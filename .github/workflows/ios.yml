@@ -35,6 +35,7 @@ jobs:
           mint install BrunoMazzo/UIUnitTest@parallel-testing
           set -o pipefail && xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test | xcbeautify
       - name: Archive cli logs
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: cli-logs
