@@ -384,7 +384,7 @@ class UIServer {
         let coordinateUUID = await cache.add(coordinate: coordinate)
         let elementUUID = await cache.add(element: coordinate.referencedElement)
         
-        return CoordinateResponse(coordinate: Coordinate(serverId: coordinateUUID, referencedElement: Element(serverId: elementUUID), screenPoint: coordinate.screenPoint))
+        return CoordinateResponse(coordinateId: coordinateUUID, referencedElementId: elementUUID, screenPoint: coordinate.screenPoint)
     }
     
     @MainActor
@@ -395,7 +395,7 @@ class UIServer {
         let coordinateUUID = await cache.add(coordinate: coordinate)
         let elementUUID = await cache.add(element: coordinate.referencedElement)
         
-        return CoordinateResponse(coordinate: Coordinate(serverId: coordinateUUID, referencedElement: Element(serverId: elementUUID), screenPoint: coordinate.screenPoint))
+        return CoordinateResponse(coordinateId: coordinateUUID, referencedElementId: elementUUID, screenPoint: coordinate.screenPoint)
     }
     
     @MainActor
@@ -410,10 +410,10 @@ class UIServer {
         case .press(forDuration: let duration):
             rootCoordinate.press(forDuration: duration)
         case .pressAndDrag(forDuration: let duration, thenDragTo: let coordinate):
-            let coordinate = try await self.cache.getCoordinate(coordinate.serverId)
+            let coordinate = try await self.cache.getCoordinate(coordinate)
             rootCoordinate.press(forDuration: duration, thenDragTo: coordinate)
         case .pressDragAndHold(forDuration: let duration, thenDragTo: let coordinate, withVelocity: let velocity, thenHoldForDuration: let holdDuration):
-            let coordinate = try await self.cache.getCoordinate(coordinate.serverId)
+            let coordinate = try await self.cache.getCoordinate(coordinate)
             rootCoordinate.press(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity.xcUIGestureVelocity, thenHoldForDuration: holdDuration)
         }
         
