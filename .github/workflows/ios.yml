@@ -18,7 +18,7 @@ jobs:
           brew install mint
           brew install xcbeautify
       - name: Select Xcode version
-        run: sudo xcode-select -s '/Applications/Xcode_14.3.1.app/Contents/Developer'
+        run: sudo xcode-select -switch '/Applications/Xcode_14.3.1.app'
       - name: Build & Test
         env:
           scheme: 'Client'
