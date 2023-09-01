@@ -1,6 +1,6 @@
 import Foundation
 
-public class Coordinate: Codable {
+public class Coordinate {
     public var serverId: UUID
     
     var referencedElement: Element
@@ -22,7 +22,7 @@ public class Coordinate: Codable {
     public func withOffset(_ vector: CGVector) async throws -> Coordinate {
         let request = CoordinateOffsetRequest(coordinatorId: self.serverId, vector: vector)
         let response: CoordinateResponse = try await callServer(path: "coordinateWithOffset", request: request)
-        return response.coordinate
+        return Coordinate(serverId: response.coordinateId, referencedElement: Element(serverId: response.referencedElementId), screenPoint: response.screenPoint)
     }
     
     @available(*, noasync)
@@ -69,7 +69,7 @@ public class Coordinate: Codable {
     }
     
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) async throws {
-        let request = TapCoordinateRequest(serverId: self.serverId, type: .pressAndDrag(forDuration: duration, thenDragTo: coordinate))
+        let request = TapCoordinateRequest(serverId: self.serverId, type: .pressAndDrag(forDuration: duration, thenDragTo: coordinate.serverId))
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
     
@@ -81,7 +81,7 @@ public class Coordinate: Codable {
     }
     
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocity, thenHoldForDuration holdDuration: TimeInterval) async throws {
-        let request = TapCoordinateRequest(serverId: self.serverId, type: .pressDragAndHold(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity, thenHoldForDuration: holdDuration) )
+        let request = TapCoordinateRequest(serverId: self.serverId, type: .pressDragAndHold(forDuration: duration, thenDragTo: coordinate.serverId, withVelocity: velocity, thenHoldForDuration: holdDuration) )
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
 
@@ -104,14 +104,16 @@ public struct CoordinateOffsetRequest: Codable {
 }
 
 public struct CoordinateResponse: Codable {
-    public let coordinate: Coordinate
-    
-    public init(coordinate: Coordinate) {
-        self.coordinate = coordinate
+    public var coordinateId: UUID
+    public var referencedElementId: UUID
+    public var screenPoint: CGPoint
+
+    public init(coordinateId: UUID, referencedElementId: UUID, screenPoint: CGPoint) {
+        self.coordinateId = coordinateId
+        self.referencedElementId = referencedElementId
+        self.screenPoint = screenPoint
     }
 }
-
-
 
 public struct TapCoordinateRequest: Codable {
     
@@ -119,8 +121,8 @@ public struct TapCoordinateRequest: Codable {
         case tap
         case doubleTap
         case press(forDuration: TimeInterval)
-        case pressAndDrag(forDuration: TimeInterval, thenDragTo: Coordinate)
-        case pressDragAndHold(forDuration: TimeInterval, thenDragTo: Coordinate, withVelocity: GestureVelocity, thenHoldForDuration: TimeInterval)
+        case pressAndDrag(forDuration: TimeInterval, thenDragTo: UUID)
+        case pressDragAndHold(forDuration: TimeInterval, thenDragTo: UUID, withVelocity: GestureVelocity, thenHoldForDuration: TimeInterval)
     }
     
     public var serverId: UUID

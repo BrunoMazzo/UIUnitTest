@@ -1,6 +1,6 @@
 import Foundation
 
-public class Element: ElementTypeQueryProvider, Codable, @unchecked Sendable {
+public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     public let serverId: UUID
     
     public init(serverId: UUID) {
@@ -100,7 +100,7 @@ public class Element: ElementTypeQueryProvider, Codable, @unchecked Sendable {
     public func coordinate(withNormalizedOffset normalizedOffset: CGVector) async throws -> Coordinate {
         let request = CoordinateRequest(serverId: self.serverId, normalizedOffset: normalizedOffset)
         let response: CoordinateResponse = try await callServer(path: "coordinate", request: request)
-        return response.coordinate
+        return Coordinate(serverId: response.coordinateId, referencedElement: Element(serverId: response.referencedElementId), screenPoint: response.screenPoint)
     }
     
     public func frame() async throws -> CGRect  {
