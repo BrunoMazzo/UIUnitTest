@@ -23,6 +23,7 @@ jobs:
         env:
           scheme: 'Client'
           platform: ${{ 'iOS Simulator' }}
+        timeout-minutes: 15
         run: |
           # Debug device list
           xcrun xctrace list devices
