@@ -33,7 +33,7 @@ jobs:
 
           #run UIUnitTest server
           mint install BrunoMazzo/UIUnitTest@parallel-testing
-          set -o pipefail && xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test | xcbeautify
+          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test 2>&1 | xcbeautify --renderer github-actions
       - name: Archive cli logs
         if: always()
         uses: actions/upload-artifact@v3
