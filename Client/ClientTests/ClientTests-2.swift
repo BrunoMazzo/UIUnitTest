@@ -4,6 +4,10 @@ import UIUnitTest
 
 final class ClientTests2: XCTestCase {
 
+    override func setUp() {
+        self.continueAfterFailure = false
+    }
+    
     @MainActor
     func testTap() async throws {
         let app = try await App()

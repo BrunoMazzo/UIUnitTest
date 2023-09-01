@@ -14,6 +14,10 @@ extension App {
 }
 
 final class ClientTests: XCTestCase {
+    
+    override func setUp() {
+        self.continueAfterFailure = false
+    }
 
     @MainActor
     func testTap() async throws {
