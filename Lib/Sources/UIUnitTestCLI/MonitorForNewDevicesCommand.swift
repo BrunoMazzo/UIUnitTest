@@ -6,6 +6,9 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     @Flag(help: "Reinstall the server even if the server already installed")
     var forceInstall = false
     
+    @Flag
+    var verbose = false
+    
     @Option(name: .customLong("device-name"))
     var _deviceName: String?
     
@@ -20,6 +23,12 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         _osVersion ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_OS_VERSION"]!
     }
     
+    func print(_ message: String) {
+        if verbose {
+            Swift.print(message)
+        }
+    }
+    
     mutating func run() async throws {
         var installedDevices = [Int]()
         
@@ -30,17 +39,21 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     }
     
     func installAndStartOnAllCloneDevices(installedDevices: inout [Int]) async throws {
+        print("Getting devices")
         let devices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName, excludeDevices: installedDevices)
         
         for device in devices {
             
+            print("Checking for the server on device: \(device.deviceIdentifier)")
             let appInstalled = await device.deviceContainsUIServerApp()
             
             if !appInstalled || forceInstall {
+                print("Installing server on device: \(device.deviceIdentifier)")
                 await device.installPreBuildUIServer()
             }
             
             if await !device.isServerRunning() {
+                print("Launching server on device: \(device.deviceIdentifier)")
                 await device.launchUIServer()
                 await device.waitForServerToStart()
             }

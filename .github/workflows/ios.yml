@@ -28,12 +28,22 @@ jobs:
           # Debug device list
           xcrun xctrace list devices
 
+          xcrun simctl list
+
+          xcrun simctl --set testing list
+
           # Get iPhone 14 iOS 16.2 UUID
           deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
 
+          mint run BrunoMazzo/UIUnitTest@parallel-testing monitor-for-new-devices-command --device-name "iPhone 14" --os-version "16.2" --verbose  &
+
           #run UIUnitTest server
           mint install BrunoMazzo/UIUnitTest@parallel-testing
-          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test 2>&1 | xcbeautify --renderer github-actions
+          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" -parallel-testing-enabled YES test 2>&1 | xcbeautify --renderer github-actions
+
+          xcrun simctl list
+
+          xcrun simctl --set testing list
       - name: Archive cli logs
         if: always()
         uses: actions/upload-artifact@v3
