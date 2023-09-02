@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  parallel-testing:
     name: Build and Test default scheme using any available iPhone simulator
     runs-on: macos-13
 
@@ -45,10 +45,38 @@ jobs:
 
           #run UIUnitTest server
           set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" -parallel-testing-enabled YES -parallel-testing-worker-count 2 test 2>&1 | xcbeautify --renderer github-actions
+      - name: Archive cli logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cli-logs
+          path: Client/logfile.txt
+  single-device-testing:
+    name: Build and Test default scheme using any available iPhone simulator
+    runs-on: macos-13
 
-          xcrun simctl list
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install mint and xcbeautify
+        run: |
+          brew install mint
+          brew install xcbeautify
+      - name: Select Xcode version
+        run: sudo xcode-select -switch '/Applications/Xcode_14.3.1.app'
+      - name: Build & Test
+        env:
+          scheme: 'Client'
+          platform: ${{ 'iOS Simulator' }}
+        timeout-minutes: 15
+        run: |
+          mint install BrunoMazzo/UIUnitTest@parallel-testing --force
 
-          xcrun simctl --set testing list
+          # Get iPhone 14 iOS 16.4 UUID
+          deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone 14.*\(16\.4\).*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
+
+          #run UIUnitTest server
+          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test 2>&1 | xcbeautify --renderer github-actions
       - name: Archive cli logs
         if: always()
         uses: actions/upload-artifact@v3

@@ -60,13 +60,13 @@ final class ClientTests2: XCTestCase {
         
         showView(MySettingTable())
         
-        try! await app.buttons("TextField").tap()
+        try await app.buttons("TextField").tap()
         
-        try! await app.textFields("TextField-Default").tap()
+        try await app.textFields("TextField-Default").tap()
         
-        try! await app.textFields("TextField-Default").typeText("Hello world")
+        try await app.textFields("TextField-Default").typeText("Hello world")
         
-        let exists = try! await app.staticTexts("Text value: Hello world").exists()
+        let exists = try await app.staticTexts("Text value: Hello world").exists()
         
         XCTAssert(exists)
     }
