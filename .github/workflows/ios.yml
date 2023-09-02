@@ -41,7 +41,7 @@ jobs:
 
           mint run BrunoMazzo/UIUnitTest@parallel-testing start-server-command --device-identifier "${deviceUUID}" --device-name "iPhone 14" --os-version "16.4"
 
-          mint run BrunoMazzo/UIUnitTest@parallel-testing monitor-for-new-devices-command --device-name "iPhone 14" --os-version "16.4" --verbose  &
+          # mint run BrunoMazzo/UIUnitTest@parallel-testing monitor-for-new-devices-command --device-name "iPhone 14" --os-version "16.4" --verbose  &
 
           #run UIUnitTest server
           mint install BrunoMazzo/UIUnitTest@parallel-testing
