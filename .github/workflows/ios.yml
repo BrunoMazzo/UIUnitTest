@@ -45,7 +45,7 @@ jobs:
 
           #run UIUnitTest server
           mint install BrunoMazzo/UIUnitTest@parallel-testing
-          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" -parallel-testing-enabled YES test 2>&1 | xcbeautify --renderer github-actions
+          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" -parallel-testing-enabled YES -parallel-testing-worker-count 2 test 2>&1 | xcbeautify --renderer github-actions
 
           xcrun simctl list
 
