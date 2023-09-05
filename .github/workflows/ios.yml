@@ -7,7 +7,7 @@ on:
 
 jobs:
   parallel-testing:
-    name: Build and Test default scheme using any available iPhone simulator
+    name: Cloned simulator
     runs-on: macos-13
 
     steps:
@@ -49,10 +49,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: cli-logs
+          name: cli-logs-clone-simulator
           path: Client/logfile.txt
   single-device-testing:
-    name: Build and Test default scheme using any available iPhone simulator
+    name: Normal simulator
     runs-on: macos-13
 
     steps:
@@ -81,5 +81,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: cli-logs
+          name: cli-logs-single-simulator
           path: Client/logfile.txt
