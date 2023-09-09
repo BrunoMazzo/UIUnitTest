@@ -56,7 +56,7 @@ struct StartServerCommand: AsyncParsableCommand {
                     
                     if await !device.isServerRunning() {
                         await device.launchUIServer()
-                        await device.waitForServerToStart()
+//                        await device.waitForServerToStart()
                     }
                 }
                 
