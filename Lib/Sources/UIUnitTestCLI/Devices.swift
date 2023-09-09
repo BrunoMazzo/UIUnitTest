@@ -70,7 +70,7 @@ struct Device {
         if isArmMac() && usePreBuilderServer {
             await self.installPreBuildUIServer(buildFolder: buildPath)
         } else {
-            await self.buildAndInstallUIServer()
+            await self.buildAndInstallUIServer(buildFolder: buildPath)
         }
     }
     
