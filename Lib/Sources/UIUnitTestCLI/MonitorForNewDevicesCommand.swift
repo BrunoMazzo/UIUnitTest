@@ -46,6 +46,11 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         
         for device in devices {
             
+            guard await device.waitForDeviceToBoot() else {
+                print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
+                continue
+            }
+            
             print("Checking for the server on device: \(device.deviceIdentifier)")
             let appInstalled = await device.deviceContainsUIServerApp()
             
@@ -57,7 +62,7 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
             if await !device.isServerRunning() {
                 print("Launching server on device: \(device.deviceIdentifier)")
                 await device.launchUIServer()
-//                await device.waitForServerToStart()
+                await device.waitForServerToStart()
             }
             
             installedDevices.append(device.deviceID)

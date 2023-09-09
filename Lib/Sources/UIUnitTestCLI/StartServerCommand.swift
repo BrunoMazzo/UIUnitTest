@@ -42,6 +42,13 @@ struct StartServerCommand: AsyncParsableCommand {
         
         for device in [selectedDevice] + cloneDevices {
             
+            print("Checking device \(device.deviceIdentifier)")
+            
+            guard await device.waitForDeviceToBoot() else {
+                print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
+                return
+            }
+            
             let appInstalled = await device.deviceContainsUIServerApp()
             
             if !appInstalled || forceInstall {
@@ -50,7 +57,7 @@ struct StartServerCommand: AsyncParsableCommand {
             
             if await !device.isServerRunning() {
                 await device.launchUIServer()
-//                await device.waitForServerToStart()
+                await device.waitForServerToStart()
             }
         }
     }
