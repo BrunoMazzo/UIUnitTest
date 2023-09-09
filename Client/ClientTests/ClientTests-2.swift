@@ -2,13 +2,15 @@ import XCTest
 import UIUnitTest
 @testable import Client
 
+@MainActor
 final class ClientTests2: XCTestCase {
 
     override func setUp() {
         self.continueAfterFailure = false
+        
+        UIView.setAnimationsEnabled(false)
     }
     
-    @MainActor
     func testTap() async throws {
         let app = try await App()
         
@@ -20,12 +22,11 @@ final class ClientTests2: XCTestCase {
         
         try await somethingButton.tap()
         
-        let exists = try await app.staticTexts("Something View").exists()
+        let exists = try await app.staticTexts("Something View").waitForExistence(timeout: 2)
         
         XCTAssert(exists)
     }
     
-    @MainActor
     func testExists() async throws {
         let app = try await App()
         

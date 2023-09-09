@@ -13,10 +13,12 @@ extension App {
     }
 }
 
+@MainActor
 final class ClientTests: XCTestCase {
     
     override func setUp() {
         self.continueAfterFailure = false
+        UIView.setAnimationsEnabled(false)
     }
 
     @MainActor
