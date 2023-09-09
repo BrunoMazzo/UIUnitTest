@@ -39,16 +39,14 @@ struct Device {
         }
     }
     
-    func buildUIServer() async -> String {
+    func buildUIServer(buildFolder: URL) async -> String {
         let serverRunnerZip = Bundle.module.url(forResource: "Server", withExtension: ".zip")!
         
-        let tempDirectory = getTempFolder()
+        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
         
-        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: tempDirectory)
+        let _: Data = await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(buildFolder.relativePath)")
         
-        let _: Data = await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
-        
-        let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
+        let rootFolder = String(buildFolder.pathComponents.joined(separator: "/").dropFirst())
         
         let _: Data = await executeShellCommand("""
                 xcodebuild -project \(rootFolder)/Server.xcodeproj \
@@ -63,30 +61,28 @@ struct Device {
         return URL(string: rootFolder)!.appending(path: "build/Products/Release-iphonesimulator").absoluteString
     }
     
-    func buildAndInstallUIServer() async {
-        let rootFolder = await buildUIServer()
+    func buildAndInstallUIServer(buildFolder: URL) async {
+        let rootFolder = await buildUIServer(buildFolder: buildFolder)
         await installUIServer(rootFolder: rootFolder)
     }
     
-    func installServer(usePreBuilderServer: Bool = true) async {
+    func installServer(usePreBuilderServer: Bool = true, buildPath: URL) async {
         if isArmMac() && usePreBuilderServer {
-            await self.installPreBuildUIServer()
+            await self.installPreBuildUIServer(buildFolder: buildPath)
         } else {
             await self.buildAndInstallUIServer()
         }
     }
     
     // Only for m1 for now
-    func installPreBuildUIServer() async {
+    func installPreBuildUIServer(buildFolder: URL) async {
         let serverRunnerZip = Bundle.module.url(forResource: "PreBuild", withExtension: ".zip")!
         
-        let tempDirectory = getTempFolder()
+        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
         
-        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: tempDirectory)
+        let _: Data = await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(buildFolder.relativePath)")
         
-        let _: Data = await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(tempDirectory.relativePath)")
-        
-        let rootFolder = String(tempDirectory.pathComponents.joined(separator: "/").dropFirst())
+        let rootFolder = String(buildFolder.pathComponents.joined(separator: "/").dropFirst())
         
         await installUIServer(rootFolder: rootFolder)
     }

@@ -43,6 +43,14 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         _osVersion ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_OS_VERSION"]!
     }
     
+    @Option(name: .customLong("build-path"))
+    var _buildPath: String?
+    
+    var buildPath: URL {
+        let path = _buildPath ?? "\(ProcessInfo.processInfo.environment["PROJECT_DIR"]!)/.uiUnitTest"
+        return URL(string: path)!
+    }
+    
     func print(_ message: String) {
         if verbose {
             Swift.print(message)
@@ -85,7 +93,7 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
             
             if !appInstalled || forceInstall {
                 print("Installing server on device: \(device.deviceIdentifier)")
-                await device.installServer()
+                await device.installServer(usePreBuilderServer: !forceInstall, buildPath: buildPath)
             }
             
             if await !device.isServerRunning() {

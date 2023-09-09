@@ -28,6 +28,14 @@ struct StartServerCommand: AsyncParsableCommand {
         _osVersion ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_OS_VERSION"]!
     }
     
+    @Option(name: .customLong("build-path"))
+    var _buildPath: String?
+    
+    var buildPath: URL {
+        let path = _buildPath ?? "\(ProcessInfo.processInfo.environment["PROJECT_DIR"]!)/.uiUnitTest"
+        return URL(string: path)!
+    }
+    
     @Flag
     var forceInstall = false
     
@@ -51,7 +59,7 @@ struct StartServerCommand: AsyncParsableCommand {
                     let appInstalled = await device.deviceContainsUIServerApp()
                     
                     if !appInstalled || forceInstall {
-                        await device.installServer()
+                        await device.installServer(usePreBuilderServer: !forceInstall, buildPath: buildPath)
                     }
                     
                     if await !device.isServerRunning() {
