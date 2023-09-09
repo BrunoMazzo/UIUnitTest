@@ -44,7 +44,7 @@ struct Device {
         
         let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
         
-        let _: Data = await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(buildFolder.relativePath)")
+        let _: Data = await executeShellCommand("unzip -o \(testRunnerZip.path) -d \(buildFolder.absoluteString)")
         
         let rootFolder = String(buildFolder.pathComponents.joined(separator: "/").dropFirst())
         
