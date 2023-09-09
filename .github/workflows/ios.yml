@@ -17,6 +17,9 @@ jobs:
         run: |
           brew install mint
           brew install xcbeautify
+      - name: Install lib cli
+        run: |
+          mint install BrunoMazzo/UIUnitTest@parallel-testing --force
       - name: Select Xcode version
         run: sudo xcode-select -switch '/Applications/Xcode_14.3.1.app'
       - name: Build & Test
@@ -31,8 +34,6 @@ jobs:
           xcrun simctl list
 
           # xcrun simctl --set testing list
-
-          mint install BrunoMazzo/UIUnitTest@parallel-testing --force
 
           # Get iPhone 14 iOS 16.4 UUID
           deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone 14.*\(16\.4\).*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
@@ -64,14 +65,15 @@ jobs:
           brew install xcbeautify
       - name: Select Xcode version
         run: sudo xcode-select -switch '/Applications/Xcode_14.3.1.app'
+      - name: Install lib cli
+        run: |
+          mint install BrunoMazzo/UIUnitTest@parallel-testing --force
       - name: Build & Test
         env:
           scheme: 'Client'
           platform: ${{ 'iOS Simulator' }}
         timeout-minutes: 15
         run: |
-          mint install BrunoMazzo/UIUnitTest@parallel-testing --force
-
           # Get iPhone 14 iOS 16.4 UUID
           deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone 14.*\(16\.4\).*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
 
