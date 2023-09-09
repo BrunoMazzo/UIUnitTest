@@ -43,7 +43,7 @@ struct StartServerCommand: AsyncParsableCommand {
         await withTaskGroup(of: Void.self) { group in
             for device in [selectedDevice] + cloneDevices {
                 group.addTask {
-                    guard await device.waitForDeviceToBoot() else {
+                    guard await device.isDeviceToBooted() else {
                         print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
                         return
                     }

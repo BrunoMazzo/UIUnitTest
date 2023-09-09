@@ -1,6 +1,19 @@
 import ArgumentParser
 import Foundation
 
+actor InstalledDevices {
+    var devicesIdentifiers = [String]()
+    
+    func checkDevice(_ device: Device) -> Bool {
+        guard !devicesIdentifiers.contains(device.deviceIdentifier) else {
+            return false
+        }
+        
+        devicesIdentifiers.append(device.deviceIdentifier)
+        return true
+    }
+}
+
 @available(macOS 13.0, *)
 struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     @Flag(help: "Reinstall the server even if the server already installed")
@@ -37,15 +50,15 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     }
     
     mutating func run() async throws {
-        var installedDevices = [Int]()
+        var installedDevices = InstalledDevices()
         
         while true {
-            try await installAndStartOnAllCloneDevices(installedDevices: &installedDevices)
+            try await installAndStartOnAllCloneDevices(installedDevices: installedDevices)
             try await Task.sleep(nanoseconds: 500_000_000)
         }
     }
     
-    func installAndStartOnAllCloneDevices(installedDevices: inout [Int]) async throws {
+    func installAndStartOnAllCloneDevices(installedDevices: InstalledDevices) async throws {
         print("Getting devices")
         
         let selectedDevice = await getTestingDevice(deviceUUID: deviceIdentifier)
@@ -57,26 +70,29 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         
         for device in devices {
             
-            guard await device.waitForDeviceToBoot() else {
+            guard await device.isDeviceToBooted() else {
                 print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
+                continue
+            }
+            
+            guard await installedDevices.checkDevice(device) else {
                 continue
             }
             
             print("Checking for the server on device: \(device.deviceIdentifier)")
             let appInstalled = await device.deviceContainsUIServerApp()
             
+            
             if !appInstalled || forceInstall {
                 print("Installing server on device: \(device.deviceIdentifier)")
-                await device.installPreBuildUIServer()
+                await device.installServer()
             }
             
             if await !device.isServerRunning() {
                 print("Launching server on device: \(device.deviceIdentifier)")
                 await device.launchUIServer()
-                await device.waitForServerToStart()
+//                await device.waitForServerToStart()
             }
-            
-            installedDevices.append(device.deviceID)
         }
     }
 }

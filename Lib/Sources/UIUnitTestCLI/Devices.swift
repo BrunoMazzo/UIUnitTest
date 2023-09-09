@@ -5,12 +5,12 @@ struct Device {
     var isCloneDevice: Bool
     var deviceID: Int
     
-    func waitForDeviceToBoot() async -> Bool {
+    func isDeviceToBooted() async -> Bool {
         let deviceStatus: String = await executeShellCommand("xcrun simctl \(isCloneDevice ? "--set testing" : "") list devices \(deviceIdentifier)")
         return deviceStatus.contains("(Booted)")
     }
     
-    func isDeviceToBooted() async {
+    func waitForDeviceToBoot() async {
         let _: Data = await executeShellCommand("xcrun simctl \(isCloneDevice ? "--set testing" : "") bootstatus \(deviceIdentifier)")
     }
     
