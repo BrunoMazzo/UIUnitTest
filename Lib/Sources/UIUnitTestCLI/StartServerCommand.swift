@@ -34,30 +34,33 @@ struct StartServerCommand: AsyncParsableCommand {
     @Flag
     var notPrebuildServer = false
     
-    mutating func run() async throws {
+    func run() async throws {
         print("Running StartServerCommand")
         
         let selectedDevice = await getTestingDevice(deviceUUID: deviceIdentifier)
         let cloneDevices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName)
         
-        for device in [selectedDevice] + cloneDevices {
-            
-            print("Checking device \(device.deviceIdentifier)")
-            
-            guard await device.waitForDeviceToBoot() else {
-                print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
-                return
-            }
-            
-            let appInstalled = await device.deviceContainsUIServerApp()
-            
-            if !appInstalled || forceInstall {
-                await device.installServer()
-            }
-            
-            if await !device.isServerRunning() {
-                await device.launchUIServer()
-                await device.waitForServerToStart()
+        await withTaskGroup(of: Void.self) { group in
+            for device in [selectedDevice] + cloneDevices {
+                group.addTask {
+                    guard await device.waitForDeviceToBoot() else {
+                        print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
+                        return
+                    }
+                    
+                    let appInstalled = await device.deviceContainsUIServerApp()
+                    
+                    if !appInstalled || forceInstall {
+                        await device.installServer()
+                    }
+                    
+                    if await !device.isServerRunning() {
+                        await device.launchUIServer()
+                        await device.waitForServerToStart()
+                    }
+                }
+                
+                await group.waitForAll()
             }
         }
     }
