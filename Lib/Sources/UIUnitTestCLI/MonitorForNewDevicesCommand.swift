@@ -9,6 +9,13 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     @Flag
     var verbose = false
     
+    @Option(name: .customLong("device-identifier"))
+    var _deviceIdentifier: String?
+    
+    var deviceIdentifier: String {
+        _deviceIdentifier ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_IDENTIFIER"]!
+    }
+    
     @Option(name: .customLong("device-name"))
     var _deviceName: String?
     
@@ -40,8 +47,12 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     
     func installAndStartOnAllCloneDevices(installedDevices: inout [Int]) async throws {
         print("Getting devices")
-        let devices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName, excludeDevices: installedDevices)
         
+        let selectedDevice = await getTestingDevice(deviceUUID: deviceIdentifier)
+        let cloneDevices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName)
+        
+        let devices = [selectedDevice] + cloneDevices
+    
         print("\(devices.count) devices found")
         
         for device in devices {
