@@ -61,29 +61,36 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     
         print("\(devices.count) devices found")
         
-        for device in devices {
-            
-            guard await !device.isServerRunning() else {
-                continue
+        await withTaskGroup(of: Void.self) { group in
+            for device in devices {
+                
+                group.addTask {
+                    guard await !device.isServerRunning() else {
+                        return
+                    }
+                    
+                    guard await device.isDeviceToBooted() else {
+                        print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
+                        return
+                    }
+                    
+                    print("Checking for the server on device: \(device.deviceIdentifier)")
+                    let appInstalled = await device.deviceContainsUIServerApp()
+                    
+                    if !appInstalled || forceInstall {
+                        print("Installing server on device: \(device.deviceIdentifier)")
+                        await device.installServer(usePreBuilderServer: !forceInstall, buildPath: buildPath)
+                    }
+                    
+                    print("Launching server on device: \(device.deviceIdentifier)")
+                    await device.launchUIServer()
+                    await device.waitForServerToStart()
+                }
+                
+                await group.waitForAll()
             }
-            
-            guard await device.isDeviceToBooted() else {
-                print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
-                continue
-            }
-            
-            print("Checking for the server on device: \(device.deviceIdentifier)")
-            let appInstalled = await device.deviceContainsUIServerApp()
-            
-            
-            if !appInstalled || forceInstall {
-                print("Installing server on device: \(device.deviceIdentifier)")
-                await device.installServer(usePreBuilderServer: !forceInstall, buildPath: buildPath)
-            }
-            
-            print("Launching server on device: \(device.deviceIdentifier)")
-            await device.launchUIServer()
-//                await device.waitForServerToStart()
         }
+        
+        
     }
 }
