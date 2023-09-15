@@ -11,7 +11,7 @@ root=$PWD
 
 xcodebuild -project ./Server/Server.xcodeproj \
   -scheme ServerUITests -sdk iphonesimulator \
-  -destination "platform=iOS Simulator,name=iPhone 13,OS=15.0" \
+  -destination "platform=iOS Simulator,name=iPhone 14,OS=16.4" \
   -IDEBuildLocationStyle=Custom \
   -IDECustomBuildLocationType=Absolute \
   -IDECustomBuildProductsPath="$PWD/build/Products" \
