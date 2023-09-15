@@ -171,11 +171,11 @@ final class ClientTests2: XCTestCase {
         showView(TapView())
         
         let exists = try await app.otherElements("TwoFingersView").exists()
-        XCTAssertTrue(exists)
+        XCTAssertTrue(exists, "It didn't find `TwoFingersView` element")
         try await app.otherElements("TwoFingersView").twoFingerTap()
         
-        let wasntInBackgroudAfterBackground = try await app.staticTexts("Two fingers tapped").waitForExistence(timeout: 1)
-        XCTAssert(wasntInBackgroudAfterBackground == true)
+        let tappedLabel = try await app.staticTexts("Two fingers tapped").waitForExistence(timeout: 1)
+        XCTAssert(tappedLabel, "It didn't find `Two fingers tapped` element")
         
     }
     
@@ -423,13 +423,11 @@ final class ClientTests2: XCTestCase {
         
         showView(PinchView())
         
-        let didNotScale = app.staticTexts["Did scale? No"].exists
-        XCTAssert(didNotScale)
+        XCTAssert(app.staticTexts["Did scale? No"].exists, "It didn't find scale label")
         
         app.staticTexts["PinchContainer"].pinch(withScale: 1.5, velocity: 1)
         
-        let didScale = app.staticTexts["Did scale? Yes"].waitForExistence(timeout: 1)
-        XCTAssert(didScale == true)
+        XCTAssert(app.staticTexts["Did scale? Yes"].waitForExistence(timeout: 1), "It didn't scale")
     }
     
     @MainActor
