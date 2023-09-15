@@ -43,7 +43,7 @@ class ClientTests: XCTestCase {
         
         try await app.buttons("Hello world button").tap()
 
-        try await Assert(app.staticTexts("Value: Hello world").exists())
+        try await Assert(app.staticTexts("Value: Hello world").waitForExistence(timeout: 1))
     }
     
     func testDoubleTap() async throws {
