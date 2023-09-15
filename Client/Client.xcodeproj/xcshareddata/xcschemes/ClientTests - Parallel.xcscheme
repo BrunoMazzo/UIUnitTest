@@ -35,7 +35,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@parallel-testing stop-command&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;if [[ ! $PATH =~ /opt/homebrew/bin: ]] ; then&#10;    PATH=/opt/homebrew/bin/:/opt/homebrew/sbin:${PATH}&#10;fi&#10;&#10;mint run BrunoMazzo/UIUnitTest@parallel-testing stop-command&#10;">
             </ActionContent>
          </ExecutionAction>
       </PostActions>

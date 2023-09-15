@@ -373,6 +373,8 @@ class ClientTests: XCTestCase {
 
 // Two classes to run in parallel using two simulators
 class ClientTests2: ClientTests { }
+class ClientTests3: ClientTests { }
+class ClientTests4: ClientTests { }
 
 public func Assert(_ value: Bool, _ message: @Sendable @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) {
     XCTAssert(value, message(), file: file, line: line)

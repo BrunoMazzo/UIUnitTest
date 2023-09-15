@@ -1,4 +1,5 @@
 import Foundation
+import XCTest
 
 public class App: Element {
     let appId: String
@@ -46,22 +47,20 @@ public class App: Element {
         }
     }
     
-    private func create(activate: Bool) async throws {
-        var retries = 3
-        while retries > 0 {
-            do {
-                let request = CreateApplicationRequest(appId: self.appId, serverId: self.serverId, activate: activate)
+    private func create(activate: Bool, timeout: TimeInterval = 30_000_000_000) async throws {
+        let start = Date()
+    
+        while abs(start.timeIntervalSinceNow) < timeout {
+            let request = CreateApplicationRequest(appId: self.appId, serverId: self.serverId, activate: activate)
                 
-                let _: Bool = try await callServer(path: "createApp", request: request)
-                if retries != 3 {
-                    try await Task.sleep(nanoseconds: 3_000_000_000)
-                }
+            let success: Bool = (try? await callServer(path: "createApp", request: request)) ?? false
+            
+            if success {
                 return
-            } catch {
-                retries -= 1
-                try await Task.sleep(nanoseconds: 2_000_000_000)
             }
         }
+        
+        XCTFail("Could not create server App")
     }
     
     @available(*, noasync)
