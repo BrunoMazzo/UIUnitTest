@@ -32,6 +32,7 @@ let package = Package(
             resources: [
                 .copy("Resources/Server.zip"),
                 .copy("Resources/PreBuild.zip"),
+                .copy("Resources/PreBuild-intel.zip"),
             ]
         ),
         .target(

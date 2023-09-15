@@ -77,7 +77,7 @@ struct Device {
             return
         }
         
-        if isArmMac() && usePreBuilderServer {
+        if usePreBuilderServer {
             await self.installPreBuildUIServer(buildFolder: buildPath)
         } else {
             await self.buildAndInstallUIServer(buildFolder: buildPath)
@@ -86,7 +86,7 @@ struct Device {
     
     // Only for m1 for now
     func installPreBuildUIServer(buildFolder: URL) async {
-        let serverRunnerZip = Bundle.module.url(forResource: "PreBuild", withExtension: ".zip")!
+        let serverRunnerZip = Bundle.module.url(forResource: isArmMac() ? "PreBuild" : "PreBuild-intel", withExtension: ".zip")!
         
         try! FileManager.default.createDirectory(at: URL(fileURLWithPath: "\(buildFolder.absoluteString)/build/Products/Release-iphonesimulator"), withIntermediateDirectories: true)
 //        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)

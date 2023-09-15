@@ -82,7 +82,7 @@ struct StartServerCommand: AsyncParsableCommand {
             return
         }
         
-        if isArmMac() && !forceInstall {
+        if !forceInstall {
             await self.copyPreBuildServer(buildFolder: buildPath)
         } else {
             await self.buildUIServer(buildFolder: buildPath)
