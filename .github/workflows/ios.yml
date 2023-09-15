@@ -45,7 +45,7 @@ jobs:
           # mint run BrunoMazzo/UIUnitTest@parallel-testing monitor-for-new-devices-command --device-name "iPhone 14" --os-version "16.4" --verbose  &
 
           #run UIUnitTest server
-          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" -parallel-testing-enabled YES -parallel-testing-worker-count 4 test 2>&1 | xcbeautify --renderer github-actions
+          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" -parallel-testing-enabled YES -parallel-testing-worker-count 2 test 2>&1 | xcbeautify --renderer github-actions
       # - name: Archive cli logs
       #   if: always()
       #   uses: actions/upload-artifact@v3
