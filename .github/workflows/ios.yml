@@ -1,4 +1,4 @@
-name: iOS starter workflow
+name: iOS tests
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
         env:
           scheme: 'Client'
           platform: ${{ 'iOS Simulator' }}
-        timeout-minutes: 15
+        timeout-minutes: 20
         run: |
           # Debug device list
           xcrun xctrace list devices
@@ -72,7 +72,7 @@ jobs:
         env:
           scheme: 'Client'
           platform: ${{ 'iOS Simulator' }}
-        timeout-minutes: 15
+        timeout-minutes: 20
         run: |
           # Get iPhone 14 iOS 16.4 UUID
           deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone 14.*\(16\.4\).*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
