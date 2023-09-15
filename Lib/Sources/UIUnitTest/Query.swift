@@ -81,15 +81,17 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         }
     }
     
-    public func element(matching predicate: NSPredicate) async throws -> Element {
-        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: PredicateRequest(serverId: self.serverId, predicate: predicate))
+    // Using autoclosure to erase the Sendable warning
+    public func element(matching predicate: @Sendable @autoclosure () -> NSPredicate) async throws -> Element {
+        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: PredicateRequest(serverId: self.serverId, predicate: predicate()))
         return Element(serverId: response.serverId)
     }
     
     @available(*, noasync)
-    public func element(matching predicate: NSPredicate) -> Element {
+    // Using autoclosure to erase the Sendable warning
+    public func element(matching predicate: @Sendable @autoclosure @escaping () -> NSPredicate) -> Element {
         Executor.execute {
-            try await self.element(matching: predicate)
+            try await self.element(matching: predicate())
         }
     }
     
