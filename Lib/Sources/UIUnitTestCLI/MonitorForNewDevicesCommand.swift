@@ -1,19 +1,6 @@
 import ArgumentParser
 import Foundation
 
-actor InstalledDevices {
-    var devicesIdentifiers = [String]()
-    
-    func checkDevice(_ device: Device) -> Bool {
-        guard !devicesIdentifiers.contains(device.deviceIdentifier) else {
-            return false
-        }
-        
-        devicesIdentifiers.append(device.deviceIdentifier)
-        return true
-    }
-}
-
 @available(macOS 13.0, *)
 struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     @Flag(help: "Reinstall the server even if the server already installed")
@@ -58,15 +45,13 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     }
     
     mutating func run() async throws {
-        var installedDevices = InstalledDevices()
-        
         while true {
-            try await installAndStartOnAllCloneDevices(installedDevices: installedDevices)
-            try await Task.sleep(nanoseconds: 500_000_000)
+            try await installAndStartOnAllCloneDevices()
+            try await Task.sleep(for: .seconds(0.5))
         }
     }
     
-    func installAndStartOnAllCloneDevices(installedDevices: InstalledDevices) async throws {
+    func installAndStartOnAllCloneDevices() async throws {
         print("Getting devices")
         
         let selectedDevice = await getTestingDevice(deviceUUID: deviceIdentifier)
@@ -78,12 +63,12 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         
         for device in devices {
             
-            guard await device.isDeviceToBooted() else {
-                print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
+            guard await !device.isServerRunning() else {
                 continue
             }
             
-            guard await installedDevices.checkDevice(device) else {
+            guard await device.isDeviceToBooted() else {
+                print("Device \(device.deviceIdentifier) is not booted. Skipping it.")
                 continue
             }
             
@@ -96,11 +81,9 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
                 await device.installServer(usePreBuilderServer: !forceInstall, buildPath: buildPath)
             }
             
-            if await !device.isServerRunning() {
-                print("Launching server on device: \(device.deviceIdentifier)")
-                await device.launchUIServer()
+            print("Launching server on device: \(device.deviceIdentifier)")
+            await device.launchUIServer()
 //                await device.waitForServerToStart()
-            }
         }
     }
 }
