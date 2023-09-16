@@ -70,7 +70,10 @@ struct Device {
     }
     
     func installServer(usePreBuilderServer: Bool = true, buildPath: URL) async {
+        print("Install server")
+        print("buildPath: \(buildPath.absoluteString)")
         let cacheFile = "\(String(buildPath.pathComponents.joined(separator: "/").dropFirst()))/build/Products/Release-iphonesimulator/ServerUITests-Runner.app"
+        print(cacheFile)
         
         print("Checking for cache")
         
