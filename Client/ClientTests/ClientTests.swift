@@ -241,7 +241,7 @@ class ClientTests: XCTestCase {
         
         app.textFields["TextField-Default"].typeText("Hello world")
         
-        Assert(app.staticTexts["Text value: Hello world"].exists)
+        Assert(app.staticTexts["Text value: Hello world"].waitForExistence(timeout: 1))
     }
     
     func testSwipeActionsSync() {
