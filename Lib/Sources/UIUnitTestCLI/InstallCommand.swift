@@ -69,17 +69,19 @@ func getTestingDevice(deviceUUID: String) async -> Device {
 }
 
 func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int] = []) async -> [Device] {
+    print("Searching for clone devices of \"\(deviceName)\"")
+    
     let cloneDeviceLists: String = await executeShellCommand("xcrun simctl --set testing list")
     
     guard let versionsRegex = try? Regex("-- iOS \(osVersion.replacingOccurrences(of: ".", with: "\\.")) --\\n([\\n\\sA-Za-z\\d\\(\\)-]*)\\n--") else {
         return []
     }
     
-    guard let devices = try? versionsRegex.firstMatch(in: cloneDeviceLists)?.output[0] else {
+    guard let devicesString = try? versionsRegex.firstMatch(in: cloneDeviceLists)?.output[0] else {
         return []
     }
     
-    let allDevices = String(cloneDeviceLists[devices.range!])
+    let allDevices = String(cloneDeviceLists[devicesString.range!])
     
     print(allDevices)
     
@@ -91,7 +93,7 @@ func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int
     let deviceRegex = try! Regex("Clone ([0-9]*) of \(safeDeviceName) \\(([0-9A-F-]*)\\) \\(Booted\\)")
     
     
-    return allDevices.matches(of: deviceRegex).compactMap { match in
+    let devices: [Device] = allDevices.matches(of: deviceRegex).compactMap { match in
         let deviceID = Int(String(allDevices[match.output[1].range!])) ?? 0
         
         guard !excludeDevices.contains(deviceID) else {
@@ -102,4 +104,8 @@ func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int
         
         return Device(deviceIdentifier: deviceIdentifier, isCloneDevice: true, deviceID: deviceID)
     }
+    
+    print("\(devices.count) clone devices found")
+    
+    return devices
 }
