@@ -84,8 +84,7 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
                     
                     print("Launching server on device: \(device.deviceIdentifier)")
                     await device.launchUIServer()
-                    try? await Task.sleep(for: .seconds(2))
-//                    await device.waitForServerToStart()
+                    await device.waitForServerToStart()
                 }
                 
                 await group.waitForAll()
