@@ -3,6 +3,7 @@ import XCTest
 
 class Box {
     var value: Any?
+    var success: Bool = false
 }
 
 @globalActor
@@ -26,10 +27,21 @@ public struct Executor: @unchecked Sendable {
             defer {
                 expectation.fulfill()
             }
-            self.box.value = try await block()
+            do {
+                self.box.value = try await block()
+                self.box.success = true
+            } catch {
+                print(error)
+            }
         }
         _ = XCTWaiter.wait(for: [expectation])
-        return box.value as! T
+        if box.success {
+            return box.value as! T
+        } else {
+            XCTFail("Fail to communicate with the server")
+            fatalError("Fail to communicate with the server")
+        }
+        
     }
 }
 
