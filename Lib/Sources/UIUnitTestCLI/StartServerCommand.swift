@@ -7,8 +7,12 @@ enum UIUnitTestErrors: Error {
 
 struct StartServerCommand: AsyncParsableCommand {
     
-    @Option
-    var deviceIdentifier: String
+    @Option(name: .customLong("device-identifier"))
+    var _deviceIdentifier: String?
+    
+    var deviceIdentifier: String {
+        _deviceIdentifier ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_IDENTIFIER"]!
+    }
     
     @Flag
     var forceInstall = false
