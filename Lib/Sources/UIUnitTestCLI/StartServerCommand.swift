@@ -7,8 +7,12 @@ enum UIUnitTestErrors: Error {
 
 struct StartServerCommand: AsyncParsableCommand {
     
-    @Option
-    var deviceIdentifier: String
+    @Option(name: .customLong("device-identifier"))
+    var _deviceIdentifier: String?
+    
+    var deviceIdentifier: String {
+        _deviceIdentifier ?? ProcessInfo.processInfo.environment["TARGET_DEVICE_IDENTIFIER"]!
+    }
     
     @Flag
     var forceInstall = false
@@ -17,7 +21,7 @@ struct StartServerCommand: AsyncParsableCommand {
     var notPrebuildServer = false
     
     mutating func run() async throws {
-        if isArmMac() && notPrebuildServer {
+        if isArmMac() && !notPrebuildServer {
             let result: String = await executeShellCommand("xcrun simctl listapps \(deviceIdentifier)")
             
             let appInstalled = result.contains("bruno.mazzo.ServerUITests.xctrunner")
@@ -53,6 +57,7 @@ struct StartServerCommand: AsyncParsableCommand {
                 xcodebuild -project \(rootFolder)/Server.xcodeproj \
                     -scheme ServerUITests -sdk iphonesimulator \
                     -destination "platform=iOS Simulator,id=\(deviceIdentifier)" \
+                    -derivedDataPath "\(rootFolder)/derivedData" \
                     test &
                 """)
         }

@@ -33,7 +33,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;/opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@main start-server-command --device-identifier $TARGET_DEVICE_IDENTIFIER&#10;&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;exec &gt; &quot;${PROJECT_DIR}/logfile.txt&quot;&#10;&#10;if [[ ! $PATH =~ /opt/homebrew/bin: ]] ; then&#10;    PATH=/opt/homebrew/bin/:/opt/homebrew/sbin:${PATH}&#10;fi&#10;&#10;#mint run BrunoMazzo/UIUnitTest@parallel-testing stop-command&#10;&#10;#/usr/bin/swift run --package-path /Users/brunomazzo/Documents/OpenSource/UIUnitTest UIUnitTestCLI start-server-command&#10;&#10;mint run BrunoMazzo/UIUnitTest@main start-server-command&#10;&#10;#mint run BrunoMazzo/UIUnitTest@parallel-testing monitor-for-new-devices-command &amp;&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
@@ -51,7 +51,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;curl http://localhost:22087/stop&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;if [[ ! $PATH =~ /opt/homebrew/bin: ]] ; then&#10;    PATH=/opt/homebrew/bin/:/opt/homebrew/sbin:${PATH}&#10;fi&#10;&#10;mint run BrunoMazzo/UIUnitTest@parallel-testing stop-command&#10;">
             </ActionContent>
          </ExecutionAction>
       </PostActions>
@@ -66,7 +66,8 @@
       </CodeCoverageTargets>
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "NO"
+            testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1D136B7C29B45A4600465FB6"
