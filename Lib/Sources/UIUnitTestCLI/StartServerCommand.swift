@@ -21,7 +21,7 @@ struct StartServerCommand: AsyncParsableCommand {
     var notPrebuildServer = false
     
     mutating func run() async throws {
-        if isArmMac() && notPrebuildServer {
+        if isArmMac() && !notPrebuildServer {
             let result: String = await executeShellCommand("xcrun simctl listapps \(deviceIdentifier)")
             
             let appInstalled = result.contains("bruno.mazzo.ServerUITests.xctrunner")
@@ -57,7 +57,7 @@ struct StartServerCommand: AsyncParsableCommand {
                 xcodebuild -project \(rootFolder)/Server.xcodeproj \
                     -scheme ServerUITests -sdk iphonesimulator \
                     -destination "platform=iOS Simulator,id=\(deviceIdentifier)" \
-                    -derivedDataPath=\(rootFolder)/derivedData"
+                    -derivedDataPath="\(rootFolder)/derivedData"
                     test &
                 """)
         }
