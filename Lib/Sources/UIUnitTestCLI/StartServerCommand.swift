@@ -53,6 +53,7 @@ struct StartServerCommand: AsyncParsableCommand {
                 xcodebuild -project \(rootFolder)/Server.xcodeproj \
                     -scheme ServerUITests -sdk iphonesimulator \
                     -destination "platform=iOS Simulator,id=\(deviceIdentifier)" \
+                    -derivedDataPath=\(rootFolder)/derivedData"
                     test &
                 """)
         }
