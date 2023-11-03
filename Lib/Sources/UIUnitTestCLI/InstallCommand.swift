@@ -73,7 +73,9 @@ func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int
     
     let cloneDeviceLists: String = await executeShellCommand("xcrun simctl --set testing list")
     
-    guard let versionsRegex = try? Regex("-- iOS \(osVersion.replacingOccurrences(of: ".", with: "\\.")) --\\n([\\s\\S]*)\\n--") else {
+    let osVersionRegex = osVersion.replacingOccurrences(of: ".", with: "\\.")
+    
+    guard let versionsRegex = try? Regex("-- iOS \(osVersionRegex) --\\n[^-]([\\s\\S]*)\\n[-=]") else {
         return []
     }
     
