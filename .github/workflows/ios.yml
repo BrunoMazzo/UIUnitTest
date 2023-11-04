@@ -15,11 +15,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Install mint and xcbeautify
         run: |
-          brew install mint
           brew install xcbeautify
-      - name: Install lib cli
-        run: |
-          mint install BrunoMazzo/UIUnitTest@parallel-testing --force
       - name: Select Xcode version
         run: sudo xcode-select -switch '/Applications/Xcode_14.3.1.app'
       - name: Build & Test
@@ -61,13 +57,9 @@ jobs:
         uses: actions/checkout@v3
       - name: Install mint and xcbeautify
         run: |
-          brew install mint
           brew install xcbeautify
       - name: Select Xcode version
         run: sudo xcode-select -switch '/Applications/Xcode_14.3.1.app'
-      - name: Install lib cli
-        run: |
-          mint install BrunoMazzo/UIUnitTest@parallel-testing --force
       - name: Build & Test
         env:
           scheme: 'Client'
