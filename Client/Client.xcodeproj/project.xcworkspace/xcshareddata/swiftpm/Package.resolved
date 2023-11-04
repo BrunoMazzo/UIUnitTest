@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
       "state" : {
-        "branch" : "parallel-testing",
-        "revision" : "5cb5d296eac0ab396007d416d5f95875296035cd"
+        "revision" : "98baeb0b21992bc2591ef479c7653f7c2f53aeee",
+        "version" : "0.4.0"
       }
     }
   ],

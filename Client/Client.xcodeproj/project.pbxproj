@@ -693,8 +693,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
 			requirement = {
-				branch = "parallel-testing";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
