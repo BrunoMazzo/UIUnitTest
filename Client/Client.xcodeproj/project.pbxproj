@@ -51,6 +51,7 @@
 		1D136B7729B45A4600465FB6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1D136B7D29B45A4600465FB6 /* ClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D136B8129B45A4600465FB6 /* ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTests.swift; sourceTree = "<group>"; };
+		1D2B65E62AF60B8900E5618D /* Client.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Client.xctestplan; sourceTree = "<group>"; };
 		1D435E9029BB48250027CD1D /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
 		1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitForExistenceView.swift; sourceTree = "<group>"; };
 		1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressAndHoldView.swift; sourceTree = "<group>"; };
@@ -101,6 +102,7 @@
 		1D136B6329B45A4600465FB6 = {
 			isa = PBXGroup;
 			children = (
+				1D2B65E62AF60B8900E5618D /* Client.xctestplan */,
 				1D01C92F29B9CC3600551803 /* Packages */,
 				1D136B6E29B45A4600465FB6 /* Client */,
 				1D136B8029B45A4600465FB6 /* ClientTests */,
