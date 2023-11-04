@@ -2,8 +2,6 @@
 
 Run XCTest UI commands from your unit test.
 
-[![Coverage Status](https://coveralls.io/repos/github/BrunoMazzo/UIUnitTest/badge.svg?branch=main)](https://coveralls.io/github/BrunoMazzo/UIUnitTest?branch=main)
-
 # In active development
 
 The project is running in production on my company, but it's still in active development. I'm still working on the documentation and there are some features that I want to add before I can call it stable.
@@ -49,9 +47,9 @@ import UIUnitTest
 
 @MainActor
 func testExample() {
-    let app = App(appId: "your.app.bundle.id")
+    let app = App()
 
-    let viewYouWantToTest = YourSwiftUIView(...)
+    let viewYouWantToTest = YourSwiftUIView(...) // or UIViewController
 
     showView(viewYouWantToTest)
     

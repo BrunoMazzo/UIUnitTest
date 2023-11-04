@@ -2,17 +2,6 @@ import XCTest
 import UIUnitTest
 @testable import Client
 
-extension App {
-    convenience init() async throws {
-        try await self.init(appId: "bruno.mazzo.Client")
-    }
-
-    @available(*, noasync)
-    convenience init() {
-        self.init(appId: "bruno.mazzo.Client")
-    }
-}
-
 @MainActor
 class ClientTests: XCTestCase {
     
