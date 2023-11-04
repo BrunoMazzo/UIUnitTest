@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1430"
+   LastUpgradeVersion = "1500"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,7 +17,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;# Type a script or drag a script file from your workspace to insert its path.&#10;exec &gt; &quot;${PROJECT_DIR}/logfile.txt&quot;&#10;&#10;if [[ ! $PATH =~ /opt/homebrew/bin: ]] ; then&#10;    PATH=/opt/homebrew/bin/:/opt/homebrew/sbin:${PATH}&#10;fi&#10;&#10;mint run BrunoMazzo/UIUnitTest@parallel-testing stop-command&#10;&#10;#/usr/bin/swift run --package-path /Users/brunomazzo/Documents/OpenSource/UIUnitTest UIUnitTestCLI start-server-command&#10;&#10;mint run BrunoMazzo/UIUnitTest@parallel-testing monitor-for-new-devices-command --verbose &amp;&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;exec &gt; &quot;${PROJECT_DIR}/logfile.txt&quot; 2&gt;&amp;1 &#10;&#10;$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/start-server.sh&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
@@ -35,7 +35,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;if [[ ! $PATH =~ /opt/homebrew/bin: ]] ; then&#10;    PATH=/opt/homebrew/bin/:/opt/homebrew/sbin:${PATH}&#10;fi&#10;&#10;mint run BrunoMazzo/UIUnitTest@parallel-testing stop-command&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;&#10;$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/stop-server.sh&#10;">
             </ActionContent>
          </ExecutionAction>
       </PostActions>

@@ -4,9 +4,9 @@ Run XCTest UI commands from your unit test.
 
 [![Coverage Status](https://coveralls.io/repos/github/BrunoMazzo/UIUnitTest/badge.svg?branch=main)](https://coveralls.io/github/BrunoMazzo/UIUnitTest?branch=main)
 
-# Still in development
+# In active development
 
-I am still working in the [API parity](docs/API%20Coverage.md) and stability of the server, so crashes may happen. At the moment, it only works with one simulator, and it need to be open before the building of the unit test.
+The project is running in production on my company, but it's still in active development. I'm still working on the documentation and there are some features that I want to add before I can call it stable.
 
 ## Installation
 
@@ -24,14 +24,16 @@ I am still working in the [API parity](docs/API%20Coverage.md) and stability of 
    
    3.2 Add the command: 
     ```shell
-    /opt/homebrew/bin/mint run BrunoMazzo/UIUnitTest@main start-server-command --device-identifier $TARGET_DEVICE_IDENTIFIER
+    
+    $BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/start-server.sh
     ```
 
     ![Pre action panel](docs/pre-action.png)
 
     3.3 Add post action to stop the server:
     ```shell
-    curl http://localhost:22087/stop
+    
+    $BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/stop-server.sh
     ```
 
 4. Start coding
