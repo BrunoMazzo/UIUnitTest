@@ -7,6 +7,9 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
     var forceInstall = false
     
     @Flag
+    var notPrebuildServer = false
+    
+    @Flag
     var verbose = false
     
     @Option(name: .customLong("device-identifier"))
@@ -55,6 +58,8 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         print("Getting devices")
         
         let selectedDevice = await getTestingDevice(deviceUUID: deviceIdentifier)
+        await selectedDevice.prepareCacheIfNeeded(buildPath: buildPath, usePrebuildServer: !notPrebuildServer)
+        
         let cloneDevices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName)
         
         let devices = [selectedDevice] + cloneDevices

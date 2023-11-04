@@ -57,6 +57,7 @@ struct Device {
                     -IDEBuildLocationStyle=Custom \
                     -IDECustomBuildLocationType=Absolute \
                     -IDECustomBuildProductsPath="\(rootFolder)/build/Products" \
+                    -derivedData="\(rootFolder)/derivedData" \
                     build-for-testing
                 """)
         
@@ -145,5 +146,28 @@ struct Device {
         
         try! FileManager.default.copyItem(at: initialPath, to: newFileURL)
         return newPath
+    }
+    
+    func prepareCacheIfNeeded(buildPath: URL, usePrebuildServer: Bool) async {
+        let cacheFile = "\(String(buildPath.pathComponents.joined(separator: "/").dropFirst()))/build/Products/Release-iphonesimulator/ServerUITests-Runner.app"
+        
+        guard !FileManager.default.fileExists(atPath: cacheFile) else {
+            return
+        }
+        
+        if usePrebuildServer {
+            await self.copyPreBuildServer(buildFolder: buildPath)
+        } else {
+            _ = await buildUIServer(buildFolder: buildPath)
+        }
+    }
+    
+    func copyPreBuildServer(buildFolder: URL) async {
+        let serverRunnerZip = Bundle.module.url(forResource: "PreBuild", withExtension: ".zip")!
+        
+        try! FileManager.default.createDirectory(at: URL(fileURLWithPath: "\(buildFolder.absoluteString)/build/Products/Release-iphonesimulator"), withIntermediateDirectories: true)
+        //        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
+        
+        let _: Data = await executeShellCommand("unzip -o \(serverRunnerZip.path) -d \(buildFolder.absoluteString)/build/Products/Release-iphonesimulator")
     }
 }

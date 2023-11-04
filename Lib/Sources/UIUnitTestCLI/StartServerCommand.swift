@@ -45,9 +45,9 @@ struct StartServerCommand: AsyncParsableCommand {
     func run() async throws {
         print("Running StartServerCommand")
         
-        await prepareCache()
-        
         let selectedDevice = await getTestingDevice(deviceUUID: deviceIdentifier)
+        await selectedDevice.prepareCacheIfNeeded(buildPath: buildPath, usePrebuildServer: !notPrebuildServer)
+        
         let cloneDevices = await getTestsDevices(osVersion: osVersion, deviceName: deviceName)
         
         await withTaskGroup(of: Void.self) { group in
@@ -73,51 +73,6 @@ struct StartServerCommand: AsyncParsableCommand {
                 await group.waitForAll()
             }
         }
-    }
-    
-    func prepareCache() async {
-        let cacheFile = "\(String(buildPath.pathComponents.joined(separator: "/").dropFirst()))/build/Products/Release-iphonesimulator/ServerUITests-Runner.app"
-        
-        guard !FileManager.default.fileExists(atPath: cacheFile) else {
-            return
-        }
-        
-        if !forceInstall {
-            await self.copyPreBuildServer(buildFolder: buildPath)
-        } else {
-            await self.buildUIServer(buildFolder: buildPath)
-        }
-    }
-    
-    func copyPreBuildServer(buildFolder: URL) async {
-        let serverRunnerZip = Bundle.module.url(forResource: "PreBuild", withExtension: ".zip")!
-        
-        try! FileManager.default.createDirectory(at: URL(fileURLWithPath: "\(buildFolder.absoluteString)/build/Products/Release-iphonesimulator"), withIntermediateDirectories: true)
-        //        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
-        
-        let _: Data = await executeShellCommand("unzip -o \(serverRunnerZip.path) -d \(buildFolder.absoluteString)/build/Products/Release-iphonesimulator")
-    }
-    
-    func buildUIServer(buildFolder: URL) async {
-        print("buildUIServer")
-        
-        let serverRunnerZip = Bundle.module.url(forResource: "Server", withExtension: ".zip")!
-        
-        //        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
-        
-        let _: Data = await executeShellCommand("unzip -o \(serverRunnerZip.path) -d \(buildFolder.absoluteString)")
-        
-        let rootFolder = String(buildFolder.pathComponents.joined(separator: "/").dropFirst())
-        
-        let _: Data = await executeShellCommand("""
-                xcodebuild -project \(rootFolder)/Server.xcodeproj \
-                    -scheme ServerUITests -sdk iphonesimulator \
-                    -destination "platform=iOS Simulator,id=\(deviceIdentifier)" \
-                    -IDEBuildLocationStyle=Custom \
-                    -IDECustomBuildLocationType=Absolute \
-                    -IDECustomBuildProductsPath="\(rootFolder)/build/Products" \
-                    build-for-testing
-                """)
     }
 }
 
