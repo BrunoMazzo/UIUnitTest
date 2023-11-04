@@ -444,8 +444,8 @@ class UIServer {
         return Element.ElementType(rawValue: element.elementType.rawValue)!
     }
     
-    func start() async throws {
-        let server = HTTPServer(address: .loopback(port: 22087))
+    func start(portIndex: UInt16 = 0) async throws {
+        let server = HTTPServer(address: .loopback(port: 22087 + portIndex))
         self.server = server
         
         await addRoute("createApp", handler: { (request: CreateApplicationRequest) in
@@ -519,6 +519,10 @@ class UIServer {
                 await self.server.stop(timeout: 10)
             }
             
+            return self.buildResponse(true)
+        }))
+        
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "alive"), to: ClosureHTTPHandler({ request in
             return self.buildResponse(true)
         }))
         

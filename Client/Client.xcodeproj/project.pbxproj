@@ -12,9 +12,10 @@
 		1D136B7429B45A4600465FB6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D136B7329B45A4600465FB6 /* Assets.xcassets */; };
 		1D136B7829B45A4600465FB6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D136B7729B45A4600465FB6 /* Preview Assets.xcassets */; };
 		1D136B8229B45A4600465FB6 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8129B45A4600465FB6 /* ClientTests.swift */; };
+		1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */; };
+		1D2B65E22AF5F29D00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E12AF5F29D00E5618D /* UIUnitTest */; };
+		1D2B65E52AF5F67B00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E42AF5F67B00E5618D /* UIUnitTest */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
-		1D456AA129E1264500A98076 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D456AA029E1264500A98076 /* UIUnitTest */; };
-		1DCC16182A1F6601006DC760 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1DCC16172A1F6601006DC760 /* UIUnitTest */; };
 		1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
 		1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */; };
 		1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */; };
@@ -50,8 +51,8 @@
 		1D136B7729B45A4600465FB6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1D136B7D29B45A4600465FB6 /* ClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D136B8129B45A4600465FB6 /* ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTests.swift; sourceTree = "<group>"; };
+		1D2B65E62AF60B8900E5618D /* Client.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Client.xctestplan; sourceTree = "<group>"; };
 		1D435E9029BB48250027CD1D /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
-		1D52DE1F29C6B9A300B17758 /* UIUnitTest */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = UIUnitTest; path = ..; sourceTree = "<group>"; };
 		1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitForExistenceView.swift; sourceTree = "<group>"; };
 		1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressAndHoldView.swift; sourceTree = "<group>"; };
 		1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToBackgroundAndBackView.swift; sourceTree = "<group>"; };
@@ -75,7 +76,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D456AA129E1264500A98076 /* UIUnitTest in Frameworks */,
+				1D2B65E52AF5F67B00E5618D /* UIUnitTest in Frameworks */,
+				1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DCC16182A1F6601006DC760 /* UIUnitTest in Frameworks */,
+				1D2B65E22AF5F29D00E5618D /* UIUnitTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +95,6 @@
 		1D01C92F29B9CC3600551803 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				1D52DE1F29C6B9A300B17758 /* UIUnitTest */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -101,6 +102,7 @@
 		1D136B6329B45A4600465FB6 = {
 			isa = PBXGroup;
 			children = (
+				1D2B65E62AF60B8900E5618D /* Client.xctestplan */,
 				1D01C92F29B9CC3600551803 /* Packages */,
 				1D136B6E29B45A4600465FB6 /* Client */,
 				1D136B8029B45A4600465FB6 /* ClientTests */,
@@ -206,7 +208,8 @@
 			);
 			name = ClientTests;
 			packageProductDependencies = (
-				1D456AA029E1264500A98076 /* UIUnitTest */,
+				1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */,
+				1D2B65E42AF5F67B00E5618D /* UIUnitTest */,
 			);
 			productName = ClientTests;
 			productReference = 1D136B7D29B45A4600465FB6 /* ClientTests.xctest */;
@@ -227,7 +230,7 @@
 			);
 			name = LocalTests;
 			packageProductDependencies = (
-				1DCC16172A1F6601006DC760 /* UIUnitTest */,
+				1D2B65E12AF5F29D00E5618D /* UIUnitTest */,
 			);
 			productName = LocalTests;
 			productReference = 1DE0F35229C58B310044AFFC /* LocalTests.xctest */;
@@ -241,7 +244,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					1D136B6B29B45A4600465FB6 = {
 						CreatedOnToolsVersion = 14.2;
@@ -265,6 +268,9 @@
 				Base,
 			);
 			mainGroup = 1D136B6329B45A4600465FB6;
+			packageReferences = (
+				1D2B65E32AF5F67B00E5618D /* XCRemoteSwiftPackageReference "UIUnitTest" */,
+			);
 			productRefGroup = 1D136B6D29B45A4600465FB6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -384,9 +390,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -443,9 +451,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -470,6 +480,7 @@
 				CODE_SIGN_ENTITLEMENTS = Client/Client.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Client/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -510,6 +521,7 @@
 				CODE_SIGN_ENTITLEMENTS = Client/Client.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Client/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -549,6 +561,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ClientTests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -574,6 +587,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ClientTests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -674,13 +688,29 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		1D2B65E32AF5F67B00E5618D /* XCRemoteSwiftPackageReference "UIUnitTest" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
+			requirement = {
+				branch = "parallel-testing";
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		1D456AA029E1264500A98076 /* UIUnitTest */ = {
+		1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UIUnitTest;
 		};
-		1DCC16172A1F6601006DC760 /* UIUnitTest */ = {
+		1D2B65E12AF5F29D00E5618D /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = UIUnitTest;
+		};
+		1D2B65E42AF5F67B00E5618D /* UIUnitTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1D2B65E32AF5F67B00E5618D /* XCRemoteSwiftPackageReference "UIUnitTest" */;
 			productName = UIUnitTest;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -1,10 +1,11 @@
 import Foundation
+import XCTest
 
 public class App: Element {
     let appId: String
     let executor = Executor()
     
-    public init(appId: String, activate: Bool = true) async throws {
+    public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) async throws {
         self.appId = appId
         super.init(serverId: UUID())
         
@@ -12,7 +13,7 @@ public class App: Element {
     }
     
     @available(*, noasync)
-    public init(appId: String, activate: Bool = true) {
+    public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) {
         self.appId = appId
         super.init(serverId: UUID())
         self.create(activate: activate)
@@ -46,10 +47,20 @@ public class App: Element {
         }
     }
     
-    private func create(activate: Bool) async throws {
-        let request = CreateApplicationRequest(appId: self.appId, serverId: self.serverId, activate: activate)
+    private func create(activate: Bool, timeout: TimeInterval = 30_000_000_000) async throws {
+        let start = Date()
+    
+        while abs(start.timeIntervalSinceNow) < timeout {
+            let request = CreateApplicationRequest(appId: self.appId, serverId: self.serverId, activate: activate)
+                
+            let success: Bool = (try? await callServer(path: "createApp", request: request)) ?? false
+            
+            if success {
+                return
+            }
+        }
         
-        let _: Bool = try await callServer(path: "createApp", request: request)
+        XCTFail("Could not create server App")
     }
     
     @available(*, noasync)

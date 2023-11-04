@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "F8FB6E91-1E18-40DA-B62D-C746FD7583B1",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Client.xcodeproj",
+      "identifier" : "1D136B6B29B45A4600465FB6",
+      "name" : "Client"
+    },
+    "testRepetitionMode" : "retryOnFailure"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "1D136B7C29B45A4600465FB6",
+        "name" : "ClientTests"
+      }
+    }
+  ],
+  "version" : 1
+}

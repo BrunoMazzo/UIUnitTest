@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'UIUnitTest'
-  s.version          = '0.3.3'
+  s.version          = '0.4.0'
   s.summary          = 'A short description of UIUnitTest.'
 
 # This description is used to generate tags and improve search results.

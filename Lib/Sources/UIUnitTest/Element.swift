@@ -204,4 +204,3 @@ public enum SizeClass: Int, Codable {
     case compact     = 1
     case regular     = 2
 }
-
