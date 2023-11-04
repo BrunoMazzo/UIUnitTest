@@ -5,7 +5,7 @@ public class App: Element {
     let appId: String
     let executor = Executor()
     
-    public init(appId: String, activate: Bool = true) async throws {
+    public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) async throws {
         self.appId = appId
         super.init(serverId: UUID())
         
@@ -13,7 +13,7 @@ public class App: Element {
     }
     
     @available(*, noasync)
-    public init(appId: String, activate: Bool = true) {
+    public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) {
         self.appId = appId
         super.init(serverId: UUID())
         self.create(activate: activate)

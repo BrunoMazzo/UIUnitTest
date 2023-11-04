@@ -13,7 +13,7 @@ The project is running in production on my company, but it's still in active dev
 1. Install the package:
 
 ```swift
-.package(url: "git@github.com:BrunoMazzo/UIUnitTest.git", .branch("main"))
+.package(url: "git@github.com:BrunoMazzo/UIUnitTest.git", from: "0.4.0")
 ```
 
 2. Add it to your Unit test target
@@ -48,14 +48,14 @@ import UIUnitTest
 ...
 
 @MainActor
-func testExample() async throws {
-    let app = try await App(appId: "your.app.bundle.id")
+func testExample() {
+    let app = App(appId: "your.app.bundle.id")
 
     let viewYouWantToTest = YourSwiftUIView(...)
 
     showView(viewYouWantToTest)
     
-    try await app.button(identifier: "some button identifier").tap()
+    app.button(identifier: "some button identifier").tap()
 
     ...
 }
