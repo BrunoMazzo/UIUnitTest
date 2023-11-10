@@ -18,21 +18,27 @@ public func showView(_ viewController: UIViewController) {
 
 @MainActor
 private func getKeyWindow() -> UIWindow {
-    let window = UIApplication.shared.connectedScenes.flatMap { scene -> [UIWindow] in
+    let windowScene = UIApplication.shared.connectedScenes.flatMap { scene -> [UIWindowScene] in
         guard let windowScene = scene as? UIWindowScene else {
             return []
         }
         
-        return windowScene.windows.filter { window in
+        return [windowScene]
+    }.filter { scene in
+        return scene.windows.contains { window in
             window.isKeyWindow
         }
     }.first!
+    
+    let window = windowScene.windows.first { windows in
+        windows.isKeyWindow
+    }!
     
     if window is TestWindow {
         return window
     }
     
-    let newTestWindow = TestWindow(frame: UIScreen.main.bounds)
+    let newTestWindow = TestWindow(windowScene: windowScene)
     newTestWindow.makeKeyAndVisible()
     return newTestWindow
 }
