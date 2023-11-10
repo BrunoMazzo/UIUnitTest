@@ -14,9 +14,11 @@ public func showView(_ viewController: UIViewController) {
     window.rootViewController = viewController
 }
 
+
+
 @MainActor
 private func getKeyWindow() -> UIWindow {
-    return UIApplication.shared.connectedScenes.flatMap { scene -> [UIWindow] in
+    let window = UIApplication.shared.connectedScenes.flatMap { scene -> [UIWindow] in
         guard let windowScene = scene as? UIWindowScene else {
             return []
         }
@@ -25,5 +27,19 @@ private func getKeyWindow() -> UIWindow {
             window.isKeyWindow
         }
     }.first!
+    
+    if window is TestWindow {
+        return window
+    }
+    
+    let newTestWindow = TestWindow(frame: UIScreen.main.bounds)
+    newTestWindow.makeKeyAndVisible()
+    return newTestWindow
 }
 
+
+class TestWindow: UIWindow {
+    override func draw(_ rect: CGRect) {
+        // Do nothing to be faster
+    }
+}
