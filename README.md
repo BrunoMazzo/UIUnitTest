@@ -6,6 +6,10 @@ Run XCTest UI commands from your unit test.
 
 The project is running in production on my company, but it's still in active development. I'm still working on the documentation and there are some features that I want to add before I can call it stable.
 
+## How it works
+
+When you run an UI test, Apple runs two processes: the UI test process and the app process. The UI test process is the one that runs your test code and the app process is the one that runs your full app. Because these two are different process, you lose the ability to modify your app state from your test code. UIUnitTest solves this problem by running your unit test instead of the app, and running the UI test process with a server to receives commands from your unit test code and execute them.
+
 ## Installation
 
 1. Install the package:
