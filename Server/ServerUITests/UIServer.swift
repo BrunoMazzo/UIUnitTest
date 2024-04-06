@@ -46,7 +46,6 @@ struct WrongQueryTypeFoundError: Error, LocalizedError {
     }
 }
 
-//@Server
 class UIServer {
     var lastIssue: XCTIssue?
     
@@ -444,6 +443,16 @@ class UIServer {
         return Element.ElementType(rawValue: element.elementType.rawValue)!
     }
     
+    @MainActor
+    func accessibilityTest(request: ElementRequest) async throws -> Bool {
+        let application = try await self.cache.getApplication(request.serverId)
+        if #available(iOS 17.0, *) {
+            return (try? application.performAccessibilityAudit()) != nil
+        } else {
+            return false
+        }
+    }
+    
     func start(portIndex: UInt16 = 0) async throws {
         let server = HTTPServer(address: .loopback(port: 22087 + portIndex))
         self.server = server
@@ -723,11 +732,12 @@ class UIServer {
     func findElement(elementRequest: ByIdRequest) async throws -> XCUIElement {
         let rootElementQuery = try await self.cache.getElementQuery(elementRequest.queryRoot)
         
-        return rootElementQuery[elementRequest.identifier]
+        return await rootElementQuery[elementRequest.identifier]
     }
     
+    
     func addRoute<Request: Codable, Response: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Response) async {
-        await self.server.appendRoute(HTTPRoute(stringLiteral: route), handler: { request in
+        await self.server.appendRoute(HTTPRoute(stringLiteral: route), handler: { @MainActor request in
             
             defer {
                 self.lastIssue = nil
@@ -745,7 +755,7 @@ class UIServer {
     }
     
     func addRoute<Request: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Void) async {
-        await self.server.appendRoute(HTTPRoute(stringLiteral: route), handler: { request in
+        await self.server.appendRoute(HTTPRoute(stringLiteral: route), handler: { @MainActor request in
             defer {
                 self.lastIssue = nil
             }

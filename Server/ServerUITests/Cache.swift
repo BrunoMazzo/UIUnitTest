@@ -6,7 +6,7 @@ actor Cache {
     private var elementIds: [UUID: XCUIElement] = [:]
     private var coordinates: [UUID: XCUICoordinate] = [:]
     private var applications: [UUID: XCUIApplication] = [:]
-        
+    
     func add(application: XCUIApplication, id: UUID) {
         applications[id] = application
         queryIds[id] = application
