@@ -358,6 +358,16 @@ class ClientTests: XCTestCase {
         
         Assert(somethingView.exists)
     }
+    
+    func testEnterTestOnWrongElementFails() {
+        XCTExpectFailure("Expecting failure when attempting to type text into a non-text field element.")
+        
+        let app = App()
+        
+        showView(WaitForExistenceView())
+        
+        app.buttons["Show Message"].typeText("Hello world")
+    }
 }
 
 // Two classes to run in parallel using two simulators
