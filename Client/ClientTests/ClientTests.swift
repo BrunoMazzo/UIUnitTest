@@ -360,7 +360,7 @@ class ClientTests: XCTestCase {
     }
     
     func testEnterTestOnWrongElementFails() {
-        XCTExpectFailure()
+        XCTExpectFailure("Expecting failure when attempting to type text into a non-text field element.")
         
         let app = App()
         

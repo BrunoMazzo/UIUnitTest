@@ -446,6 +446,7 @@ class UIServer {
     @MainActor
     func accessibilityTest(request: ElementRequest) async throws -> Bool {
         let application = try await self.cache.getApplication(request.serverId)
+        
         if #available(iOS 17.0, *) {
             return (try? application.performAccessibilityAudit()) != nil
         } else {
