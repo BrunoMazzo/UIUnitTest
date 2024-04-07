@@ -163,10 +163,6 @@ struct Device {
             }
         }
         
-        guard !FileManager.default.fileExists(atPath: cacheFile) else {
-            return
-        }
-        
         if usePrebuildServer {
             await self.copyPreBuildServer(buildFolder: buildPath)
         } else {
