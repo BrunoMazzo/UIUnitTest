@@ -17,15 +17,15 @@ jobs:
         run: |
           brew install xcbeautify
       - name: Select Xcode version
-        run: sudo xcode-select -switch '/Applications/Xcode_14.3.1.app'
+        run: sudo xcode-select -switch '/Applications/Xcode_15.3.app'
       - name: Build & Test
         env:
           scheme: 'Client'
           platform: ${{ 'iOS Simulator' }}
         timeout-minutes: 20
         run: |
-          # Get iPhone 14 iOS 16.4 UUID
-          deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone 14.*\(16\.4\).*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
+          # Get iPhone 15 iOS 17.4 UUID
+          deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone 15.*\(17\.4\).*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
 
           set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" -parallel-testing-enabled YES -parallel-testing-worker-count 2 test 2>&1 
           #| xcbeautify --renderer github-actions
@@ -46,15 +46,15 @@ jobs:
         run: |
           brew install xcbeautify
       - name: Select Xcode version
-        run: sudo xcode-select -switch '/Applications/Xcode_14.3.1.app'
+        run: sudo xcode-select -switch '/Applications/Xcode_15.3.app'
       - name: Build & Test
         env:
           scheme: 'Client'
           platform: ${{ 'iOS Simulator' }}
         timeout-minutes: 20
         run: |
-          # Get iPhone 14 iOS 16.4 UUID
-          deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone 14.*\(16\.4\).*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
+          # Get iPhone 15 iOS 17.4 UUID
+          deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone 15.*\(17\.4\).*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
 
           #run UIUnitTest server
           set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test 2>&1 
