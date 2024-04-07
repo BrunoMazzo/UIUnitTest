@@ -6,13 +6,13 @@ on:
 jobs:
   parallel-testing:
     name: Generate intel app
-    runs-on: macos-13
+    runs-on: macos-14
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Select Xcode version
-        run: sudo xcode-select -switch '/Applications/Xcode_14.3.1.app'
+        run: sudo xcode-select -switch '/Applications/Xcode_15.3.app'
       - name: Generate zip
         run: |
           ./generate-zip.sh
