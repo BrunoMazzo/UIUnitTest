@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.0
+        uses: actions/checkout@v4
       - name: Select Xcode version
         run: sudo xcode-select -switch '/Applications/Xcode_15.3.app'
       - name: Generate zip
