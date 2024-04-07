@@ -1,5 +1,7 @@
 import Foundation
 
+let CurrentServerVersion = "2"
+
 struct Device {
     var deviceIdentifier: String
     var isCloneDevice: Bool
@@ -44,7 +46,7 @@ struct Device {
         
         let serverRunnerZip = Bundle.module.url(forResource: "Server", withExtension: ".zip")!
         
-//        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
+        //        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
         
         let _: Data = await executeShellCommand("unzip -o \(serverRunnerZip.path) -d \(buildFolder.absoluteString)")
         
@@ -100,7 +102,7 @@ struct Device {
         let serverRunnerZip = Bundle.module.url(forResource: isArmMac() ? "PreBuild" : "PreBuild-intel", withExtension: ".zip")!
         
         try! FileManager.default.createDirectory(at: URL(fileURLWithPath: "\(buildFolder.absoluteString)/build/Products/Release-iphonesimulator"), withIntermediateDirectories: true)
-//        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
+        //        let testRunnerZip = copyFile(file: serverRunnerZip, toFolder: buildFolder)
         
         let _: Data = await executeShellCommand("unzip -o \(serverRunnerZip.path) -d \(buildFolder.absoluteString)/build/Products/Release-iphonesimulator")
         
@@ -150,6 +152,16 @@ struct Device {
     
     func prepareCacheIfNeeded(buildPath: URL, usePrebuildServer: Bool) async {
         let cacheFile = "\(String(buildPath.pathComponents.joined(separator: "/").dropFirst()))/build/Products/Release-iphonesimulator/ServerUITests-Runner.app"
+        
+        if FileManager.default.fileExists(atPath: cacheFile) {
+            let file = URL(fileURLWithPath: "\(cacheFile)/Info.plist")
+            let pListData = try! Data(contentsOf: file)
+            let infoPlist = try! PropertyListSerialization.propertyList(from: pListData, options: [], format: nil) as! [String: Any]
+            let bundleVersion = infoPlist["CFBundleVersion"] as! String
+            if bundleVersion == CurrentServerVersion {
+                return
+            }
+        }
         
         guard !FileManager.default.fileExists(atPath: cacheFile) else {
             return

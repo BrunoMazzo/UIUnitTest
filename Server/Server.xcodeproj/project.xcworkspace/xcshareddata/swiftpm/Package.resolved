@@ -1,4 +1,5 @@
 {
+  "originHash" : "cec6eada3aeef1a7161603afee83d308fe58ba11bcc829d3a4ab6b1952bb2ff6",
   "pins" : [
     {
       "identity" : "flyingfox",
@@ -28,5 +29,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
