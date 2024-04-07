@@ -26,7 +26,8 @@ jobs:
 
           echo "deviceUUID: $deviceUUID"
 
-          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" -parallel-testing-enabled YES -parallel-testing-worker-count 2 test 2>&1 | xcbeautify --renderer github-actions
+          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" -parallel-testing-enabled YES -parallel-testing-worker-count 2 test 2>&1 
+          # | xcbeautify --renderer github-actions
       # - name: Archive cli logs
       #   if: always()
       #   uses: actions/upload-artifact@v3
@@ -52,9 +53,10 @@ jobs:
           deviceUUID=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone 15.*\(17\.4\).*' |  grep -oE '([[A-F0-9]{4}\-?)*' | head -1 `
 
           echo "deviceUUID: $deviceUUID"
-          
+
           #run UIUnitTest server
-          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test 2>&1 | xcbeautify --renderer github-actions
+          set -o pipefail && NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj  -scheme Client -sdk 'iphonesimulator' -destination "platform=iOS Simulator,id=$deviceUUID" test 2>&1
+          # | xcbeautify --renderer github-actions
       # - name: Archive cli logs
       #   if: always()
       #   uses: actions/upload-artifact@v3
