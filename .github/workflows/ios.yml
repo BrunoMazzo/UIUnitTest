@@ -8,14 +8,14 @@ on:
 jobs:
   parallel-testing:
     name: Cloned simulator
-    runs-on: macos-13
+    runs-on: macos-14
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install xcbeautify
-        run: |
-          brew install xcbeautify
+      # - name: Install xcbeautify
+      #   run: |
+      #     brew install xcbeautify
       - name: Select Xcode version
         run: sudo xcode-select -switch '/Applications/Xcode_15.3.app'
       - name: Build & Test
@@ -37,14 +37,14 @@ jobs:
       #     path: Client/logfile.txt
   single-device-testing:
     name: Normal simulator
-    runs-on: macos-13
+    runs-on: macos-14
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install xcbeautify
-        run: |
-          brew install xcbeautify
+      # - name: Install xcbeautify
+      #   run: |
+      #     brew install xcbeautify
       - name: Select Xcode version
         run: sudo xcode-select -switch '/Applications/Xcode_15.3.app'
       - name: Build & Test
