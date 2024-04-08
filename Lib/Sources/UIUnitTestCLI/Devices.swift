@@ -163,6 +163,8 @@ struct Device {
             }
         }
         
+        try? FileManager.default.removeItem(atPath: cacheFile)
+        
         if usePrebuildServer {
             await self.copyPreBuildServer(buildFolder: buildPath)
         } else {
