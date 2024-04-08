@@ -154,7 +154,7 @@ struct Device {
         let cacheFile = "\(String(buildPath.pathComponents.joined(separator: "/").dropFirst()))/build/Products/Release-iphonesimulator/ServerUITests-Runner.app"
         
         if FileManager.default.fileExists(atPath: cacheFile) {
-            let file = URL(fileURLWithPath: "\(cacheFile)/Info.plist")
+            let file = URL(fileURLWithPath: "\(cacheFile)/PlugIns/ServerUITests.xctest/Info.plist")
             if let pListData = try? Data(contentsOf: file), let infoPlist = try? PropertyListSerialization.propertyList(from: pListData, options: [], format: nil) as? [String: Any] {
                 let bundleVersion = infoPlist["CFBundleVersion"] as? String
                 if bundleVersion == CurrentServerVersion {
