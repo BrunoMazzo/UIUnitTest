@@ -2,14 +2,14 @@ import XCTest
 import UIUnitTest
 @testable import Client
 
-@MainActor
 class ClientTests: XCTestCase {
     
-    override func setUp() {
+    override func setUp() async throws {
         self.continueAfterFailure = false
-        UIView.setAnimationsEnabled(false)
+        await UIView.setAnimationsEnabled(false)
     }
 
+    @MainActor
     func testTap() async throws {
         let app = try await App()
         
@@ -23,6 +23,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Something View").waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testExists() async throws {
         let app = try await App()
         
@@ -35,6 +36,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Value: Hello world").waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testDoubleTap() async throws {
         let app = try await App()
         
@@ -45,6 +47,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Value: Double tap").waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testEnterText() async throws {
         let app = try await App()
         
@@ -56,9 +59,10 @@ class ClientTests: XCTestCase {
         
         try await app.textFields("TextField-Default").typeText("Hello world")
         
-        try await Assert(app.staticTexts("Text value: Hello world").exists())
+        try await Assert(app.staticTexts("Text value: Hello world").waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testSwipeActions() async throws {
         let app = try await App()
         
@@ -92,6 +96,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Direction: Right").exists())
     }
     
+    @MainActor
     func testWaitForExistence() async throws {
         let app = try await App()
         
@@ -104,6 +109,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Hello world!").waitForExistence(timeout: 2))
     }
     
+    @MainActor
     func testPressWithDuration() async throws {
         let app = try await App()
         
@@ -116,6 +122,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Hello world!").exists())
     }
 
+    @MainActor
     func testHomeButtonAndLaunch() async throws {
         let app = try await App()
         
@@ -129,6 +136,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("WasInBackground: true").waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testTwoFingerTap() async throws {
         let app = try await App()
         
@@ -140,6 +148,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Two fingers tapped").waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testThreeFingerTap() async throws {
         let app = try await App()
         
@@ -150,6 +159,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Three fingers tapped").waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testPinch() async throws {
         let app = try await App()
         
@@ -162,6 +172,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Did scale? Yes").waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testRotate() async throws {
         let app = try await App()
         
@@ -174,6 +185,7 @@ class ClientTests: XCTestCase {
         try await Assert(app.staticTexts("Did rotate? Yes").waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testMatchingWithPredicate() async throws {
         let app = try await App()
         
@@ -184,6 +196,7 @@ class ClientTests: XCTestCase {
         try await Assert(somethingView.exists())
     }
     
+    @MainActor
     func testTapSync() {
         let app = App()
         
@@ -197,6 +210,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Something View"].waitForExistence(timeout: 2))
     }
     
+    @MainActor
     func testExistsSync() {
         let app = App()
         
@@ -209,6 +223,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Value: Hello world"].exists)
     }
     
+    @MainActor
     func testDoubleTapSync() {
         let app = App()
         
@@ -219,6 +234,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Value: Double tap"].waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testEnterTextSync() {
         let app = App()
         
@@ -233,6 +249,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Text value: Hello world"].waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testSwipeActionsSync() {
         let app = App()
         
@@ -266,6 +283,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Direction: Right"].exists)
     }
     
+    @MainActor
     func testWaitForExistenceSync() {
         let app = App()
         
@@ -278,6 +296,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Hello world!"].waitForExistence(timeout: 2))
     }
     
+    @MainActor
     func testPressWithDurationSync() {
         let app = App()
         
@@ -290,6 +309,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Hello world!"].exists)
     }
     
+    @MainActor
     func testHomeButtonAndLaunchSync() {
         let app = App()
         
@@ -303,6 +323,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["WasInBackground: true"].waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testTwoFingerTapSync() {
         let app = App()
         
@@ -315,6 +336,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Two fingers tapped"].waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testThreeFingerTapSync() {
         let app = App()
         
@@ -325,6 +347,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Three fingers tapped"].waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testPinchSync() {
         let app = App()
         
@@ -337,6 +360,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Did scale? Yes"].waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testRotateSync() {
         let app = App()
         
@@ -349,6 +373,7 @@ class ClientTests: XCTestCase {
         Assert(app.staticTexts["Did rotate? Yes"].waitForExistence(timeout: 1))
     }
     
+    @MainActor
     func testMatchingWithPredicateAsync() {
         let app = App()
         
@@ -359,6 +384,7 @@ class ClientTests: XCTestCase {
         Assert(somethingView.exists)
     }
     
+    @MainActor
     func testEnterTestOnWrongElementFails() {
         XCTExpectFailure("Expecting failure when attempting to type text into a non-text field element.")
         
