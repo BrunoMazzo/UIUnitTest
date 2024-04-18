@@ -59,7 +59,7 @@ class ClientTests: XCTestCase {
         
         try await app.textFields("TextField-Default").typeText("Hello world")
         
-        try await Assert(app.staticTexts("Text value: Hello world").exists())
+        try await Assert(app.staticTexts("Text value: Hello world").waitForExistence(timeout: 1))
     }
     
     @MainActor
