@@ -15,42 +15,21 @@ struct MySettingTable: View {
     @State var isDoubleTap = false
     
     var body: some View {
-        
-        if #available(iOS 16.0, *) {
-            NavigationStack(path: $navigationStack) {
-                List {
-                    NavigationLink("Something", destination: SomethingView())
-                    NavigationLink(value: "Hello world") {
-                        Text("Hello world button")
+        NavigationStack(path: $navigationStack) {
+            List {
+                NavigationLink("Something", destination: SomethingView())
+                NavigationLink(value: "Hello world") {
+                    Text("Hello world button")
+                }
+                NavigationLink("Stepper", destination: StepperView())
+                NavigationLink("TextField", destination: TextFieldsView())
+                Text("Double tap")
+                    .onTapGesture(count: 2) {
+                        navigationStack.append("Double tap")
                     }
-                    NavigationLink("Stepper", destination: StepperView())
-                    NavigationLink("TextField", destination: TextFieldsView())
-                    Text("Double tap")
-                        .onTapGesture(count: 2) {
-                            navigationStack.append("Double tap")
-                        }
-                }
-                .navigationDestination(for: String.self) { value in
-                    StringView(value: value)
-                }
             }
-        } else {
-            NavigationView {
-                List {
-                    NavigationLink("Something", destination: SomethingView())
-                    NavigationLink {
-                        StringView(value: "Hello world")
-                    } label: {
-                        Text("Hello world button")
-                    }
-                    NavigationLink("Stepper", destination: StepperView())
-                    NavigationLink("TextField", destination: TextFieldsView())
-                    Text("Double tap")
-                        .onTapGesture(count: 2) {
-                            isDoubleTap = true
-                        }
-                    NavigationLink("Double tap w", destination: StringView(value: "Double tap"), isActive: $isDoubleTap)
-                }
+            .navigationDestination(for: String.self) { value in
+                StringView(value: value)
             }
         }
     }
@@ -63,18 +42,9 @@ struct TextFieldsView: View {
     var body: some View {
         VStack {
             Text("Text value: \(textFieldValue)")
-            if #available(iOS 16.0, *) {
-                LabeledContent("Default") {
-                    TextField("Default", text: $textFieldValue)
-                        .accessibilityIdentifier("TextField-Default")
-                }
-            } else {
-                // Fallback on earlier versions
-                VStack(alignment: .leading) {
-                    Text("Default")
-                    TextField("Default", text: $textFieldValue)
-                        .accessibilityIdentifier("TextField-Default")
-                }
+            LabeledContent("Default") {
+                TextField("Default", text: $textFieldValue)
+                    .accessibilityIdentifier("TextField-Default")
             }
         }
     }

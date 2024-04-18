@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1500"
+   LastUpgradeVersion = "1530"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,7 +17,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;exec &gt; &quot;${PROJECT_DIR}/logfile.txt&quot; 2&gt;&amp;1 &#10;&#10;$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/start-server.sh&#10;">
+               scriptText = "$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/start-server.sh&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
@@ -35,7 +35,16 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;&#10;$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/stop-server.sh&#10;">
+               scriptText = "$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/stop-server.sh&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "1D136B6B29B45A4600465FB6"
+                     BuildableName = "Client.app"
+                     BlueprintName = "Client"
+                     ReferencedContainer = "container:Client.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
             </ActionContent>
          </ExecutionAction>
       </PostActions>
