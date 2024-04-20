@@ -11,3 +11,7 @@ jobs: # a basic unit of work in a run
       - run:
           name: Run Unit Tests
           command: xcodebuild -project Client/Client.xcodeproj -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 13 Pro,OS=15.0'
+workflows:
+  tests:
+    jobs:
+      - test
