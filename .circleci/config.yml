@@ -10,7 +10,7 @@ jobs: # a basic unit of work in a run
       - checkout  # pull down code from your version control system.
       - run:
           name: Run Unit Tests
-          command: xcodebuild -project Client/Client.xcodeproj -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 13 Pro,OS=15.0'
+          command: xcodebuild -project Client/Client.xcodeproj -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4'
 workflows:
   tests:
     jobs:
