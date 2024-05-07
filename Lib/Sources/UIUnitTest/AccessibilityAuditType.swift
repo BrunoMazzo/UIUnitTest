@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AccessibilityAuditType: RawRepresentable, OptionSet {
+public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable {
     
     public var rawValue: Int64
     
@@ -34,10 +34,10 @@ public struct AccessibilityAuditType: RawRepresentable, OptionSet {
     public static let all                          = AccessibilityAuditType(rawValue: ~0)
 }
 
-public class AccessibilityAuditIssue {
+public class AccessibilityAuditIssue: Codable {
     
     /// The element associated with the issue.
-    var element: Element?
+    var element: UUID?
 
     /// A short description about the issue.
     var compactDescription: String
@@ -48,10 +48,15 @@ public class AccessibilityAuditIssue {
     /// The type of audit which generated the issue.
     var auditType: AccessibilityAuditType
     
-    public init(element: Element? = nil, compactDescription: String, detailedDescription: String, auditType: AccessibilityAuditType) {
+    public init(element: UUID? = nil, compactDescription: String, detailedDescription: String, auditType: AccessibilityAuditType) {
         self.element = element
         self.compactDescription = compactDescription
         self.detailedDescription = detailedDescription
         self.auditType = auditType
     }
+}
+
+struct AccessibilityAuditRequest: Encodable {
+    var serverId: UUID
+    var accessibilityAuditType: AccessibilityAuditType
 }
