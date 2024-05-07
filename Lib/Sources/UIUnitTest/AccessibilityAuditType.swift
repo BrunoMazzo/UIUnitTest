@@ -37,16 +37,16 @@ public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable {
 public class AccessibilityAuditIssue: Codable {
     
     /// The element associated with the issue.
-    var element: UUID?
+    public var element: UUID?
 
     /// A short description about the issue.
-    var compactDescription: String
+    public var compactDescription: String
         
     /// A longer description of the issue with more details about the failure.
-    var detailedDescription: String
+    public var detailedDescription: String
     
     /// The type of audit which generated the issue.
-    var auditType: AccessibilityAuditType
+    public var auditType: AccessibilityAuditType
     
     public init(element: UUID? = nil, compactDescription: String, detailedDescription: String, auditType: AccessibilityAuditType) {
         self.element = element
@@ -56,7 +56,7 @@ public class AccessibilityAuditIssue: Codable {
     }
 }
 
-struct AccessibilityAuditRequest: Encodable {
-    var serverId: UUID
-    var accessibilityAuditType: AccessibilityAuditType
+public struct AccessibilityAuditRequest: Encodable {
+    public var serverId: UUID
+    public var accessibilityAuditType: AccessibilityAuditType
 }
