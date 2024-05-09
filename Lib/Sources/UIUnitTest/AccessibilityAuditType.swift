@@ -56,7 +56,7 @@ public class AccessibilityAuditIssue: Codable {
     }
 }
 
-public struct AccessibilityAuditRequest: Encodable {
+public struct AccessibilityAuditRequest: Codable {
     public var serverId: UUID
     public var accessibilityAuditType: AccessibilityAuditType
 }

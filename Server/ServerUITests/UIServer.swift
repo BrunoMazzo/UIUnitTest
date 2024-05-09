@@ -54,6 +54,21 @@ class UIServer {
     let cache = Cache()
     
     @MainActor
+    func performAccessibilityAudit(
+        request: AccessibilityAuditRequest
+    ) async throws {
+        
+        let app = try await self.cache.getApplication(request.serverId)
+        
+        if #available(iOS 17.0, *) {
+            try app.performAccessibilityAudit(for: request.accessibilityAuditType.toXCUIAccessibilityAuditType())
+        } else {
+            // Fallback on earlier versions
+            throw NSError(domain: "com.apple.XCTest", code: 0, userInfo: nil)
+        }
+    }
+    
+    @MainActor
     func firstMatch(firstMatchRequest: FirstMatchRequest) async throws -> FirstMatchResponse {
         let query = try await self.cache.getQuery(firstMatchRequest.serverId)
         let element = query.firstMatch
@@ -524,6 +539,8 @@ class UIServer {
         await addRoute("verticalSizeClass", handler: self.verticalSizeClass(request:))
         await addRoute("elementType", handler: self.elementType(request:))
         
+        await addRoute("performAccessibilityAudit", handler: self.performAccessibilityAudit(request:))
+        
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
             Task {
                 await self.server.stop(timeout: 10)
@@ -791,7 +808,14 @@ public extension GestureVelocity {
         case .default:
             return .default
         case .custom(let value):
-            return XCUIGestureVelocity(rawValue: value) 
+            return XCUIGestureVelocity(rawValue: value)
         }
+    }
+}
+
+extension AccessibilityAuditType {
+    @available(iOS 17.0, *)
+    func toXCUIAccessibilityAuditType() -> XCUIAccessibilityAuditType {
+        return XCUIAccessibilityAuditType(rawValue: UInt64(self.rawValue))
     }
 }
