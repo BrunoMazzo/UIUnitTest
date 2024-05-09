@@ -69,6 +69,26 @@ public class App: Element {
             try await self.create(activate: activate)
         }
     }
+    
+    @available(iOS 17.0, *)
+    public func performAccessibilityAudit(
+        for auditTypes: AccessibilityAuditType = .all,
+        _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil
+    ) async throws {
+        let accessibilityAuditRequest = AccessibilityAuditRequest(serverId: self.serverId, accessibilityAuditType: auditTypes)
+        
+        let _: Bool = try await callServer(path: "performAccessibilityAudit", request: accessibilityAuditRequest)
+    }
+    
+    @available(iOS 17.0, *)
+    public func performAccessibilityAudit(
+        for auditTypes: AccessibilityAuditType = .all,
+        _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil
+    ) throws {
+        Executor.execute {
+            try await self.performAccessibilityAudit(for: auditTypes, issueHandler)
+        }
+    }
 }
 
 public struct CreateApplicationRequest: Codable {
@@ -92,7 +112,6 @@ public struct ActivateRequest: Codable {
         self.serverId = serverId
     }
 }
-
 
 public struct HomeButtonRequest: Codable {
     

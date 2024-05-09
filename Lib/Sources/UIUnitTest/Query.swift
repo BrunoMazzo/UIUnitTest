@@ -310,7 +310,6 @@ public struct ElementFromQuery: Codable {
     }
 }
 
-
 public struct DescendantsFromQuery: Codable {
     public let serverId: UUID
     public let elementType: Element.ElementType
@@ -328,5 +327,3 @@ public struct ElementsByAccessibility: Codable {
         self.serverId = serverId
     }
 }
-
-

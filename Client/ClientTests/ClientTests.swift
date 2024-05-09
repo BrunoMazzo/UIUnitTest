@@ -218,7 +218,7 @@ class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
-        Assert(app.staticTexts["Hello world button"].isHittable)
+        Assert(app.buttons["Hello world button"].waitForExistence(timeout: 1))
         
         app.buttons["Hello world button"].tap()
         

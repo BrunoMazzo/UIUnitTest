@@ -26,7 +26,6 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
         return response.elementExists
     }
     
-    
     /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
     public func isHittable() async throws -> Bool  {
         let existsRequestData = ElementRequest(serverId: serverId)
@@ -197,7 +196,6 @@ public struct ChildrenMatchinType: Codable {
         self.elementType = elementType
     }
 }
-
 
 public enum SizeClass: Int, Codable {
     case unspecified = 0

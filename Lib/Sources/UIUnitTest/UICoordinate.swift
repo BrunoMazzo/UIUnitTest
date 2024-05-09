@@ -133,4 +133,3 @@ public struct TapCoordinateRequest: Codable {
         self.type = type
     }
 }
-

@@ -6,7 +6,7 @@ import UIUnitTest
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
 
-struct ApplicationNotFoundError: Error, LocalizedError {    
+struct ApplicationNotFoundError: Error, LocalizedError {
     var serverId: String
     
     var errorDescription: String? {
