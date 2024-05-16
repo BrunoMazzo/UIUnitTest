@@ -231,6 +231,8 @@ class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
+        XCTAssert(app.staticTexts["Double tap"].waitForExistence(timeout: 1))
+        
         app.staticTexts["Double tap"].doubleTap()
         
         Assert(app.staticTexts["Value: Double tap"].waitForExistence(timeout: 1))
