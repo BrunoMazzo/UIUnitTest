@@ -64,4 +64,8 @@ public struct AccessibilityAuditRequest: Codable {
 
 public struct AccessibilityAuditResponse: Codable {
     public var issues: [AccessibilityAuditIssue]
+    
+    public init(issues: [AccessibilityAuditIssue]) {
+        self.issues = issues
+    }
 }
