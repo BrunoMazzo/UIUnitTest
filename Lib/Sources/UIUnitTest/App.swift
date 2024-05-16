@@ -77,7 +77,18 @@ public class App: Element {
     ) async throws {
         let accessibilityAuditRequest = AccessibilityAuditRequest(serverId: self.serverId, accessibilityAuditType: auditTypes)
         
-        let _: Bool = try await callServer(path: "performAccessibilityAudit", request: accessibilityAuditRequest)
+        let response: AccessibilityAuditResponse = try await callServer(path: "performAccessibilityAudit", request: accessibilityAuditRequest)
+        
+        for issue in response.issues {
+            do {
+                let ignore = try issueHandler?(issue) ?? true
+                if !ignore {
+                    XCTFail(issue.compactDescription)
+                }
+            } catch {
+                XCTFail(issue.compactDescription)
+            }
+        }
     }
     
     @available(iOS 17.0, *)

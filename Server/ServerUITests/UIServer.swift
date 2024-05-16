@@ -56,12 +56,18 @@ class UIServer {
     @MainActor
     func performAccessibilityAudit(
         request: AccessibilityAuditRequest
-    ) async throws {
+    ) async throws -> AccessibilityAuditResponse {
         
         let app = try await self.cache.getApplication(request.serverId)
         
         if #available(iOS 17.0, *) {
-            try app.performAccessibilityAudit(for: request.accessibilityAuditType.toXCUIAccessibilityAuditType())
+            var issues = [XCUIAccessibilityAuditIssue]()
+            try app.performAccessibilityAudit(for: request.accessibilityAuditType.toXCUIAccessibilityAuditType()) { issue in
+                issues.append(issue)
+                return true
+            }
+            
+            return await AccessibilityAuditResponse(issues: issues.asyncMap ({ await AccessibilityAuditIssue(xcIssue: $0, cache: cache)}))
         } else {
             // Fallback on earlier versions
             throw NSError(domain: "com.apple.XCTest", code: 0, userInfo: nil)
@@ -816,6 +822,42 @@ public extension GestureVelocity {
 extension AccessibilityAuditType {
     @available(iOS 17.0, *)
     func toXCUIAccessibilityAuditType() -> XCUIAccessibilityAuditType {
-        return XCUIAccessibilityAuditType(rawValue: UInt64(self.rawValue))
+        return XCUIAccessibilityAuditType(rawValue: self.rawValue)
+    }
+    
+    @available(iOS 17.0, *)
+    public init(xcType: XCUIAccessibilityAuditType) {
+        self.init(rawValue: xcType.rawValue)
+    }
+}
+
+extension AccessibilityAuditIssue {
+    @available(iOS 17.0, *)
+    convenience init(xcIssue: XCUIAccessibilityAuditIssue, cache: Cache) async {
+        var elementId: UUID? = nil
+        if let element = xcIssue.element {
+            elementId = await cache.add(element: element)
+        }
+        self.init(
+            element: elementId,
+            compactDescription: xcIssue.compactDescription,
+            detailedDescription: xcIssue.detailedDescription,
+            auditType: AccessibilityAuditType(xcType: xcIssue.auditType)
+        )
+    }
+}
+
+
+extension Sequence {
+    func asyncMap<T>(
+        _ transform: (Element) async throws -> T
+    ) async rethrows -> [T] {
+        var values = [T]()
+        
+        for element in self {
+            try await values.append(transform(element))
+        }
+        
+        return values
     }
 }
