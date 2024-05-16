@@ -331,5 +331,5 @@ public struct ElementsByAccessibility: Codable {
 }
 
 extension UUID {
-    static var zero = UUID(uuidString: "00000000-00000000-00000000-00000000")!
+    static var zero = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
 }
