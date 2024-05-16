@@ -400,6 +400,8 @@ class ClientTests: XCTestCase {
     @available(iOS 17.0, *)
     @MainActor
     func testAccessibilityInspection() throws {
+        XCTExpectFailure("Expecting failure when performing an accessibility audit")
+        
         let app = App()
         
         showView(AccessibilityAuditView())
