@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "5ABFB856-43EB-45CC-B998-0C86FCFFEDCA",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Server.xcodeproj",
+        "identifier" : "1DA1934329B4260600322869",
+        "name" : "ServerUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

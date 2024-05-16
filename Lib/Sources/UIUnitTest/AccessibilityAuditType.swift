@@ -9,9 +9,9 @@ import Foundation
 
 public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable {
     
-    public var rawValue: Int64
+    public var rawValue: UInt64
     
-    public init(rawValue: Int64) {
+    public init(rawValue: UInt64) {
         self.rawValue = rawValue
     }
     
