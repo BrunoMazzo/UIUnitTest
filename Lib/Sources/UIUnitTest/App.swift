@@ -81,7 +81,7 @@ public class App: Element {
         
         for issue in response.issues {
             do {
-                let ignore = try issueHandler?(issue) ?? true
+                let ignore = try issueHandler?(issue) ?? false
                 if !ignore {
                     XCTFail(issue.compactDescription)
                 }
