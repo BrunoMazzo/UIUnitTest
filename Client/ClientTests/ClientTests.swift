@@ -396,6 +396,16 @@ class ClientTests: XCTestCase {
         
         app.buttons["Show Message"].typeText("Hello world")
     }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    func testAccessibilityInspection() throws {
+        let app = App()
+        
+        showView(AccessibilityAuditView())
+        
+        try app.performAccessibilityAudit()
+    }
 }
 
 // Two classes to run in parallel using two simulators

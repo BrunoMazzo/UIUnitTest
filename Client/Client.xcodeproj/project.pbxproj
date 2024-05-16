@@ -16,13 +16,13 @@
 		1D2B65E22AF5F29D00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E12AF5F29D00E5618D /* UIUnitTest */; };
 		1D2B65E52AF5F67B00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E42AF5F67B00E5618D /* UIUnitTest */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
-		1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
 		1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */; };
 		1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */; };
 		1DE0F33E29BF265D0044AFFC /* TapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33D29BF265D0044AFFC /* TapView.swift */; };
 		1DE0F34529C52D4E0044AFFC /* PinchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F34429C52D4E0044AFFC /* PinchView.swift */; };
 		1DE0F34829C533B00044AFFC /* RotateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F34729C533B00044AFFC /* RotateView.swift */; };
 		1DE0F35D29C58B4D0044AFFC /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8129B45A4600465FB6 /* ClientTests.swift */; };
+		1DF4DBFE2BF60C560025FC8E /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -313,12 +313,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DE0F32A29BD89790044AFFC /* WaitForExistenceView.swift in Sources */,
 				1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */,
 				1D136B7229B45A4600465FB6 /* ContentView.swift in Sources */,
 				1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */,
 				1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */,
 				1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */,
+				1DF4DBFE2BF60C560025FC8E /* WaitForExistenceView.swift in Sources */,
 				1DE0F34829C533B00044AFFC /* RotateView.swift in Sources */,
 				1DE0F33E29BF265D0044AFFC /* TapView.swift in Sources */,
 				1DE0F34529C52D4E0044AFFC /* PinchView.swift in Sources */,
@@ -693,7 +693,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
 			requirement = {
-				branch = main;
+				branch = "accessibility-audit";
 				kind = branch;
 			};
 		};

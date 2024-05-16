@@ -37,6 +37,7 @@
 		1DA1934429B4260600322869 /* ServerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ServerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DA1935729B4267200322869 /* UIServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIServer.swift; sourceTree = "<group>"; };
 		1DA1935829B4267200322869 /* UITestServerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestServerTest.swift; sourceTree = "<group>"; };
+		1DF4DBFD2BF60A100025FC8E /* ServerUITests - Debug.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ServerUITests - Debug.xctestplan"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +70,7 @@
 		1DA1932029B4260500322869 = {
 			isa = PBXGroup;
 			children = (
+				1DF4DBFD2BF60A100025FC8E /* ServerUITests - Debug.xctestplan */,
 				1D52DE1B29C6B97F00B17758 /* Packages */,
 				1DA1932B29B4260500322869 /* Server */,
 				1DA1934729B4260600322869 /* ServerUITests */,
@@ -544,7 +546,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
 			requirement = {
-				branch = main;
+				branch = "accessibility-audit";
 				kind = branch;
 			};
 		};

@@ -13,7 +13,7 @@ public extension Element {
     func rotate(_ rotation: CGFloat, withVelocity velocity: CGFloat)  {
         Executor.execute {
             try await self.rotate(rotation, withVelocity: velocity)
-        }
+        }.valueOrFailWithFallback(())
     }
 }
 

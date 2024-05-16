@@ -31,7 +31,7 @@ extension Element {
     public func swipe(direction: SwipeDirection, velocity: GestureVelocity = .default) {
         Executor.execute {
             try await self.swipe(direction: direction, velocity: velocity)
-        }
+        }.valueOrFailWithFallback(())
     }
     
     @available(*, noasync)

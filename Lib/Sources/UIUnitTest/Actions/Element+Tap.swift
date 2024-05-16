@@ -29,28 +29,28 @@ extension Element {
     public func tap() {
         Executor.execute {
             try await self.tap()
-        }
+        }.valueOrFailWithFallback(())
     }
     
     @available(*, noasync)
     public func twoFingerTap() {
         Executor.execute {
             try await self.twoFingerTap()
-        }
+        }.valueOrFailWithFallback(())
     }
     
     @available(*, noasync)
     public func tap(withNumberOfTaps numberOfTaps: Int, numberOfTouches: Int) {
         Executor.execute {
             try await self.tap(withNumberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
-        }
+        }.valueOrFailWithFallback(())
     }
     
     @available(*, noasync)
     public func press(forDuration duration: TimeInterval) {
         Executor.execute {
             try await self.press(forDuration: duration)
-        }
+        }.valueOrFailWithFallback(())
     }
 }
 

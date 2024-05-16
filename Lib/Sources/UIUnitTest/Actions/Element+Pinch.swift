@@ -11,7 +11,7 @@ public extension Element {
     func pinch(withScale scale: CGFloat, velocity: CGFloat) {
         Executor.execute {
             try await self.pinch(withScale: scale, velocity: velocity)
-        }
+        }.valueOrFailWithFallback(())
     }
 }
 

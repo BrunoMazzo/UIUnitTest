@@ -1,6 +1,9 @@
 import Foundation
 
 public class Coordinate {
+    
+    static var EmptyCoordinate = Coordinate(serverId: UUID.zero, referencedElement: .EmptyElement, screenPoint: .zero)
+    
     public var serverId: UUID
     
     var referencedElement: Element
@@ -29,7 +32,7 @@ public class Coordinate {
     public func withOffset(_ vector: CGVector) -> Coordinate {
         Executor.execute {
             try await self.withOffset(vector)
-        }
+        }.valueOrFailWithFallback(.EmptyCoordinate)
     }
     
     func tap() async throws {
@@ -41,7 +44,7 @@ public class Coordinate {
     public func tap() {
         Executor.execute {
             try await self.tap()
-        }
+        }.valueOrFailWithFallback(())
     }
     
     func doubleTap() async throws {
@@ -53,7 +56,7 @@ public class Coordinate {
     public func doubleTap() {
         Executor.execute {
             try await self.doubleTap()
-        }
+        }.valueOrFailWithFallback(())
     }
     
     public func press(forDuration duration: TimeInterval) async throws {
@@ -65,7 +68,7 @@ public class Coordinate {
     public func press(forDuration duration: TimeInterval) {
         Executor.execute {
             try await self.press(forDuration: duration)
-        }
+        }.valueOrFailWithFallback(())
     }
     
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) async throws {
@@ -77,7 +80,7 @@ public class Coordinate {
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) {
         Executor.execute {
             try await self.press(forDuration: duration, thenDragTo: coordinate)
-        }
+        }.valueOrFailWithFallback(())
     }
     
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocity, thenHoldForDuration holdDuration: TimeInterval) async throws {
@@ -89,7 +92,7 @@ public class Coordinate {
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocity, thenHoldForDuration holdDuration: TimeInterval) {
         Executor.execute {
             try await self.press(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity, thenHoldForDuration: holdDuration)
-        }
+        }.valueOrFailWithFallback(())
     }
 }
 

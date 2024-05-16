@@ -31,7 +31,7 @@ public class App: Element {
     public func pressHomeButton() {
         Executor.execute {
             try await self.pressHomeButton()
-        }
+        }.valueOrFailWithFallback(())
     }
     
     public func activate() async throws {
@@ -44,7 +44,7 @@ public class App: Element {
     public func activate() {
         Executor.execute {
             try await self.activate()
-        }
+        }.valueOrFailWithFallback(())
     }
     
     private func create(activate: Bool, timeout: TimeInterval = 30_000_000_000) async throws {
@@ -67,7 +67,7 @@ public class App: Element {
     public func create(activate: Bool) {
         Executor.execute {
             try await self.create(activate: activate)
-        }
+        }.valueOrFailWithFallback(())
     }
     
     @available(iOS 17.0, *)
@@ -98,7 +98,7 @@ public class App: Element {
     ) throws {
         Executor.execute {
             try await self.performAccessibilityAudit(for: auditTypes, issueHandler)
-        }
+        }.valueOrFailWithFallback(())
     }
 }
 

@@ -11,6 +11,6 @@ extension Element {
     public func doubleTap() {
         Executor.execute {
             try await self.doubleTap()
-        }
+        }.valueOrFailWithFallback(())
     }
 }

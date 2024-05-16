@@ -2,6 +2,8 @@ import Foundation
 
 public final class Query: ElementTypeQueryProvider, Sendable {
     
+    static var EmptyQuery = Query(serverId: UUID.zero)
+    
     public let serverId: UUID
     
     init(serverId: UUID) {
@@ -29,7 +31,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public var element: Element! {
         Executor.execute {
             try await self.element()
-        }
+        }.valueOrFailWithFallback(nil)
     }
     
     public func allElementsBoundByAccessibilityElement() async throws -> [Element] {
@@ -41,7 +43,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public var allElementsBoundByAccessibilityElement: [Element] {
         Executor.execute {
             try await self.allElementsBoundByAccessibilityElement()
-        }
+        }.valueOrFailWithFallback([])
     }
     
     public func allElementsBoundByIndex() async throws -> [Element] {
@@ -53,7 +55,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public var allElementsBoundByIndex: [Element] {
         Executor.execute {
             try await self.allElementsBoundByIndex()
-        }
+        }.valueOrFailWithFallback([])
     }
     
     /** Evaluates the query at the time it is called and returns the number of matches found. */
@@ -66,7 +68,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public var count: Int {
         Executor.execute {
             try await self.count()
-        }
+        }.valueOrFailWithFallback(-1)
     }
     
     public func element(boundByIndex index: Int) async throws -> Element {
@@ -78,7 +80,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func element(boundByIndex index: Int) -> Element {
         Executor.execute {
             try await self.element(boundByIndex: index)
-        }
+        }.valueOrFailWithFallback(.EmptyElement)
     }
     
     // Using autoclosure to erase the Sendable warning
@@ -92,7 +94,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func element(matching predicate: @Sendable @autoclosure @escaping () -> NSPredicate) -> Element {
         Executor.execute {
             try await self.element(matching: predicate())
-        }
+        }.valueOrFailWithFallback(.EmptyElement)
     }
     
     public func element(matching elementType: Element.ElementType, identifier: String?) async throws -> Element {
@@ -104,7 +106,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func element(matching elementType: Element.ElementType, identifier: String?) -> Element {
         Executor.execute {
             try await self.element(matching: elementType, identifier: identifier)
-        }
+        }.valueOrFailWithFallback(.EmptyElement)
     }
     
     public func callAsFunction(identifier: String) async throws -> Element {
@@ -116,7 +118,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public subscript(_ identifier: String) -> Element {
         Executor.execute {
             try await self(identifier: identifier)
-        }
+        }.valueOrFailWithFallback(.EmptyElement)
     }
     
     public func descendants(matching elementType: Element.ElementType) async throws -> Query {
@@ -128,7 +130,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func descendants(matching elementType: Element.ElementType) -> Query {
         Executor.execute {
             try await self.descendants(matching: elementType)
-        }
+        }.valueOrFailWithFallback(.EmptyQuery)
     }
 
     public func children(matching type: Element.ElementType) async throws -> Query {
@@ -141,7 +143,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func children(matching type: Element.ElementType) -> Query {
         Executor.execute {
             try await self.children(matching: type)
-        }
+        }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     public func matching(_ predicate: NSPredicate) async throws -> Query {
@@ -153,7 +155,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func matching(_ predicate: NSPredicate) -> Query {
         Executor.execute {
             try await self.matching(predicate)
-        }
+        }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     public func matching(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
@@ -166,7 +168,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func matching(_ elementType: Element.ElementType, identifier: String?) -> Query {
         Executor.execute {
             try await self.matching(elementType, identifier: identifier)
-        }
+        }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     public func matching(identifier: String) async throws -> Query {
@@ -178,7 +180,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func matching(identifier: String) -> Query {
         Executor.execute {
             try await self.matching(identifier: identifier)
-        }
+        }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     public func containing(_ predicate: NSPredicate) async throws -> Query {
@@ -190,7 +192,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func containing(_ predicate: NSPredicate) -> Query {
         Executor.execute {
             try await self.containing(predicate)
-        }
+        }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     public func containing(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
@@ -202,7 +204,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public func containing(_ elementType: Element.ElementType, identifier: String?) -> Query {
         Executor.execute {
             try await self.containing(elementType, identifier: identifier)
-        }
+        }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     public func debugDescription() async throws -> String {
@@ -214,7 +216,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     public var debugDescription: String {
         Executor.execute {
             try await self.debugDescription()
-        }
+        }.valueOrFailWithFallback("")
     }
 }
 
@@ -326,4 +328,8 @@ public struct ElementsByAccessibility: Codable {
     public init(serverId: UUID) {
         self.serverId = serverId
     }
+}
+
+extension UUID {
+    static var zero = UUID(uuidString: "00000000-00000000-00000000-00000000")!
 }
