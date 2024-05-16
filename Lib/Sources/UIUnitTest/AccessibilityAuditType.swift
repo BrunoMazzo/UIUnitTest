@@ -60,3 +60,8 @@ public struct AccessibilityAuditRequest: Codable {
     public var serverId: UUID
     public var accessibilityAuditType: AccessibilityAuditType
 }
+
+
+public struct AccessibilityAuditResponse: Codable {
+    public var issues: [AccessibilityAuditIssue]
+}
