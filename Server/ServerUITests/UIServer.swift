@@ -1,4 +1,5 @@
 import FlyingFox
+import FlyingSocks
 import XCTest
 import Foundation
 import UIUnitTest
@@ -476,7 +477,10 @@ class UIServer {
     }
     
     func start(portIndex: UInt16 = 0) async throws {
-        let server = HTTPServer(address: .loopback(port: 22087 + portIndex))
+        let server = HTTPServer(
+            address: .loopback(port: 22087 + portIndex),
+            logger: DisabledLogger.disabled
+        )
         self.server = server
         
         await addRoute("createApp", handler: { (request: CreateApplicationRequest) in
