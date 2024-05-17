@@ -206,7 +206,7 @@ class ClientTests: XCTestCase {
         
         somethingButton.tap()
         
-        Assert(app.staticTexts["Something View"].waitForExistence(timeout: 2))
+        app.staticTexts["Something View"].assertElementExists(timeout: 2)
     }
     
     @MainActor
