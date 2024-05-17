@@ -104,7 +104,7 @@ class ClientTests: XCTestCase {
         
         showView(WaitForExistenceView())
         
-        try await Assert(app.staticTexts("Hello world!").exists() == false)
+        try await app.staticTexts("Hello world!").assertElementDoesntExists()
         
         try await app.buttons("Show Message").tap()
         
@@ -117,7 +117,7 @@ class ClientTests: XCTestCase {
         
         showView(PressAndHoldView())
         
-        try await Assert(app.staticTexts("Hello world!").exists() == false)
+        try await app.staticTexts("Hello world!").assertElementDoesntExists()
         
         try await app.staticTexts("Press and hold").assertElementExists().press(forDuration: 2.5)
         
@@ -286,7 +286,7 @@ class ClientTests: XCTestCase {
         
         showView(WaitForExistenceView())
         
-        Assert(app.staticTexts["Hello world!"].exists == false)
+        app.staticTexts["Hello world!"].assertElementDoesntExists()
         
         app.buttons["Show Message"].assertElementExists().tap()
         
@@ -299,7 +299,7 @@ class ClientTests: XCTestCase {
         
         showView(PressAndHoldView())
         
-        Assert(app.staticTexts["Hello world!"].exists == false)
+        app.staticTexts["Hello world!"].assertElementDoesntExists()
         
         app.staticTexts["Press and hold"].press(forDuration: 2.5)
         
