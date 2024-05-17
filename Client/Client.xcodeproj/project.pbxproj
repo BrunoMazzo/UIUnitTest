@@ -62,6 +62,7 @@
 		1DE0F34429C52D4E0044AFFC /* PinchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinchView.swift; sourceTree = "<group>"; };
 		1DE0F34729C533B00044AFFC /* RotateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateView.swift; sourceTree = "<group>"; };
 		1DE0F35229C58B310044AFFC /* LocalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DE1F7B52BF756BB00EBAAD8 /* ClientTests - Parallel.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ClientTests - Parallel.xctestplan"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +103,7 @@
 		1D136B6329B45A4600465FB6 = {
 			isa = PBXGroup;
 			children = (
+				1DE1F7B52BF756BB00EBAAD8 /* ClientTests - Parallel.xctestplan */,
 				1D2B65E62AF60B8900E5618D /* Client.xctestplan */,
 				1D01C92F29B9CC3600551803 /* Packages */,
 				1D136B6E29B45A4600465FB6 /* Client */,

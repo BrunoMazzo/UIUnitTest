@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "DB23238A-9E7B-4FB8-87FF-FC9C5A2FF9DF",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testRepetitionMode" : "retryOnFailure"
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "1D136B7C29B45A4600465FB6",
+        "name" : "ClientTests"
+      }
+    }
+  ],
+  "version" : 1
+}
