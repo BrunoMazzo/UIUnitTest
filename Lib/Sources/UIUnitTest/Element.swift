@@ -208,6 +208,7 @@ public enum SizeClass: Int, Codable {
 }
 
 extension Element {
+    @discardableResult
     public func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
         guard !self.exists else {
             return self

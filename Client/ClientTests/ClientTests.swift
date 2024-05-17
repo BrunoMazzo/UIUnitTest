@@ -44,6 +44,8 @@ class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
+        try await Assert(app.staticTexts("Double tap").waitForExistence(timeout: 1))
+        
         try await app.staticTexts("Double tap").doubleTap()
         
         try await Assert(app.staticTexts("Value: Double tap").waitForExistence(timeout: 1))
@@ -244,13 +246,13 @@ class ClientTests: XCTestCase {
         
         showView(MySettingTable())
         
-        app.buttons["TextField"].tap()
+        app.buttons["TextField"].assertElementExists().tap()
         
-        app.textFields["TextField-Default"].tap()
+        app.textFields["TextField-Default"].assertElementExists().tap()
         
         app.textFields["TextField-Default"].typeText("Hello world")
         
-        Assert(app.staticTexts["Text value: Hello world"].waitForExistence(timeout: 1))
+        app.staticTexts["Text value: Hello world"].assertElementExists()
     }
     
     @MainActor
@@ -259,32 +261,32 @@ class ClientTests: XCTestCase {
         
         showView(SwipeView())
         
-        Assert(app.staticTexts["Direction: No swipe detected"].exists)
+        app.staticTexts["Direction: No swipe detected"].assertElementExists()
         
         app.staticTexts["Swipe me"].swipeUp()
-        Assert(app.staticTexts["Direction: Up"].exists)
+        app.staticTexts["Direction: Up"].assertElementExists()
         
         app.staticTexts["Swipe me"].swipeDown()
-        Assert(app.staticTexts["Direction: Down"].exists)
+        app.staticTexts["Direction: Down"].assertElementExists()
         
         app.staticTexts["Swipe me"].swipeLeft()
-        Assert(app.staticTexts["Direction: Left"].exists)
+        app.staticTexts["Direction: Left"].assertElementExists()
         
         app.staticTexts["Swipe me"].swipeRight()
-        Assert(app.staticTexts["Direction: Right"].exists)
+        app.staticTexts["Direction: Right"].assertElementExists()
         
         app.staticTexts["Swipe me"].swipeUp(velocity: 100)
-        Assert(app.staticTexts["Direction: Up"].exists)
+        app.staticTexts["Direction: Up"].assertElementExists()
         
         app.staticTexts["Swipe me"].swipeDown(velocity: 100.5)
-        Assert(app.staticTexts["Direction: Down"].exists)
+        app.staticTexts["Direction: Down"].assertElementExists()
         
         let velocityCGFloat: CGFloat = 500
         app.staticTexts["Swipe me"].swipeLeft(velocity: GestureVelocity(velocityCGFloat))
-        Assert(app.staticTexts["Direction: Left"].exists)
+        app.staticTexts["Direction: Left"].assertElementExists()
         
         app.staticTexts["Swipe me"].swipeRight(velocity: 600)
-        Assert(app.staticTexts["Direction: Right"].exists)
+        app.staticTexts["Direction: Right"].assertElementExists()
     }
     
     @MainActor
@@ -295,9 +297,9 @@ class ClientTests: XCTestCase {
         
         Assert(app.staticTexts["Hello world!"].exists == false)
         
-        app.buttons["Show Message"].tap()
+        app.buttons["Show Message"].assertElementExists().tap()
         
-        Assert(app.staticTexts["Hello world!"].waitForExistence(timeout: 2))
+        app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
     }
     
     @MainActor
@@ -310,7 +312,7 @@ class ClientTests: XCTestCase {
         
         app.staticTexts["Press and hold"].press(forDuration: 2.5)
         
-        Assert(app.staticTexts["Hello world!"].exists)
+        app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
     }
     
     @MainActor
@@ -324,7 +326,7 @@ class ClientTests: XCTestCase {
         app.pressHomeButton()
         app.activate()
         
-        Assert(app.staticTexts["WasInBackground: true"].waitForExistence(timeout: 1))
+        app.staticTexts["WasInBackground: true"].assertElementExists()
     }
     
     @MainActor
@@ -337,7 +339,7 @@ class ClientTests: XCTestCase {
         
         app.otherElements["TwoFingersView"].twoFingerTap()
         
-        Assert(app.staticTexts["Two fingers tapped"].waitForExistence(timeout: 1))
+        app.staticTexts["Two fingers tapped"].assertElementExists()
     }
     
     @MainActor
@@ -346,9 +348,9 @@ class ClientTests: XCTestCase {
         
         showView(TapView())
         
-        app.otherElements["ThreeFingersView"].tap(withNumberOfTaps: 1, numberOfTouches: 3)
+        app.otherElements["ThreeFingersView"].assertElementExists().tap(withNumberOfTaps: 1, numberOfTouches: 3)
         
-        Assert(app.staticTexts["Three fingers tapped"].waitForExistence(timeout: 1))
+        app.staticTexts["Three fingers tapped"].assertElementExists()
     }
     
     @MainActor
@@ -361,7 +363,7 @@ class ClientTests: XCTestCase {
         
         app.staticTexts["PinchContainer"].pinch(withScale: 1.5, velocity: 1)
         
-        Assert(app.staticTexts["Did scale? Yes"].waitForExistence(timeout: 1))
+        app.staticTexts["Did scale? Yes"].assertElementExists()
     }
     
     @MainActor
@@ -370,11 +372,11 @@ class ClientTests: XCTestCase {
         
         showView(RotateView())
         
-        Assert(app.staticTexts["Did rotate? No"].exists)
+        app.staticTexts["Did rotate? No"].assertElementExists()
         
         app.staticTexts["Rotate me!"].rotate(0.2, withVelocity: 1)
         
-        Assert(app.staticTexts["Did rotate? Yes"].waitForExistence(timeout: 1))
+        app.staticTexts["Did rotate? Yes"].assertElementExists()
     }
     
     @MainActor
@@ -385,7 +387,7 @@ class ClientTests: XCTestCase {
         
         let somethingView = app.staticTexts.element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel"))
         
-        Assert(somethingView.exists)
+        somethingView.assertElementExists()
     }
     
     @MainActor
