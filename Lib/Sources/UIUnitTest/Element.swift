@@ -210,16 +210,23 @@ public enum SizeClass: Int, Codable {
 extension Element {
     
     @discardableResult
-    public func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
-        guard !self.exists else {
+    public func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) async throws -> Element {
+        guard (try? await self.exists()) ?? false else {
             return self
         }
         
-        if self.waitForExistence(timeout: timeout) {
+        if (try? await self.waitForExistence(timeout: timeout)) ?? false {
             return self
         } else {
             XCTFail(message ?? "Element \(self.identifier) doesn't exists", file: file, line: line)
             return self
         }
+    }
+    
+    @discardableResult
+    public func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
+        Executor.execute {
+            try await self.assertElementExists(message: message, timeout: timeout, file: file, line: line)
+        }.valueOrFailWithFallback(self)
     }
 }
