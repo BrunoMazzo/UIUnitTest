@@ -61,6 +61,13 @@ extension Element {
     }
     
     @available(*, noasync)
+    public func waitForNonExistence(timeout: TimeInterval) -> Bool {
+        Executor.execute {
+            try await self.waitForNonExistence(timeout: timeout)
+        }.valueOrFailWithFallback(false)
+    }
+    
+    @available(*, noasync)
     public var isHittable: Bool {
         Executor.execute {
             try await self.isHittable()

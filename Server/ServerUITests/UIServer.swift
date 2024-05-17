@@ -242,6 +242,17 @@ class UIServer {
     }
     
     @MainActor
+    func waitForNonExistence(request: WaitForExistenceRequest) async throws -> WaitForExistenceResponse {
+        let element = try await self.cache.getElement(request.serverId)
+        
+        let predicate = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: element)
+        
+        let result = await XCTWaiter().fulfillment(of: [predicate], timeout: request.timeout, enforceOrder: false)
+        
+        return WaitForExistenceResponse(elementExists: result != .completed)
+    }
+    
+    @MainActor
     func isHittable(request: ElementRequest) async throws -> IsHittableResponse {
         let isHittable = try await self.cache.getElement(request.serverId).isHittable
         return IsHittableResponse(isHittable: isHittable)
@@ -514,6 +525,7 @@ class UIServer {
         await addRoute("pinch", handler: self.pinch(request:))
         await addRoute("rotate", handler: self.rotate(request:))
         await addRoute("waitForExistence", handler: self.waitForExistence(request:))
+        await addRoute("waitForNonExistence", handler: self.waitForNonExistence(request:))
         
         await addRoute("HomeButton", handler: { (tapRequest: HomeButtonRequest) in
             XCUIDevice.shared.press(.home)

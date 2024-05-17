@@ -30,6 +30,12 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
         return response.elementExists
     }
     
+    public func waitForNonExistence(timeout: TimeInterval) async throws -> Bool {
+        let activateRequestData = WaitForExistenceRequest(serverId: serverId, timeout: timeout)
+        let response: WaitForExistenceResponse = try await callServer(path: "waitForNonExistence", request: activateRequestData)
+        return !response.elementExists
+    }
+    
     /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
     public func isHittable() async throws -> Bool  {
         let existsRequestData = ElementRequest(serverId: serverId)
@@ -211,7 +217,7 @@ extension Element {
     
     @discardableResult
     public func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) async throws -> Element {
-        guard (try? await self.exists()) ?? false else {
+        if (try? await self.exists()) ?? false {
             return self
         }
         
@@ -227,6 +233,27 @@ extension Element {
     public func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
         Executor.execute {
             try await self.assertElementExists(message: message, timeout: timeout, file: file, line: line)
+        }.valueOrFailWithFallback(self)
+    }
+    
+    @discardableResult
+    public func assertElementDoesntExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) async throws -> Element {
+        if (try? await !self.exists()) ?? false {
+            return self
+        }
+        
+        if (try? await self.waitForNonExistence(timeout: timeout)) ?? false {
+            return self
+        } else {
+            XCTFail(message ?? "Element \(self.identifier) exists", file: file, line: line)
+            return self
+        }
+    }
+    
+    @discardableResult
+    public func assertElementDoesntExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
+        Executor.execute {
+            try await self.assertElementDoesntExists(message: message, timeout: timeout, file: file, line: line)
         }.valueOrFailWithFallback(self)
     }
 }

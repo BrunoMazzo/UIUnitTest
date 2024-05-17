@@ -20,7 +20,7 @@ class ClientTests: XCTestCase {
         
         try await somethingButton.tap()
         
-        try await Assert(app.staticTexts("Something View").waitForExistence(timeout: 1))
+        try await app.staticTexts("Something View").assertElementExists()
     }
     
     @MainActor
