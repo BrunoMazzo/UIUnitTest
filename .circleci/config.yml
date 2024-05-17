@@ -11,6 +11,10 @@ jobs: # a basic unit of work in a run
     steps: # a series of commands to run
       - checkout  # pull down code from your version control system.
       - run: brew install xcbeautify
+      - macos/preboot-simulator:
+          version: "17.4"
+          platform: "iOS"
+          device: "iPhone 15"
       - run:
           name: Run Unit Tests
           command: set -o pipefail && xcodebuild -project Client/Client.xcodeproj -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4' | xcbeautify --report junit
@@ -24,6 +28,10 @@ jobs: # a basic unit of work in a run
     steps: # a series of commands to run
       - checkout  # pull down code from your version control system.
       - run: brew install xcbeautify
+      - macos/preboot-simulator:
+          version: "17.4"
+          platform: "iOS"
+          device: "iPhone 15"
       - run:
           name: Run Unit Tests
           command: NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj -scheme "ClientTests - Parallel" test -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.4' -parallel-testing-enabled YES -parallel-testing-worker-count 2 2>&1 | xcbeautify --report junit
