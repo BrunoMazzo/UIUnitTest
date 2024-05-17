@@ -2,6 +2,8 @@
 # This is a generic template to serve as a base for your custom config
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
+orbs:
+  macos: circleci/macos@2.5.1
 jobs: # a basic unit of work in a run
   test: # your job name
     macos:
