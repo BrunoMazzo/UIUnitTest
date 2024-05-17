@@ -73,7 +73,9 @@ public class App: Element {
     @available(iOS 17.0, *)
     public func performAccessibilityAudit(
         for auditTypes: AccessibilityAuditType = .all,
-        _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil
+        _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil,
+        file: StaticString = #filePath,
+        line: UInt = #line
     ) async throws {
         let accessibilityAuditRequest = AccessibilityAuditRequest(serverId: self.serverId, accessibilityAuditType: auditTypes)
         
@@ -83,10 +85,10 @@ public class App: Element {
             do {
                 let ignore = try issueHandler?(issue) ?? false
                 if !ignore {
-                    XCTFail(issue.compactDescription)
+                    XCTFail(issue.compactDescription, file: file, line: line)
                 }
             } catch {
-                XCTFail(issue.compactDescription)
+                XCTFail(issue.compactDescription, file: file, line: line)
             }
         }
     }
@@ -94,10 +96,12 @@ public class App: Element {
     @available(iOS 17.0, *)
     public func performAccessibilityAudit(
         for auditTypes: AccessibilityAuditType = .all,
-        _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil
+        _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil,
+        file: StaticString = #filePath,
+        line: UInt = #line
     ) throws {
         Executor.execute {
-            try await self.performAccessibilityAudit(for: auditTypes, issueHandler)
+            try await self.performAccessibilityAudit(for: auditTypes, issueHandler, file: file, line: line)
         }.valueOrFailWithFallback(())
     }
 }

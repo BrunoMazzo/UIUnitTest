@@ -224,7 +224,7 @@ class ClientTests: XCTestCase {
         
         app.buttons["Hello world button"].tap()
         
-        Assert(app.staticTexts["Value: Hello world"].exists)
+        app.staticTexts["Value: Hello world"].assertElementExists()
     }
     
     @MainActor
@@ -321,7 +321,7 @@ class ClientTests: XCTestCase {
         
         showView(GoToBackgroundAndBackView())
         
-        Assert(app.staticTexts["WasInBackground: false"].exists)
+        app.staticTexts["WasInBackground: false"].assertElementExists()
         
         app.pressHomeButton()
         app.activate()
@@ -335,9 +335,9 @@ class ClientTests: XCTestCase {
         
         showView(TapView())
         
-        Assert(app.otherElements["TwoFingersView"].exists)
-        
-        app.otherElements["TwoFingersView"].twoFingerTap()
+        app.otherElements["TwoFingersView"]
+            .assertElementExists()
+            .twoFingerTap()
         
         app.staticTexts["Two fingers tapped"].assertElementExists()
     }
@@ -359,9 +359,11 @@ class ClientTests: XCTestCase {
         
         showView(PinchView())
         
-        Assert(app.staticTexts["Did scale? No"].exists)
+        app.staticTexts["Did scale? No"].assertElementExists()
         
-        app.staticTexts["PinchContainer"].pinch(withScale: 1.5, velocity: 1)
+        app.staticTexts["PinchContainer"]
+            .assertElementExists()
+            .pinch(withScale: 1.5, velocity: 1)
         
         app.staticTexts["Did scale? Yes"].assertElementExists()
     }
@@ -374,7 +376,9 @@ class ClientTests: XCTestCase {
         
         app.staticTexts["Did rotate? No"].assertElementExists()
         
-        app.staticTexts["Rotate me!"].rotate(0.2, withVelocity: 1)
+        app.staticTexts["Rotate me!"]
+            .assertElementExists()
+            .rotate(0.2, withVelocity: 1)
         
         app.staticTexts["Did rotate? Yes"].assertElementExists()
     }
