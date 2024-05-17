@@ -1,4 +1,5 @@
 import Foundation
+import XCTest
 
 public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     
@@ -204,4 +205,19 @@ public enum SizeClass: Int, Codable {
     case unspecified = 0
     case compact     = 1
     case regular     = 2
+}
+
+extension Element {
+    public func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
+        guard !self.exists else {
+            return self
+        }
+        
+        if self.waitForExistence(timeout: timeout) {
+            return self
+        } else {
+            XCTFail(message ?? "Element \(self.identifier) doesn't exists", file: file, line: line)
+            return self
+        }
+    }
 }
