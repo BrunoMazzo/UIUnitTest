@@ -25,8 +25,11 @@ jobs: # a basic unit of work in a run
       - store_artifacts:
           path: Client/.uiUnitTest/Logs
           destination: UIUnitTestLogs
+      - run:
+          name: Compress XCResult
+          command: tar -cvzf test-result.tar test-result.xcresult
       - store_artifacts:
-          path: test-result.xcresult
+          path: test-result.tar
           destination: Tests-results.xcresult
       - store_artifacts:
           path: build/reports/junit.xml
@@ -51,9 +54,12 @@ jobs: # a basic unit of work in a run
       - store_artifacts:
           path: Client/.uiUnitTest/Logs
           destination: Parallel-UIUnitTestLogs
+      - run:
+          name: Compress XCResult
+          command: tar -cvzf test-result.tar test-result.xcresult
       - store_artifacts:
-          path: test-result.xcresult
-          destination: Parallel-tests-results.xcresult
+          path: test-result.tar
+          destination: Parallel-tests-results
       - store_artifacts:
           path: build/reports/junit.xml
           destination: Parallel-jUnit-tests-results.xml
