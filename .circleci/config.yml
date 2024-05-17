@@ -30,7 +30,7 @@ jobs: # a basic unit of work in a run
           command: tar -cvzf test-result.tar test-result.xcresult
       - store_artifacts:
           path: test-result.tar
-          destination: Tests-results.xcresult
+          destination: Tests-results
       - store_artifacts:
           path: build/reports/junit.xml
           destination: jUnit-tests-results.xml
