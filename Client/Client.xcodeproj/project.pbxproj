@@ -695,7 +695,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
 			requirement = {
-				branch = "accessibility-audit";
+				branch = main;
 				kind = branch;
 			};
 		};

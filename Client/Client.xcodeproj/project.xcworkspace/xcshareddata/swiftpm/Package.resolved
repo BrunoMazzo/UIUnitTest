@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
       "state" : {
-        "branch" : "accessibility-audit",
-        "revision" : "68a97f12eae4da0a11e1f808f8e2f794f0cd0798"
+        "branch" : "main",
+        "revision" : "e46bcbdfd212c45932d24dc6bec47bc52e85b65a"
       }
     }
   ],
