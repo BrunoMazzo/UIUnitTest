@@ -68,7 +68,6 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         
         await withTaskGroup(of: Void.self) { group in
             for device in devices {
-                
                 group.addTask {
                     guard await !device.isServerRunning() else {
                         return
@@ -91,9 +90,9 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
                     await device.launchUIServer()
                     await device.waitForServerToStart()
                 }
-                
-                await group.waitForAll()
             }
+            
+            await group.waitForAll()
         }
         
         

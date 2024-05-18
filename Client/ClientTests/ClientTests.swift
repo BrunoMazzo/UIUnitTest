@@ -5,7 +5,6 @@ import UIUnitTest
 class ClientTests: XCTestCase {
     
     override func setUp() async throws {
-        self.continueAfterFailure = false
         await UIView.setAnimationsEnabled(false)
     }
 
