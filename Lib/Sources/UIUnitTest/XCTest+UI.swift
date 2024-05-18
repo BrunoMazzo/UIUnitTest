@@ -26,4 +26,3 @@ private func getKeyWindow() -> UIWindow {
         }
     }.first!
 }
-

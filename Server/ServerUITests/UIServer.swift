@@ -1,4 +1,5 @@
 import FlyingFox
+import FlyingSocks
 import XCTest
 import Foundation
 import UIUnitTest
@@ -6,7 +7,7 @@ import UIUnitTest
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
 
-struct ApplicationNotFoundError: Error, LocalizedError {    
+struct ApplicationNotFoundError: Error, LocalizedError {
     var serverId: String
     
     var errorDescription: String? {
@@ -52,6 +53,27 @@ class UIServer {
     var server: HTTPServer!
     
     let cache = Cache()
+    
+    @MainActor
+    func performAccessibilityAudit(
+        request: AccessibilityAuditRequest
+    ) async throws -> AccessibilityAuditResponse {
+        
+        let app = try await self.cache.getApplication(request.serverId)
+        
+        if #available(iOS 17.0, *) {
+            var issues = [XCUIAccessibilityAuditIssue]()
+            try app.performAccessibilityAudit(for: request.accessibilityAuditType.toXCUIAccessibilityAuditType()) { issue in
+                issues.append(issue)
+                return true
+            }
+            
+            return await AccessibilityAuditResponse(issues: issues.asyncMap ({ await AccessibilityAuditIssue(xcIssue: $0, cache: cache)}))
+        } else {
+            // Fallback on earlier versions
+            throw NSError(domain: "com.apple.XCTest", code: 0, userInfo: nil)
+        }
+    }
     
     @MainActor
     func firstMatch(firstMatchRequest: FirstMatchRequest) async throws -> FirstMatchResponse {
@@ -217,6 +239,17 @@ class UIServer {
         let exists = element.waitForExistence(timeout: request.timeout)
         
         return WaitForExistenceResponse(elementExists: exists)
+    }
+    
+    @MainActor
+    func waitForNonExistence(request: WaitForExistenceRequest) async throws -> WaitForExistenceResponse {
+        let element = try await self.cache.getElement(request.serverId)
+        
+        let predicate = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: element)
+        
+        let result = await XCTWaiter().fulfillment(of: [predicate], timeout: request.timeout, enforceOrder: false)
+        
+        return WaitForExistenceResponse(elementExists: result != .completed)
     }
     
     @MainActor
@@ -455,7 +488,10 @@ class UIServer {
     }
     
     func start(portIndex: UInt16 = 0) async throws {
-        let server = HTTPServer(address: .loopback(port: 22087 + portIndex))
+        let server = HTTPServer(
+            address: .loopback(port: 22087 + portIndex),
+            logger: DisabledLogger.disabled
+        )
         self.server = server
         
         await addRoute("createApp", handler: { (request: CreateApplicationRequest) in
@@ -489,6 +525,7 @@ class UIServer {
         await addRoute("pinch", handler: self.pinch(request:))
         await addRoute("rotate", handler: self.rotate(request:))
         await addRoute("waitForExistence", handler: self.waitForExistence(request:))
+        await addRoute("waitForNonExistence", handler: self.waitForNonExistence(request:))
         
         await addRoute("HomeButton", handler: { (tapRequest: HomeButtonRequest) in
             XCUIDevice.shared.press(.home)
@@ -523,6 +560,8 @@ class UIServer {
         await addRoute("horizontalSizeClass", handler: self.horizontalSizeClass(request:))
         await addRoute("verticalSizeClass", handler: self.verticalSizeClass(request:))
         await addRoute("elementType", handler: self.elementType(request:))
+        
+        await addRoute("performAccessibilityAudit", handler: self.performAccessibilityAudit(request:))
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler({ request in
             Task {
@@ -791,7 +830,50 @@ public extension GestureVelocity {
         case .default:
             return .default
         case .custom(let value):
-            return XCUIGestureVelocity(rawValue: value) 
+            return XCUIGestureVelocity(rawValue: value)
         }
+    }
+}
+
+extension AccessibilityAuditType {
+    @available(iOS 17.0, *)
+    func toXCUIAccessibilityAuditType() -> XCUIAccessibilityAuditType {
+        return XCUIAccessibilityAuditType(rawValue: self.rawValue)
+    }
+    
+    @available(iOS 17.0, *)
+    public init(xcType: XCUIAccessibilityAuditType) {
+        self.init(rawValue: xcType.rawValue)
+    }
+}
+
+extension AccessibilityAuditIssue {
+    @available(iOS 17.0, *)
+    convenience init(xcIssue: XCUIAccessibilityAuditIssue, cache: Cache) async {
+        var elementId: UUID? = nil
+        if let element = xcIssue.element {
+            elementId = await cache.add(element: element)
+        }
+        self.init(
+            element: elementId,
+            compactDescription: xcIssue.compactDescription,
+            detailedDescription: xcIssue.detailedDescription,
+            auditType: AccessibilityAuditType(xcType: xcIssue.auditType)
+        )
+    }
+}
+
+
+extension Sequence {
+    func asyncMap<T>(
+        _ transform: (Element) async throws -> T
+    ) async rethrows -> [T] {
+        var values = [T]()
+        
+        for element in self {
+            try await values.append(transform(element))
+        }
+        
+        return values
     }
 }

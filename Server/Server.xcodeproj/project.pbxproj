@@ -37,6 +37,7 @@
 		1DA1934429B4260600322869 /* ServerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ServerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DA1935729B4267200322869 /* UIServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIServer.swift; sourceTree = "<group>"; };
 		1DA1935829B4267200322869 /* UITestServerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestServerTest.swift; sourceTree = "<group>"; };
+		1DF4DBFD2BF60A100025FC8E /* ServerUITests - Debug.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ServerUITests - Debug.xctestplan"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +70,7 @@
 		1DA1932029B4260500322869 = {
 			isa = PBXGroup;
 			children = (
+				1DF4DBFD2BF60A100025FC8E /* ServerUITests - Debug.xctestplan */,
 				1D52DE1B29C6B97F00B17758 /* Packages */,
 				1DA1932B29B4260500322869 /* Server */,
 				1DA1934729B4260600322869 /* ServerUITests */,
@@ -167,7 +169,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					1DA1932829B4260500322869 = {
 						CreatedOnToolsVersion = 14.2;
@@ -285,6 +287,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -344,6 +347,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -368,7 +372,7 @@
 				CODE_SIGN_ENTITLEMENTS = Server/Server.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -413,7 +417,7 @@
 				CODE_SIGN_ENTITLEMENTS = Server/Server.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -544,7 +548,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
 			requirement = {
-				branch = main;
+				branch = "accessibility-audit";
 				kind = branch;
 			};
 		};

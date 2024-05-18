@@ -31,7 +31,7 @@ public class App: Element {
     public func pressHomeButton() {
         Executor.execute {
             try await self.pressHomeButton()
-        }
+        }.valueOrFailWithFallback(())
     }
     
     public func activate() async throws {
@@ -44,7 +44,7 @@ public class App: Element {
     public func activate() {
         Executor.execute {
             try await self.activate()
-        }
+        }.valueOrFailWithFallback(())
     }
     
     private func create(activate: Bool, timeout: TimeInterval = 30_000_000_000) async throws {
@@ -67,7 +67,42 @@ public class App: Element {
     public func create(activate: Bool) {
         Executor.execute {
             try await self.create(activate: activate)
+        }.valueOrFailWithFallback(())
+    }
+    
+    @available(iOS 17.0, *)
+    public func performAccessibilityAudit(
+        for auditTypes: AccessibilityAuditType = .all,
+        _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async throws {
+        let accessibilityAuditRequest = AccessibilityAuditRequest(serverId: self.serverId, accessibilityAuditType: auditTypes)
+        
+        let response: AccessibilityAuditResponse = try await callServer(path: "performAccessibilityAudit", request: accessibilityAuditRequest)
+        
+        for issue in response.issues {
+            do {
+                let ignore = try issueHandler?(issue) ?? false
+                if !ignore {
+                    XCTFail(issue.compactDescription, file: file, line: line)
+                }
+            } catch {
+                XCTFail(issue.compactDescription, file: file, line: line)
+            }
         }
+    }
+    
+    @available(iOS 17.0, *)
+    public func performAccessibilityAudit(
+        for auditTypes: AccessibilityAuditType = .all,
+        _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) throws {
+        Executor.execute {
+            try await self.performAccessibilityAudit(for: auditTypes, issueHandler, file: file, line: line)
+        }.valueOrFailWithFallback(())
     }
 }
 
@@ -92,7 +127,6 @@ public struct ActivateRequest: Codable {
         self.serverId = serverId
     }
 }
-
 
 public struct HomeButtonRequest: Codable {
     
