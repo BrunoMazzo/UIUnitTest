@@ -132,6 +132,28 @@ public final class Query: ElementTypeQueryProvider, Sendable {
             try await self.descendants(matching: elementType)
         }.valueOrFailWithFallback(.EmptyQuery)
     }
+    
+    public func any() async throws -> Query {
+        try await self.descendants(matching: .any)
+    }
+    
+    @available(*, noasync)
+    public func any() -> Query {
+        Executor.execute {
+            try await self.descendants(matching: .any)
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+    
+    public func any(_ identifier: String) async throws -> Element {
+        try await self.descendants(matching: .any)(identifier: identifier)
+    }
+    
+    @available(*, noasync)
+    public func any(_ identifier: String) -> Element {
+        Executor.execute {
+            try await self.descendants(matching: .any)(identifier: identifier)
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
 
     public func children(matching type: Element.ElementType) async throws -> Query {
         let request = ChildrenMatchinType(serverId: self.serverId, elementType: type)
