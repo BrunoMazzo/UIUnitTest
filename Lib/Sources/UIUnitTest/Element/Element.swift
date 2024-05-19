@@ -116,7 +116,7 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     @available(*, noasync)
     public func any() -> Query {
         Executor.execute {
-            try await self.descendants(matching: .any)
+            try await self.any()
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
@@ -127,7 +127,7 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     @available(*, noasync)
     public func any(_ identifier: String) -> Element {
         Executor.execute {
-            try await self.descendants(matching: .any)(identifier: identifier)
+            try await self.any(identifier)
         }.valueOrFailWithFallback(.EmptyElement)
     }
 }
