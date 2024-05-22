@@ -108,6 +108,28 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     public func elementType() async throws -> ElementType  {
         return try await callServer(path: "elementType", request: ElementRequest(serverId: self.serverId))
     }
+    
+    public func any() async throws -> Query {
+        try await self.descendants(matching: .any)
+    }
+    
+    @available(*, noasync)
+    public func any() -> Query {
+        Executor.execute {
+            try await self.any()
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+    
+    public func any(_ identifier: String) async throws -> Element {
+        try await self.descendants(matching: .any)(identifier: identifier)
+    }
+    
+    @available(*, noasync)
+    public func any(_ identifier: String) -> Element {
+        Executor.execute {
+            try await self.any(identifier)
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
 }
 
 public struct ScrollRequest: Codable {
