@@ -3,7 +3,7 @@ import XCTest
 
 public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     
-    static var EmptyElement = Element(serverId: .zero)
+    public static var EmptyElement = Element(serverId: .zero)
     
     public let serverId: UUID
     

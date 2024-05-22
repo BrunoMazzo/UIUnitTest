@@ -2,7 +2,7 @@ import Foundation
 
 public final class Query: ElementTypeQueryProvider, Sendable {
     
-    static var EmptyQuery = Query(serverId: UUID.zero)
+    public static var EmptyQuery = Query(serverId: UUID.zero)
     
     public let serverId: UUID
     
