@@ -37,7 +37,7 @@ public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable {
 public class AccessibilityAuditIssue: Codable {
     
     /// The element associated with the issue.
-    public var element: UUID?
+    public var element: Element?
 
     /// A short description about the issue.
     public var compactDescription: String
@@ -49,10 +49,43 @@ public class AccessibilityAuditIssue: Codable {
     public var auditType: AccessibilityAuditType
     
     public init(element: UUID? = nil, compactDescription: String, detailedDescription: String, auditType: AccessibilityAuditType) {
-        self.element = element
+        if let element = element {
+            self.element = Element(serverId: element)
+        } else {
+            self.element = nil
+        }
+        
         self.compactDescription = compactDescription
         self.detailedDescription = detailedDescription
         self.auditType = auditType
+    }
+    
+    enum CodingKeys: CodingKey {
+        case element
+        case compactDescription
+        case detailedDescription
+        case auditType
+    }
+    
+    public required init(from decoder: any Decoder) throws {
+        var container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if let element = try container.decodeIfPresent(UUID.self, forKey: .element) {
+            self.element = Element(serverId: element)
+        }
+        
+        self.compactDescription = try container.decode(String.self, forKey: .compactDescription)
+        self.detailedDescription = try container.decode(String.self, forKey: .detailedDescription)
+        self.auditType = try container.decode(AccessibilityAuditType.self, forKey: .auditType)
+    }
+    
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encodeIfPresent(element?.serverId, forKey: .element)
+        try container.encode(compactDescription, forKey: .compactDescription)
+        try container.encode(detailedDescription, forKey: .detailedDescription)
+        try container.encode(auditType, forKey: .auditType)
     }
 }
 
