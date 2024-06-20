@@ -26,14 +26,14 @@ public struct Executor: @unchecked Sendable {
         let semaphore = DispatchSemaphore(value: 0)
     
         Task { @UIUnitTestActor in
-            defer {
-                semaphore.signal()
-            }
+            // Defer is not working, need to investigate later 
             do {
                 self.box.value = try await block()
                 self.box.success = true
+                semaphore.signal()
             } catch {
                 self.box.value = error
+                semaphore.signal()
             }
         }
         
