@@ -17,13 +17,14 @@ func deviceId() -> Int {
     return deviceId
 }
 
+@MainActor
 internal func callServer<RequestData: Codable, ResponseData: Codable>(
     path: String,
     request: RequestData
 ) async throws -> ResponseData {
     let encoder = JSONEncoder()
     
-    let port = await 22087 + deviceId()
+    let port = 22087 + deviceId()
     
     let activateUrl = URL(string: "http://localhost:\(port)/\(path)")!
     var activateRequest = URLRequest(url: activateUrl)
