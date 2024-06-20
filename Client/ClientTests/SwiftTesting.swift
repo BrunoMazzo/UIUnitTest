@@ -1,29 +1,32 @@
-import Testing
-import XCTest
+@_spi(ForToolsIntegrationOnly) import Testing
 import UIUnitTest
+import UIKit
 @testable import Client
 
-class ClientTests: XCTestCase {
+@MainActor
+@Suite(.uiTest)
+final class SwiftTesting {
     
-    override func setUp() async throws {
-        await UIView.setAnimationsEnabled(false)
+    init() {
+        UIView.setAnimationsEnabled(false)
     }
-
-    @MainActor
+    
+    @Test
     func testTap() async throws {
         let app = try await App()
         
         showView(MySettingTable())
         
         let somethingButton = try await app.buttons("Something")
-        try await Assert(somethingButton.isHittable())
+        
+        #expect(try await somethingButton.isHittable())
         
         try await somethingButton.tap()
         
         try await app.staticTexts("Something View").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testExists() async throws {
         let app = try await App()
         
@@ -31,14 +34,14 @@ class ClientTests: XCTestCase {
         
         try await app.staticTexts("Hello world button").assertElementExists()
         
-        try await Assert(app.staticTexts("Hello world button").isHittable())
+        #expect(try await app.staticTexts("Hello world button").isHittable())
         
         try await app.buttons("Hello world button").tap()
-
+        
         try await app.staticTexts("Value: Hello world").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testDoubleTap() async throws {
         let app = try await App()
         
@@ -49,7 +52,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Value: Double tap").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testEnterText() async throws {
         let app = try await App()
         
@@ -64,7 +67,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Text value: Hello world").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testSwipeActions() async throws {
         let app = try await App()
         
@@ -98,7 +101,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Direction: Right").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testWaitForExistence() async throws {
         let app = try await App()
         
@@ -111,7 +114,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Hello world!").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testPressWithDuration() async throws {
         let app = try await App()
         
@@ -123,8 +126,8 @@ class ClientTests: XCTestCase {
         
         try await app.staticTexts("Hello world!").assertElementExists()
     }
-
-    @MainActor
+    
+    @Test
     func testHomeButtonAndLaunch() async throws {
         let app = try await App()
         
@@ -138,7 +141,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("WasInBackground: true").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testTwoFingerTap() async throws {
         let app = try await App()
         
@@ -149,7 +152,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Two fingers tapped").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testThreeFingerTap() async throws {
         let app = try await App()
         
@@ -160,7 +163,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Three fingers tapped").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testPinch() async throws {
         let app = try await App()
         
@@ -173,7 +176,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Did scale? Yes").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testRotate() async throws {
         let app = try await App()
         
@@ -186,7 +189,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Did rotate? Yes").assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testMatchingWithPredicate() async throws {
         let app = try await App()
         
@@ -195,7 +198,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts().element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel")).assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testTapSync() {
         let app = App()
         
@@ -209,7 +212,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Something View"].assertElementExists(timeout: 2)
     }
     
-    @MainActor
+    @Test
     func testExistsSync() {
         let app = App()
         
@@ -220,7 +223,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Value: Hello world"].assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testDoubleTapSync() {
         let app = App()
         
@@ -231,7 +234,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Value: Double tap"].assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testEnterTextSync() {
         let app = App()
         
@@ -246,7 +249,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Text value: Hello world"].assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testSwipeActionsSync() {
         let app = App()
         
@@ -280,7 +283,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Direction: Right"].assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testWaitForExistenceSync() {
         let app = App()
         
@@ -293,7 +296,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
     }
     
-    @MainActor
+    @Test
     func testPressWithDurationSync() {
         let app = App()
         
@@ -306,7 +309,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
     }
     
-    @MainActor
+    @Test
     func testHomeButtonAndLaunchSync() {
         let app = App()
         
@@ -320,7 +323,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["WasInBackground: true"].assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testTwoFingerTapSync() {
         let app = App()
         
@@ -333,7 +336,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Two fingers tapped"].assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testThreeFingerTapSync() {
         let app = App()
         
@@ -344,7 +347,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Three fingers tapped"].assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testPinchSync() {
         let app = App()
         
@@ -359,7 +362,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Did scale? Yes"].assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testRotateSync() {
         let app = App()
         
@@ -374,7 +377,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Did rotate? Yes"].assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testMatchingWithPredicateAsync() {
         let app = App()
         
@@ -385,35 +388,38 @@ class ClientTests: XCTestCase {
         somethingView.assertElementExists()
     }
     
-    @MainActor
+    @Test
     func testEnterTestOnWrongElementFails() {
-        XCTExpectFailure("Expecting failure when attempting to type text into a non-text field element.")
-        
-        let app = App()
-        
-        showView(WaitForExistenceView())
-        
-        app.buttons["Show Message"].typeText("Hello world")
+        withKnownIssue {
+            let app = App()
+            
+            showView(WaitForExistenceView())
+            
+            app.buttons["Show Message"].typeText("Hello world")
+        }
     }
     
     @available(iOS 17.0, *)
-    @MainActor
+    @Test
     func testAccessibilityInspection() throws {
-        XCTExpectFailure("Expecting failure when performing an accessibility audit")
-        
-        let app = App()
-        
-        showView(AccessibilityAuditView())
-        
-        try app.performAccessibilityAudit()
+        withKnownIssue {
+            let app = App()
+            
+            showView(AccessibilityAuditView())
+            
+            try app.performAccessibilityAudit()
+        }
     }
 }
 
-// Two classes to run in parallel using two simulators
-class ClientTests2: ClientTests { }
-class ClientTests3: ClientTests { }
-class ClientTests4: ClientTests { }
-
-public func Assert(_ value: Bool, _ message: @Sendable @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) {
-    XCTAssert(value, message(), file: file, line: line)
+// MARK: -
+extension Trait where Self == ParallelizationTrait {
+    /// A trait that serializes the test to which it is applied.
+    ///
+    /// ## See Also
+    ///
+    /// - ``ParallelizationTrait``
+    public static var uiTest: Self {
+        .serialized
+    }
 }

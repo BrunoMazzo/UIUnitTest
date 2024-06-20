@@ -15,13 +15,13 @@ public struct UIUnitTestActor {
 public struct Executor: @unchecked Sendable {
     private var box = Box()
     
-    public static func execute<T>(function: String = #function, _ block: @escaping () async throws -> T) -> Result<T, Error> {
+    public static func execute<T: Sendable>(function: String = #function, _ block: @escaping @Sendable () async throws -> T) -> Result<T, Error> {
         let executor = Executor()
         return executor.execute(function: function, block)
     }
     
     // TODO: Think about a better way to handle errors. Maybe just fail the test?
-    func execute<T>(function: String = #function, _ block: @escaping () async throws -> T) -> Result<T, Error> {
+    func execute<T: Sendable>(function: String = #function, _ block: @escaping @Sendable () async throws -> T) -> Result<T, Error> {
         let expectation = XCTestExpectation(description: function)
         Task { @UIUnitTestActor in
             defer {

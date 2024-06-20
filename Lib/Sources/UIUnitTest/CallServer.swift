@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 
+@MainActor
 func deviceId() -> Int {
     let deviceName = UIDevice.current.name
     
@@ -22,7 +23,7 @@ internal func callServer<RequestData: Codable, ResponseData: Codable>(
 ) async throws -> ResponseData {
     let encoder = JSONEncoder()
     
-    let port = 22087 + deviceId()
+    let port = await 22087 + deviceId()
     
     let activateUrl = URL(string: "http://localhost:\(port)/\(path)")!
     var activateRequest = URLRequest(url: activateUrl)

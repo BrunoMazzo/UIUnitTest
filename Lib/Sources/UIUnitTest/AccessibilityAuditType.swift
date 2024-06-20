@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable {
+public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable, Sendable {
     
     public var rawValue: UInt64
     
@@ -34,7 +34,7 @@ public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable {
     public static let all                          = AccessibilityAuditType(rawValue: ~0)
 }
 
-public class AccessibilityAuditIssue: Codable {
+public struct AccessibilityAuditIssue: Codable, Sendable {
     
     /// The element associated with the issue.
     public var element: Element?
@@ -67,8 +67,8 @@ public class AccessibilityAuditIssue: Codable {
         case auditType
     }
     
-    public required init(from decoder: any Decoder) throws {
-        var container = try decoder.container(keyedBy: CodingKeys.self)
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
         
         if let element = try container.decodeIfPresent(UUID.self, forKey: .element) {
             self.element = Element(serverId: element)
@@ -89,13 +89,13 @@ public class AccessibilityAuditIssue: Codable {
     }
 }
 
-public struct AccessibilityAuditRequest: Codable {
+public struct AccessibilityAuditRequest: Codable, Sendable {
     public var serverId: UUID
     public var accessibilityAuditType: AccessibilityAuditType
 }
 
 
-public struct AccessibilityAuditResponse: Codable {
+public struct AccessibilityAuditResponse: Codable, Sendable {
     public var issues: [AccessibilityAuditIssue]
     
     public init(issues: [AccessibilityAuditIssue]) {

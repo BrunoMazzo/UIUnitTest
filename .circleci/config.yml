@@ -74,7 +74,7 @@ jobs: # a basic unit of work in a run
           destination: Parallel-tests-results
       - store_artifacts:
           path: build/reports/junit.xml
-          destination: Parallel-jUnit-tests-results.xml
+          destination: Parallel-jUnit-tests-results.xml 
 
 workflows:
   tests:

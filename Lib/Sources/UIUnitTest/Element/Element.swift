@@ -3,7 +3,7 @@ import XCTest
 
 public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     
-    public static var EmptyElement = Element(serverId: .zero)
+    public static let EmptyElement = Element(serverId: .zero)
     
     public let serverId: UUID
     
@@ -132,7 +132,7 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     }
 }
 
-public struct ScrollRequest: Codable {
+public struct ScrollRequest: Codable, Sendable {
     public var serverId: UUID
     public var deltaX: CGFloat
     public var deltaY: CGFloat
@@ -144,12 +144,12 @@ public struct ScrollRequest: Codable {
     }
 }
 
-public struct ByIdRequest: Codable {
+public struct ByIdRequest: Codable, Sendable {
     public var queryRoot: UUID
     public var identifier: String
 }
 
-public struct ElementResponse: Codable {
+public struct ElementResponse: Codable, Sendable {
     public var serverId: UUID
     
     public init(serverId: UUID) {
@@ -157,7 +157,7 @@ public struct ElementResponse: Codable {
     }
 }
 
-public struct ElementArrayResponse: Codable {
+public struct ElementArrayResponse: Codable, Sendable {
     public var serversId: [UUID]
     
     public init(serversId: [UUID]) {
@@ -165,11 +165,11 @@ public struct ElementArrayResponse: Codable {
     }
 }
 
-public struct RemoveServerItemRequest: Codable {
+public struct RemoveServerItemRequest: Codable, Sendable {
     public var serverId: UUID
 }
 
-public struct WaitForExistenceRequest: Codable {
+public struct WaitForExistenceRequest: Codable, Sendable {
     
     public var serverId: UUID
     public var timeout: TimeInterval
@@ -180,7 +180,7 @@ public struct WaitForExistenceRequest: Codable {
     }
 }
 
-public struct WaitForExistenceResponse: Codable {
+public struct WaitForExistenceResponse: Codable, Sendable {
     public var elementExists: Bool
     
     public init(elementExists: Bool) {
@@ -188,7 +188,7 @@ public struct WaitForExistenceResponse: Codable {
     }
 }
 
-public struct ElementTypeRequest: Codable {
+public struct ElementTypeRequest: Codable, Sendable {
     public let serverId: UUID
     public let elementType: Element.ElementType
     public let identifier: String?
@@ -200,7 +200,7 @@ public struct ElementTypeRequest: Codable {
     }
 }
 
-public struct ChildrenMatchinType: Codable {
+public struct ChildrenMatchinType: Codable, Sendable {
     public let serverId: UUID
     public let elementType: Element.ElementType
     
@@ -210,7 +210,7 @@ public struct ChildrenMatchinType: Codable {
     }
 }
 
-public enum SizeClass: Int, Codable {
+public enum SizeClass: Int, Codable, Sendable {
     case unspecified = 0
     case compact     = 1
     case regular     = 2

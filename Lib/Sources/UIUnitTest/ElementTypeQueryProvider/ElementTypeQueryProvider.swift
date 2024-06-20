@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol ElementTypeQueryProvider {
+public protocol ElementTypeQueryProvider: Sendable {
     var serverId: UUID { get }
 }
 
@@ -647,7 +647,7 @@ public extension ElementTypeQueryProvider {
     }
 }
 
-public struct FirstMatchRequest: Codable {
+public struct FirstMatchRequest: Codable, Sendable {
     public var serverId: UUID
     
     public init(serverId: UUID) {
@@ -655,7 +655,7 @@ public struct FirstMatchRequest: Codable {
     }
 }
 
-public struct FirstMatchResponse: Codable {
+public struct FirstMatchResponse: Codable, Sendable {
     public var serverId: UUID
     
     public init(serverId: UUID) {

@@ -24,7 +24,7 @@ extension Element {
 }
 
 
-public struct ExistsResponse: Codable {
+public struct ExistsResponse: Codable, Sendable {
     public var exists: Bool
     
     public init(exists: Bool) {
@@ -32,7 +32,7 @@ public struct ExistsResponse: Codable {
     }
 }
 
-public struct ValueResponse: Codable {
+public struct ValueResponse: Codable, Sendable {
     public var value: String?
     
     public init(value: String?) {
@@ -40,7 +40,7 @@ public struct ValueResponse: Codable {
     }
 }
 
-public struct ElementRequest: Codable {
+public struct ElementRequest: Codable, Sendable {
     public var serverId: UUID
     
     init(serverId: UUID) {
@@ -48,7 +48,7 @@ public struct ElementRequest: Codable {
     }
 }
 
-public struct IsHittableResponse: Codable {
+public struct IsHittableResponse: Codable, Sendable {
     public var isHittable: Bool
     
     public init(isHittable: Bool) {

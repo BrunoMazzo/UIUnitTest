@@ -1,13 +1,13 @@
 import Foundation
 
-public class Coordinate {
+public final class Coordinate: Sendable {
     
-    static var EmptyCoordinate = Coordinate(serverId: UUID.zero, referencedElement: .EmptyElement, screenPoint: .zero)
+    static let EmptyCoordinate = Coordinate(serverId: UUID.zero, referencedElement: .EmptyElement, screenPoint: .zero)
     
-    public var serverId: UUID
+    public let serverId: UUID
     
-    var referencedElement: Element
-    var screenPoint: CGPoint
+    let referencedElement: Element
+    let screenPoint: CGPoint
     
     deinit {
         let serverId = serverId
@@ -96,17 +96,17 @@ public class Coordinate {
     }
 }
 
-public struct CoordinateRequest: Codable {
+public struct CoordinateRequest: Codable, Sendable {
     public let serverId: UUID
     public let normalizedOffset: CGVector
 }
 
-public struct CoordinateOffsetRequest: Codable {
+public struct CoordinateOffsetRequest: Codable, Sendable {
     public let coordinatorId: UUID
     public let vector: CGVector
 }
 
-public struct CoordinateResponse: Codable {
+public struct CoordinateResponse: Codable, Sendable {
     public var coordinateId: UUID
     public var referencedElementId: UUID
     public var screenPoint: CGPoint
@@ -118,9 +118,9 @@ public struct CoordinateResponse: Codable {
     }
 }
 
-public struct TapCoordinateRequest: Codable {
+public struct TapCoordinateRequest: Codable, Sendable {
     
-    public enum TapType: Codable {
+    public enum TapType: Codable, Sendable {
         case tap
         case doubleTap
         case press(forDuration: TimeInterval)
