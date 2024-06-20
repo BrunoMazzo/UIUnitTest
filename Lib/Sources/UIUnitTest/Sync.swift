@@ -23,13 +23,11 @@ public struct Executor: @unchecked Sendable {
     
     // TODO: Think about a better way to handle errors. Maybe just fail the test?
     func execute<T: Sendable>(function: String = #function, _ block: @escaping @Sendable () async throws -> T) -> Result<T, Error> {
-        let lock = OSAllocatedUnfairLock()
-        
-        lock.lock()
-        
+        let semaphore = DispatchSemaphore(value: 0)
+    
         Task { @UIUnitTestActor in
             defer {
-                lock.unlock()
+                semaphore.signal()
             }
             do {
                 self.box.value = try await block()
@@ -39,7 +37,7 @@ public struct Executor: @unchecked Sendable {
             }
         }
         
-        lock.lock()
+        semaphore.wait()
         
         if box.success {
             return .success(box.value as! T)
