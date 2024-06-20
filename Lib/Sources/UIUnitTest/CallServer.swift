@@ -5,7 +5,7 @@ final class ServerAPI: Sendable {
     
     let port: Int
     
-    nonisolated(unsafe) 
+    nonisolated(unsafe) // Maybe move to Mutex later?
     static var shared: ServerAPI!
     
     @MainActor

@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+import os
 
 class Box {
     var value: Any?
@@ -22,10 +23,13 @@ public struct Executor: @unchecked Sendable {
     
     // TODO: Think about a better way to handle errors. Maybe just fail the test?
     func execute<T: Sendable>(function: String = #function, _ block: @escaping @Sendable () async throws -> T) -> Result<T, Error> {
-        let expectation = XCTestExpectation(description: function)
+        let lock = OSAllocatedUnfairLock()
+        
+        lock.lock()
+        
         Task { @UIUnitTestActor in
             defer {
-                expectation.fulfill()
+                lock.unlock()
             }
             do {
                 self.box.value = try await block()
@@ -34,7 +38,9 @@ public struct Executor: @unchecked Sendable {
                 self.box.value = error
             }
         }
-        _ = XCTWaiter.wait(for: [expectation])
+        
+        lock.lock()
+        
         if box.success {
             return .success(box.value as! T)
         } else {
