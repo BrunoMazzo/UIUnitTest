@@ -2,7 +2,7 @@ import Foundation
 
 public final class Query: ElementTypeQueryProvider, Sendable {
     
-    public static var EmptyQuery = Query(serverId: UUID.zero)
+    public static let EmptyQuery = Query(serverId: UUID.zero)
     
     public let serverId: UUID
     
@@ -175,8 +175,9 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     
     @available(*, noasync)
     public func matching(_ predicate: NSPredicate) -> Query {
-        Executor.execute {
-            try await self.matching(predicate)
+        let sendablebox = NSPredicateSendableBox(predicate: predicate)
+        return Executor.execute {
+            try await self.matching(sendablebox.predicate)
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
@@ -212,8 +213,9 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     
     @available(*, noasync)
     public func containing(_ predicate: NSPredicate) -> Query {
-        Executor.execute {
-            try await self.containing(predicate)
+        let sendablebox = NSPredicateSendableBox(predicate: predicate)
+        return Executor.execute {
+            try await self.containing(sendablebox.predicate)
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
@@ -253,7 +255,7 @@ public struct QueryRequest: Codable {
     }
 }
 
-public struct QueryResponse: Codable {
+public struct QueryResponse: Codable, Sendable {
     public var serverId: UUID
     
     public init(serverId: UUID) {
@@ -261,7 +263,7 @@ public struct QueryResponse: Codable {
     }
 }
 
-public struct CountRequest: Codable {
+public struct CountRequest: Codable, Sendable {
     public var serverId: UUID
     
     public init(serverId: UUID) {
@@ -269,7 +271,7 @@ public struct CountRequest: Codable {
     }
 }
 
-public struct CountResponse: Codable {
+public struct CountResponse: Codable, Sendable {
     public var count: Int
     
     public init(count: Int) {
@@ -277,8 +279,9 @@ public struct CountResponse: Codable {
     }
 }
 
-public struct PredicateRequest: Codable {
+public struct PredicateRequest: Codable, Sendable {
     public let serverId: UUID
+    nonisolated(unsafe)
     public let predicate: NSPredicate
             
     public init(serverId: UUID, predicate: NSPredicate) {
@@ -353,5 +356,13 @@ public struct ElementsByAccessibility: Codable {
 }
 
 extension UUID {
-    static var zero = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
+    static let zero = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
+}
+
+final class NSPredicateSendableBox: @unchecked Sendable {
+    let predicate: NSPredicate
+    
+    init(predicate: NSPredicate) {
+        self.predicate = predicate
+    }
 }

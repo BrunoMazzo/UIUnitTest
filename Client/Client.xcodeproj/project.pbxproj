@@ -16,6 +16,8 @@
 		1D2B65E22AF5F29D00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E12AF5F29D00E5618D /* UIUnitTest */; };
 		1D2B65E52AF5F67B00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E42AF5F67B00E5618D /* UIUnitTest */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
+		1D60D5852C23D8E600F0B0FF /* SwiftTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */; };
+		1D60D5862C23D8E600F0B0FF /* SwiftTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */; };
 		1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */; };
 		1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */; };
 		1DE0F33E29BF265D0044AFFC /* TapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33D29BF265D0044AFFC /* TapView.swift */; };
@@ -53,6 +55,7 @@
 		1D136B8129B45A4600465FB6 /* ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTests.swift; sourceTree = "<group>"; };
 		1D2B65E62AF60B8900E5618D /* Client.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Client.xctestplan; sourceTree = "<group>"; };
 		1D435E9029BB48250027CD1D /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
+		1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTesting.swift; sourceTree = "<group>"; };
 		1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitForExistenceView.swift; sourceTree = "<group>"; };
 		1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressAndHoldView.swift; sourceTree = "<group>"; };
 		1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToBackgroundAndBackView.swift; sourceTree = "<group>"; };
@@ -155,6 +158,7 @@
 		1D136B8029B45A4600465FB6 /* ClientTests */ = {
 			isa = PBXGroup;
 			children = (
+				1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */,
 				1DE0F33829BDDBBC0044AFFC /* Info.plist */,
 				1D136B8129B45A4600465FB6 /* ClientTests.swift */,
 			);
@@ -331,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D60D5862C23D8E600F0B0FF /* SwiftTesting.swift in Sources */,
 				1D136B8229B45A4600465FB6 /* ClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,6 +344,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D60D5852C23D8E600F0B0FF /* SwiftTesting.swift in Sources */,
 				1DE0F35D29C58B4D0044AFFC /* ClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,5 +1,5 @@
 public extension Query {
-    enum QueryType: Int, Codable {
+    enum QueryType: Int, Codable, Sendable {
         case activityIndicators
         case alerts
         case browsers

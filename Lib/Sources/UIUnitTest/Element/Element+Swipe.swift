@@ -1,6 +1,6 @@
 import Foundation
 
-public enum SwipeDirection: Codable {
+public enum SwipeDirection: Codable, Sendable {
     case up, down, left, right
 }
 
