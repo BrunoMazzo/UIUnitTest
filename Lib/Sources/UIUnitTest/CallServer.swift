@@ -1,6 +1,59 @@
 import Foundation
 import UIKit
 
+final class ServerAPI: Sendable {
+    
+    let port: Int
+    
+    nonisolated(unsafe) 
+    static var shared: ServerAPI!
+    
+    @MainActor
+    static func loadIfNeeded() {
+        if ServerAPI.shared == nil {
+            ServerAPI.shared = ServerAPI()
+        }
+    }
+    
+    @MainActor
+    init() {
+        self.port = 22087 + deviceId()
+    }
+    
+    func callServer<RequestData: Codable, ResponseData: Codable>(
+        path: String,
+        request: RequestData
+    ) async throws -> ResponseData {
+        let encoder = JSONEncoder()
+        
+        let activateUrl = URL(string: "http://localhost:\(port)/\(path)")!
+        var activateRequest = URLRequest(url: activateUrl)
+        activateRequest.httpMethod = "POST"
+        activateRequest.httpBody = try encoder.encode(request)
+        
+        let (data, _) = try await URLSession.shared.data(for: activateRequest)
+        
+        let decoder = JSONDecoder()
+        
+        let result = try decoder.decode(UIResponse<ResponseData>.self, from: data)
+        
+        switch result.response {
+        case .success(data: let response):
+            return response
+        case .error(error: let error):
+            print(error.error)
+            throw NSError(domain: "Test", code: 1, userInfo: ["reason": error])
+        }
+    }
+}
+
+func callServer<RequestData: Codable, ResponseData: Codable>(
+    path: String,
+    request: RequestData
+) async throws -> ResponseData {
+    try await ServerAPI.shared.callServer(path: path, request: request)
+}
+
 @MainActor
 func deviceId() -> Int {
     let deviceName = UIDevice.current.name
@@ -15,35 +68,6 @@ func deviceId() -> Int {
         }
     }
     return deviceId
-}
-
-@MainActor
-internal func callServer<RequestData: Codable, ResponseData: Codable>(
-    path: String,
-    request: RequestData
-) async throws -> ResponseData {
-    let encoder = JSONEncoder()
-    
-    let port = 22087 + deviceId()
-    
-    let activateUrl = URL(string: "http://localhost:\(port)/\(path)")!
-    var activateRequest = URLRequest(url: activateUrl)
-    activateRequest.httpMethod = "POST"
-    activateRequest.httpBody = try encoder.encode(request)
-    
-    let (data, _) = try await URLSession.shared.data(for: activateRequest)
-    
-    let decoder = JSONDecoder()
-    
-    let result = try decoder.decode(UIResponse<ResponseData>.self, from: data)
-    
-    switch result.response {
-    case .success(data: let response):
-        return response
-    case .error(error: let error):
-        print(error.error)
-        throw NSError(domain: "Test", code: 1, userInfo: ["reason": error])
-    }
 }
 
 public enum Response<T: Codable> {

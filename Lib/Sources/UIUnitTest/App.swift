@@ -5,17 +5,24 @@ public class App: Element, @unchecked Sendable {
     let appId: String
     let executor = Executor()
     
+    
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) async throws {
         self.appId = appId
         super.init(serverId: UUID())
+        
+        await ServerAPI.loadIfNeeded()
         
         try await self.create(activate: activate)
     }
     
     @available(*, noasync)
+    @MainActor
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) {
         self.appId = appId
         super.init(serverId: UUID())
+        
+        ServerAPI.loadIfNeeded()
+        
         self.create(activate: activate)
     }
     
