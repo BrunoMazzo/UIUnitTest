@@ -701,7 +701,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
 			requirement = {
-				branch = "any-query";
+				branch = "swift-testing";
 				kind = branch;
 			};
 		};
