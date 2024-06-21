@@ -23,21 +23,20 @@ public struct Executor: @unchecked Sendable {
     
     // TODO: Think about a better way to handle errors. Maybe just fail the test?
     func execute<T: Sendable>(function: String = #function, _ block: @escaping @Sendable () async throws -> T) -> Result<T, Error> {
-        let semaphore = DispatchSemaphore(value: 0)
+        let expectation = XCTestExpectation(description: function)
     
         Task { @UIUnitTestActor in
-            // Defer is not working, need to investigate later 
+            defer {
+                expectation.fulfill()
+            }
             do {
                 self.box.value = try await block()
                 self.box.success = true
-                semaphore.signal()
             } catch {
                 self.box.value = error
-                semaphore.signal()
             }
         }
-        
-        semaphore.wait()
+        _ = XCTWaiter.wait(for: [expectation])
         
         if box.success {
             return .success(box.value as! T)
