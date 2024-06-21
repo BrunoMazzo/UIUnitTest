@@ -71,10 +71,20 @@ public class App: Element, @unchecked Sendable {
     }
     
     @available(*, noasync)
-    public func create(activate: Bool) {
-        Executor.execute {
-            try await self.create(activate: activate)
-        }.valueOrFailWithFallback(())
+    public func create(activate: Bool, timeout: TimeInterval = 30_000_000_000) {
+        let start = Date()
+        
+        while abs(start.timeIntervalSinceNow) < timeout {
+            let request = CreateApplicationRequest(appId: self.appId, serverId: self.serverId, activate: activate)
+            
+            let success: Bool = callServer(path: "createApp", request: request)
+            
+            if success {
+                return
+            }
+        }
+        
+        XCTFail("Could not create server App")
     }
     
     @available(iOS 17.0, *)
@@ -113,7 +123,7 @@ public class App: Element, @unchecked Sendable {
     }
 }
 
-public struct CreateApplicationRequest: Codable {
+public struct CreateApplicationRequest: Codable, Sendable {
     
     public let serverId: UUID
     public let appId: String
