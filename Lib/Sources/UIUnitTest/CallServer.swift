@@ -61,7 +61,8 @@ final class ServerAPI: Sendable {
         let semaphore = DispatchSemaphore(value: 0)
         
         let result: SendableBox<UIResponse<ResponseData>> = SendableBox(value: nil)
-        let dataTask = URLSession.shared.dataTask(with: activateRequest) { data,_,error in
+        let backgroundSession = URLSession(configuration: URLSessionConfiguration.background(withIdentifier: "Request"))
+        let dataTask = backgroundSession.dataTask(with: activateRequest) { data,_,error in
             if let error {
                 result.value = UIResponse<ResponseData>(error: error.localizedDescription)
             } else {
