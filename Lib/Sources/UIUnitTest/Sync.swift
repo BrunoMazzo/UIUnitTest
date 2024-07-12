@@ -4,7 +4,7 @@ import os
 
 class Box {
     var value: Any?
-    var success: Bool? = false
+    var success: Bool = false
     
     var finished: Bool = false
     
