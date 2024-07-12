@@ -4,7 +4,21 @@ import os
 
 class Box {
     var value: Any?
-    var success: Bool = false
+    var success: Bool? = false
+    
+    var finished: Bool = false
+    
+    func success(value: Any?) {
+        self.value = value
+        self.success = true
+        self.finished = true
+    }
+    
+    func error(error: Any) {
+        self.value = error
+        self.success = false
+        self.finished = true
+    }
 }
 
 @globalActor
@@ -23,20 +37,18 @@ public struct Executor: @unchecked Sendable {
     
     // TODO: Think about a better way to handle errors. Maybe just fail the test?
     func execute<T: Sendable>(function: String = #function, _ block: @escaping @Sendable () async throws -> T) -> Result<T, Error> {
-        let expectation = XCTestExpectation(description: function)
     
         Task { @UIUnitTestActor in
-            defer {
-                expectation.fulfill()
-            }
             do {
-                self.box.value = try await block()
-                self.box.success = true
+                try await self.box.success(value: block())
             } catch {
-                self.box.value = error
+                self.box.error(error: error)
             }
         }
-        _ = XCTWaiter.wait(for: [expectation])
+        
+        while self.box.finished == false {
+            RunLoop.current.run()
+        }
         
         if box.success {
             return .success(box.value as! T)
