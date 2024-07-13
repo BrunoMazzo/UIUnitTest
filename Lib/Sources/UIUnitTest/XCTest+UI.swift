@@ -1,5 +1,7 @@
 import SwiftUI
+import Testing
 import UIKit
+import XCTest
 
 @MainActor
 public func showView(_ view: some View) {
@@ -25,4 +27,17 @@ private func getKeyWindow() -> UIWindow {
             window.isKeyWindow
         }
     }.first!
+}
+
+
+func fail(
+    _ message: String,
+    fileID: StaticString = #fileID,
+    filePath: StaticString = #filePath,
+    line: UInt = #line,
+    column: UInt = #column
+) {
+    let sourceLocation = SourceLocation(fileID: "\(fileID)", filePath: "\(filePath)", line: Int(line), column: Int(column))
+    Issue.record(Comment(stringLiteral: message), sourceLocation: sourceLocation)
+    XCTFail(message, file: filePath, line: line)
 }

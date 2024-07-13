@@ -1,4 +1,4 @@
-@_spi(ForToolsIntegrationOnly) import Testing
+import Testing
 import UIUnitTest
 import UIKit
 @testable import Client

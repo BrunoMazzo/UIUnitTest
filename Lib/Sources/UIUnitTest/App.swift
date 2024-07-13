@@ -68,7 +68,7 @@ public class App: Element, @unchecked Sendable {
             }
         }
         
-        XCTFail("Could not create server App")
+        fail("Could not create server App")
     }
     
     @available(*, noasync)
@@ -95,12 +95,10 @@ public class App: Element, @unchecked Sendable {
             do {
                 let ignore = try issueHandler?(issue) ?? false
                 if !ignore {
-                    let sourceLocation = SourceLocation(fileID: "\(fileID)", filePath: "\(filePath)", line: Int(line), column: Int(column))
-                    Issue.record(Comment(stringLiteral: issue.compactDescription), sourceLocation: sourceLocation)
-                    XCTFail(issue.compactDescription, file: filePath, line: line)
+                    fail(issue.compactDescription, fileID: fileID, filePath: filePath, line: line, column: column)
                 }
             } catch {
-                XCTFail(issue.compactDescription, file: filePath, line: line)
+                fail(issue.compactDescription, fileID: fileID, filePath: filePath, line: line, column: column)
             }
         }
     }
