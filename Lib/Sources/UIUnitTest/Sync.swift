@@ -59,12 +59,18 @@ public struct Executor: @unchecked Sendable {
 }
 
 extension Result {
-    func valueOrFailWithFallback(_ fallback: Success, file: StaticString = #filePath, line: UInt = #line) -> Success {
+    func valueOrFailWithFallback(
+        _ fallback: Success,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> Success {
         switch self {
         case let .success(result):
             return result
         case let .failure(error):
-            XCTFail(error.localizedDescription, file: file, line: line)
+            fail(error.localizedDescription, fileID: fileID, filePath: filePath, line: line, column: column)
             return fallback
         }
     }

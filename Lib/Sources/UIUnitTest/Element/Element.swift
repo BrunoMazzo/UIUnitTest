@@ -219,7 +219,14 @@ public enum SizeClass: Int, Codable, Sendable {
 extension Element {
     
     @discardableResult
-    public func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) async throws -> Element {
+    public func assertElementExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) async throws -> Element {
         if (try? await self.exists()) ?? false {
             return self
         }
@@ -227,20 +234,34 @@ extension Element {
         if (try? await self.waitForExistence(timeout: timeout)) ?? false {
             return self
         } else {
-            XCTFail(message ?? "Element \(self.identifier) doesn't exists", file: file, line: line)
+            fail(message ?? "Element \(self.identifier) doesn't exists", fileID: fileID, filePath: filePath, line: line, column: column)
             return self
         }
     }
     
     @discardableResult
-    public func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
+    public func assertElementExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> Element {
         Executor.execute {
-            try await self.assertElementExists(message: message, timeout: timeout, file: file, line: line)
+            try await self.assertElementExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column)
         }.valueOrFailWithFallback(self)
     }
     
     @discardableResult
-    public func assertElementDoesntExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) async throws -> Element {
+    public func assertElementDoesntExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) async throws -> Element {
         if (try? await !self.exists()) ?? false {
             return self
         }
@@ -248,15 +269,22 @@ extension Element {
         if (try? await self.waitForNonExistence(timeout: timeout)) ?? false {
             return self
         } else {
-            XCTFail(message ?? "Element \(self.identifier) exists", file: file, line: line)
+            fail(message ?? "Element \(self.identifier) exists", fileID: fileID, filePath: filePath, line: line, column: column)
             return self
         }
     }
     
     @discardableResult
-    public func assertElementDoesntExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
+    public func assertElementDoesntExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> Element {
         Executor.execute {
-            try await self.assertElementDoesntExists(message: message, timeout: timeout, file: file, line: line)
+            try await self.assertElementDoesntExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column)
         }.valueOrFailWithFallback(self)
     }
 }
