@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+import Testing
 
 public class App: Element, @unchecked Sendable {
     let appId: String
@@ -81,8 +82,10 @@ public class App: Element, @unchecked Sendable {
     public func performAccessibilityAudit(
         for auditTypes: AccessibilityAuditType = .all,
         _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
     ) async throws {
         let accessibilityAuditRequest = AccessibilityAuditRequest(serverId: self.serverId, accessibilityAuditType: auditTypes)
         
@@ -92,10 +95,12 @@ public class App: Element, @unchecked Sendable {
             do {
                 let ignore = try issueHandler?(issue) ?? false
                 if !ignore {
-                    XCTFail(issue.compactDescription, file: file, line: line)
+                    let sourceLocation = SourceLocation(fileID: "\(fileID)", filePath: "\(filePath)", line: Int(line), column: Int(column))
+                    Issue.record(Comment(stringLiteral: issue.compactDescription), sourceLocation: sourceLocation)
+                    XCTFail(issue.compactDescription, file: filePath, line: line)
                 }
             } catch {
-                XCTFail(issue.compactDescription, file: file, line: line)
+                XCTFail(issue.compactDescription, file: filePath, line: line)
             }
         }
     }
@@ -104,11 +109,13 @@ public class App: Element, @unchecked Sendable {
     public func performAccessibilityAudit(
         for auditTypes: AccessibilityAuditType = .all,
         _ issueHandler: (@Sendable (AccessibilityAuditIssue) throws -> Bool)? = nil,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
     ) throws {
         Executor.execute {
-            try await self.performAccessibilityAudit(for: auditTypes, issueHandler, file: file, line: line)
+            try await self.performAccessibilityAudit(for: auditTypes, issueHandler, fileID: fileID, filePath: filePath, line: line, column: column)
         }.valueOrFailWithFallback(())
     }
 }
