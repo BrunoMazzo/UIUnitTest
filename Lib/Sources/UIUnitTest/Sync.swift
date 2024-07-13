@@ -47,7 +47,7 @@ public struct Executor: @unchecked Sendable {
         }
         
         while self.box.finished == false {
-            RunLoop.current.run()
+            RunLoop.current.run(until: Date().addingTimeInterval(0.01))
         }
         
         if box.success {
