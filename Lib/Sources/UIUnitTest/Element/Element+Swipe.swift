@@ -55,7 +55,7 @@ extension Element {
     }
 }
 
-public struct SwipeRequest: Codable {
+public struct SwipeRequest: Codable, Sendable {
     
     public var serverId: UUID
     public var swipeDirection: SwipeDirection

@@ -244,7 +244,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
 }
 
-public struct QueryRequest: Codable {
+public struct QueryRequest: Codable, Sendable {
     
     public var serverId: UUID
     public var queryType: Query.QueryType
@@ -316,7 +316,7 @@ public struct PredicateRequest: Codable, Sendable {
     }
 }
 
-public struct ElementFromQuery: Codable {
+public struct ElementFromQuery: Codable, Sendable {
     public let serverId: UUID
     public let index: Int?
     public let elementType: Element.ElementType?
@@ -337,7 +337,7 @@ public struct ElementFromQuery: Codable {
     }
 }
 
-public struct DescendantsFromQuery: Codable {
+public struct DescendantsFromQuery: Codable, Sendable {
     public let serverId: UUID
     public let elementType: Element.ElementType
     
@@ -347,7 +347,7 @@ public struct DescendantsFromQuery: Codable {
     }
 }
 
-public struct ElementsByAccessibility: Codable {
+public struct ElementsByAccessibility: Codable, Sendable {
     public let serverId: UUID
     
     public init(serverId: UUID) {

@@ -54,7 +54,7 @@ extension Element {
     }
 }
 
-public struct TapElementRequest: Codable {
+public struct TapElementRequest: Codable, Sendable {
     
     public var serverId: UUID
     public var duration: TimeInterval?
