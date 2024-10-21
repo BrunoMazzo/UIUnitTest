@@ -37,18 +37,19 @@ public struct Executor: @unchecked Sendable {
     
     // TODO: Think about a better way to handle errors. Maybe just fail the test?
     func execute<T: Sendable>(function: String = #function, _ block: @escaping @Sendable () async throws -> T) -> Result<T, Error> {
-    
+        let expectation = XCTestExpectation(description: function)
         Task { @UIUnitTestActor in
+            defer {
+                expectation.fulfill()
+            }
             do {
-                try await self.box.success(value: block())
+                self.box.value = try await block()
+                self.box.success = true
             } catch {
-                self.box.error(error: error)
+                self.box.value = error
             }
         }
-        
-        while self.box.finished == false {
-            RunLoop.current.run(until: Date().addingTimeInterval(0.01))
-        }
+        _ = XCTWaiter.wait(for: [expectation])
         
         if box.success {
             return .success(box.value as! T)
