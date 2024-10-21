@@ -111,7 +111,6 @@
 				1D01C92F29B9CC3600551803 /* Packages */,
 				1D136B6E29B45A4600465FB6 /* Client */,
 				1D136B8029B45A4600465FB6 /* ClientTests */,
-				1DE0F35329C58B320044AFFC /* LocalTests */,
 				1D136B6D29B45A4600465FB6 /* Products */,
 				1D136B9C29B45CB300465FB6 /* Frameworks */,
 			);
@@ -170,13 +169,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		1DE0F35329C58B320044AFFC /* LocalTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LocalTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

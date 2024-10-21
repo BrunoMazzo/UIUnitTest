@@ -42,5 +42,5 @@ let package = Package(
             linkerSettings: [.linkedFramework("XCTest")]
         ),
     ],
-    swiftLanguageVersions: [.v6]
+    swiftLanguageModes: [.v6]
 )
