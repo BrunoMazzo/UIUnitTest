@@ -6,13 +6,14 @@ final class ServerAPI: Sendable {
     
     let port: Int
     
-    @MainActor
-    static var shared: ServerAPI!
+    static let shared: Mutex<ServerAPI?> = Mutex(nil)
     
     @MainActor
     static func loadIfNeeded() {
-        if ServerAPI.shared == nil {
-            ServerAPI.shared = ServerAPI()
+        ServerAPI.shared.withLock { server in
+            if server == nil {
+                server = ServerAPI()
+            }
         }
     }
     
@@ -101,7 +102,21 @@ func callServer<RequestData: Codable & Sendable, ResponseData: Codable & Sendabl
     path: String,
     request: RequestData
 ) async throws -> ResponseData {
-    try await ServerAPI.shared.callServer(path: path, request: request)
+    return try await withUnsafeThrowingContinuation(isolation: nil, { continuation in
+        ServerAPI.shared.withLock({ server in
+            guard let server else {
+                fatalError("Server not initialised")
+            }
+            Task {
+                do {
+                    let result: ResponseData = try await server.callServer(path: path, request: request)
+                    continuation.resume(returning: result)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        })
+    })
 }
 
 //func callServer<RequestData: Codable & Sendable, ResponseData: Codable & Sendable>(
