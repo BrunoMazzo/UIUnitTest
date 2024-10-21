@@ -18,7 +18,7 @@ public extension Element {
 }
 
 
-public struct RotateRequest: Codable {
+public struct RotateRequest: Codable, Sendable {
     
     public var serverId: UUID
     public var rotation: CGFloat

@@ -1,11 +1,12 @@
 import Foundation
 import UIKit
+import Synchronization
 
 final class ServerAPI: Sendable {
     
     let port: Int
     
-    nonisolated(unsafe) // Maybe move to Mutex later?
+    @MainActor
     static var shared: ServerAPI!
     
     @MainActor
@@ -20,7 +21,7 @@ final class ServerAPI: Sendable {
         self.port = 22087 + deviceId()
     }
     
-    func callServer<RequestData: Codable, ResponseData: Codable>(
+    func callServer<RequestData: Codable & Sendable, ResponseData: Codable & Sendable>(
         path: String,
         request: RequestData
     ) async throws -> ResponseData {
@@ -96,7 +97,7 @@ final class SendableBox<T: Sendable>: @unchecked Sendable {
     }
 }
 
-func callServer<RequestData: Codable, ResponseData: Codable>(
+func callServer<RequestData: Codable & Sendable, ResponseData: Codable & Sendable>(
     path: String,
     request: RequestData
 ) async throws -> ResponseData {

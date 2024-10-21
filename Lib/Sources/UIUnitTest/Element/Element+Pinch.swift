@@ -15,7 +15,7 @@ public extension Element {
     }
 }
 
-public struct PinchRequest: Codable {
+public struct PinchRequest: Codable, Sendable {
     
     public var serverId: UUID
     public var scale: CGFloat

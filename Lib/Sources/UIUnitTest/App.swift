@@ -87,6 +87,7 @@ public class App: Element, @unchecked Sendable {
         line: UInt = #line,
         column: UInt = #column
     ) async throws {
+        
         let accessibilityAuditRequest = AccessibilityAuditRequest(serverId: self.serverId, accessibilityAuditType: auditTypes)
         
         let response: AccessibilityAuditResponse = try await callServer(path: "performAccessibilityAudit", request: accessibilityAuditRequest)
@@ -131,7 +132,7 @@ public struct CreateApplicationRequest: Codable, Sendable {
     }
 }
 
-public struct ActivateRequest: Codable {
+public struct ActivateRequest: Codable, Sendable {
     
     public let serverId: UUID
     
@@ -140,11 +141,11 @@ public struct ActivateRequest: Codable {
     }
 }
 
-public struct HomeButtonRequest: Codable {
+public struct HomeButtonRequest: Codable, Sendable {
     
 }
 
-public struct EnterTextRequest: Codable {
+public struct EnterTextRequest: Codable, Sendable {
     
     public var serverId: UUID
     public var textToEnter: String
