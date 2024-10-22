@@ -6,8 +6,8 @@ orbs:
   macos: circleci/macos@2.5.1
 jobs: # a basic unit of work in a run
   test: # your job name
-    machine: true
-    resource_class: brunomazzo/personal
+    macos:
+      xcode: 16.0.0 # indicate your selected version of Xcode
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
     steps: # a series of commands to run
