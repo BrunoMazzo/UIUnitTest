@@ -50,6 +50,7 @@ playground.xcworkspace
 
 .build/
 **/.uiUnitTest/
+*.xcresult/
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
