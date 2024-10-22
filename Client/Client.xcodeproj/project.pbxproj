@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,7 +14,6 @@
 		1D136B8229B45A4600465FB6 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8129B45A4600465FB6 /* ClientTests.swift */; };
 		1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */; };
 		1D2B65E22AF5F29D00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E12AF5F29D00E5618D /* UIUnitTest */; };
-		1D2B65E52AF5F67B00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E42AF5F67B00E5618D /* UIUnitTest */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
 		1D60D5852C23D8E600F0B0FF /* SwiftTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */; };
 		1D60D5862C23D8E600F0B0FF /* SwiftTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */; };
@@ -80,7 +79,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D2B65E52AF5F67B00E5618D /* UIUnitTest in Frameworks */,
 				1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,7 +205,6 @@
 			name = ClientTests;
 			packageProductDependencies = (
 				1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */,
-				1D2B65E42AF5F67B00E5618D /* UIUnitTest */,
 			);
 			productName = ClientTests;
 			productReference = 1D136B7D29B45A4600465FB6 /* ClientTests.xctest */;
@@ -267,7 +264,7 @@
 			);
 			mainGroup = 1D136B6329B45A4600465FB6;
 			packageReferences = (
-				1D2B65E32AF5F67B00E5618D /* XCRemoteSwiftPackageReference "UIUnitTest" */,
+				1D2B5BBA2CC7BE870056AE93 /* XCLocalSwiftPackageReference "UIUnitTest" */,
 			);
 			productRefGroup = 1D136B6D29B45A4600465FB6 /* Products */;
 			projectDirPath = "";
@@ -690,16 +687,12 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		1D2B65E32AF5F67B00E5618D /* XCRemoteSwiftPackageReference "UIUnitTest" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
-			requirement = {
-				branch = "swift-testing";
-				kind = branch;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		1D2B5BBA2CC7BE870056AE93 /* XCLocalSwiftPackageReference "UIUnitTest" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = UIUnitTest;
 		};
-/* End XCRemoteSwiftPackageReference section */
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */ = {
@@ -708,11 +701,6 @@
 		};
 		1D2B65E12AF5F29D00E5618D /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = UIUnitTest;
-		};
-		1D2B65E42AF5F67B00E5618D /* UIUnitTest */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1D2B65E32AF5F67B00E5618D /* XCRemoteSwiftPackageReference "UIUnitTest" */;
 			productName = UIUnitTest;
 		};
 /* End XCSwiftPackageProductDependency section */
