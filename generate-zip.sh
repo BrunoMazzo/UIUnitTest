@@ -11,10 +11,11 @@ root=$PWD
 
 xcodebuild -project ./Server/Server.xcodeproj \
   -scheme ServerUITests -sdk iphonesimulator \
-  -destination "platform=iOS Simulator,name=iPhone 15,OS=17.4" \
+  -destination "platform=iOS Simulator,name=iPhone 16,OS=18.0" \
   -IDEBuildLocationStyle=Custom \
   -IDECustomBuildLocationType=Absolute \
   -IDECustomBuildProductsPath="$PWD/build/Products" \
   build-for-testing || exit 1
 
 (cd "$root"/build/Products/Release-iphonesimulator/ && zip -r "$root"/Lib/Sources/UIUnitTestCLI/resources/PreBuild.zip ServerUITests-Runner.app) || exit 1
+
