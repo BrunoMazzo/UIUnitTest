@@ -1,5 +1,5 @@
 {
-  "originHash" : "cec6eada3aeef1a7161603afee83d308fe58ba11bcc829d3a4ab6b1952bb2ff6",
+  "originHash" : "257633917a2c5dd97eb75e157490239d9da18ffed5d2b0e8c17aab6fe5772156",
   "pins" : [
     {
       "identity" : "flyingfox",
@@ -17,6 +17,7 @@
       "state" : {
         "revision" : "41982a3656a71c768319979febd796c6fd111d5c",
         "version" : "1.5.0"
+<<<<<<< HEAD
       }
     },
     {
@@ -26,6 +27,8 @@
       "state" : {
         "branch" : "swift-testing",
         "revision" : "218e81abc7c3ce3821be017ffc9cafff9c450f44"
+=======
+>>>>>>> 4f48ec1 (Fix Server and update dependencies)
       }
     }
   ],
