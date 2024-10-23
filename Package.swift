@@ -14,6 +14,7 @@ let package = Package(
         .library(
             name: "UIUnitTest",
             targets: ["UIUnitTest"]),
+        .library(name: "UIUnitTestAPI", targets: ["UIUnitTestAPI"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -37,10 +38,11 @@ let package = Package(
         ),
         .target(
             name: "UIUnitTest",
-            dependencies: [],
+            dependencies: ["UIUnitTestAPI"],
             path: "Lib/Sources/UIUnitTest",
             linkerSettings: [.linkedFramework("XCTest")]
         ),
+        .target(name: "UIUnitTestAPI", path: "Lib/Sources/UIUnitTestAPI")
     ],
     swiftLanguageModes: [.v6]
 )

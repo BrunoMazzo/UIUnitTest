@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import Testing
+import UIUnitTestAPI
 
 public class App: Element, @unchecked Sendable {
     let appId: String
@@ -88,13 +89,13 @@ public class App: Element, @unchecked Sendable {
         column: UInt = #column
     ) async throws {
         
-        let accessibilityAuditRequest = AccessibilityAuditRequest(serverId: self.serverId, accessibilityAuditType: auditTypes)
+        let accessibilityAuditRequest = AccessibilityAuditRequest(serverId: self.serverId, accessibilityAuditType: auditTypes.rawValue)
         
         let response: AccessibilityAuditResponse = try await callServer(path: "performAccessibilityAudit", request: accessibilityAuditRequest)
         
         for issue in response.issues {
             do {
-                let ignore = try issueHandler?(issue) ?? false
+                let ignore = try issueHandler?(AccessibilityAuditIssue(data: issue)) ?? false
                 if !ignore {
                     fail(issue.compactDescription, fileID: fileID, filePath: filePath, line: line, column: column)
                 }
@@ -119,39 +120,3 @@ public class App: Element, @unchecked Sendable {
     }
 }
 
-public struct CreateApplicationRequest: Codable, Sendable {
-    
-    public let serverId: UUID
-    public let appId: String
-    public let activate: Bool
-    
-    public init(appId: String, serverId: UUID, activate: Bool) {
-        self.appId = appId
-        self.serverId = serverId
-        self.activate = activate
-    }
-}
-
-public struct ActivateRequest: Codable, Sendable {
-    
-    public let serverId: UUID
-    
-    public init(serverId: UUID) {
-        self.serverId = serverId
-    }
-}
-
-public struct HomeButtonRequest: Codable, Sendable {
-    
-}
-
-public struct EnterTextRequest: Codable, Sendable {
-    
-    public var serverId: UUID
-    public var textToEnter: String
-    
-    public init(serverId: UUID, textToEnter: String) {
-        self.serverId = serverId
-        self.textToEnter = textToEnter
-    }
-}

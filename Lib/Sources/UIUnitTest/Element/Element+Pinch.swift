@@ -1,4 +1,5 @@
 import Foundation
+import UIUnitTestAPI
 
 public extension Element {
     func pinch(withScale scale: CGFloat, velocity: CGFloat) async throws {
@@ -15,15 +16,3 @@ public extension Element {
     }
 }
 
-public struct PinchRequest: Codable, Sendable {
-    
-    public var serverId: UUID
-    public var scale: CGFloat
-    public var velocity: CGFloat
-    
-    init(serverId: UUID, scale: CGFloat, velocity: CGFloat) {
-        self.serverId = serverId
-        self.scale = scale
-        self.velocity = velocity
-    }
-}

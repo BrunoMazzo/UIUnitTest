@@ -1,4 +1,5 @@
 import Foundation
+import UIUnitTestAPI
 
 public final class Query: ElementTypeQueryProvider, Sendable {
     
@@ -11,7 +12,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
     
     init(serverId: UUID, queryType: QueryType) async throws {
-        let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(serverId: serverId, queryType: queryType))
+        let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(serverId: serverId, queryType: queryType.rawValue))
         self.serverId = response.serverId
     }
     
@@ -98,7 +99,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
     
     public func element(matching elementType: Element.ElementType, identifier: String?) async throws -> Element {
-        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementFromQuery(serverId: self.serverId, elementType: elementType, identifier: identifier))
+        let response: ElementResponse = try await callServer(path: "elementMatchingPredicate", request: ElementFromQuery(serverId: self.serverId, elementType: elementType.rawValue, identifier: identifier))
         return Element(serverId: response.serverId)
     }
     
@@ -122,7 +123,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
     
     public func descendants(matching elementType: Element.ElementType) async throws -> Query {
-        let response: QueryResponse = try await callServer(path: "queryDescendants", request: DescendantsFromQuery(serverId: self.serverId, elementType: elementType))
+        let response: QueryResponse = try await callServer(path: "queryDescendants", request: DescendantsFromQuery(serverId: self.serverId, elementType: elementType.rawValue))
         return Query(serverId: response.serverId)
     }
     
@@ -156,7 +157,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
 
     public func children(matching type: Element.ElementType) async throws -> Query {
-        let request = ChildrenMatchinType(serverId: self.serverId, elementType: type)
+        let request = ChildrenMatchinType(serverId: self.serverId, elementType: type.rawValue)
         let queryResponse: QueryResponse = try await callServer(path: "children", request: request)
         return Query(serverId: queryResponse.serverId)
     }
@@ -182,7 +183,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
     
     public func matching(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
-        let response: QueryResponse = try await callServer(path: "matchingElementType", request: ElementTypeRequest(serverId: self.serverId, elementType: elementType, identifier: identifier))
+        let response: QueryResponse = try await callServer(path: "matchingElementType", request: ElementTypeRequest(serverId: self.serverId, elementType: elementType.rawValue, identifier: identifier))
         return Query(serverId: response.serverId)
     }
     
@@ -220,7 +221,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
     
     public func containing(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
-        let response: QueryResponse = try await callServer(path: "containingElementType", request: ElementTypeRequest(serverId: self.serverId, elementType: elementType, identifier: identifier))
+        let response: QueryResponse = try await callServer(path: "containingElementType", request: ElementTypeRequest(serverId: self.serverId, elementType: elementType.rawValue, identifier: identifier))
         return Query(serverId: response.serverId)
     }
     
@@ -244,116 +245,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
 }
 
-public struct QueryRequest: Codable, Sendable {
-    
-    public var serverId: UUID
-    public var queryType: Query.QueryType
-    
-    init(serverId: UUID, queryType: Query.QueryType) {
-        self.serverId = serverId
-        self.queryType = queryType
-    }
-}
 
-public struct QueryResponse: Codable, Sendable {
-    public var serverId: UUID
-    
-    public init(serverId: UUID) {
-        self.serverId = serverId
-    }
-}
-
-public struct CountRequest: Codable, Sendable {
-    public var serverId: UUID
-    
-    public init(serverId: UUID) {
-        self.serverId = serverId
-    }
-}
-
-public struct CountResponse: Codable, Sendable {
-    public var count: Int
-    
-    public init(count: Int) {
-        self.count = count
-    }
-}
-
-public struct PredicateRequest: Codable, Sendable {
-    public let serverId: UUID
-    nonisolated(unsafe)
-    public let predicate: NSPredicate
-            
-    public init(serverId: UUID, predicate: NSPredicate) {
-        self.serverId = serverId
-        self.predicate = predicate
-    }
-    
-    enum CodingKeys: CodingKey {
-        case serverId
-        case predicate
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        let data = try NSKeyedArchiver.archivedData(
-            withRootObject: predicate,
-            requiringSecureCoding: true
-        )
-        
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(serverId, forKey: .serverId)
-        try container.encode(data, forKey: .predicate)
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.serverId = try container.decode(UUID.self, forKey: .serverId)
-        
-        let data = try container.decode(Data.self, forKey: .predicate)
-
-        self.predicate = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSPredicate.self], from:data) as! NSPredicate
-    }
-}
-
-public struct ElementFromQuery: Codable, Sendable {
-    public let serverId: UUID
-    public let index: Int?
-    public let elementType: Element.ElementType?
-    public let identifier: String?
-    
-    public init(serverId: UUID, index: Int? = nil) {
-        self.serverId = serverId
-        self.index = index
-        self.elementType = nil
-        self.identifier = nil
-    }
-    
-    public init(serverId: UUID, elementType: Element.ElementType, identifier: String? = nil) {
-        self.serverId = serverId
-        self.elementType = elementType
-        self.identifier = identifier
-        self.index = nil
-    }
-}
-
-public struct DescendantsFromQuery: Codable, Sendable {
-    public let serverId: UUID
-    public let elementType: Element.ElementType
-    
-    public init(serverId: UUID, elementType: Element.ElementType) {
-        self.serverId = serverId
-        self.elementType = elementType
-    }
-}
-
-public struct ElementsByAccessibility: Codable, Sendable {
-    public let serverId: UUID
-    
-    public init(serverId: UUID) {
-        self.serverId = serverId
-    }
-}
 
 extension UUID {
     static let zero = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!

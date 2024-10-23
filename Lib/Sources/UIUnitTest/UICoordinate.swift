@@ -1,4 +1,5 @@
 import Foundation
+import UIUnitTestAPI
 
 public final class Coordinate: Sendable {
     
@@ -96,43 +97,4 @@ public final class Coordinate: Sendable {
     }
 }
 
-public struct CoordinateRequest: Codable, Sendable {
-    public let serverId: UUID
-    public let normalizedOffset: CGVector
-}
 
-public struct CoordinateOffsetRequest: Codable, Sendable {
-    public let coordinatorId: UUID
-    public let vector: CGVector
-}
-
-public struct CoordinateResponse: Codable, Sendable {
-    public var coordinateId: UUID
-    public var referencedElementId: UUID
-    public var screenPoint: CGPoint
-
-    public init(coordinateId: UUID, referencedElementId: UUID, screenPoint: CGPoint) {
-        self.coordinateId = coordinateId
-        self.referencedElementId = referencedElementId
-        self.screenPoint = screenPoint
-    }
-}
-
-public struct TapCoordinateRequest: Codable, Sendable {
-    
-    public enum TapType: Codable, Sendable {
-        case tap
-        case doubleTap
-        case press(forDuration: TimeInterval)
-        case pressAndDrag(forDuration: TimeInterval, thenDragTo: UUID)
-        case pressDragAndHold(forDuration: TimeInterval, thenDragTo: UUID, withVelocity: GestureVelocity, thenHoldForDuration: TimeInterval)
-    }
-    
-    public var serverId: UUID
-    public var type: TapType
-    
-    init(serverId: UUID, type: TapType) {
-        self.serverId = serverId
-        self.type = type
-    }
-}

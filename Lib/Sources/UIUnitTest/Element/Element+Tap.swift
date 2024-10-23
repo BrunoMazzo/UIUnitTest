@@ -1,4 +1,5 @@
 import Foundation
+import UIUnitTestAPI
 
 extension Element {
     public func tap() async throws {
@@ -54,17 +55,4 @@ extension Element {
     }
 }
 
-public struct TapElementRequest: Codable, Sendable {
-    
-    public var serverId: UUID
-    public var duration: TimeInterval?
-    public var numberOfTaps: Int?
-    public var numberOfTouches: Int?
-    
-    init(serverId: UUID, duration: TimeInterval? = nil, numberOfTaps: Int? = nil, numberOfTouches: Int? = nil) {
-        self.serverId = serverId
-        self.duration = duration
-        self.numberOfTaps = numberOfTaps
-        self.numberOfTouches = numberOfTouches
-    }
-}
+
