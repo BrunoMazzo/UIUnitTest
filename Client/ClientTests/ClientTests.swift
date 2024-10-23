@@ -1,4 +1,3 @@
-import Testing
 import XCTest
 import UIUnitTest
 @testable import Client

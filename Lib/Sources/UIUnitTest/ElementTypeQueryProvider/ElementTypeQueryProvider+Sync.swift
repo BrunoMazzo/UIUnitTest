@@ -1,4 +1,5 @@
 import Foundation
+import UIUnitTestAPI
 
 public extension ElementTypeQueryProvider {
     
@@ -10,7 +11,7 @@ public extension ElementTypeQueryProvider {
     }
     
     @available(*, noasync)
-    subscript(dynamicMember: Query.QueryType) -> Query {
+    subscript(dynamicMember: QueryType) -> Query {
         Executor.execute {
             try await Query(serverId: self.serverId, queryType: dynamicMember)
         }.valueOrFailWithFallback(.EmptyQuery)

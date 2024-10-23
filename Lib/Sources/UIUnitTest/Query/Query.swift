@@ -12,7 +12,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
     
     init(serverId: UUID, queryType: QueryType) async throws {
-        let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(serverId: serverId, queryType: queryType.rawValue))
+        let response: QueryResponse = try await callServer(path: "query", request: QueryRequest(serverId: serverId, queryType: queryType))
         self.serverId = response.serverId
     }
     

@@ -1,16 +1,9 @@
 import Foundation
 import UIUnitTestAPI
 
-public enum SwipeDirection: Int, Codable, Sendable {
-    case up = 1
-    case down = 2
-    case left = 3
-    case right = 4
-}
-
 extension Element {
     public func swipe(direction: SwipeDirection, velocity: GestureVelocity = .default) async throws {
-        let swipeRequest = SwipeRequest(serverId: serverId, direction: direction.rawValue, velocity: velocity)
+        let swipeRequest = SwipeRequest(serverId: serverId, direction: direction, velocity: velocity.toAPI())
         
         let _: Bool = try await callServer(path: "swipe", request: swipeRequest)
     }
@@ -59,7 +52,23 @@ extension Element {
     }
 }
 
-
+public enum GestureVelocity: Hashable, Equatable, Sendable, Codable {
+    case `default`, slow, fast
+    case custom(CGFloat)
+    
+    public init(_ value: CGFloat) {
+        self = .custom(value)
+    }
+    
+    public func toAPI() -> GestureVelocityAPI {
+        switch self {
+        case .default: return .default
+        case .slow: return .slow
+        case .fast: return .fast
+        case .custom(let value): return .custom(value)
+        }
+    }
+}
 
 extension GestureVelocity : ExpressibleByIntegerLiteral {
     
@@ -74,7 +83,9 @@ extension GestureVelocity : ExpressibleByFloatLiteral {
     
     public typealias FloatLiteralType = CGFloat.NativeType
     
-    public init(floatLiteral value: GestureVelocity.FloatLiteralType) {
+    public init(floatLiteral value: GestureVelocityAPI.FloatLiteralType) {
         self = .custom(value)
     }
 }
+
+

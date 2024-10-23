@@ -12,7 +12,7 @@ public extension ElementTypeQueryProvider {
         return Element(serverId: elementResponse.serverId)
     }
     
-    func callAsFunction(_ dynamicMember: Query.QueryType) async throws -> Query {
+    func callAsFunction(_ dynamicMember: QueryType) async throws -> Query {
         try await Query(serverId: self.serverId, queryType: dynamicMember)
     }
     

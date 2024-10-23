@@ -1,12 +1,10 @@
 import Foundation
 import XCTest
-import Testing
 import UIUnitTestAPI
 
 public class App: Element, @unchecked Sendable {
     let appId: String
     let executor = Executor()
-    
     
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) async throws {
         self.appId = appId
