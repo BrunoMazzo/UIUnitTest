@@ -1,4 +1,5 @@
 import Foundation
+import UIUnitTestAPI
 
 public protocol ElementTypeQueryProvider: Sendable {
     var serverId: UUID { get }
@@ -647,18 +648,3 @@ public extension ElementTypeQueryProvider {
     }
 }
 
-public struct FirstMatchRequest: Codable, Sendable {
-    public var serverId: UUID
-    
-    public init(serverId: UUID) {
-        self.serverId = serverId
-    }
-}
-
-public struct FirstMatchResponse: Codable, Sendable {
-    public var serverId: UUID
-    
-    public init(serverId: UUID) {
-        self.serverId = serverId
-    }
-}

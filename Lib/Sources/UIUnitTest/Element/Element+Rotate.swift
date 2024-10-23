@@ -1,4 +1,5 @@
 import Foundation
+import UIUnitTestAPI
 
 public extension Element {
     func rotate(_ rotation: CGFloat, withVelocity velocity: CGFloat) async throws {
@@ -18,15 +19,3 @@ public extension Element {
 }
 
 
-public struct RotateRequest: Codable, Sendable {
-    
-    public var serverId: UUID
-    public var rotation: CGFloat
-    public var velocity: CGFloat
-    
-    init(serverId: UUID, rotation: CGFloat, velocity: CGFloat) {
-        self.serverId = serverId
-        self.rotation = rotation
-        self.velocity = velocity
-    }
-}

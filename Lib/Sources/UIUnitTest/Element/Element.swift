@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+import UIUnitTestAPI
 
 public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     
@@ -33,14 +34,14 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     
     /** Returns a query for all descendants of the element matching the specified type. */
     public func descendants(matching type: Element.ElementType) async throws -> Query {
-        let descendantsFromElement = ElementTypeRequest(serverId: self.serverId, elementType: type)
+        let descendantsFromElement = ElementTypeRequest(serverId: self.serverId, elementType: type.rawValue)
         let queryResponse: QueryResponse = try await callServer(path: "elementDescendants", request: descendantsFromElement)
         return Query(serverId: queryResponse.serverId)
     }
     
     /** Returns a query for direct children of the element matching the specified type. */
     public func children(matching type: Element.ElementType) async throws -> Query {
-        let request = ChildrenMatchinType(serverId: self.serverId, elementType: type)
+        let request = ChildrenMatchinType(serverId: self.serverId, elementType: type.rawValue)
         let queryResponse: QueryResponse = try await callServer(path: "children", request: request)
         return Query(serverId: queryResponse.serverId)
     }
@@ -129,84 +130,6 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
         Executor.execute {
             try await self.any(identifier)
         }.valueOrFailWithFallback(.EmptyElement)
-    }
-}
-
-public struct ScrollRequest: Codable, Sendable {
-    public var serverId: UUID
-    public var deltaX: CGFloat
-    public var deltaY: CGFloat
-    
-    init(serverId: UUID, deltaX: CGFloat, deltaY: CGFloat) {
-        self.serverId = serverId
-        self.deltaX = deltaX
-        self.deltaY = deltaY
-    }
-}
-
-public struct ByIdRequest: Codable, Sendable {
-    public var queryRoot: UUID
-    public var identifier: String
-}
-
-public struct ElementResponse: Codable, Sendable {
-    public var serverId: UUID
-    
-    public init(serverId: UUID) {
-        self.serverId = serverId
-    }
-}
-
-public struct ElementArrayResponse: Codable, Sendable {
-    public var serversId: [UUID]
-    
-    public init(serversId: [UUID]) {
-        self.serversId = serversId
-    }
-}
-
-public struct RemoveServerItemRequest: Codable, Sendable {
-    public var serverId: UUID
-}
-
-public struct WaitForExistenceRequest: Codable, Sendable {
-    
-    public var serverId: UUID
-    public var timeout: TimeInterval
-    
-    public init(serverId: UUID, timeout: TimeInterval) {
-        self.serverId = serverId
-        self.timeout = timeout
-    }
-}
-
-public struct WaitForExistenceResponse: Codable, Sendable {
-    public var elementExists: Bool
-    
-    public init(elementExists: Bool) {
-        self.elementExists = elementExists
-    }
-}
-
-public struct ElementTypeRequest: Codable, Sendable {
-    public let serverId: UUID
-    public let elementType: Element.ElementType
-    public let identifier: String?
-    
-    public init(serverId: UUID, elementType: Element.ElementType, identifier: String? = nil) {
-        self.serverId = serverId
-        self.elementType = elementType
-        self.identifier = identifier
-    }
-}
-
-public struct ChildrenMatchinType: Codable, Sendable {
-    public let serverId: UUID
-    public let elementType: Element.ElementType
-    
-    public init(serverId: UUID, elementType: Element.ElementType) {
-        self.serverId = serverId
-        self.elementType = elementType
     }
 }
 

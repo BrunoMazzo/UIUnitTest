@@ -1,4 +1,5 @@
 import Foundation
+import UIUnitTestAPI
 
 extension Element {
     public func doubleTap() async throws {

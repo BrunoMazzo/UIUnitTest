@@ -1,4 +1,5 @@
 import Foundation
+import UIUnitTestAPI
 
 extension Element {
     
@@ -24,34 +25,3 @@ extension Element {
 }
 
 
-public struct ExistsResponse: Codable, Sendable {
-    public var exists: Bool
-    
-    public init(exists: Bool) {
-        self.exists = exists
-    }
-}
-
-public struct ValueResponse: Codable, Sendable {
-    public var value: String?
-    
-    public init(value: String?) {
-        self.value = value
-    }
-}
-
-public struct ElementRequest: Codable, Sendable {
-    public var serverId: UUID
-    
-    init(serverId: UUID) {
-        self.serverId = serverId
-    }
-}
-
-public struct IsHittableResponse: Codable, Sendable {
-    public var isHittable: Bool
-    
-    public init(isHittable: Bool) {
-        self.isHittable = isHittable
-    }
-}
