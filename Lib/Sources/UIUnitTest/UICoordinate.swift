@@ -84,13 +84,13 @@ public final class Coordinate: Sendable {
         }.valueOrFailWithFallback(())
     }
     
-    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocity, thenHoldForDuration holdDuration: TimeInterval) async throws {
+    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocityAPI, thenHoldForDuration holdDuration: TimeInterval) async throws {
         let request = TapCoordinateRequest(serverId: self.serverId, type: .pressDragAndHold(forDuration: duration, thenDragTo: coordinate.serverId, withVelocity: velocity, thenHoldForDuration: holdDuration) )
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
 
     @available(*, noasync)
-    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocity, thenHoldForDuration holdDuration: TimeInterval) {
+    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocityAPI, thenHoldForDuration holdDuration: TimeInterval) {
         Executor.execute {
             try await self.press(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity, thenHoldForDuration: holdDuration)
         }.valueOrFailWithFallback(())

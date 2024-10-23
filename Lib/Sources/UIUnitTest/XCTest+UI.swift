@@ -1,5 +1,7 @@
 import SwiftUI
+#if canImport(Testing)
 import Testing
+#endif
 import UIKit
 import XCTest
 
@@ -37,7 +39,9 @@ func fail(
     line: UInt = #line,
     column: UInt = #column
 ) {
+#if canImport(Testing)
     let sourceLocation = SourceLocation(fileID: "\(fileID)", filePath: "\(filePath)", line: Int(line), column: Int(column))
     Issue.record(Comment(stringLiteral: message), sourceLocation: sourceLocation)
+#endif
     XCTFail(message, file: filePath, line: line)
 }

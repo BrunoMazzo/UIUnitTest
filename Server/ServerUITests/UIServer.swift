@@ -2,7 +2,7 @@ import FlyingFox
 import FlyingSocks
 import XCTest
 import Foundation
-import UIUnitTest
+import UIUnitTestAPI
 
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
@@ -47,11 +47,13 @@ struct WrongQueryTypeFoundError: Error, LocalizedError {
     }
 }
 
+@MainActor
 class UIServer {
     var lastIssue: XCTIssue?
     
     var server: HTTPServer!
     
+    @MainActor
     let cache = Cache()
     
     @MainActor
@@ -59,7 +61,7 @@ class UIServer {
         request: AccessibilityAuditRequest
     ) async throws -> AccessibilityAuditResponse {
         
-        let app = try await self.cache.getApplication(request.serverId)
+        let app = try self.cache.getApplication(request.serverId)
         
         if #available(iOS 17.0, *) {
             var issues = [XCUIAccessibilityAuditIssue]()
@@ -68,7 +70,7 @@ class UIServer {
                 return true
             }
             
-            return await AccessibilityAuditResponse(issues: issues.asyncMap ({ await AccessibilityAuditIssue(xcIssue: $0, cache: cache)}))
+            return AccessibilityAuditResponse(issues: issues.map({ AccessibilityAuditIssueData(xcIssue: $0, cache: cache)}))
         } else {
             // Fallback on earlier versions
             throw NSError(domain: "com.apple.XCTest", code: 0, userInfo: nil)
@@ -77,17 +79,17 @@ class UIServer {
     
     @MainActor
     func firstMatch(firstMatchRequest: FirstMatchRequest) async throws -> FirstMatchResponse {
-        let query = try await self.cache.getQuery(firstMatchRequest.serverId)
+        let query = try self.cache.getQuery(firstMatchRequest.serverId)
         let element = query.firstMatch
         
-        let id = await self.cache.add(element: element)
+        let id = self.cache.add(element: element)
         
         return FirstMatchResponse(serverId: id)
     }
     
     @MainActor
     func elementFromQuery(elementFromQuery: ElementFromQuery) async throws -> ElementResponse {
-        let query = try await self.cache.getElementQuery(elementFromQuery.serverId)
+        let query = try self.cache.getElementQuery(elementFromQuery.serverId)
         
         let element: XCUIElement
         if let index = elementFromQuery.index {
@@ -98,59 +100,59 @@ class UIServer {
             element = query.element
         }
         
-        let id = await self.cache.add(element: element)
+        let id = self.cache.add(element: element)
         
         return ElementResponse(serverId: id)
     }
     
     @MainActor
     func elementMatchingPredicate(predicateRequest: PredicateRequest) async throws -> ElementResponse {
-        let query = try await self.cache.getElementQuery(predicateRequest.serverId)
+        let query = try self.cache.getElementQuery(predicateRequest.serverId)
         
         let element = query.element(matching: predicateRequest.predicate)
         
-        let id = await self.cache.add(element: element)
+        let id = self.cache.add(element: element)
         
         return ElementResponse(serverId: id)
     }
     
     @MainActor
     func matchingPredicate(predicateRequest: PredicateRequest) async throws -> QueryResponse {
-        let query = try await self.cache.getElementQuery(predicateRequest.serverId)
+        let query = try self.cache.getElementQuery(predicateRequest.serverId)
         let matching = query.matching(predicateRequest.predicate)
-        let id = await self.cache.add(query: matching)
+        let id = self.cache.add(query: matching)
         return QueryResponse(serverId: id)
     }
     
     @MainActor
     func matchingByIdentifier(request: ByIdRequest) async throws -> QueryResponse {
-        let query = try await self.cache.getElementQuery(request.queryRoot)
+        let query = try self.cache.getElementQuery(request.queryRoot)
         let matching = query.matching(identifier: request.identifier)
-        let id = await self.cache.add(query: matching)
+        let id = self.cache.add(query: matching)
         return QueryResponse(serverId: id)
     }
     
     @MainActor
     func containingPredicate(request: PredicateRequest) async throws -> QueryResponse {
-        let query = try await self.cache.getElementQuery(request.serverId)
+        let query = try self.cache.getElementQuery(request.serverId)
         let matching = query.containing(request.predicate)
-        let id = await self.cache.add(query: matching)
+        let id = self.cache.add(query: matching)
         return QueryResponse(serverId: id)
     }
     
     @MainActor
     func containingElementType(request: ElementTypeRequest) async throws -> QueryResponse {
-        let rootQuery = try await self.cache.getElementQuery(request.serverId)
+        let rootQuery = try self.cache.getElementQuery(request.serverId)
         let query = rootQuery.containing(request.elementType.toXCUIElementType(), identifier: request.identifier)
         
-        let id = await self.cache.add(query: query)
+        let id = self.cache.add(query: query)
         
         return QueryResponse(serverId: id)
     }
     
     @MainActor
     func tapElement(tapRequest: TapElementRequest) async throws -> Bool {
-        guard let element = try? await self.cache.getElement(tapRequest.serverId) else {
+        guard let element = try? self.cache.getElement(tapRequest.serverId) else {
             return false
         }
         
@@ -171,13 +173,13 @@ class UIServer {
     
     @MainActor
     func doubleTap(tapRequest: ElementRequest) async throws -> Void {
-        let element = try await self.cache.getElement(tapRequest.serverId)
+        let element = try self.cache.getElement(tapRequest.serverId)
         element.doubleTap()
     }
     
     @MainActor
     func exists(request: ElementRequest) async throws -> ExistsResponse {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         let exists = element.exists
         
         return ExistsResponse(exists: exists)
@@ -185,13 +187,13 @@ class UIServer {
     
     @MainActor
     func typeText(request: EnterTextRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         element.typeText(request.textToEnter)
     }
     
     @MainActor
     func value(request: ElementRequest) async throws -> ValueResponse {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         let value = element.value as? String
         
         return ValueResponse(value: value)
@@ -199,13 +201,13 @@ class UIServer {
     
     @MainActor
     func scroll(request: ScrollRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         element.scroll(byDeltaX: request.deltaX, deltaY: request.deltaY)
     }
     
     @MainActor
     func swipe(request: SwipeRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         
         let velocity = request.velocity.xcUIGestureVelocity
         
@@ -223,19 +225,19 @@ class UIServer {
     
     @MainActor
     func pinch(request: PinchRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         element.pinch(withScale: request.scale, velocity: request.velocity)
     }
     
     @MainActor
     func rotate(request: RotateRequest) async throws -> Void {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         element.rotate(request.rotation, withVelocity: request.velocity)
     }
     
     @MainActor
     func waitForExistence(request: WaitForExistenceRequest) async throws -> WaitForExistenceResponse {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         let exists = element.waitForExistence(timeout: request.timeout)
         
         return WaitForExistenceResponse(elementExists: exists)
@@ -243,7 +245,7 @@ class UIServer {
     
     @MainActor
     func waitForNonExistence(request: WaitForExistenceRequest) async throws -> WaitForExistenceResponse {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         
         let predicate = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: element)
         
@@ -254,60 +256,60 @@ class UIServer {
     
     @MainActor
     func isHittable(request: ElementRequest) async throws -> IsHittableResponse {
-        let isHittable = try await self.cache.getElement(request.serverId).isHittable
+        let isHittable = try self.cache.getElement(request.serverId).isHittable
         return IsHittableResponse(isHittable: isHittable)
     }
     
     @MainActor
     func count(request: CountRequest) async throws -> CountResponse {
-        let count: Int = (try await self.cache.getElementQuery(request.serverId)).count
+        let count: Int = (try self.cache.getElementQuery(request.serverId)).count
         return CountResponse(count: count)
     }
     
     @MainActor
     func queryDescendants(request: DescendantsFromQuery) async throws -> QueryResponse {
-        let rootQuery = try await self.cache.getElementQuery(request.serverId)
+        let rootQuery = try self.cache.getElementQuery(request.serverId)
         let descendantsQuery = rootQuery.descendants(matching: request.elementType.toXCUIElementType())
         
-        let id = await self.cache.add(query: descendantsQuery)
+        let id = self.cache.add(query: descendantsQuery)
         
         return QueryResponse(serverId: id)
     }
     
     @MainActor
     func elementDescendants(request: ElementTypeRequest) async throws -> QueryResponse {
-        let rootElement = try await self.cache.getElement(request.serverId)
+        let rootElement = try self.cache.getElement(request.serverId)
         let descendantsQuery = rootElement.descendants(matching: request.elementType.toXCUIElementType())
         
-        let id = await self.cache.add(query: descendantsQuery)
+        let id = self.cache.add(query: descendantsQuery)
         
         return QueryResponse(serverId: id)
     }
     
     @MainActor
     func matchingElementType(request: ElementTypeRequest) async throws -> QueryResponse {
-        let rootQuery = try await self.cache.getElementQuery(request.serverId)
+        let rootQuery = try self.cache.getElementQuery(request.serverId)
         let descendantsQuery = rootQuery.matching(request.elementType.toXCUIElementType(), identifier: request.identifier)
-        let id = await self.cache.add(query: descendantsQuery)
+        let id = self.cache.add(query: descendantsQuery)
         return QueryResponse(serverId: id)
     }
     
     @MainActor
     func allElementsBoundByAccessibilityElement(request: ElementsByAccessibility) async throws -> ElementArrayResponse {
-        let rootQuery = try await self.cache.getElementQuery(request.serverId)
+        let rootQuery = try self.cache.getElementQuery(request.serverId)
         let allElements = rootQuery.allElementsBoundByAccessibilityElement
         
-        let ids = await self.cache.add(elements: allElements)
+        let ids = self.cache.add(elements: allElements)
         
         return ElementArrayResponse(serversId: ids)
     }
     
     @MainActor
     func allElementsBoundByIndex(request: ElementsByAccessibility) async throws -> ElementArrayResponse {
-        let rootQuery = try await self.cache.getElementQuery(request.serverId)
+        let rootQuery = try self.cache.getElementQuery(request.serverId)
         let allElements = rootQuery.allElementsBoundByIndex
         
-        let ids = await self.cache.add(elements: allElements)
+        let ids = self.cache.add(elements: allElements)
         
         return ElementArrayResponse(serversId: ids)
     }
@@ -316,15 +318,15 @@ class UIServer {
     func children(request: ChildrenMatchinType) async throws -> QueryResponse {
         var childrenQuery: XCUIElementQuery
         
-        if let rootQuery = try? await self.cache.getElementQuery(request.serverId) {
+        if let rootQuery = try? self.cache.getElementQuery(request.serverId) {
             childrenQuery = rootQuery.children(matching: request.elementType.toXCUIElementType())
-        } else if let rootElement = try? await self.cache.getElement(request.serverId) {
+        } else if let rootElement = try? self.cache.getElement(request.serverId) {
             childrenQuery = rootElement.children(matching: request.elementType.toXCUIElementType())
         } else {
             throw ElementNotFoundError(serverId: request.serverId.uuidString)
         }
         
-        let id = await self.cache.add(query: childrenQuery)
+        let id = self.cache.add(query: childrenQuery)
         
         return QueryResponse(serverId: id)
     }
@@ -332,20 +334,20 @@ class UIServer {
     @MainActor
     func element(request: ByIdRequest) async -> ElementResponse {
         let newElement = try! await self.findElement(elementRequest: request)
-        let id = await self.cache.add(element: newElement)
+        let id = self.cache.add(element: newElement)
         return ElementResponse(serverId: id)
     }
     
     @MainActor
     func query(request: QueryRequest) async throws -> QueryResponse {
         let newQuery = try await self.performQuery(queryRequest: request)
-        let serverId = await self.cache.add(query: newQuery)
+        let serverId = self.cache.add(query: newQuery)
         return QueryResponse(serverId: serverId)
     }
     
     @MainActor
     func remove(request: RemoveServerItemRequest) async -> Bool {
-        await self.cache.remove(request.serverId)
+        self.cache.remove(request.serverId)
         
         return true
     }
@@ -354,9 +356,9 @@ class UIServer {
     func debugDescription(request: ElementRequest) async throws -> String {
         var debugDescription: String!
         
-        if let rootQuery = try? await self.cache.getElementQuery(request.serverId) {
+        if let rootQuery = try? self.cache.getElementQuery(request.serverId) {
             debugDescription = rootQuery.debugDescription
-        } else if let rootElement = try? await self.cache.getElement(request.serverId) {
+        } else if let rootElement = try? self.cache.getElement(request.serverId) {
             debugDescription = rootElement.debugDescription
         } else {
             throw ElementNotFoundError(serverId: request.serverId.uuidString)
@@ -367,72 +369,72 @@ class UIServer {
     
     @MainActor
     func identifier(request: ElementRequest) async throws -> String {
-        let rootElement = try await self.cache.getElement(request.serverId)
+        let rootElement = try self.cache.getElement(request.serverId)
         return rootElement.identifier
     }
     
     @MainActor
     func title(request: ElementRequest) async throws -> String {
-        let rootElement = try await self.cache.getElement(request.serverId)
+        let rootElement = try self.cache.getElement(request.serverId)
         return rootElement.title
     }
     
     @MainActor
     func label(request: ElementRequest) async throws -> String {
-        let rootElement = try await self.cache.getElement(request.serverId)
+        let rootElement = try self.cache.getElement(request.serverId)
         return rootElement.label
     }
     
     @MainActor
     func placeholderValue(request: ElementRequest) async throws -> String? {
-        let rootElement = try await self.cache.getElement(request.serverId)
+        let rootElement = try self.cache.getElement(request.serverId)
         return rootElement.placeholderValue
     }
     
     @MainActor
     func isSelected(request: ElementRequest) async throws -> Bool {
-        let rootElement = try await self.cache.getElement(request.serverId)
+        let rootElement = try self.cache.getElement(request.serverId)
         return rootElement.isSelected
     }
     
     @MainActor
     func hasFocus(request: ElementRequest) async throws -> Bool {
-        let rootElement = try await self.cache.getElement(request.serverId)
+        let rootElement = try self.cache.getElement(request.serverId)
         return rootElement.hasFocus
     }
     
     @MainActor
     func isEnabled(request: ElementRequest) async throws -> Bool {
-        let rootElement = try await self.cache.getElement(request.serverId)
+        let rootElement = try self.cache.getElement(request.serverId)
         return rootElement.isEnabled
     }
     
     @MainActor
     func coordinate(request: CoordinateRequest) async throws -> CoordinateResponse {
         //withNormalizedOffset: CGVector
-        let rootElement = try await self.cache.getElement(request.serverId)
+        let rootElement = try self.cache.getElement(request.serverId)
         let coordinate = rootElement.coordinate(withNormalizedOffset: request.normalizedOffset)
         
-        let coordinateUUID = await cache.add(coordinate: coordinate)
-        let elementUUID = await cache.add(element: coordinate.referencedElement)
+        let coordinateUUID = cache.add(coordinate: coordinate)
+        let elementUUID = cache.add(element: coordinate.referencedElement)
         
         return CoordinateResponse(coordinateId: coordinateUUID, referencedElementId: elementUUID, screenPoint: coordinate.screenPoint)
     }
     
     @MainActor
     func coordinateWithOffset(request: CoordinateOffsetRequest) async throws -> CoordinateResponse {
-        let rootCoordinate = try await self.cache.getCoordinate(request.coordinatorId)
+        let rootCoordinate = try self.cache.getCoordinate(request.coordinatorId)
         let coordinate = rootCoordinate.withOffset(request.vector)
         
-        let coordinateUUID = await cache.add(coordinate: coordinate)
-        let elementUUID = await cache.add(element: coordinate.referencedElement)
+        let coordinateUUID = cache.add(coordinate: coordinate)
+        let elementUUID = cache.add(element: coordinate.referencedElement)
         
         return CoordinateResponse(coordinateId: coordinateUUID, referencedElementId: elementUUID, screenPoint: coordinate.screenPoint)
     }
     
     @MainActor
     func coordinateTap(request: TapCoordinateRequest) async throws -> Bool {
-        let rootCoordinate = try await self.cache.getCoordinate(request.serverId)
+        let rootCoordinate = try self.cache.getCoordinate(request.serverId)
         
         switch request.type {
         case .tap:
@@ -442,10 +444,10 @@ class UIServer {
         case .press(forDuration: let duration):
             rootCoordinate.press(forDuration: duration)
         case .pressAndDrag(forDuration: let duration, thenDragTo: let coordinate):
-            let coordinate = try await self.cache.getCoordinate(coordinate)
+            let coordinate = try self.cache.getCoordinate(coordinate)
             rootCoordinate.press(forDuration: duration, thenDragTo: coordinate)
         case .pressDragAndHold(forDuration: let duration, thenDragTo: let coordinate, withVelocity: let velocity, thenHoldForDuration: let holdDuration):
-            let coordinate = try await self.cache.getCoordinate(coordinate)
+            let coordinate = try self.cache.getCoordinate(coordinate)
             rootCoordinate.press(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity.xcUIGestureVelocity, thenHoldForDuration: holdDuration)
         }
         
@@ -454,31 +456,31 @@ class UIServer {
     
     @MainActor
     func frame(request: ElementRequest) async throws -> CGRect {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         return element.frame
     }
     
     @MainActor
     func horizontalSizeClass(request: ElementRequest) async throws -> SizeClass {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         return SizeClass(rawValue: element.horizontalSizeClass.rawValue)!
     }
     
     @MainActor
     func verticalSizeClass(request: ElementRequest) async throws -> SizeClass {
-        let element = try await self.cache.getElement(request.serverId)
+        let element = try self.cache.getElement(request.serverId)
         return SizeClass(rawValue: element.verticalSizeClass.rawValue)!
     }
     
     @MainActor
-    func elementType(request: ElementRequest) async throws -> Element.ElementType {
-        let element = try await self.cache.getElement(request.serverId)
-        return Element.ElementType(rawValue: element.elementType.rawValue)!
+    func elementType(request: ElementRequest) async throws -> UInt {
+        let element = try self.cache.getElement(request.serverId)
+        return element.elementType.rawValue
     }
     
     @MainActor
     func accessibilityTest(request: ElementRequest) async throws -> Bool {
-        let application = try await self.cache.getApplication(request.serverId)
+        let application = try self.cache.getApplication(request.serverId)
         
         if #available(iOS 17.0, *) {
             return (try? application.performAccessibilityAudit()) != nil
@@ -496,7 +498,7 @@ class UIServer {
         
         await addRoute("createApp", handler: { (request: CreateApplicationRequest) in
             let app = XCUIApplication(bundleIdentifier: request.appId)
-            await self.cache.add(application: app, id: request.serverId)
+            self.cache.add(application: app, id: request.serverId)
             
             if request.activate {
                 app.activate()
@@ -504,7 +506,7 @@ class UIServer {
         })
         
         await addRoute("Activate", handler: { (activateRequest: ActivateRequest) in
-            let app = try await self.cache.getApplication(activateRequest.serverId)
+            let app = try self.cache.getApplication(activateRequest.serverId)
             app.activate()
         })
         
@@ -568,14 +570,14 @@ class UIServer {
                 await self.server.stop(timeout: 10)
             }
             
-            return self.buildResponse(true)
+            return await self.buildResponse(true)
         }))
         
         await self.server.appendRoute(HTTPRoute(stringLiteral: "alive"), to: ClosureHTTPHandler({ request in
-            return self.buildResponse(true)
+            return await self.buildResponse(true)
         }))
         
-        let task = Task { try await server.start() }
+        let task = Task { try await server.run() }
         
         try await server.waitUntilListening()
         
@@ -598,7 +600,7 @@ class UIServer {
     
     @MainActor
     func performQuery(queryRequest: QueryRequest) async throws -> XCUIElementQuery {
-        let rootElementQuery = try await self.cache.getQuery(queryRequest.serverId)
+        let rootElementQuery = try self.cache.getQuery(queryRequest.serverId)
         
         let resultQuery: XCUIElementQuery
         switch queryRequest.queryType {
@@ -770,9 +772,9 @@ class UIServer {
     }
     
     func findElement(elementRequest: ByIdRequest) async throws -> XCUIElement {
-        let rootElementQuery = try await self.cache.getElementQuery(elementRequest.queryRoot)
+        let rootElementQuery = try self.cache.getElementQuery(elementRequest.queryRoot)
         
-        return await rootElementQuery[elementRequest.identifier]
+        return rootElementQuery[elementRequest.identifier]
     }
     
     
@@ -814,13 +816,13 @@ class UIServer {
     }
 }
 
-public extension Element.ElementType {
+public extension UInt {
     func toXCUIElementType() -> XCUIElement.ElementType {
-        XCUIElement.ElementType(rawValue: self.rawValue)!
+        XCUIElement.ElementType(rawValue: self)!
     }
 }
 
-public extension GestureVelocity {
+public extension GestureVelocityAPI {
     var xcUIGestureVelocity: XCUIGestureVelocity {
         switch self {
         case .slow:
@@ -835,30 +837,26 @@ public extension GestureVelocity {
     }
 }
 
-extension AccessibilityAuditType {
+extension UInt64 {
     @available(iOS 17.0, *)
     func toXCUIAccessibilityAuditType() -> XCUIAccessibilityAuditType {
-        return XCUIAccessibilityAuditType(rawValue: self.rawValue)
-    }
-    
-    @available(iOS 17.0, *)
-    public init(xcType: XCUIAccessibilityAuditType) {
-        self.init(rawValue: xcType.rawValue)
+        return XCUIAccessibilityAuditType(rawValue: self)
     }
 }
 
-extension AccessibilityAuditIssue {
+extension AccessibilityAuditIssueData {
     @available(iOS 17.0, *)
-    convenience init(xcIssue: XCUIAccessibilityAuditIssue, cache: Cache) async {
+    @MainActor
+    init(xcIssue: XCUIAccessibilityAuditIssue, cache: Cache) {
         var elementId: UUID? = nil
         if let element = xcIssue.element {
-            elementId = await cache.add(element: element)
+            elementId = cache.add(element: element)
         }
         self.init(
             element: elementId,
             compactDescription: xcIssue.compactDescription,
             detailedDescription: xcIssue.detailedDescription,
-            auditType: AccessibilityAuditType(xcType: xcIssue.auditType)
+            auditType: xcIssue.auditType.rawValue
         )
     }
 }
@@ -877,3 +875,4 @@ extension Sequence {
         return values
     }
 }
+

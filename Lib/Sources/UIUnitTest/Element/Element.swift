@@ -133,11 +133,7 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     }
 }
 
-public enum SizeClass: Int, Codable, Sendable {
-    case unspecified = 0
-    case compact     = 1
-    case regular     = 2
-}
+
 
 extension Element {
     

@@ -143,23 +143,49 @@ public struct RotateRequest: Codable, Sendable {
     }
 }
 
+public enum SwipeDirection: Int, Codable, Sendable {
+    case up = 1
+    case down = 2
+    case left = 3
+    case right = 4
+}
+
 public struct SwipeRequest: Codable, Sendable {
     
     public var serverId: UUID
-    public var swipeDirection: Int
-    public var velocity: GestureVelocity
+    public var swipeDirection: SwipeDirection
+    public var velocity: GestureVelocityAPI
     
-    public init(serverId: UUID, direction: Int, velocity: GestureVelocity) {
+    public init(serverId: UUID, direction: SwipeDirection, velocity: GestureVelocityAPI) {
         self.serverId = serverId
         self.swipeDirection = direction
         self.velocity = velocity
     }
 }
-public enum GestureVelocity: Hashable, Equatable, @unchecked Sendable, Codable {
+
+public enum GestureVelocityAPI: Hashable, Equatable, Sendable, Codable {
     case `default`, slow, fast
     case custom(CGFloat)
     
     public init(_ value: CGFloat) {
+        self = .custom(value)
+    }
+}
+
+extension GestureVelocityAPI : ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: Int) {
+        self = .custom(CGFloat(value))
+    }
+    
+    public typealias IntegerLiteralType = Int
+}
+
+extension GestureVelocityAPI : ExpressibleByFloatLiteral {
+    
+    public typealias FloatLiteralType = CGFloat.NativeType
+    
+    public init(floatLiteral value: GestureVelocityAPI.FloatLiteralType) {
         self = .custom(value)
     }
 }
@@ -197,9 +223,9 @@ public struct FirstMatchResponse: Codable, Sendable {
 public struct QueryRequest: Codable, Sendable {
     
     public var serverId: UUID
-    public var queryType: Int
+    public var queryType: QueryType
     
-    public init(serverId: UUID, queryType: Int) {
+    public init(serverId: UUID, queryType: QueryType) {
         self.serverId = serverId
         self.queryType = queryType
     }
@@ -349,7 +375,7 @@ public struct TapCoordinateRequest: Codable, Sendable {
         case doubleTap
         case press(forDuration: TimeInterval)
         case pressAndDrag(forDuration: TimeInterval, thenDragTo: UUID)
-        case pressDragAndHold(forDuration: TimeInterval, thenDragTo: UUID, withVelocity: GestureVelocity, thenHoldForDuration: TimeInterval)
+        case pressDragAndHold(forDuration: TimeInterval, thenDragTo: UUID, withVelocity: GestureVelocityAPI, thenHoldForDuration: TimeInterval)
     }
     
     public var serverId: UUID
@@ -470,4 +496,69 @@ public struct AccessibilityAuditResponse: Codable, Sendable {
     public init(issues: [AccessibilityAuditIssueData]) {
         self.issues = issues
     }
+}
+
+public struct UIResponse<T: Codable>: Codable {
+    
+    public let response: Response<T>
+    
+    public init(response: T) {
+        self.response = .success(data: response)
+    }
+    
+    public init(error: String) {
+        self.response = .error(error: ErrorResponse(error: error))
+    }
+    
+    enum CodingKeys: CodingKey {
+        case data
+        case error
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if let error = try container.decodeIfPresent(ErrorResponse.self, forKey: .error) {
+            self.response = .error(error: error)
+        } else if let response = try container.decodeIfPresent(T.self, forKey: .data) {
+            self.response = .success(data: response)
+        } else {
+            fatalError("Invalid response")
+        }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        switch self.response {
+        case .error(error: let error):
+            try container.encode(error, forKey: .error)
+        case .success(data: let data):
+            try container.encode(data, forKey: .data)
+        }
+    }
+    
+}
+
+extension UIResponse: Sendable where T: Sendable {
+    
+}
+
+public enum Response<T: Codable> {
+    case error(error: ErrorResponse)
+    case success(data: T)
+}
+
+extension Response: Sendable where T: Sendable {
+    
+}
+
+public struct ErrorResponse: Codable, Sendable {
+    public var error: String
+}
+
+public enum SizeClass: Int, Codable, Sendable {
+    case unspecified = 0
+    case compact     = 1
+    case regular     = 2
 }

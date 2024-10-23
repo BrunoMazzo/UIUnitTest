@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1530"
+   LastUpgradeVersion = "1600"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,16 +14,17 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:ServerUITests - Debug.xctestplan"
+            reference = "container:Server.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "NO"
+            parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1DA1934329B4260600322869"
+               BlueprintIdentifier = "1D756F272CC8A00D000563FE"
                BuildableName = "ServerUITests.xctest"
                BlueprintName = "ServerUITests"
                ReferencedContainer = "container:Server.xcodeproj">

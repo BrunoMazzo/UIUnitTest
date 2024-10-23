@@ -1,21 +1,13 @@
 {
+  "originHash" : "7084722e342fef494fc70957b427057673f1ba8ac89d92cb3a9ba7db75da13d4",
   "pins" : [
     {
-      "identity" : "commander",
+      "identity" : "flyingfox",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kylef/Commander",
+      "location" : "https://github.com/swhitty/FlyingFox.git",
       "state" : {
-        "revision" : "4a1f2fb82fb6cef613c4a25d2e38f702e4d812c2",
-        "version" : "0.9.2"
-      }
-    },
-    {
-      "identity" : "spectre",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kylef/Spectre.git",
-      "state" : {
-        "revision" : "26cc5e9ae0947092c7139ef7ba612e34646086c7",
-        "version" : "0.10.1"
+        "revision" : "0482ba51ff2d6d91a7ea449c3dbdce2a78802b85",
+        "version" : "0.19.0"
       }
     },
     {
@@ -23,19 +15,10 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "8f4d2753f0e4778c76d5f05ad16c74f707390531",
-        "version" : "1.2.3"
-      }
-    },
-    {
-      "identity" : "xccov2lcov",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/trax-retail/xccov2lcov",
-      "state" : {
-        "revision" : "fd0b15537f0b4b949d8e6b8a38eeef09a35d31ff",
-        "version" : "1.0.0"
+        "revision" : "41982a3656a71c768319979febd796c6fd111d5c",
+        "version" : "1.5.0"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
