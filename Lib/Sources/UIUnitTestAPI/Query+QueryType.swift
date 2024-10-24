@@ -81,4 +81,3 @@ public enum QueryType: Int, Codable, Sendable {
     case webViews
     case windows
 }
-

@@ -10,10 +10,9 @@ struct ClientApp: App {
 }
 
 struct MySettingTable: View {
-    
     @State var navigationStack: [String] = []
     @State var isDoubleTap = false
-    
+
     var body: some View {
         NavigationStack(path: $navigationStack) {
             List {
@@ -36,9 +35,8 @@ struct MySettingTable: View {
 }
 
 struct TextFieldsView: View {
-    
     @State var textFieldValue: String = ""
-    
+
     var body: some View {
         VStack {
             Text("Text value: \(textFieldValue)")
@@ -52,16 +50,15 @@ struct TextFieldsView: View {
 
 struct StepperView: View {
     @State var value: Int = 0
-    
+
     var body: some View {
         Stepper("Stepper", value: $value)
     }
 }
 
 struct StringView: View {
-    
     var value: String
-    
+
     var body: some View {
         VStack {
             Text("Value: \(value)")

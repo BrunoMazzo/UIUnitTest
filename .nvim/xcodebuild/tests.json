@@ -1,0 +1,432 @@
+{
+  "errors" : [
+
+  ],
+  "values" : [
+    {
+      "disabledTests" : [
+
+      ],
+      "enabledTests" : [
+        {
+          "identifier" : "ClientTests/ClientTests/testAccessibilityInspection"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testDoubleTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testDoubleTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testEnterTestOnWrongElementFails"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testEnterText"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testEnterTextSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testExists"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testExistsSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testHomeButtonAndLaunch"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testHomeButtonAndLaunchSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testMatchingWithPredicate"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testMatchingWithPredicateAsync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testPinch"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testPinchSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testPressWithDuration"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testPressWithDurationSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testRotate"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testRotateSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testSwipeActions"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testSwipeActionsSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testThreeFingerTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testThreeFingerTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testTwoFingerTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testTwoFingerTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testWaitForExistence"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests/testWaitForExistenceSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testAccessibilityInspection"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testDoubleTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testDoubleTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testEnterTestOnWrongElementFails"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testEnterText"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testEnterTextSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testExists"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testExistsSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testHomeButtonAndLaunch"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testHomeButtonAndLaunchSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testMatchingWithPredicate"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testMatchingWithPredicateAsync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testPinch"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testPinchSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testPressWithDuration"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testPressWithDurationSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testRotate"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testRotateSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testSwipeActions"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testSwipeActionsSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testThreeFingerTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testThreeFingerTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testTwoFingerTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testTwoFingerTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testWaitForExistence"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests2/testWaitForExistenceSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testAccessibilityInspection"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testDoubleTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testDoubleTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testEnterTestOnWrongElementFails"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testEnterText"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testEnterTextSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testExists"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testExistsSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testHomeButtonAndLaunch"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testHomeButtonAndLaunchSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testMatchingWithPredicate"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testMatchingWithPredicateAsync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testPinch"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testPinchSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testPressWithDuration"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testPressWithDurationSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testRotate"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testRotateSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testSwipeActions"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testSwipeActionsSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testThreeFingerTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testThreeFingerTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testTwoFingerTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testTwoFingerTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testWaitForExistence"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests3/testWaitForExistenceSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testAccessibilityInspection"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testDoubleTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testDoubleTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testEnterTestOnWrongElementFails"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testEnterText"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testEnterTextSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testExists"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testExistsSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testHomeButtonAndLaunch"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testHomeButtonAndLaunchSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testMatchingWithPredicate"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testMatchingWithPredicateAsync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testPinch"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testPinchSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testPressWithDuration"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testPressWithDurationSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testRotate"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testRotateSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testSwipeActions"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testSwipeActionsSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testThreeFingerTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testThreeFingerTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testTwoFingerTap"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testTwoFingerTapSync"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testWaitForExistence"
+        },
+        {
+          "identifier" : "ClientTests/ClientTests4/testWaitForExistenceSync"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testAccessibilityInspection()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testDoubleTap()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testDoubleTapSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testEnterTestOnWrongElementFails()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testEnterText()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testEnterTextSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testExists()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testExistsSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testHomeButtonAndLaunch()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testHomeButtonAndLaunchSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testMatchingWithPredicate()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testMatchingWithPredicateAsync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testPinch()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testPinchSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testPressWithDuration()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testPressWithDurationSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testRotate()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testRotateSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testSwipeActions()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testSwipeActionsSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testTap()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testTapSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testThreeFingerTap()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testThreeFingerTapSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testTwoFingerTap()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testTwoFingerTapSync()"
+        },
+        {
+          "identifier" : "ClientTests/SwiftTesting/testWaitForExistence()"
+        }
+      ],
+      "testPlan" : "Client"
+    }
+  ]
+}

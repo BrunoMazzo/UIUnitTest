@@ -1,23 +1,23 @@
 import Foundation
-import XCTest
 import os
+import XCTest
 
 class Box {
     var value: Any?
     var success: Bool = false
-    
+
     var finished: Bool = false
-    
+
     func success(value: Any?) {
         self.value = value
-        self.success = true
-        self.finished = true
+        success = true
+        finished = true
     }
-    
+
     func error(error: Any) {
-        self.value = error
-        self.success = false
-        self.finished = true
+        value = error
+        success = false
+        finished = true
     }
 }
 
@@ -29,14 +29,20 @@ public struct UIUnitTestActor {
 
 public struct Executor: @unchecked Sendable {
     private var box = Box()
-    
-    public static func execute<T: Sendable>(function: String = #function, _ block: @escaping @Sendable () async throws -> T) -> Result<T, Error> {
+
+    public static func execute<T: Sendable>(
+        function: String = #function,
+        _ block: @escaping @Sendable () async throws -> T
+    ) -> Result<T, Error> {
         let executor = Executor()
         return executor.execute(function: function, block)
     }
-    
+
     // TODO: Think about a better way to handle errors. Maybe just fail the test?
-    func execute<T: Sendable>(function: String = #function, _ block: @escaping @Sendable () async throws -> T) -> Result<T, Error> {
+    func execute<T: Sendable>(
+        function: String = #function,
+        _ block: @escaping @Sendable () async throws -> T
+    ) -> Result<T, Error> {
         let expectation = XCTestExpectation(description: function)
         Task { @UIUnitTestActor in
             defer {
@@ -50,7 +56,7 @@ public struct Executor: @unchecked Sendable {
             }
         }
         _ = XCTWaiter.wait(for: [expectation])
-        
+
         if box.success {
             return .success(box.value as! T)
         } else {
