@@ -71,6 +71,7 @@ func callServer<RequestData: Codable & Sendable, ResponseData: Codable & Sendabl
                     let result: ResponseData = try await server.callServer(path: path, request: request)
                     continuation.resume(returning: result)
                 } catch {
+                    print(error)
                     continuation.resume(throwing: error)
                 }
             }
