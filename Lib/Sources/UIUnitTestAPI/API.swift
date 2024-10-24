@@ -181,7 +181,6 @@ extension GestureVelocityAPI: ExpressibleByIntegerLiteral {
 extension GestureVelocityAPI: ExpressibleByFloatLiteral {
     public typealias FloatLiteralType = CGFloat.NativeType
 
-
     public init(floatLiteral value: GestureVelocityAPI.FloatLiteralType) {
         self = .custom(value)
     }
@@ -220,7 +219,7 @@ public struct FirstMatchResponse: Codable, Sendable {
 public struct QueryRequest: Codable, Sendable {
     public var serverId: UUID
     public var queryType: QueryType
-    
+
     public init(serverId: UUID, queryType: QueryType) {
         self.serverId = serverId
         self.queryType = queryType

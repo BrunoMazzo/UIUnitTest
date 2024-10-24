@@ -16,7 +16,11 @@
       "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
       "state" : {
         "branch" : "swift-testing",
+<<<<<<< HEAD
         "revision" : "042743a132d0e16b10fae19ef0d911056c99b36a"
+=======
+        "revision" : "67193a4cf08bcb10cbfa9f42394dee644f06900b"
+>>>>>>> 227dc65 (Try to fix Swipe actions)
       }
     }
   ],
