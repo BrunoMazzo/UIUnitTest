@@ -17,7 +17,6 @@
       "state" : {
         "revision" : "41982a3656a71c768319979febd796c6fd111d5c",
         "version" : "1.5.0"
-<<<<<<< HEAD
       }
     },
     {
@@ -27,8 +26,7 @@
       "state" : {
         "branch" : "swift-testing",
         "revision" : "218e81abc7c3ce3821be017ffc9cafff9c450f44"
-=======
->>>>>>> 4f48ec1 (Fix Server and update dependencies)
+
       }
     }
   ],
