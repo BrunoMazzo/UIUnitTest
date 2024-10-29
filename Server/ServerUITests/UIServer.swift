@@ -7,46 +7,6 @@ import XCTest
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
 
-struct ApplicationNotFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Application with id \(serverId) not found"
-    }
-}
-
-struct ElementNotFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Element with id \(serverId) not found"
-    }
-}
-
-struct QueryNotFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Query with id \(serverId) not found"
-    }
-}
-
-struct CoordinateNotFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Coordinate with id \(serverId) not found"
-    }
-}
-
-struct WrongQueryTypeFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Query with id \(serverId) is not an XCUIElementQuery"
-    }
-}
-
 @MainActor
 class UIServer {
     var lastIssue: XCTIssue?
@@ -143,6 +103,31 @@ class UIServer {
         print("Server ready")
         
         _ = await task.result
+    }
+    
+    func addRoute<Request: Codable, Response: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Response) async {
+        await server.appendRoute(HTTPRoute(stringLiteral: route), handler: { @MainActor request in
+            
+            defer {
+                self.lastIssue = nil
+            }
+            
+            let tapRequest = try await decoder.decode(Request.self, from: request.bodyData)
+            
+            do {
+                let response = try await handler(tapRequest)
+                return self.buildResponse(response)
+            } catch {
+                return self.buildError(error.localizedDescription)
+            }
+        })
+    }
+    
+    func addRoute<Request: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Void) async {
+        await self.addRoute(route, handler: { request in
+            try await handler(request)
+            return true
+        })
     }
     
     @MainActor
@@ -431,42 +416,6 @@ class UIServer {
 
         return rootElementQuery[elementRequest.identifier]
     }
-
-    func addRoute<Request: Codable, Response: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Response) async {
-        await server.appendRoute(HTTPRoute(stringLiteral: route), handler: { @MainActor request in
-
-            defer {
-                self.lastIssue = nil
-            }
-
-            let tapRequest = try await decoder.decode(Request.self, from: request.bodyData)
-
-            do {
-                let response = try await handler(tapRequest)
-                return self.buildResponse(response)
-            } catch {
-                return self.buildError(error.localizedDescription)
-            }
-        })
-    }
-
-    func addRoute<Request: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Void) async {
-        await server.appendRoute(HTTPRoute(stringLiteral: route), handler: { @MainActor request in
-            defer {
-                self.lastIssue = nil
-            }
-
-            let tapRequest = try await decoder.decode(Request.self, from: request.bodyData)
-
-            do {
-                try await handler(tapRequest)
-                return self.buildResponse(true)
-            } catch {
-                return self.buildError(error.localizedDescription)
-            }
-
-        })
-    }
 }
 
 public extension UInt {
@@ -496,20 +445,6 @@ extension AccessibilityAuditIssueData {
             detailedDescription: xcIssue.detailedDescription,
             auditType: xcIssue.auditType.rawValue
         )
-    }
-}
-
-extension Sequence {
-    func asyncMap<T>(
-        _ transform: (Element) async throws -> T
-    ) async rethrows -> [T] {
-        var values = [T]()
-
-        for element in self {
-            try await values.append(transform(element))
-        }
-
-        return values
     }
 }
 

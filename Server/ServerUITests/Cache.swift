@@ -92,3 +92,43 @@ class Cache {
         return coordinate
     }
 }
+
+struct ApplicationNotFoundError: Error, LocalizedError {
+    var serverId: String
+    
+    var errorDescription: String? {
+        return "Application with id \(serverId) not found"
+    }
+}
+
+struct ElementNotFoundError: Error, LocalizedError {
+    var serverId: String
+    
+    var errorDescription: String? {
+        return "Element with id \(serverId) not found"
+    }
+}
+
+struct QueryNotFoundError: Error, LocalizedError {
+    var serverId: String
+    
+    var errorDescription: String? {
+        return "Query with id \(serverId) not found"
+    }
+}
+
+struct CoordinateNotFoundError: Error, LocalizedError {
+    var serverId: String
+    
+    var errorDescription: String? {
+        return "Coordinate with id \(serverId) not found"
+    }
+}
+
+struct WrongQueryTypeFoundError: Error, LocalizedError {
+    var serverId: String
+    
+    var errorDescription: String? {
+        return "Query with id \(serverId) is not an XCUIElementQuery"
+    }
+}
