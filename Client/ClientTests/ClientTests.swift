@@ -8,20 +8,6 @@ class ClientTests: XCTestCase {
     }
 
     @MainActor
-    func testTap() async throws {
-        let app = try await App()
-
-        showView(MySettingTable())
-
-        let somethingButton = try await app.buttons("Something")
-        try await Assert(somethingButton.isHittable())
-
-        try await somethingButton.tap()
-
-        try await app.staticTexts("Something View").assertElementExists()
-    }
-
-    @MainActor
     func testExists() async throws {
         let app = try await App()
 
@@ -34,17 +20,6 @@ class ClientTests: XCTestCase {
         try await app.buttons("Hello world button").tap()
 
         try await app.staticTexts("Value: Hello world").assertElementExists()
-    }
-
-    @MainActor
-    func testDoubleTap() async throws {
-        let app = try await App()
-
-        showView(MySettingTable())
-
-        try await app.staticTexts("Double tap").assertElementExists().doubleTap()
-
-        try await app.staticTexts("Value: Double tap").assertElementExists()
     }
 
     @MainActor
@@ -110,19 +85,6 @@ class ClientTests: XCTestCase {
     }
 
     @MainActor
-    func testPressWithDuration() async throws {
-        let app = try await App()
-
-        showView(PressAndHoldView())
-
-        try await app.staticTexts("Hello world!").assertElementDoesntExists()
-
-        try await app.staticTexts("Press and hold").assertElementExists().press(forDuration: 2.5)
-
-        try await app.staticTexts("Hello world!").assertElementExists()
-    }
-
-    @MainActor
     func testHomeButtonAndLaunch() async throws {
         let app = try await App()
 
@@ -134,28 +96,6 @@ class ClientTests: XCTestCase {
         try await app.activate()
 
         try await app.staticTexts("WasInBackground: true").assertElementExists()
-    }
-
-    @MainActor
-    func testTwoFingerTap() async throws {
-        let app = try await App()
-
-        showView(TapView())
-
-        try await app.otherElements("TwoFingersView").assertElementExists().twoFingerTap()
-
-        try await app.staticTexts("Two fingers tapped").assertElementExists()
-    }
-
-    @MainActor
-    func testThreeFingerTap() async throws {
-        let app = try await App()
-
-        showView(TapView())
-
-        try await app.otherElements("ThreeFingersView").assertElementExists().tap(withNumberOfTaps: 1, numberOfTouches: 3)
-
-        try await app.staticTexts("Three fingers tapped").assertElementExists()
     }
 
     @MainActor
@@ -194,20 +134,6 @@ class ClientTests: XCTestCase {
     }
 
     @MainActor
-    func testTapSync() {
-        let app = App()
-
-        showView(MySettingTable())
-
-        let somethingButton = app.buttons["Something"]
-        Assert(somethingButton.isHittable)
-
-        somethingButton.tap()
-
-        app.staticTexts["Something View"].assertElementExists(timeout: 2)
-    }
-
-    @MainActor
     func testExistsSync() {
         let app = App()
 
@@ -216,17 +142,6 @@ class ClientTests: XCTestCase {
         app.buttons["Hello world button"].assertElementExists().tap()
 
         app.staticTexts["Value: Hello world"].assertElementExists()
-    }
-
-    @MainActor
-    func testDoubleTapSync() {
-        let app = App()
-
-        showView(MySettingTable())
-
-        app.staticTexts["Double tap"].assertElementExists().doubleTap()
-
-        app.staticTexts["Value: Double tap"].assertElementExists()
     }
 
     @MainActor
@@ -290,20 +205,7 @@ class ClientTests: XCTestCase {
 
         app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
     }
-
-    @MainActor
-    func testPressWithDurationSync() {
-        let app = App()
-
-        showView(PressAndHoldView())
-
-        app.staticTexts["Hello world!"].assertElementDoesntExists()
-
-        app.staticTexts["Press and hold"].press(forDuration: 2.5)
-
-        app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
-    }
-
+    
     @MainActor
     func testHomeButtonAndLaunchSync() {
         let app = App()
@@ -316,30 +218,6 @@ class ClientTests: XCTestCase {
         app.activate()
 
         app.staticTexts["WasInBackground: true"].assertElementExists()
-    }
-
-    @MainActor
-    func testTwoFingerTapSync() {
-        let app = App()
-
-        showView(TapView())
-
-        app.otherElements["TwoFingersView"]
-            .assertElementExists()
-            .twoFingerTap()
-
-        app.staticTexts["Two fingers tapped"].assertElementExists()
-    }
-
-    @MainActor
-    func testThreeFingerTapSync() {
-        let app = App()
-
-        showView(TapView())
-
-        app.otherElements["ThreeFingersView"].assertElementExists().tap(withNumberOfTaps: 1, numberOfTouches: 3)
-
-        app.staticTexts["Three fingers tapped"].assertElementExists()
     }
 
     @MainActor
@@ -406,11 +284,6 @@ class ClientTests: XCTestCase {
         try app.performAccessibilityAudit()
     }
 }
-
-// Two classes to run in parallel using two simulators
-class ClientTests2: ClientTests {}
-class ClientTests3: ClientTests {}
-class ClientTests4: ClientTests {}
 
 public func Assert(_ value: Bool, _ message: @Sendable @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) {
     XCTAssert(value, message(), file: file, line: line)

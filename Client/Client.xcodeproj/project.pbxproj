@@ -25,6 +25,8 @@
 		1DE0F34829C533B00044AFFC /* RotateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F34729C533B00044AFFC /* RotateView.swift */; };
 		1DE0F35D29C58B4D0044AFFC /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8129B45A4600465FB6 /* ClientTests.swift */; };
 		1DF4DBFE2BF60C560025FC8E /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
+		8DB46B669B1CCD576E48F2B6 /* TapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588FB78BE242F975FFB24DC5 /* TapTests.swift */; };
+		B48F570095F67108C3CFDD2E /* TapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588FB78BE242F975FFB24DC5 /* TapTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +68,7 @@
 		1DE0F34729C533B00044AFFC /* RotateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateView.swift; sourceTree = "<group>"; };
 		1DE0F35229C58B310044AFFC /* LocalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DE1F7B52BF756BB00EBAAD8 /* ClientTests - Parallel.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ClientTests - Parallel.xctestplan"; sourceTree = "<group>"; };
+		588FB78BE242F975FFB24DC5 /* TapTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TapTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +163,7 @@
 				1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */,
 				1DE0F33829BDDBBC0044AFFC /* Info.plist */,
 				1D136B8129B45A4600465FB6 /* ClientTests.swift */,
+				588FB78BE242F975FFB24DC5 /* TapTests.swift */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -329,6 +333,7 @@
 			files = (
 				1D60D5862C23D8E600F0B0FF /* SwiftTesting.swift in Sources */,
 				1D136B8229B45A4600465FB6 /* ClientTests.swift in Sources */,
+				8DB46B669B1CCD576E48F2B6 /* TapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +343,7 @@
 			files = (
 				1D60D5852C23D8E600F0B0FF /* SwiftTesting.swift in Sources */,
 				1DE0F35D29C58B4D0044AFFC /* ClientTests.swift in Sources */,
+				B48F570095F67108C3CFDD2E /* TapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
