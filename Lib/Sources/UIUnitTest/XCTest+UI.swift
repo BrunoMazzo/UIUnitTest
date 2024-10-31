@@ -6,23 +6,34 @@ import UIKit
 import XCTest
 
 @MainActor
-public func showView(_ view: some View) {
+private func showViewFromMainActor(_ view: some View) {
     let window = getKeyWindow()
     let hostingViewController = UIHostingController(rootView: view)
     window.rootViewController = hostingViewController
 }
 
-public func showViewFromBackground<T: View & Sendable>(_ view: T) {
+@UIUnitTestActor
+public func showView<T: View>(_ view: T) {
+    let box = SendableBox(value: view)
     _ = syncFromMainActor {
-        showView(view)
+        showViewFromMainActor(box.value!)
         return true
     }
 }
 
 @MainActor
-public func showView(_ viewController: UIViewController) {
+private func showViewFromMainActor(_ viewController: UIViewController) {
     let window = getKeyWindow()
     window.rootViewController = viewController
+}
+
+@UIUnitTestActor
+public func showView(_ view: UIViewController) {
+    let box = SendableBox(value: view)
+    _ = syncFromMainActor {
+        showViewFromMainActor(box.value!)
+        return true
+    }
 }
 
 @MainActor

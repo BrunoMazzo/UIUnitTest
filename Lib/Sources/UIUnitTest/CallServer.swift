@@ -47,7 +47,7 @@ final class ServerAPI: Sendable {
     }
 }
 
-final class SendableBox<T: Sendable>: @unchecked Sendable {
+final class SendableBox<T>: @unchecked Sendable {
     public var value: T?
 
     init(value: T? = nil) {
