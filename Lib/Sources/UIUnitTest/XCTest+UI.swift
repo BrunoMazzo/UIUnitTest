@@ -1,6 +1,6 @@
 import SwiftUI
 #if canImport(Testing)
-import Testing
+    import Testing
 #endif
 import UIKit
 import XCTest
@@ -24,13 +24,12 @@ private func getKeyWindow() -> UIWindow {
         guard let windowScene = scene as? UIWindowScene else {
             return []
         }
-        
+
         return windowScene.windows.filter { window in
             window.isKeyWindow
         }
     }.first!
 }
-
 
 func fail(
     _ message: String,
@@ -39,9 +38,9 @@ func fail(
     line: UInt = #line,
     column: UInt = #column
 ) {
-#if canImport(Testing)
-    let sourceLocation = SourceLocation(fileID: "\(fileID)", filePath: "\(filePath)", line: Int(line), column: Int(column))
-    Issue.record(Comment(stringLiteral: message), sourceLocation: sourceLocation)
-#endif
+    #if canImport(Testing)
+        let sourceLocation = SourceLocation(fileID: "\(fileID)", filePath: "\(filePath)", line: Int(line), column: Int(column))
+        Issue.record(Comment(stringLiteral: message), sourceLocation: sourceLocation)
+    #endif
     XCTFail(message, file: filePath, line: line)
 }
