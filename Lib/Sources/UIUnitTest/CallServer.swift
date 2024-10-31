@@ -79,10 +79,13 @@ func callServer<RequestData: Codable & Sendable, ResponseData: Codable & Sendabl
     }
 }
 
-@MainActor
-func deviceId() -> Int {
-    let deviceName = UIDevice.current.name
+let deviceNameMutex = Mutex<String?>(nil)
 
+func deviceId() -> Int {
+    let deviceName = syncFromMainActor {
+        UIDevice.current.name
+    }
+    
     var deviceId = 0
     let regulerExpression = try! NSRegularExpression(pattern: "Clone (\\d*) of .*")
 
@@ -93,4 +96,24 @@ func deviceId() -> Int {
         }
     }
     return deviceId
+}
+
+// Ugly but let's try to remove @MainActor requirement from many of our functions
+func syncFromMainActor<T: Sendable>(body: @MainActor @escaping () -> T) -> T {
+    let deviceNameMutex = Mutex<T?>(nil)
+    
+    Task { @MainActor in
+        deviceNameMutex.withLock {
+            $0 = body()
+        }
+    }
+    
+    var deviceName: T!
+    while deviceName == nil {
+        deviceNameMutex.withLock({ value in
+            deviceName = value
+        })
+    }
+    
+    return deviceName
 }
