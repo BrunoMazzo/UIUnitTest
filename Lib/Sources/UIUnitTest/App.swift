@@ -10,13 +10,12 @@ public class App: Element, @unchecked Sendable {
         self.appId = appId
         super.init(serverId: UUID())
 
-        await ServerAPI.loadIfNeeded()
+        ServerAPI.loadIfNeeded()
 
         try await create(activate: activate)
     }
 
     @available(*, noasync)
-    @MainActor
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) {
         self.appId = appId
         super.init(serverId: UUID())

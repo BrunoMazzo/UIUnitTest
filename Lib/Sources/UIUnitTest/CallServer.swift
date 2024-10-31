@@ -8,7 +8,6 @@ final class ServerAPI: Sendable {
 
     static let shared: Mutex<ServerAPI?> = Mutex(nil)
 
-    @MainActor
     static func loadIfNeeded() {
         ServerAPI.shared.withLock { server in
             if server == nil {
@@ -17,7 +16,6 @@ final class ServerAPI: Sendable {
         }
     }
 
-    @MainActor
     init() {
         port = 22087 + deviceId()
     }

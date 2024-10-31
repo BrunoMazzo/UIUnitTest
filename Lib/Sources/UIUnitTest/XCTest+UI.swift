@@ -12,6 +12,13 @@ public func showView(_ view: some View) {
     window.rootViewController = hostingViewController
 }
 
+public func showViewFromBackground<T: View & Sendable>(_ view: T) {
+    _ = syncFromMainActor {
+        showView(view)
+        return true
+    }
+}
+
 @MainActor
 public func showView(_ viewController: UIViewController) {
     let window = getKeyWindow()
