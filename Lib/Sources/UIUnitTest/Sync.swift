@@ -27,6 +27,12 @@ public struct UIUnitTestActor {
     public static let shared = MyActor()
 }
 
+@globalActor
+struct UIUnitTestExecutorActor {
+    actor MyActor {}
+    static let shared = MyActor()
+}
+
 public struct Executor: @unchecked Sendable {
     private var box = Box()
 
@@ -44,7 +50,7 @@ public struct Executor: @unchecked Sendable {
         _ block: @escaping @Sendable () async throws -> T
     ) -> Result<T, Error> {
         let expectation = XCTestExpectation(description: function)
-        Task { @UIUnitTestActor in
+        Task { @UIUnitTestExecutorActor in
             defer {
                 expectation.fulfill()
             }
