@@ -7,12 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-<<<<<<< HEAD
-		1D6762C62CC9EA110078DFC5 /* UIUnitTestAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 1D6762C52CC9EA110078DFC5 /* UIUnitTestAPI */; };
-=======
->>>>>>> 4f48ec1 (Fix Server and update dependencies)
 		1D756F432CC8A041000563FE /* FlyingFox in Frameworks */ = {isa = PBXBuildFile; productRef = 1D756F422CC8A041000563FE /* FlyingFox */; };
 		1D756F462CC8A06D000563FE /* UIUnitTestAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 1D756F452CC8A06D000563FE /* UIUnitTestAPI */; };
+		1DC1DD982CD2095E009D5A96 /* UIUnitTestAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 1DC1DD972CD2095E009D5A96 /* UIUnitTestAPI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,10 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
-				1D6762C62CC9EA110078DFC5 /* UIUnitTestAPI in Frameworks */,
-=======
->>>>>>> 4f48ec1 (Fix Server and update dependencies)
+				1DC1DD982CD2095E009D5A96 /* UIUnitTestAPI in Frameworks */,
 				1D756F432CC8A041000563FE /* FlyingFox in Frameworks */,
 				1D756F462CC8A06D000563FE /* UIUnitTestAPI in Frameworks */,
 			);
@@ -132,10 +126,7 @@
 			packageProductDependencies = (
 				1D756F422CC8A041000563FE /* FlyingFox */,
 				1D756F452CC8A06D000563FE /* UIUnitTestAPI */,
-<<<<<<< HEAD
-				1D6762C52CC9EA110078DFC5 /* UIUnitTestAPI */,
-=======
->>>>>>> 4f48ec1 (Fix Server and update dependencies)
+				1DC1DD972CD2095E009D5A96 /* UIUnitTestAPI */,
 			);
 			productName = ServerUITests;
 			productReference = 1D756F282CC8A00D000563FE /* ServerUITests.xctest */;
@@ -171,11 +162,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				1D756F412CC8A041000563FE /* XCRemoteSwiftPackageReference "FlyingFox" */,
-<<<<<<< HEAD
-				1D6762C42CC9EA110078DFC5 /* XCRemoteSwiftPackageReference "UIUnitTest" */,
-=======
-				1D756F442CC8A06D000563FE /* XCLocalSwiftPackageReference "UIUnitTest" */,
->>>>>>> 4f48ec1 (Fix Server and update dependencies)
+				1DC1DD962CD2095E009D5A96 /* XCRemoteSwiftPackageReference "UIUnitTest" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1D756F0F2CC8A00B000563FE /* Products */;
@@ -484,26 +471,7 @@
 		};
 /* End XCConfigurationList section */
 
-<<<<<<< HEAD
 /* Begin XCRemoteSwiftPackageReference section */
-		1D6762C42CC9EA110078DFC5 /* XCRemoteSwiftPackageReference "UIUnitTest" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
-			requirement = {
-				branch = "swift-testing";
-				kind = branch;
-			};
-		};
-=======
-/* Begin XCLocalSwiftPackageReference section */
-		1D756F442CC8A06D000563FE /* XCLocalSwiftPackageReference "UIUnitTest" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = UIUnitTest;
-		};
-/* End XCLocalSwiftPackageReference section */
-
-/* Begin XCRemoteSwiftPackageReference section */
->>>>>>> 4f48ec1 (Fix Server and update dependencies)
 		1D756F412CC8A041000563FE /* XCRemoteSwiftPackageReference "FlyingFox" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swhitty/FlyingFox.git";
@@ -512,26 +480,29 @@
 				minimumVersion = 0.19.0;
 			};
 		};
+		1DC1DD962CD2095E009D5A96 /* XCRemoteSwiftPackageReference "UIUnitTest" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
+			requirement = {
+				branch = "swift-testing";
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-<<<<<<< HEAD
-		1D6762C52CC9EA110078DFC5 /* UIUnitTestAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1D6762C42CC9EA110078DFC5 /* XCRemoteSwiftPackageReference "UIUnitTest" */;
-			productName = UIUnitTestAPI;
-		};
 		1D756F422CC8A041000563FE /* FlyingFox */ = {
 			isa = XCSwiftPackageProductDependency;
-=======
-		1D756F422CC8A041000563FE /* FlyingFox */ = {
-			isa = XCSwiftPackageProductDependency;
->>>>>>> 4f48ec1 (Fix Server and update dependencies)
 			package = 1D756F412CC8A041000563FE /* XCRemoteSwiftPackageReference "FlyingFox" */;
 			productName = FlyingFox;
 		};
 		1D756F452CC8A06D000563FE /* UIUnitTestAPI */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = UIUnitTestAPI;
+		};
+		1DC1DD972CD2095E009D5A96 /* UIUnitTestAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1DC1DD962CD2095E009D5A96 /* XCRemoteSwiftPackageReference "UIUnitTest" */;
 			productName = UIUnitTestAPI;
 		};
 /* End XCSwiftPackageProductDependency section */

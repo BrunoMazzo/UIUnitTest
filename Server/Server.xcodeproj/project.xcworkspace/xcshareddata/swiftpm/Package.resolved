@@ -1,5 +1,5 @@
 {
-  "originHash" : "257633917a2c5dd97eb75e157490239d9da18ffed5d2b0e8c17aab6fe5772156",
+  "originHash" : "cec6eada3aeef1a7161603afee83d308fe58ba11bcc829d3a4ab6b1952bb2ff6",
   "pins" : [
     {
       "identity" : "flyingfox",
@@ -25,8 +25,7 @@
       "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
       "state" : {
         "branch" : "swift-testing",
-        "revision" : "218e81abc7c3ce3821be017ffc9cafff9c450f44"
-
+        "revision" : "950636ab31ba9d5b5fae866e99225811152ad5e1"
       }
     }
   ],

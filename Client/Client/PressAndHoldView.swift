@@ -3,7 +3,7 @@ import SwiftUI
 
 struct PressAndHoldView: View {
     @State var showMessage: Bool = false
-    
+
     var body: some View {
         VStack {
             Text("Press and hold")

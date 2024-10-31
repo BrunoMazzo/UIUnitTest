@@ -2,10 +2,9 @@ import Foundation
 import SwiftUI
 
 struct PinchView: View {
-    
     @State private var currentAmount = 0.0
     @State private var finalAmount = 1.0
-    
+
     var body: some View {
         VStack {
             Text("Current Scale: \(finalAmount + currentAmount)")
@@ -20,7 +19,7 @@ struct PinchView: View {
                         .onChanged { amount in
                             currentAmount = amount - 1
                         }
-                        .onEnded { amount in
+                        .onEnded { _ in
                             finalAmount += currentAmount
                             currentAmount = 0
                         }

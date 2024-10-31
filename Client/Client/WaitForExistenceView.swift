@@ -7,7 +7,7 @@ struct WaitForExistenceView: View {
     var body: some View {
         VStack {
             Button("Show Message") {
-                Task {
+                Task { @MainActor in
                     try? await Task.sleep(nanoseconds: 1_000_000)
                     isPresented = true
                 }
