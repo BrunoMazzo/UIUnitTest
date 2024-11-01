@@ -6,15 +6,7 @@ import UIUnitTestAPI
 final class ServerAPI: Sendable {
     let port: Int
 
-    static let shared: Mutex<ServerAPI?> = Mutex(nil)
-
-    static func loadIfNeeded() {
-        ServerAPI.shared.withLock { server in
-            if server == nil {
-                server = ServerAPI()
-            }
-        }
-    }
+    static let shared = ServerAPI()
 
     init() {
         port = 22087 + deviceId()
@@ -59,22 +51,7 @@ func callServer<RequestData: Codable & Sendable, ResponseData: Codable & Sendabl
     path: String,
     request: RequestData
 ) async throws -> ResponseData {
-    return try await withUnsafeThrowingContinuation(isolation: nil) { continuation in
-        ServerAPI.shared.withLock { server in
-            guard let server else {
-                fatalError("Server not initialised")
-            }
-            Task {
-                do {
-                    let result: ResponseData = try await server.callServer(path: path, request: request)
-                    continuation.resume(returning: result)
-                } catch {
-                    print(error)
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
-    }
+    try await ServerAPI.shared.callServer(path: path, request: request)
 }
 
 let deviceNameMutex = Mutex<String?>(nil)
