@@ -3,7 +3,7 @@ import UIUnitTest
 import XCTest
 
 class TapTests: XCTestCase {
-    @MainActor
+    @UIUnitTestActor
     func testTap() async throws {
         let app = try await App()
 
@@ -17,7 +17,7 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Something View").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testTapSync() {
         let app = App()
 
@@ -31,7 +31,7 @@ class TapTests: XCTestCase {
         app.staticTexts["Something View"].assertElementExists(timeout: 2)
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testDoubleTap() async throws {
         let app = try await App()
 
@@ -42,7 +42,7 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Value: Double tap").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testDoubleTapSync() {
         let app = App()
 
@@ -53,7 +53,7 @@ class TapTests: XCTestCase {
         app.staticTexts["Value: Double tap"].assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testPressWithDuration() async throws {
         let app = try await App()
 
@@ -66,7 +66,7 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Hello world!").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testPressWithDurationSync() {
         let app = App()
 
@@ -79,7 +79,7 @@ class TapTests: XCTestCase {
         app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testTwoFingerTap() async throws {
         let app = try await App()
 
@@ -90,7 +90,7 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Two fingers tapped").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testTwoFingerTapSync() {
         let app = App()
 
@@ -103,7 +103,7 @@ class TapTests: XCTestCase {
         app.staticTexts["Two fingers tapped"].assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testThreeFingerTap() async throws {
         let app = try await App()
 
@@ -114,7 +114,7 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Three fingers tapped").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testThreeFingerTapSync() {
         let app = App()
 

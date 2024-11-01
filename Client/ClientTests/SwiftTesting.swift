@@ -3,13 +3,9 @@ import UIUnitTest
 import UIKit
 @testable import Client
 
-@MainActor
+@UIUnitTestActor
 @Suite(.uiTest)
 final class SwiftTesting {
-    
-    init() {
-        UIView.setAnimationsEnabled(false)
-    }
     
     @Test
     func testTap() async throws {
@@ -285,18 +281,18 @@ final class SwiftTesting {
     
 // Failing because it is blocking the main thread.
 // No idea why it works if we test using XCTest. Ideally, I think I will deprecate the sync API
-//    @Test
-//    func testWaitForExistenceSync() {
-//        let app = App()
-//        
-//        showView(WaitForExistenceView())
-//        
-//        app.staticTexts["Hello world!"].assertElementDoesntExists()
-//        
-//        app.buttons["Show Message"].assertElementExists().tap()
-//        
-//        app.staticTexts["Hello world!"].assertElementExists(timeout: 3)
-//    }
+    @Test
+    func testWaitForExistenceSync() {
+        let app = App()
+        
+        showView(WaitForExistenceView())
+        
+        app.staticTexts["Hello world!"].assertElementDoesntExists()
+        
+        app.buttons["Show Message"].assertElementExists().tap()
+        
+        app.staticTexts["Hello world!"].assertElementExists(timeout: 3)
+    }
     
     @Test
     func testPressWithDurationSync() {

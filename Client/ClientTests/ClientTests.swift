@@ -2,18 +2,19 @@
 import UIUnitTest
 import XCTest
 
-class ClientTests: XCTestCase {
+@UIUnitTestActor
+class ClientTests: XCTestCase, @unchecked Sendable {
     override func setUp() async throws {
         await UIView.setAnimationsEnabled(false)
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testExists() async throws {
         let app = try await App()
 
         showView(MySettingTable())
 
-        try await app.staticTexts("Hello world button").assertElementExists()
+        try await app.staticTexts("Hello world button").assertElementExists2()
 
         try await Assert(app.staticTexts("Hello world button").isHittable())
 
@@ -22,7 +23,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Value: Hello world").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testEnterText() async throws {
         let app = try await App()
 
@@ -37,7 +38,6 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Text value: Hello world").assertElementExists()
     }
 
-    @MainActor
     func testSwipeActions() async throws {
         let app = try await App()
 
@@ -69,9 +69,10 @@ class ClientTests: XCTestCase {
 
         try await app.staticTexts("Swipe me").swipeRight(velocity: 600)
         try await app.staticTexts("Direction: Right").assertElementExists()
+
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testWaitForExistence() async throws {
         let app = try await App()
 
@@ -84,7 +85,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Hello world!").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testHomeButtonAndLaunch() async throws {
         let app = try await App()
 
@@ -98,7 +99,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("WasInBackground: true").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testPinch() async throws {
         let app = try await App()
 
@@ -111,7 +112,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Did scale? Yes").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testRotate() async throws {
         let app = try await App()
 
@@ -124,7 +125,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts("Did rotate? Yes").assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testMatchingWithPredicate() async throws {
         let app = try await App()
 
@@ -133,7 +134,7 @@ class ClientTests: XCTestCase {
         try await app.staticTexts().element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel")).assertElementExists()
     }
 
-    @MainActor
+
     func testExistsSync() {
         let app = App()
 
@@ -144,7 +145,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Value: Hello world"].assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testEnterTextSync() {
         let app = App()
 
@@ -159,7 +160,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Text value: Hello world"].assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testSwipeActionsSync() {
         let app = App()
 
@@ -193,7 +194,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Direction: Right"].assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testWaitForExistenceSync() {
         let app = App()
 
@@ -205,8 +206,8 @@ class ClientTests: XCTestCase {
 
         app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
     }
-    
-    @MainActor
+
+    @UIUnitTestActor
     func testHomeButtonAndLaunchSync() {
         let app = App()
 
@@ -220,7 +221,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["WasInBackground: true"].assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testPinchSync() {
         let app = App()
 
@@ -235,7 +236,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Did scale? Yes"].assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testRotateSync() {
         let app = App()
 
@@ -250,7 +251,7 @@ class ClientTests: XCTestCase {
         app.staticTexts["Did rotate? Yes"].assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testMatchingWithPredicateAsync() {
         let app = App()
 
@@ -261,7 +262,7 @@ class ClientTests: XCTestCase {
         somethingView.assertElementExists()
     }
 
-    @MainActor
+    @UIUnitTestActor
     func testEnterTestOnWrongElementFails() {
         XCTExpectFailure("Expecting failure when attempting to type text into a non-text field element.")
 
@@ -273,7 +274,7 @@ class ClientTests: XCTestCase {
     }
 
     @available(iOS 17.0, *)
-    @MainActor
+    @UIUnitTestActor
     func testAccessibilityInspection() throws {
         XCTExpectFailure("Expecting failure when performing an accessibility audit")
 
@@ -288,3 +289,38 @@ class ClientTests: XCTestCase {
 public func Assert(_ value: Bool, _ message: @Sendable @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) {
     XCTAssert(value, message(), file: file, line: line)
 }
+
+extension Element {
+    @discardableResult
+    func assertElementExists2(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> Element {
+        Executor.execute {
+            try await self.assertElementExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column)
+        }.valueOrFailWithFallback(self)
+    }
+}
+
+extension Result {
+    func valueOrFailWithFallback(
+        _ fallback: Success,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> Success {
+        switch self {
+        case let .success(result):
+            return result
+        case let .failure(error):
+            XCTFail(error.localizedDescription)
+            return fallback
+        }
+    }
+}
+
