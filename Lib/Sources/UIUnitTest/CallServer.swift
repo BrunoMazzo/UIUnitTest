@@ -98,6 +98,13 @@ func deviceId() -> Int {
 
 // Ugly but let's try to remove @MainActor requirement from many of our functions
 func syncFromMainActor<T: Sendable>(body: @MainActor @escaping () -> T) -> T {
+    // Objc/XCTest ignores Swift global actors
+    if Thread.isMainThread {
+        return MainActor.assumeIsolated {
+            return body()
+        }
+    }
+    
     let deviceNameMutex = Mutex<T?>(nil)
     
     Task { @MainActor in
