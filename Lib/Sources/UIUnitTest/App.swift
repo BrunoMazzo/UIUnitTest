@@ -10,8 +10,6 @@ public class App: Element, @unchecked Sendable {
         self.appId = appId
         super.init(serverId: UUID())
 
-        ServerAPI.loadIfNeeded()
-
         try await create(activate: activate)
     }
 
@@ -19,8 +17,6 @@ public class App: Element, @unchecked Sendable {
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) {
         self.appId = appId
         super.init(serverId: UUID())
-
-        ServerAPI.loadIfNeeded()
 
         create(activate: activate)
     }
