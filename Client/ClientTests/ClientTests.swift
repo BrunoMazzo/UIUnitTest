@@ -2,13 +2,11 @@
 import UIUnitTest
 import XCTest
 
-@UIUnitTestActor
 class ClientTests: XCTestCase, @unchecked Sendable {
     override func setUp() async throws {
         await UIView.setAnimationsEnabled(false)
     }
 
-    @UIUnitTestActor
     func testExists() async throws {
         let app = try await App()
 
@@ -23,7 +21,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         try await app.staticTexts("Value: Hello world").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testEnterText() async throws {
         let app = try await App()
 
@@ -69,10 +66,8 @@ class ClientTests: XCTestCase, @unchecked Sendable {
 
         try await app.staticTexts("Swipe me").swipeRight(velocity: 600)
         try await app.staticTexts("Direction: Right").assertElementExists()
-
     }
 
-    @UIUnitTestActor
     func testWaitForExistence() async throws {
         let app = try await App()
 
@@ -85,7 +80,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         try await app.staticTexts("Hello world!").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testHomeButtonAndLaunch() async throws {
         let app = try await App()
 
@@ -99,7 +93,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         try await app.staticTexts("WasInBackground: true").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testPinch() async throws {
         let app = try await App()
 
@@ -112,7 +105,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         try await app.staticTexts("Did scale? Yes").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testRotate() async throws {
         let app = try await App()
 
@@ -125,7 +117,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         try await app.staticTexts("Did rotate? Yes").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testMatchingWithPredicate() async throws {
         let app = try await App()
 
@@ -133,7 +124,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
 
         try await app.staticTexts().element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel")).assertElementExists()
     }
-
 
     func testExistsSync() {
         let app = App()
@@ -145,7 +135,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         app.staticTexts["Value: Hello world"].assertElementExists()
     }
 
-    @UIUnitTestActor
     func testEnterTextSync() {
         let app = App()
 
@@ -160,7 +149,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         app.staticTexts["Text value: Hello world"].assertElementExists()
     }
 
-    @UIUnitTestActor
     func testSwipeActionsSync() {
         let app = App()
 
@@ -194,7 +182,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         app.staticTexts["Direction: Right"].assertElementExists()
     }
 
-    @UIUnitTestActor
     func testWaitForExistenceSync() {
         let app = App()
 
@@ -207,7 +194,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
     }
 
-    @UIUnitTestActor
     func testHomeButtonAndLaunchSync() {
         let app = App()
 
@@ -221,7 +207,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         app.staticTexts["WasInBackground: true"].assertElementExists()
     }
 
-    @UIUnitTestActor
     func testPinchSync() {
         let app = App()
 
@@ -236,7 +221,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         app.staticTexts["Did scale? Yes"].assertElementExists()
     }
 
-    @UIUnitTestActor
     func testRotateSync() {
         let app = App()
 
@@ -251,7 +235,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         app.staticTexts["Did rotate? Yes"].assertElementExists()
     }
 
-    @UIUnitTestActor
     func testMatchingWithPredicateAsync() {
         let app = App()
 
@@ -262,7 +245,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
         somethingView.assertElementExists()
     }
 
-    @UIUnitTestActor
     func testEnterTestOnWrongElementFails() {
         XCTExpectFailure("Expecting failure when attempting to type text into a non-text field element.")
 
@@ -274,7 +256,6 @@ class ClientTests: XCTestCase, @unchecked Sendable {
     }
 
     @available(iOS 17.0, *)
-    @UIUnitTestActor
     func testAccessibilityInspection() throws {
         XCTExpectFailure("Expecting failure when performing an accessibility audit")
 

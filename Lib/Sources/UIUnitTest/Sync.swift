@@ -22,12 +22,6 @@ class Box {
 }
 
 @globalActor
-public struct UIUnitTestActor {
-    public actor MyActor {}
-    public static let shared = MyActor()
-}
-
-@globalActor
 struct UIUnitTestExecutorActor {
     actor MyActor {}
     static let shared = MyActor()

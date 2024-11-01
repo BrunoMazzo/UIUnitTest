@@ -3,7 +3,7 @@ import UIUnitTest
 import XCTest
 
 class TapTests: XCTestCase {
-    @UIUnitTestActor
+
     func testTap() async throws {
         let app = try await App()
 
@@ -17,7 +17,6 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Something View").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testTapSync() {
         let app = App()
 
@@ -31,7 +30,6 @@ class TapTests: XCTestCase {
         app.staticTexts["Something View"].assertElementExists(timeout: 2)
     }
 
-    @UIUnitTestActor
     func testDoubleTap() async throws {
         let app = try await App()
 
@@ -42,7 +40,6 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Value: Double tap").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testDoubleTapSync() {
         let app = App()
 
@@ -53,7 +50,6 @@ class TapTests: XCTestCase {
         app.staticTexts["Value: Double tap"].assertElementExists()
     }
 
-    @UIUnitTestActor
     func testPressWithDuration() async throws {
         let app = try await App()
 
@@ -66,7 +62,6 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Hello world!").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testPressWithDurationSync() {
         let app = App()
 
@@ -79,7 +74,6 @@ class TapTests: XCTestCase {
         app.staticTexts["Hello world!"].assertElementExists(timeout: 2)
     }
 
-    @UIUnitTestActor
     func testTwoFingerTap() async throws {
         let app = try await App()
 
@@ -90,7 +84,6 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Two fingers tapped").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testTwoFingerTapSync() {
         let app = App()
 
@@ -103,7 +96,6 @@ class TapTests: XCTestCase {
         app.staticTexts["Two fingers tapped"].assertElementExists()
     }
 
-    @UIUnitTestActor
     func testThreeFingerTap() async throws {
         let app = try await App()
 
@@ -114,7 +106,6 @@ class TapTests: XCTestCase {
         try await app.staticTexts("Three fingers tapped").assertElementExists()
     }
 
-    @UIUnitTestActor
     func testThreeFingerTapSync() {
         let app = App()
 

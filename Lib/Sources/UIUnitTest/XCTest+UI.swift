@@ -12,7 +12,6 @@ private func showViewFromMainActor(_ view: some View) {
     window.rootViewController = hostingViewController
 }
 
-//@UIUnitTestActor
 public func showView<T: View>(_ view: T) {
     let box = SendableBox(value: view)
     _ = syncFromMainActor {
@@ -27,7 +26,6 @@ private func showViewFromMainActor(_ viewController: UIViewController) {
     window.rootViewController = viewController
 }
 
-//@UIUnitTestActor
 public func showView(_ view: UIViewController) {
     let box = SendableBox(value: view)
     _ = syncFromMainActor {

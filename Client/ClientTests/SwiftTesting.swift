@@ -3,7 +3,6 @@ import UIUnitTest
 import UIKit
 @testable import Client
 
-@UIUnitTestActor
 @Suite(.uiTest)
 final class SwiftTesting {
     
