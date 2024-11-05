@@ -308,7 +308,7 @@ public final class SyncQuery: SyncElementTypeQueryProvider, Sendable {
     public func element(boundByIndex index: Int) -> SyncElement {
         Executor.execute {
             SyncElement(element: try await self.query.element(boundByIndex: index))
-        }.valueOrFailWithFallback(SyncElement(element: .EmptyElement))
+        }.valueOrFailWithFallback(.EmptyElement)
     }
 
     @available(*, noasync)

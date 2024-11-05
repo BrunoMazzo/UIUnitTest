@@ -127,7 +127,7 @@ public class SyncApi: SyncElement, @unchecked Sendable {
     @available(*, noasync)
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) {
         self.api = Api(appId: appId)
-        super.init(element: Element(serverId: UUID()))
+        super.init(element: api)
         self.create(activate: activate)
     }
 
