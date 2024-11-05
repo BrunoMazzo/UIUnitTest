@@ -155,20 +155,6 @@ public extension Element {
     }
 
     @discardableResult
-    func assertElementExists(
-        message: String? = nil,
-        timeout: TimeInterval = 1,
-        fileID: StaticString = #fileID,
-        filePath: StaticString = #filePath,
-        line: UInt = #line,
-        column: UInt = #column
-    ) -> Element {
-        Executor.execute {
-            try await self.assertElementExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column)
-        }.valueOrFailWithFallback(self)
-    }
-
-    @discardableResult
     func assertElementDoesntExists(
         message: String? = nil,
         timeout: TimeInterval = 1,
@@ -187,20 +173,6 @@ public extension Element {
             fail(message ?? "Element \(identifier) exists", fileID: fileID, filePath: filePath, line: line, column: column)
             return self
         }
-    }
-
-    @discardableResult
-    func assertElementDoesntExists(
-        message: String? = nil,
-        timeout: TimeInterval = 1,
-        fileID: StaticString = #fileID,
-        filePath: StaticString = #filePath,
-        line: UInt = #line,
-        column: UInt = #column
-    ) -> Element {
-        Executor.execute {
-            try await self.assertElementDoesntExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column)
-        }.valueOrFailWithFallback(self)
     }
 }
 
@@ -231,5 +203,36 @@ public class SyncElement: SyncElementTypeQueryProvider, @unchecked Sendable {
         Executor.execute {
             SyncElement(element: try await self.element.any(identifier))
         }.valueOrFailWithFallback(.EmptyElement)
+    }
+}
+
+public extension SyncElement {
+
+    @discardableResult
+    func assertElementExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> SyncElement {
+        Executor.execute {
+            SyncElement(element: try await self.element.assertElementExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column))
+        }.valueOrFailWithFallback(self)
+    }
+
+    @discardableResult
+    func assertElementDoesntExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> SyncElement {
+        Executor.execute {
+            SyncElement(element: try await self.element.assertElementDoesntExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column))
+        }.valueOrFailWithFallback(self)
     }
 }
