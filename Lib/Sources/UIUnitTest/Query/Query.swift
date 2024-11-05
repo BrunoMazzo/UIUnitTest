@@ -60,9 +60,11 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Element(serverId: response.serverId)
     }
 
-    public func callAsFunction(identifier: String) async throws -> Element {
-        let response: ElementResponse = try await callServer(path: "element", request: ByIdRequest(queryRoot: serverId, identifier: identifier))
-        return Element(serverId: response.serverId)
+    public subscript (identifier: String) -> Element {
+        get async throws {
+            let response: ElementResponse = try await callServer(path: "element", request: ByIdRequest(queryRoot: serverId, identifier: identifier))
+            return Element(serverId: response.serverId)
+        }
     }
     
     public func descendants(matching elementType: Element.ElementType) async throws -> Query {
@@ -70,12 +72,10 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Query(serverId: response.serverId)
     }
 
-    public func any() async throws -> Query {
-        try await self.descendants(matching: .any)
-    }
-
-    public func any(_ identifier: String) async throws -> Element {
-        try await self.descendants(matching: .any)(identifier: identifier)
+    public var any: Query {
+        get async throws {
+            try await self.descendants(matching: .any)
+        }
     }
 
     public func children(matching type: Element.ElementType) async throws -> Query {
@@ -206,7 +206,7 @@ public final class SyncQuery: SyncElementTypeQueryProvider, Sendable {
     @available(*, noasync)
     public subscript(_ identifier: String) -> SyncElement {
         Executor.execute {
-            SyncElement(element: try await self.query(identifier: identifier))
+            SyncElement(element: try await self.query[identifier])
         }.valueOrFailWithFallback(.EmptyElement)
     }
 
@@ -219,17 +219,10 @@ public final class SyncQuery: SyncElementTypeQueryProvider, Sendable {
 
 
     @available(*, noasync)
-    public func any() -> SyncQuery {
+    public var any: SyncQuery {
         Executor.execute {
-            SyncQuery(query: try await self.query.any())
+            SyncQuery(query: try await self.query.any)
         }.valueOrFailWithFallback(.EmptyQuery)
-    }
-
-    @available(*, noasync)
-    public func any(_ identifier: String) -> SyncElement {
-        Executor.execute {
-            SyncElement(element: try await self.query.any(identifier))
-        }.valueOrFailWithFallback(.EmptyElement)
     }
 
     @available(*, noasync)

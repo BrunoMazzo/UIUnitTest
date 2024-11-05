@@ -109,26 +109,10 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
         return try await callServer(path: "elementType", request: ElementRequest(serverId: serverId))
     }
 
-    public func any() async throws -> Query {
-        try await descendants(matching: .any)
-    }
-
-    @available(*, noasync)
-    public func any() -> Query {
-        Executor.execute {
-            try await self.any()
-        }.valueOrFailWithFallback(.EmptyQuery)
-    }
-
-    public func any(_ identifier: String) async throws -> Element {
-        try await descendants(matching: .any)(identifier: identifier)
-    }
-
-    @available(*, noasync)
-    public func any(_ identifier: String) -> Element {
-        Executor.execute {
-            try await self.any(identifier)
-        }.valueOrFailWithFallback(.EmptyElement)
+    public var any: Query {
+        get async throws {
+            try await descendants(matching: .any)
+        }
     }
 }
 
@@ -192,17 +176,10 @@ public class SyncElement: SyncElementTypeQueryProvider, @unchecked Sendable {
     }
 
     @available(*, noasync)
-    public func any() -> SyncQuery {
+    public var any: SyncQuery {
         Executor.execute {
-            SyncQuery(query: try await self.element.any())
+            SyncQuery(query: try await self.element.any)
         }.valueOrFailWithFallback(.EmptyQuery)
-    }
-
-    @available(*, noasync)
-    public func any(_ identifier: String) -> SyncElement {
-        Executor.execute {
-            SyncElement(element: try await self.element.any(identifier))
-        }.valueOrFailWithFallback(.EmptyElement)
     }
 }
 
