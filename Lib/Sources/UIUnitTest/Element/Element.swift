@@ -204,7 +204,11 @@ public extension Element {
     }
 }
 
-public class SyncElement: ElementTypeQueryProvider, @unchecked Sendable {
+public class SyncElement: SyncElementTypeQueryProvider, @unchecked Sendable {
+    public var queryProvider: any ElementTypeQueryProvider {
+        self.element
+    }
+
     public static let EmptyElement = SyncElement(element: .EmptyElement)
 
     public let element: Element
