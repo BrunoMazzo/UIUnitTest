@@ -9,11 +9,13 @@ public extension Element {
         
         let _: Bool = try await callServer(path: "rotate", request: swipeRequest)
     }
+}
 
+public extension SyncElement {
     @available(*, noasync)
     func rotate(_ rotation: CGFloat, withVelocity velocity: CGFloat)  {
         Executor.execute {
-            try await self.rotate(rotation, withVelocity: velocity)
+            try await self.element.rotate(rotation, withVelocity: velocity)
         }.valueOrFailWithFallback(())
     }
 }

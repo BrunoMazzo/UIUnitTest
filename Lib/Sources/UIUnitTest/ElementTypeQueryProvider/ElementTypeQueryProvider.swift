@@ -5,6 +5,10 @@ public protocol ElementTypeQueryProvider: Sendable {
     var serverId: UUID { get }
 }
 
+public protocol SyncElementTypeQueryProvider: Sendable {
+    var queryProvider: ElementTypeQueryProvider { get }
+}
+
 public extension ElementTypeQueryProvider {
     
     func firstMatch() async throws -> Element  {

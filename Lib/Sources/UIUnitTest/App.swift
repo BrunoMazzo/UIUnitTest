@@ -2,9 +2,17 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-public class App: Element, @unchecked Sendable {
+@available(*, noasync)
+public func App() -> SyncApi {
+    return SyncApi()
+}
+
+public func App() async throws -> Api {
+    return try await Api()
+}
+
+public class Api: Element, @unchecked Sendable {
     let appId: String
-    let executor = Executor()
 
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) async throws {
         self.appId = appId
@@ -49,7 +57,7 @@ public class App: Element, @unchecked Sendable {
         }.valueOrFailWithFallback(())
     }
 
-    private func create(activate: Bool, timeout: TimeInterval = 30_000_000_000) async throws {
+    public func create(activate: Bool, timeout: TimeInterval = 30_000_000_000) async throws {
         let start = Date()
 
         while abs(start.timeIntervalSinceNow) < timeout {
@@ -108,6 +116,54 @@ public class App: Element, @unchecked Sendable {
     ) throws {
         Executor.execute {
             try await self.performAccessibilityAudit(for: auditTypes, issueHandler, fileID: fileID, filePath: filePath, line: line, column: column)
+        }.valueOrFailWithFallback(())
+    }
+}
+
+@available(*, noasync)
+public class SyncApi: SyncElement, @unchecked Sendable {
+    let api: Api
+
+    @available(*, noasync)
+    public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) {
+        self.api = Api(appId: appId)
+        super.init(element: Element(serverId: UUID()))
+        self.create(activate: activate)
+    }
+
+    required init(from _: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+
+    public func pressHomeButton() {
+        Executor.execute {
+            try await self.api.pressHomeButton()
+        }.valueOrFailWithFallback(())
+    }
+
+    public func activate() {
+        Executor.execute {
+            try await self.api.activate()
+        }.valueOrFailWithFallback(())
+    }
+
+    public func create(activate: Bool, timeout: TimeInterval = 30_000_000_000) {
+        Executor.execute {
+            try await self.api.create(activate: activate, timeout: timeout)
+        }.valueOrFailWithFallback(())
+    }
+
+    @available(iOS 17.0, *)
+    public func performAccessibilityAudit(
+        for auditTypes: AccessibilityAuditType = .all,
+        _ issueHandler: (@Sendable (AccessibilityAuditIssue) throws -> Bool)? = nil,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) throws {
+        Executor.execute {
+            try await self.api.performAccessibilityAudit(for: auditTypes, issueHandler, fileID: fileID, filePath: filePath, line: line, column: column)
         }.valueOrFailWithFallback(())
     }
 }

@@ -28,23 +28,9 @@ public final class Coordinate: Sendable {
         return Coordinate(serverId: response.coordinateId, referencedElement: Element(serverId: response.referencedElementId), screenPoint: response.screenPoint)
     }
 
-    @available(*, noasync)
-    public func withOffset(_ vector: CGVector) -> Coordinate {
-        Executor.execute {
-            try await self.withOffset(vector)
-        }.valueOrFailWithFallback(.EmptyCoordinate)
-    }
-
     func tap() async throws {
         let request = TapCoordinateRequest(serverId: serverId, type: .tap)
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
-    }
-
-    @available(*, noasync)
-    public func tap() {
-        Executor.execute {
-            try await self.tap()
-        }.valueOrFailWithFallback(())
     }
 
     func doubleTap() async throws {
@@ -52,23 +38,9 @@ public final class Coordinate: Sendable {
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
 
-    @available(*, noasync)
-    public func doubleTap() {
-        Executor.execute {
-            try await self.doubleTap()
-        }.valueOrFailWithFallback(())
-    }
-
     public func press(forDuration duration: TimeInterval) async throws {
         let request = TapCoordinateRequest(serverId: serverId, type: .press(forDuration: duration))
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
-    }
-
-    @available(*, noasync)
-    public func press(forDuration duration: TimeInterval) {
-        Executor.execute {
-            try await self.press(forDuration: duration)
-        }.valueOrFailWithFallback(())
     }
 
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) async throws {
@@ -76,22 +48,60 @@ public final class Coordinate: Sendable {
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
 
-    @available(*, noasync)
-    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) {
-        Executor.execute {
-            try await self.press(forDuration: duration, thenDragTo: coordinate)
-        }.valueOrFailWithFallback(())
-    }
-
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocityAPI, thenHoldForDuration holdDuration: TimeInterval) async throws {
         let request = TapCoordinateRequest(serverId: serverId, type: .pressDragAndHold(forDuration: duration, thenDragTo: coordinate.serverId, withVelocity: velocity, thenHoldForDuration: holdDuration))
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
+    }
+}
+
+public final class SyncCoordinate: Sendable {
+    static let EmptyCoordinate = SyncCoordinate(coordinate: .EmptyCoordinate)
+
+    public let coordinate: Coordinate
+
+    public init(coordinate: Coordinate) {
+        self.coordinate = coordinate
+    }
+
+    @available(*, noasync)
+    public func withOffset(_ vector: CGVector) -> SyncCoordinate {
+        Executor.execute {
+            SyncCoordinate(coordinate: try await self.coordinate.withOffset(vector))
+        }.valueOrFailWithFallback(.EmptyCoordinate)
+    }
+
+    @available(*, noasync)
+    public func tap() {
+        Executor.execute {
+            try await self.coordinate.tap()
+        }.valueOrFailWithFallback(())
+    }
+
+    @available(*, noasync)
+    public func doubleTap() {
+        Executor.execute {
+            try await self.coordinate.doubleTap()
+        }.valueOrFailWithFallback(())
+    }
+
+    @available(*, noasync)
+    public func press(forDuration duration: TimeInterval) {
+        Executor.execute {
+            try await self.coordinate.press(forDuration: duration)
+        }.valueOrFailWithFallback(())
+    }
+
+    @available(*, noasync)
+    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) {
+        Executor.execute {
+            try await self.coordinate.press(forDuration: duration, thenDragTo: coordinate)
+        }.valueOrFailWithFallback(())
     }
 
     @available(*, noasync)
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocityAPI, thenHoldForDuration holdDuration: TimeInterval) {
         Executor.execute {
-            try await self.press(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity, thenHoldForDuration: holdDuration)
+            try await self.coordinate.press(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity, thenHoldForDuration: holdDuration)
         }.valueOrFailWithFallback(())
     }
 }

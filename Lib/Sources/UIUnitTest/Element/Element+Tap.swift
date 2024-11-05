@@ -25,32 +25,35 @@ extension Element {
         
         let _: Bool = try await callServer(path: "tapElement", request: activateRequestData)
     }
+}
+
+extension SyncElement {
 
     @available(*, noasync)
     public func tap() {
         Executor.execute {
-            try await self.tap()
+            try await self.element.tap()
         }.valueOrFailWithFallback(())
     }
-    
+
     @available(*, noasync)
     public func twoFingerTap() {
         Executor.execute {
-            try await self.twoFingerTap()
+            try await self.element.twoFingerTap()
         }.valueOrFailWithFallback(())
     }
-    
+
     @available(*, noasync)
     public func tap(withNumberOfTaps numberOfTaps: Int, numberOfTouches: Int) {
         Executor.execute {
-            try await self.tap(withNumberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
+            try await self.element.tap(withNumberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
         }.valueOrFailWithFallback(())
     }
-    
+
     @available(*, noasync)
     public func press(forDuration duration: TimeInterval) {
         Executor.execute {
-            try await self.press(forDuration: duration)
+            try await self.element.press(forDuration: duration)
         }.valueOrFailWithFallback(())
     }
 }

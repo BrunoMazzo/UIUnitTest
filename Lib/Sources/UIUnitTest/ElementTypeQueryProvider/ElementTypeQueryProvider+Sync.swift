@@ -1,586 +1,586 @@
 import Foundation
 import UIUnitTestAPI
 
-public extension ElementTypeQueryProvider {
-    
+public extension SyncElementTypeQueryProvider {
+
     @available(*, noasync)
-    var firstMatch: Element {
+    var firstMatch: SyncElement {
         Executor.execute {
-            try await self.firstMatch()
+            SyncElement(element: try await self.queryProvider.firstMatch())
         }.valueOrFailWithFallback(.EmptyElement)
     }
     
     @available(*, noasync)
-    subscript(dynamicMember: QueryType) -> Query {
+    subscript(dynamicMember: QueryType) -> SyncQuery {
         Executor.execute {
-            try await Query(serverId: self.serverId, queryType: dynamicMember)
+            SyncQuery(query: try await Query(serverId: self.queryProvider.serverId, queryType: dynamicMember))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var activityIndicators: Query {
+    var activityIndicators: SyncQuery {
         Executor.execute {
-            try await self(.activityIndicators)
+            SyncQuery(query: try await self.queryProvider(.activityIndicators))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var alerts: Query {
+    var alerts: SyncQuery {
         Executor.execute {
-            try await self(.alerts)
+            SyncQuery(query: try await self.queryProvider(.alerts))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var browsers: Query {
+    var browsers: SyncQuery {
         Executor.execute {
-            try await self(.browsers)
+            SyncQuery(query: try await self.queryProvider(.browsers))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var buttons: Query {
+    var buttons: SyncQuery {
         Executor.execute {
-            try await self(.buttons)
+            SyncQuery(query: try await self.queryProvider(.buttons))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var cells: Query {
+    var cells: SyncQuery {
         Executor.execute {
-            try await self(.cells)
+            SyncQuery(query: try await self.queryProvider(.cells))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var checkBoxes: Query {
+    var checkBoxes: SyncQuery {
         Executor.execute {
-            try await self(.checkBoxes)
+            SyncQuery(query: try await self.queryProvider(.checkBoxes))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var collectionViews: Query {
+    var collectionViews: SyncQuery {
         Executor.execute {
-            try await self(.collectionViews)
+            SyncQuery(query:  try await self.queryProvider(.collectionViews))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var colorWells: Query {
+    var colorWells: SyncQuery {
         Executor.execute {
-            try await self(.colorWells)
+            SyncQuery(query:  try await self.queryProvider(.colorWells))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var comboBoxes: Query {
+    var comboBoxes: SyncQuery {
         Executor.execute {
-            try await self(.comboBoxes)
+            SyncQuery(query:  try await self.queryProvider(.comboBoxes))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var datePickers: Query {
+    var datePickers: SyncQuery {
         Executor.execute {
-            try await self(.datePickers)
+            SyncQuery(query:  try await self.queryProvider(.datePickers))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var decrementArrows: Query {
+    var decrementArrows: SyncQuery {
         Executor.execute {
-            try await self(.decrementArrows)
+            SyncQuery(query: try await self.queryProvider(.decrementArrows))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var dialogs: Query {
+    var dialogs: SyncQuery {
         Executor.execute {
-            try await self(.dialogs)
+            SyncQuery(query: try await self.queryProvider(.dialogs))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var disclosureTriangles: Query {
+    var disclosureTriangles: SyncQuery {
         Executor.execute {
-            try await self(.disclosureTriangles)
+            SyncQuery(query: try await self.queryProvider(.disclosureTriangles))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var disclosedChildRows: Query {
+    var disclosedChildRows: SyncQuery {
         Executor.execute {
-            try await self(.disclosedChildRows)
+            SyncQuery(query: try await self.queryProvider(.disclosedChildRows))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var dockItems: Query {
+    var dockItems: SyncQuery {
         Executor.execute {
-            try await self(.dockItems)
+            SyncQuery(query: try await self.queryProvider(.dockItems))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var drawers: Query {
+    var drawers: SyncQuery {
         Executor.execute {
-            try await self(.drawers)
+            SyncQuery(query: try await self.queryProvider(.drawers))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var grids: Query {
+    var grids: SyncQuery {
         Executor.execute {
-            try await self(.grids)
+            SyncQuery(query:  try await self.queryProvider(.grids))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var groups: Query {
+    var groups: SyncQuery {
         Executor.execute {
-            try await self(.groups)
+            SyncQuery(query:  try await self.queryProvider(.groups))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var handles: Query {
+    var handles: SyncQuery {
         Executor.execute {
-            try await self(.handles)
+            SyncQuery(query: try await self.queryProvider(.handles))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var helpTags: Query {
+    var helpTags: SyncQuery {
         Executor.execute {
-            try await self(.helpTags)
+            SyncQuery(query: try await self.queryProvider(.helpTags))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var icons: Query {
+    var icons: SyncQuery {
         Executor.execute {
-            try await self(.icons)
+            SyncQuery(query: try await self.queryProvider(.icons))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var images: Query {
+    var images: SyncQuery {
         Executor.execute {
-            try await self(.images)
+            SyncQuery(query:  try await self.queryProvider(.images))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var incrementArrows: Query {
+    var incrementArrows: SyncQuery {
         Executor.execute {
-            try await self(.incrementArrows)
+            SyncQuery(query:  try await self.queryProvider(.incrementArrows))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var keyboards: Query {
+    var keyboards: SyncQuery {
         Executor.execute {
-            try await self(.keyboards)
+            SyncQuery(query: try await self.queryProvider(.keyboards))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var keys: Query {
+    var keys: SyncQuery {
         Executor.execute {
-            try await self(.keys)
+            SyncQuery(query: try await self.queryProvider(.keys))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var layoutAreas: Query {
+    var layoutAreas: SyncQuery {
         Executor.execute {
-            try await self(.layoutAreas)
+            SyncQuery(query: try await self.queryProvider(.layoutAreas))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var layoutItems: Query {
+    var layoutItems: SyncQuery {
         Executor.execute {
-            try await self(.layoutItems)
+            SyncQuery(query: try await self.queryProvider(.layoutItems))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var levelIndicators: Query {
+    var levelIndicators: SyncQuery {
         Executor.execute {
-            try await self(.levelIndicators)
+            SyncQuery(query: try await self.queryProvider(.levelIndicators))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var links: Query {
+    var links: SyncQuery {
         Executor.execute {
-            try await self(.links)
+            SyncQuery(query: try await self.queryProvider(.links))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var maps: Query {
+    var maps: SyncQuery {
         Executor.execute {
-            try await self(.maps)
+            SyncQuery(query: try await self.queryProvider(.maps))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var mattes: Query {
+    var mattes: SyncQuery {
         Executor.execute {
-            try await self(.mattes)
+            SyncQuery(query:  try await self.queryProvider(.mattes))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var menuBarItems: Query {
+    var menuBarItems: SyncQuery {
         Executor.execute {
-            try await self(.menuBarItems)
+            SyncQuery(query: try await self.queryProvider(.menuBarItems))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var menuBars: Query {
+    var menuBars: SyncQuery {
         Executor.execute {
-            try await self(.menuBars)
+            SyncQuery(query: try await self.queryProvider(.menuBars))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var menuButtons: Query {
+    var menuButtons: SyncQuery {
         Executor.execute {
-            try await self(.menuButtons)
+            SyncQuery(query:  try await self.queryProvider(.menuButtons))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var menuItems: Query {
+    var menuItems: SyncQuery {
         Executor.execute {
-            try await self(.menuItems)
+            SyncQuery(query: try await self.queryProvider(.menuItems))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var menus: Query {
+    var menus: SyncQuery {
         Executor.execute {
-            try await self(.menus)
+            SyncQuery(query: try await self.queryProvider(.menus))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var navigationBars: Query {
+    var navigationBars: SyncQuery {
         Executor.execute {
-            try await self(.navigationBars)
+            SyncQuery(query: try await self.queryProvider(.navigationBars))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var otherElements: Query {
+    var otherElements: SyncQuery {
         Executor.execute {
-            try await self(.otherElements)
+            SyncQuery(query:  try await self.queryProvider(.otherElements))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var outlineRows: Query {
+    var outlineRows: SyncQuery {
         Executor.execute {
-            try await self(.outlineRows)
+            SyncQuery(query: try await self.queryProvider(.outlineRows))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var outlines: Query {
+    var outlines: SyncQuery {
         Executor.execute {
-            try await self(.outlines)
+            SyncQuery(query:  try await self.queryProvider(.outlines))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var pageIndicators: Query {
+    var pageIndicators: SyncQuery {
         Executor.execute {
-            try await self(.pageIndicators)
+            SyncQuery(query: try await self.queryProvider(.pageIndicators))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var pickerWheels: Query {
+    var pickerWheels: SyncQuery {
         Executor.execute {
-            try await self(.pickerWheels)
+            SyncQuery(query: try await self.queryProvider(.pickerWheels))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var pickers: Query {
+    var pickers: SyncQuery {
         Executor.execute {
-            try await self(.pickers)
+            SyncQuery(query: try await self.queryProvider(.pickers))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var popUpButtons: Query {
+    var popUpButtons: SyncQuery {
         Executor.execute {
-            try await self(.popUpButtons)
+            SyncQuery(query: try await self.queryProvider(.popUpButtons))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var popovers: Query {
+    var popovers: SyncQuery {
         Executor.execute {
-            try await self(.popovers)
+            SyncQuery(query: try await self.queryProvider(.popovers))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var progressIndicators: Query {
+    var progressIndicators: SyncQuery {
         Executor.execute {
-            try await self(.progressIndicators)
+            SyncQuery(query: try await self.queryProvider(.progressIndicators))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var radioButtons: Query {
+    var radioButtons: SyncQuery {
         Executor.execute {
-            try await self(.radioButtons)
+            SyncQuery(query:  try await self.queryProvider(.radioButtons))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var radioGroups: Query {
+    var radioGroups: SyncQuery {
         Executor.execute {
-            try await self(.radioGroups)
+            SyncQuery(query: try await self.queryProvider(.radioGroups))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var ratingIndicators: Query {
+    var ratingIndicators: SyncQuery {
         Executor.execute {
-            try await self(.ratingIndicators)
+            SyncQuery(query: try await self.queryProvider(.ratingIndicators))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var relevanceIndicators: Query {
+    var relevanceIndicators: SyncQuery {
         Executor.execute {
-            try await self(.relevanceIndicators)
+            SyncQuery(query: try await self.queryProvider(.relevanceIndicators))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var rulerMarkers: Query {
+    var rulerMarkers: SyncQuery {
         Executor.execute {
-            try await self(.rulerMarkers)
+            SyncQuery(query: try await self.queryProvider(.rulerMarkers))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var rulers: Query {
+    var rulers: SyncQuery {
         Executor.execute {
-            try await self(.rulers)
+            SyncQuery(query: try await self.queryProvider(.rulers))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var scrollBars: Query {
+    var scrollBars: SyncQuery {
         Executor.execute {
-            try await self(.scrollBars)
+            SyncQuery(query: try await self.queryProvider(.scrollBars))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var scrollViews: Query {
+    var scrollViews: SyncQuery {
         Executor.execute {
-            try await self(.scrollViews)
+            SyncQuery(query: try await self.queryProvider(.scrollViews))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var searchFields: Query {
+    var searchFields: SyncQuery {
         Executor.execute {
-            try await self(.searchFields)
+            SyncQuery(query: try await self.queryProvider(.searchFields))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var secureTextFields: Query {
+    var secureTextFields: SyncQuery {
         Executor.execute {
-            try await self(.secureTextFields)
+            SyncQuery(query: try await self.queryProvider(.secureTextFields))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var segmentedControls: Query {
+    var segmentedControls: SyncQuery {
         Executor.execute {
-            try await self(.segmentedControls)
+            SyncQuery(query:  try await self.queryProvider(.segmentedControls))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var sheets: Query {
+    var sheets: SyncQuery {
         Executor.execute {
-            try await self(.sheets)
+            SyncQuery(query: try await self.queryProvider(.sheets))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var sliders: Query {
+    var sliders: SyncQuery {
         Executor.execute {
-            try await self(.sliders)
+            SyncQuery(query:  try await self.queryProvider(.sliders))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var splitGroups: Query {
+    var splitGroups: SyncQuery {
         Executor.execute {
-            try await self(.splitGroups)
+            SyncQuery(query: try await self.queryProvider(.splitGroups))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var splitters: Query {
+    var splitters: SyncQuery {
         Executor.execute {
-            try await self(.splitters)
+            SyncQuery(query: try await self.queryProvider(.splitters))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var staticTexts: Query {
+    var staticTexts: SyncQuery {
         Executor.execute {
-            try await self(.staticTexts)
+            SyncQuery(query: try await self.queryProvider(.staticTexts))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var statusBars: Query {
+    var statusBars: SyncQuery {
         Executor.execute {
-            try await self(.statusBars)
+            SyncQuery(query: try await self.queryProvider(.statusBars))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var statusItems: Query {
+    var statusItems: SyncQuery {
         Executor.execute {
-            try await self(.statusItems)
+            SyncQuery(query: try await self.queryProvider(.statusItems))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var steppers: Query {
+    var steppers: SyncQuery {
         Executor.execute {
-            try await self(.steppers)
+            SyncQuery(query: try await self.queryProvider(.steppers))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var switches: Query {
+    var switches: SyncQuery {
         Executor.execute {
-            try await self(.switches)
+            SyncQuery(query: try await self.queryProvider(.switches))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var tabBars: Query {
+    var tabBars: SyncQuery {
         Executor.execute {
-            try await self(.tabBars)
+            SyncQuery(query:  try await self.queryProvider(.tabBars))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var tabGroups: Query {
+    var tabGroups: SyncQuery {
         Executor.execute {
-            try await self(.tabGroups)
+            SyncQuery(query:  try await self.queryProvider(.tabGroups))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var tableColumns: Query {
+    var tableColumns: SyncQuery {
         Executor.execute {
-            try await self(.tableColumns)
+            SyncQuery(query: try await self.queryProvider(.tableColumns))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var tableRows: Query {
+    var tableRows: SyncQuery {
         Executor.execute {
-            try await self(.tableRows)
+            SyncQuery(query: try await self.queryProvider(.tableRows))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var tables: Query {
+    var tables: SyncQuery {
         Executor.execute {
-            try await self(.tables)
+            SyncQuery(query: try await self.queryProvider(.tables))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var textFields: Query {
+    var textFields: SyncQuery {
         Executor.execute {
-            try await self(.textFields)
+            SyncQuery(query:  try await self.queryProvider(.textFields))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var textViews: Query {
+    var textViews: SyncQuery {
         Executor.execute {
-            try await self(.textViews)
+            SyncQuery(query:  try await self.queryProvider(.textViews))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var timelines: Query {
+    var timelines: SyncQuery {
         Executor.execute {
-            try await self(.timelines)
+            SyncQuery(query:  try await self.queryProvider(.timelines))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var toggles: Query {
+    var toggles: SyncQuery {
         Executor.execute {
-            try await self(.toggles)
+            SyncQuery(query: try await self.queryProvider(.toggles))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var toolbarButtons: Query {
+    var toolbarButtons: SyncQuery {
         Executor.execute {
-            try await self(.toolbarButtons)
+            SyncQuery(query: try await self.queryProvider(.toolbarButtons))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var toolbars: Query {
+    var toolbars: SyncQuery {
         Executor.execute {
-            try await self(.toolbars)
+            SyncQuery(query: try await self.queryProvider(.toolbars))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var touchBars: Query {
+    var touchBars: SyncQuery {
         Executor.execute {
-            try await self(.touchBars)
+            SyncQuery(query: try await self.queryProvider(.touchBars))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var valueIndicators: Query {
+    var valueIndicators: SyncQuery {
         Executor.execute {
-            try await self(.valueIndicators)
+            SyncQuery(query:  try await self.queryProvider(.valueIndicators))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var webViews: Query {
+    var webViews: SyncQuery {
         Executor.execute {
-            try await self(.webViews)
+            SyncQuery(query:  try await self.queryProvider(.webViews))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
     
     @available(*, noasync)
-    var windows: Query {
+    var windows: SyncQuery {
         Executor.execute {
-            try await self(.windows)
+            SyncQuery(query: try await self.queryProvider(.windows))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
 }

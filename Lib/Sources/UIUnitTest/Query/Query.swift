@@ -258,3 +258,152 @@ final class NSPredicateSendableBox: @unchecked Sendable {
         self.predicate = predicate
     }
 }
+
+public final class SyncQuery: SyncElementTypeQueryProvider, Sendable {
+    public static var EmptyQuery: SyncQuery { SyncQuery(query: .EmptyQuery) }
+
+    public var queryProvider: any ElementTypeQueryProvider {
+        self.query
+    }
+
+    public let query: Query
+
+    init(query: Query) {
+        self.query = query
+    }
+
+    @available(*, noasync)
+    public var element: SyncElement! {
+        Executor.execute {
+            SyncElement(element: try await self.query.element())
+        }.valueOrFailWithFallback(nil)
+    }
+
+    @available(*, noasync)
+    public var allElementsBoundByAccessibilityElement: [SyncElement] {
+        Executor.execute {
+            try await self.query.allElementsBoundByAccessibilityElement().map {
+                SyncElement(element: $0)
+            }
+        }.valueOrFailWithFallback([])
+    }
+
+    @available(*, noasync)
+    public var allElementsBoundByIndex: [SyncElement] {
+        Executor.execute {
+            try await self.query.allElementsBoundByIndex().map {
+                SyncElement(element: $0)
+            }
+        }.valueOrFailWithFallback([])
+    }
+
+    @available(*, noasync)
+    public var count: Int {
+        Executor.execute {
+            try await self.query.count()
+        }.valueOrFailWithFallback(-1)
+    }
+
+    @available(*, noasync)
+    public func element(boundByIndex index: Int) -> SyncElement {
+        Executor.execute {
+            SyncElement(element: try await self.query.element(boundByIndex: index))
+        }.valueOrFailWithFallback(SyncElement(element: .EmptyElement))
+    }
+
+    @available(*, noasync)
+    // Using autoclosure to erase the Sendable warning
+    public func element(matching predicate: @Sendable @autoclosure @escaping () -> NSPredicate) -> SyncElement {
+        Executor.execute {
+            SyncElement(element: try await self.query.element(matching: predicate()))
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
+
+    @available(*, noasync)
+    public func element(matching elementType: Element.ElementType, identifier: String?) -> SyncElement {
+        Executor.execute {
+            SyncElement(element: try await self.query.element(matching: elementType, identifier: identifier))
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
+
+    @available(*, noasync)
+    public subscript(_ identifier: String) -> SyncElement {
+        Executor.execute {
+            SyncElement(element: try await self.query(identifier: identifier))
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
+
+    @available(*, noasync)
+    public func descendants(matching elementType: Element.ElementType) -> SyncQuery {
+        Executor.execute {
+            SyncQuery(query: try await self.query.descendants(matching: elementType))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+
+    @available(*, noasync)
+    public func any() -> SyncQuery {
+        Executor.execute {
+            SyncQuery(query: try await self.query.any())
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func any(_ identifier: String) -> SyncElement {
+        Executor.execute {
+            SyncElement(element: try await self.query.any(identifier))
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
+
+    @available(*, noasync)
+    public func children(matching type: Element.ElementType) -> SyncQuery {
+        Executor.execute {
+            SyncQuery(query: try await self.query.children(matching: type))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func matching(_ predicate: NSPredicate) -> SyncQuery {
+        let sendablebox = NSPredicateSendableBox(predicate: predicate)
+        return Executor.execute {
+            SyncQuery(query: try await self.query.matching(sendablebox.predicate))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+
+    @available(*, noasync)
+    public func matching(_ elementType: Element.ElementType, identifier: String?) -> SyncQuery {
+        Executor.execute {
+            SyncQuery(query: try await self.query.matching(elementType, identifier: identifier))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func matching(identifier: String) -> SyncQuery {
+        Executor.execute {
+            SyncQuery(query: try await self.query.matching(identifier: identifier))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func containing(_ predicate: NSPredicate) -> SyncQuery {
+        let sendablebox = NSPredicateSendableBox(predicate: predicate)
+        return Executor.execute {
+            SyncQuery(query: try await self.query.containing(sendablebox.predicate))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func containing(_ elementType: Element.ElementType, identifier: String?) -> SyncQuery {
+        Executor.execute {
+            SyncQuery(query: try await self.query.containing(elementType, identifier: identifier))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public var debugDescription: String {
+        Executor.execute {
+            try await self.query.debugDescription()
+        }.valueOrFailWithFallback("")
+    }
+}

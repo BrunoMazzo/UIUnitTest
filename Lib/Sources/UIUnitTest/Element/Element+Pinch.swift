@@ -7,12 +7,13 @@ public extension Element {
         
         let _: Bool = try await callServer(path: "pinch", request: swipeRequest)
     }
+}
 
+public extension SyncElement {
     @available(*, noasync)
     func pinch(withScale scale: CGFloat, velocity: CGFloat) {
         Executor.execute {
-            try await self.pinch(withScale: scale, velocity: velocity)
+            try await self.element.pinch(withScale: scale, velocity: velocity)
         }.valueOrFailWithFallback(())
     }
 }
-

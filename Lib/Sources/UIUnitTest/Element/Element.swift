@@ -203,3 +203,29 @@ public extension Element {
         }.valueOrFailWithFallback(self)
     }
 }
+
+public class SyncElement: ElementTypeQueryProvider, @unchecked Sendable {
+    public static let EmptyElement = SyncElement(element: .EmptyElement)
+
+    public let element: Element
+
+    public var serverId: UUID { element.serverId }
+
+    public init(element: Element) {
+        self.element = element
+    }
+
+    @available(*, noasync)
+    public func any() -> SyncQuery {
+        Executor.execute {
+            SyncQuery(query: try await self.element.any())
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func any(_ identifier: String) -> SyncElement {
+        Executor.execute {
+            SyncElement(element: try await self.element.any(identifier))
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
+}
