@@ -27,14 +27,14 @@ extension SyncElement {
     @available(*, noasync)
     public var isHittable: Bool {
         Executor.execute {
-            try await self.element.isHittable()
+            try await self.element.isHittable
         }.valueOrFailWithFallback(false)
     }
     
     @available(*, noasync)
     public var value: String? {
         Executor.execute {
-            try await self.element.value()
+            try await self.element.value
         }.valueOrFailWithFallback(nil)
     }
     
@@ -69,56 +69,56 @@ extension SyncElement {
     @available(*, noasync)
     public var debugDescription: String {
         Executor.execute {
-            try await self.element.debugDescription()
+            try await self.element.debugDescription
         }.valueOrFailWithFallback("")
     }
     
     @available(*, noasync)
     public var identifier: String {
         Executor.execute {
-            try await self.element.identifier()
+            try await self.element.identifier
         }.valueOrFailWithFallback("")
     }
     
     @available(*, noasync)
     public var title: String {
         Executor.execute {
-            try await self.element.title()
+            try await self.element.title
         }.valueOrFailWithFallback("")
     }
     
     @available(*, noasync)
     public var label: String {
         Executor.execute {
-            try await self.element.label()
+            try await self.element.label
         }.valueOrFailWithFallback("")
     }
     
     @available(*, noasync)
     public var placeholderValue: String? {
         Executor.execute {
-            try await self.element.placeholderValue()
+            try await self.element.placeholderValue
         }.valueOrFailWithFallback(nil)
     }
     
     @available(*, noasync)
     public var isSelected: Bool {
         Executor.execute {
-            try await self.element.isSelected()
+            try await self.element.isSelected
         }.valueOrFailWithFallback(false)
     }
     
     @available(*, noasync)
     public var hasFocus: Bool {
         Executor.execute {
-            try await self.element.hasFocus()
+            try await self.element.hasFocus
         }.valueOrFailWithFallback(false)
     }
     
     @available(*, noasync)
     public var isEnabled: Bool {
         Executor.execute {
-            try await self.element.isEnabled()
+            try await self.element.isEnabled
         }.valueOrFailWithFallback(false)
     }
     
@@ -132,28 +132,28 @@ extension SyncElement {
     @available(*, noasync)
     public var frame: CGRect {
         Executor.execute {
-            try await self.element.frame()
+            try await self.element.frame
         }.valueOrFailWithFallback(.null)
     }
     
     @available(*, noasync)
     public var horizontalSizeClass: SizeClass {
         Executor.execute {
-            try await self.element.horizontalSizeClass()
+            try await self.element.horizontalSizeClass
         }.valueOrFailWithFallback(.unspecified)
     }
     
     @available(*, noasync)
     public var verticalSizeClass: SizeClass {
         Executor.execute {
-            try await self.element.verticalSizeClass()
+            try await self.element.verticalSizeClass
         }.valueOrFailWithFallback(.unspecified)
     }
     
     @available(*, noasync)
     public var elementType: Element.ElementType {
         Executor.execute {
-            try await self.element.elementType()
+            try await self.element.elementType
         }.valueOrFailWithFallback(.any)
     }
 }

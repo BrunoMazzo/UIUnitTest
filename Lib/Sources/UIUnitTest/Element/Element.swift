@@ -18,17 +18,21 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     }
 
     /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
-    public func isHittable() async throws -> Bool {
-        let existsRequestData = ElementRequest(serverId: serverId)
-        let existsResponse: IsHittableResponse = try await callServer(path: "isHittable", request: existsRequestData)
-        return existsResponse.isHittable
+    public var isHittable: Bool {
+        get async throws {
+            let existsRequestData = ElementRequest(serverId: serverId)
+            let existsResponse: IsHittableResponse = try await callServer(path: "isHittable", request: existsRequestData)
+            return existsResponse.isHittable
+        }
     }
 
     // Need better way to represent any :c
-    public func value() async throws -> String? {
-        let valueRequest = ElementRequest(serverId: serverId)
-        let valueResponse: ValueResponse = try await callServer(path: "value", request: valueRequest)
-        return valueResponse.value
+    public var value: String? {
+        get async throws {
+            let valueRequest = ElementRequest(serverId: serverId)
+            let valueResponse: ValueResponse = try await callServer(path: "value", request: valueRequest)
+            return valueResponse.value
+        }
     }
 
     /** Returns a query for all descendants of the element matching the specified type. */
@@ -55,36 +59,52 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
         let _: Bool = try await callServer(path: "typeText", request: activateRequestData)
     }
 
-    public func debugDescription() async throws -> String {
-        try await callServer(path: "debugDescription", request: ElementRequest(serverId: serverId))
+    public var debugDescription: String {
+        get async throws {
+            try await callServer(path: "debugDescription", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func identifier() async throws -> String {
-        return try await callServer(path: "identifier", request: ElementRequest(serverId: serverId))
+    public var identifier: String {
+        get async throws {
+            return try await callServer(path: "identifier", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func title() async throws -> String {
-        return try await callServer(path: "title", request: ElementRequest(serverId: serverId))
+    public var title: String {
+        get async throws {
+            return try await callServer(path: "title", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func label() async throws -> String {
-        return try await callServer(path: "label", request: ElementRequest(serverId: serverId))
+    public var label: String {
+        get async throws {
+            return try await callServer(path: "label", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func placeholderValue() async throws -> String? {
-        return try await callServer(path: "placeholderValue", request: ElementRequest(serverId: serverId))
+    public var placeholderValue: String? {
+        get async throws {
+            return try await callServer(path: "placeholderValue", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func isSelected() async throws -> Bool {
-        return try await callServer(path: "isSelected", request: ElementRequest(serverId: serverId))
+    public var isSelected: Bool {
+        get async throws {
+            return try await callServer(path: "isSelected", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func hasFocus() async throws -> Bool {
-        return try await callServer(path: "hasFocus", request: ElementRequest(serverId: serverId))
+    public var hasFocus: Bool {
+        get async throws {
+            return try await callServer(path: "hasFocus", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func isEnabled() async throws -> Bool {
-        return try await callServer(path: "isEnabled", request: ElementRequest(serverId: serverId))
+    public var isEnabled: Bool {
+        get async throws {
+            return try await callServer(path: "isEnabled", request: ElementRequest(serverId: serverId))
+        }
     }
 
     public func coordinate(withNormalizedOffset normalizedOffset: CGVector) async throws -> Coordinate {
@@ -93,20 +113,28 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
         return Coordinate(serverId: response.coordinateId, referencedElement: Element(serverId: response.referencedElementId), screenPoint: response.screenPoint)
     }
 
-    public func frame() async throws -> CGRect {
-        return try await callServer(path: "frame", request: ElementRequest(serverId: serverId))
+    public var frame: CGRect {
+        get async throws {
+            return try await callServer(path: "frame", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func horizontalSizeClass() async throws -> SizeClass {
-        return try await callServer(path: "horizontalSizeClass", request: ElementRequest(serverId: serverId))
+    public var horizontalSizeClass: SizeClass {
+        get async throws {
+            return try await callServer(path: "horizontalSizeClass", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func verticalSizeClass() async throws -> SizeClass {
-        return try await callServer(path: "verticalSizeClass", request: ElementRequest(serverId: serverId))
+    public var verticalSizeClass: SizeClass {
+        get async throws {
+            return try await callServer(path: "verticalSizeClass", request: ElementRequest(serverId: serverId))
+        }
     }
 
-    public func elementType() async throws -> ElementType {
-        return try await callServer(path: "elementType", request: ElementRequest(serverId: serverId))
+    public var elementType: ElementType {
+        get async throws {
+            return try await callServer(path: "elementType", request: ElementRequest(serverId: serverId))
+        }
     }
 
     public var any: Query {
@@ -133,7 +161,13 @@ public extension Element {
         if (try? await waitForExistence(timeout: timeout)) ?? false {
             return self
         } else {
-            fail(message ?? "Element \(identifier) doesn't exists", fileID: fileID, filePath: filePath, line: line, column: column)
+            if let message {
+                fail(message, fileID: fileID, filePath: filePath, line: line, column: column)
+            } else {
+                let fallbackMessage = try await "Element \(identifier) doesn't exists"
+                fail(fallbackMessage, fileID: fileID, filePath: filePath, line: line, column: column)
+            }
+
             return self
         }
     }
@@ -154,7 +188,12 @@ public extension Element {
         if (try? await waitForNonExistence(timeout: timeout)) ?? false {
             return self
         } else {
-            fail(message ?? "Element \(identifier) exists", fileID: fileID, filePath: filePath, line: line, column: column)
+            if let message {
+                fail(message, fileID: fileID, filePath: filePath, line: line, column: column)
+            } else {
+                let fallbackMessage = try await "Element \(identifier) exists"
+                fail(fallbackMessage, fileID: fileID, filePath: filePath, line: line, column: column)
+            }
             return self
         }
     }
@@ -162,7 +201,7 @@ public extension Element {
 
 public class SyncElement: SyncElementTypeQueryProvider, @unchecked Sendable {
     public var queryProvider: any ElementTypeQueryProvider {
-        self.element
+        element
     }
 
     public static let EmptyElement = SyncElement(element: .EmptyElement)
@@ -178,13 +217,12 @@ public class SyncElement: SyncElementTypeQueryProvider, @unchecked Sendable {
     @available(*, noasync)
     public var any: SyncQuery {
         Executor.execute {
-            SyncQuery(query: try await self.element.any)
+            try SyncQuery(query: await self.element.any)
         }.valueOrFailWithFallback(.EmptyQuery)
     }
 }
 
 public extension SyncElement {
-
     @discardableResult
     func assertElementExists(
         message: String? = nil,
@@ -195,7 +233,7 @@ public extension SyncElement {
         column: UInt = #column
     ) -> SyncElement {
         Executor.execute {
-            SyncElement(element: try await self.element.assertElementExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column))
+            try SyncElement(element: await self.element.assertElementExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column))
         }.valueOrFailWithFallback(self)
     }
 
@@ -209,7 +247,7 @@ public extension SyncElement {
         column: UInt = #column
     ) -> SyncElement {
         Executor.execute {
-            SyncElement(element: try await self.element.assertElementDoesntExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column))
+            try SyncElement(element: await self.element.assertElementDoesntExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column))
         }.valueOrFailWithFallback(self)
     }
 }
