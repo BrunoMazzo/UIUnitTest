@@ -2,6 +2,7 @@
 import UIUnitTest
 import XCTest
 
+@MainActor
 class TapTests: XCTestCase {
 
     func testTap() async throws {
@@ -9,12 +10,12 @@ class TapTests: XCTestCase {
 
         showView(MySettingTable())
 
-        let somethingButton = try await app.buttons("Something")
+        let somethingButton = try await app.buttons["Something"]
         try await Assert(somethingButton.isHittable())
 
         try await somethingButton.tap()
 
-        try await app.staticTexts("Something View").assertElementExists()
+        try await app.staticTexts["Something View"].assertElementExists()
     }
 
     func testTapSync() {
@@ -35,9 +36,9 @@ class TapTests: XCTestCase {
 
         showView(MySettingTable())
 
-        try await app.staticTexts("Double tap").assertElementExists().doubleTap()
+        try await app.staticTexts["Double tap"].assertElementExists().doubleTap()
 
-        try await app.staticTexts("Value: Double tap").assertElementExists()
+        try await app.staticTexts["Value: Double tap"].assertElementExists()
     }
 
     func testDoubleTapSync() {
@@ -55,11 +56,11 @@ class TapTests: XCTestCase {
 
         showView(PressAndHoldView())
 
-        try await app.staticTexts("Hello world!").assertElementDoesntExists()
+        try await app.staticTexts["Hello world!"].assertElementDoesntExists()
 
-        try await app.staticTexts("Press and hold").assertElementExists().press(forDuration: 2.5)
+        try await app.staticTexts["Press and hold"].assertElementExists().press(forDuration: 2.5)
 
-        try await app.staticTexts("Hello world!").assertElementExists()
+        try await app.staticTexts["Hello world!"].assertElementExists()
     }
 
     func testPressWithDurationSync() {
@@ -79,9 +80,9 @@ class TapTests: XCTestCase {
 
         showView(TapView())
 
-        try await app.otherElements("TwoFingersView").assertElementExists().twoFingerTap()
+        try await app.otherElements["TwoFingersView"].assertElementExists().twoFingerTap()
 
-        try await app.staticTexts("Two fingers tapped").assertElementExists()
+        try await app.staticTexts["Two fingers tapped"].assertElementExists()
     }
 
     func testTwoFingerTapSync() {
@@ -101,9 +102,9 @@ class TapTests: XCTestCase {
 
         showView(TapView())
 
-        try await app.otherElements("ThreeFingersView").assertElementExists().tap(withNumberOfTaps: 1, numberOfTouches: 3)
+        try await app.otherElements["ThreeFingersView"].assertElementExists().tap(withNumberOfTaps: 1, numberOfTouches: 3)
 
-        try await app.staticTexts("Three fingers tapped").assertElementExists()
+        try await app.staticTexts["Three fingers tapped"].assertElementExists()
     }
 
     func testThreeFingerTapSync() {
