@@ -7,12 +7,14 @@ public func App() -> SyncApi {
     return SyncApi()
 }
 
-public func App() async throws -> Api {
-    return try await Api()
+public func App() async throws -> AsyncApi {
+    return try await AsyncApi()
 }
 
-public class Api: Element, @unchecked Sendable {
+public class AsyncApi: Element, @unchecked Sendable {
     let appId: String
+
+    public var syncAPI: SyncApi { SyncApi(asyncApi: self) }
 
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) async throws {
         self.appId = appId
@@ -122,13 +124,20 @@ public class Api: Element, @unchecked Sendable {
 
 @available(*, noasync)
 public class SyncApi: SyncElement, @unchecked Sendable {
-    let api: Api
+    let api: AsyncApi
+
+    public var asyncAPI: AsyncApi { api }
 
     @available(*, noasync)
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) {
-        self.api = Api(appId: appId)
+        self.api = AsyncApi(appId: appId)
         super.init(element: api)
         self.create(activate: activate)
+    }
+
+    public init(asyncApi: AsyncApi) {
+        self.api = asyncApi
+        super.init(element: api)
     }
 
     required init(from _: Decoder) throws {
