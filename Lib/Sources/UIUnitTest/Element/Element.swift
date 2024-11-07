@@ -110,7 +110,11 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     public func coordinate(withNormalizedOffset normalizedOffset: CGVector) async throws -> Coordinate {
         let request = CoordinateRequest(serverId: serverId, normalizedOffset: normalizedOffset)
         let response: CoordinateResponse = try await callServer(path: "coordinate", request: request)
-        return Coordinate(serverId: response.coordinateId, referencedElement: Element(serverId: response.referencedElementId), screenPoint: response.screenPoint)
+        return Coordinate(
+            serverId: response.coordinateId,
+            referencedElement: Element(serverId: response.referencedElementId),
+            screenPoint: response.screenPoint
+        )
     }
 
     public var frame: CGRect {
@@ -154,7 +158,7 @@ public extension Element {
         line: UInt = #line,
         column: UInt = #column
     ) async throws -> Element {
-        if (try? await exists()) ?? false {
+        if (try? await exists) ?? false {
             return self
         }
 
@@ -181,7 +185,7 @@ public extension Element {
         line: UInt = #line,
         column: UInt = #column
     ) async throws -> Element {
-        if (try? await !exists()) ?? false {
+        if (try? await !exists) ?? false {
             return self
         }
 

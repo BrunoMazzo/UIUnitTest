@@ -6,7 +6,7 @@ extension SyncElement {
     @available(*, noasync)
     public var exists: Bool {
         Executor.execute {
-            try await self.element.exists()
+            try await self.element.exists
         }.valueOrFailWithFallback(false)
     }
     

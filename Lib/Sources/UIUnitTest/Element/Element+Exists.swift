@@ -3,10 +3,12 @@ import UIUnitTestAPI
 
 extension Element {
     
-    public func exists() async throws ->  Bool {
-        let existsRequestData = ElementRequest(serverId: serverId)
-        let existsResponse: ExistsResponse = try await callServer(path: "exists", request: existsRequestData)
-        return existsResponse.exists
+    public var exists: Bool {
+        get async throws {
+            let existsRequestData = ElementRequest(serverId: serverId)
+            let existsResponse: ExistsResponse = try await callServer(path: "exists", request: existsRequestData)
+            return existsResponse.exists
+        }
     }
     
     /** Waits the specified amount of time for the element's exist property to be true and returns false if the timeout expires without the element coming into existence. */
