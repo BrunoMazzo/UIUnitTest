@@ -6,15 +6,16 @@ import PackageDescription
 let package = Package(
     name: "UIUnitTestCLI",
     platforms: [
-        .macOS(.v14), .iOS(.v18)
+        .macOS(.v14), .iOS(.v18),
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .executable(name: "UIUnitTestCLI", targets: ["UIUnitTestCLI"]),
         .library(
             name: "UIUnitTest",
-            targets: ["UIUnitTest"]),
-        .library(name: "UIUnitTestAPI", targets: ["UIUnitTestAPI"])
+            targets: ["UIUnitTest"]
+        ),
+        .library(name: "UIUnitTestAPI", targets: ["UIUnitTestAPI"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -42,7 +43,7 @@ let package = Package(
             path: "Lib/Sources/UIUnitTest",
             linkerSettings: [.linkedFramework("XCTest")]
         ),
-        .target(name: "UIUnitTestAPI", path: "Lib/Sources/UIUnitTestAPI")
+        .target(name: "UIUnitTestAPI", path: "Lib/Sources/UIUnitTestAPI"),
     ],
     swiftLanguageModes: [.v6]
 )
