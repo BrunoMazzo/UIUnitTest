@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,7 +15,7 @@
 		1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */; };
 		1D2B65E22AF5F29D00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E12AF5F29D00E5618D /* UIUnitTest */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
-		1D5EB7192CC9D38200C98F64 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D5EB7182CC9D38200C98F64 /* UIUnitTest */; };
+		1D5B0A2D2CDC6CD6008C64A4 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D5B0A2C2CDC6CD6008C64A4 /* UIUnitTest */; };
 		1D60D5852C23D8E600F0B0FF /* SwiftTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */; };
 		1D60D5862C23D8E600F0B0FF /* SwiftTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */; };
 		1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */; };
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D5EB7192CC9D38200C98F64 /* UIUnitTest in Frameworks */,
+				1D5B0A2D2CDC6CD6008C64A4 /* UIUnitTest in Frameworks */,
 				1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -211,7 +211,7 @@
 			name = ClientTests;
 			packageProductDependencies = (
 				1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */,
-				1D5EB7182CC9D38200C98F64 /* UIUnitTest */,
+				1D5B0A2C2CDC6CD6008C64A4 /* UIUnitTest */,
 			);
 			productName = ClientTests;
 			productReference = 1D136B7D29B45A4600465FB6 /* ClientTests.xctest */;
@@ -271,7 +271,7 @@
 			);
 			mainGroup = 1D136B6329B45A4600465FB6;
 			packageReferences = (
-				1D5EB7172CC9D38200C98F64 /* XCRemoteSwiftPackageReference "UIUnitTest" */,
+				1D5B0A2B2CDC6CD6008C64A4 /* XCLocalSwiftPackageReference "UIUnitTest" */,
 			);
 			productRefGroup = 1D136B6D29B45A4600465FB6 /* Products */;
 			projectDirPath = "";
@@ -696,16 +696,12 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		1D5EB7172CC9D38200C98F64 /* XCRemoteSwiftPackageReference "UIUnitTest" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
-			requirement = {
-				branch = "swift-testing";
-				kind = branch;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		1D5B0A2B2CDC6CD6008C64A4 /* XCLocalSwiftPackageReference "UIUnitTest" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = UIUnitTest;
 		};
-/* End XCRemoteSwiftPackageReference section */
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */ = {
@@ -716,9 +712,8 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = UIUnitTest;
 		};
-		1D5EB7182CC9D38200C98F64 /* UIUnitTest */ = {
+		1D5B0A2C2CDC6CD6008C64A4 /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1D5EB7172CC9D38200C98F64 /* XCRemoteSwiftPackageReference "UIUnitTest" */;
 			productName = UIUnitTest;
 		};
 /* End XCSwiftPackageProductDependency section */

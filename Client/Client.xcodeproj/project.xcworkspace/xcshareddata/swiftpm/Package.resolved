@@ -1,5 +1,5 @@
 {
-  "originHash" : "486a9183cf57ca3adcb12f4b4540d6c05112140469fc2e1f22f1f262e64f2227",
+  "originHash" : "ab22821daa6a004cbc102f89757861b81bfa67fcae03a72eb74eed03fd04301a",
   "pins" : [
     {
       "identity" : "swift-argument-parser",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "41982a3656a71c768319979febd796c6fd111d5c",
         "version" : "1.5.0"
-      }
-    },
-    {
-      "identity" : "uiunittest",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
-      "state" : {
-        "branch" : "swift-testing",
-        "revision" : "be3f72c7a1cbe74d0693b70d945d5b116bc315ba"
       }
     }
   ],
