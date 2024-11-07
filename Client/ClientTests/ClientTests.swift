@@ -15,7 +15,7 @@ class ClientTests: XCTestCase, @unchecked Sendable {
 
         try await app.staticTexts["Hello world button"].assertElementExists2()
 
-        try await Assert(app.staticTexts["Hello world button"].isHittable())
+        try await Assert(app.staticTexts["Hello world button"].isHittable)
 
         try await app.buttons["Hello world button"].tap()
 

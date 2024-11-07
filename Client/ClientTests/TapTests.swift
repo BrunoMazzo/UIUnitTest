@@ -11,7 +11,7 @@ class TapTests: XCTestCase {
         showView(MySettingTable())
 
         let somethingButton = try await app.buttons["Something"]
-        try await Assert(somethingButton.isHittable())
+        try await Assert(somethingButton.isHittable)
 
         try await somethingButton.tap()
 

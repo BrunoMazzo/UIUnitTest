@@ -14,7 +14,7 @@ final class SwiftTesting {
         
         let somethingButton = try await app.buttons["Something"]
 
-        #expect(try await somethingButton.isHittable())
+        #expect(try await somethingButton.isHittable)
         
         try await somethingButton.tap()
         
@@ -29,7 +29,7 @@ final class SwiftTesting {
         
         try await app.staticTexts["Hello world button"].assertElementExists()
         
-        #expect(try await app.staticTexts["Hello world button"].isHittable())
+        #expect(try await app.staticTexts["Hello world button"].isHittable)
         
         try await app.buttons["Hello world button"].tap()
         
