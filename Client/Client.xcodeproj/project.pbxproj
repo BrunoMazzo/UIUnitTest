@@ -15,6 +15,7 @@
 		1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */; };
 		1D2B65E22AF5F29D00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E12AF5F29D00E5618D /* UIUnitTest */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
+		1D5308912CDF591D002DB5FC /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D5308902CDF591D002DB5FC /* UIUnitTest */; };
 		1D5B0A2D2CDC6CD6008C64A4 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D5B0A2C2CDC6CD6008C64A4 /* UIUnitTest */; };
 		1D60D5852C23D8E600F0B0FF /* SwiftTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */; };
 		1D60D5862C23D8E600F0B0FF /* SwiftTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */; };
@@ -84,6 +85,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D5B0A2D2CDC6CD6008C64A4 /* UIUnitTest in Frameworks */,
+				1D5308912CDF591D002DB5FC /* UIUnitTest in Frameworks */,
 				1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -212,6 +214,7 @@
 			packageProductDependencies = (
 				1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */,
 				1D5B0A2C2CDC6CD6008C64A4 /* UIUnitTest */,
+				1D5308902CDF591D002DB5FC /* UIUnitTest */,
 			);
 			productName = ClientTests;
 			productReference = 1D136B7D29B45A4600465FB6 /* ClientTests.xctest */;
@@ -271,7 +274,7 @@
 			);
 			mainGroup = 1D136B6329B45A4600465FB6;
 			packageReferences = (
-				1D5B0A2B2CDC6CD6008C64A4 /* XCLocalSwiftPackageReference "UIUnitTest" */,
+				1D53088F2CDF591D002DB5FC /* XCLocalSwiftPackageReference "UIUnitTest" */,
 			);
 			productRefGroup = 1D136B6D29B45A4600465FB6 /* Products */;
 			projectDirPath = "";
@@ -697,7 +700,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		1D5B0A2B2CDC6CD6008C64A4 /* XCLocalSwiftPackageReference "UIUnitTest" */ = {
+		1D53088F2CDF591D002DB5FC /* XCLocalSwiftPackageReference "UIUnitTest" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = UIUnitTest;
 		};
@@ -709,6 +712,10 @@
 			productName = UIUnitTest;
 		};
 		1D2B65E12AF5F29D00E5618D /* UIUnitTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UIUnitTest;
+		};
+		1D5308902CDF591D002DB5FC /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UIUnitTest;
 		};

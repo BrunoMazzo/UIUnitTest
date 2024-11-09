@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D53088E2CDF5897002DB5FC /* UIUnitTestAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 1D53088D2CDF5897002DB5FC /* UIUnitTestAPI */; };
 		1D756F432CC8A041000563FE /* FlyingFox in Frameworks */ = {isa = PBXBuildFile; productRef = 1D756F422CC8A041000563FE /* FlyingFox */; };
 		1D756F462CC8A06D000563FE /* UIUnitTestAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 1D756F452CC8A06D000563FE /* UIUnitTestAPI */; };
-		1DC1DD982CD2095E009D5A96 /* UIUnitTestAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 1DC1DD972CD2095E009D5A96 /* UIUnitTestAPI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1DC1DD982CD2095E009D5A96 /* UIUnitTestAPI in Frameworks */,
+				1D53088E2CDF5897002DB5FC /* UIUnitTestAPI in Frameworks */,
 				1D756F432CC8A041000563FE /* FlyingFox in Frameworks */,
 				1D756F462CC8A06D000563FE /* UIUnitTestAPI in Frameworks */,
 			);
@@ -126,7 +126,7 @@
 			packageProductDependencies = (
 				1D756F422CC8A041000563FE /* FlyingFox */,
 				1D756F452CC8A06D000563FE /* UIUnitTestAPI */,
-				1DC1DD972CD2095E009D5A96 /* UIUnitTestAPI */,
+				1D53088D2CDF5897002DB5FC /* UIUnitTestAPI */,
 			);
 			productName = ServerUITests;
 			productReference = 1D756F282CC8A00D000563FE /* ServerUITests.xctest */;
@@ -162,7 +162,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				1D756F412CC8A041000563FE /* XCRemoteSwiftPackageReference "FlyingFox" */,
-				1DC1DD962CD2095E009D5A96 /* XCRemoteSwiftPackageReference "UIUnitTest" */,
+				1D53088C2CDF5897002DB5FC /* XCLocalSwiftPackageReference "UIUnitTestAPI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1D756F0F2CC8A00B000563FE /* Products */;
@@ -473,6 +473,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		1D53088C2CDF5897002DB5FC /* XCLocalSwiftPackageReference "UIUnitTestAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = UIUnitTestAPI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		1D756F412CC8A041000563FE /* XCRemoteSwiftPackageReference "FlyingFox" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -482,17 +489,13 @@
 				minimumVersion = 0.19.0;
 			};
 		};
-		1DC1DD962CD2095E009D5A96 /* XCRemoteSwiftPackageReference "UIUnitTest" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
-			requirement = {
-				branch = "swift-testing";
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1D53088D2CDF5897002DB5FC /* UIUnitTestAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UIUnitTestAPI;
+		};
 		1D756F422CC8A041000563FE /* FlyingFox */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1D756F412CC8A041000563FE /* XCRemoteSwiftPackageReference "FlyingFox" */;
@@ -500,11 +503,6 @@
 		};
 		1D756F452CC8A06D000563FE /* UIUnitTestAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = UIUnitTestAPI;
-		};
-		1DC1DD972CD2095E009D5A96 /* UIUnitTestAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1DC1DD962CD2095E009D5A96 /* XCRemoteSwiftPackageReference "UIUnitTest" */;
 			productName = UIUnitTestAPI;
 		};
 /* End XCSwiftPackageProductDependency section */
