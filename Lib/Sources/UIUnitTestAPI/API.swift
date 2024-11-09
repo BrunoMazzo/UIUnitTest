@@ -1,17 +1,5 @@
 import Foundation
 
-public struct ScrollRequest: Codable, Sendable {
-    public var serverId: UUID
-    public var deltaX: CGFloat
-    public var deltaY: CGFloat
-
-    public init(serverId: UUID, deltaX: CGFloat, deltaY: CGFloat) {
-        self.serverId = serverId
-        self.deltaX = deltaX
-        self.deltaY = deltaY
-    }
-}
-
 public struct ByIdRequest: Codable, Sendable {
     public var queryRoot: UUID
     public var identifier: String
@@ -366,7 +354,12 @@ public struct TapCoordinateRequest: Codable, Sendable {
         case doubleTap
         case press(forDuration: TimeInterval)
         case pressAndDrag(forDuration: TimeInterval, thenDragTo: UUID)
-        case pressDragAndHold(forDuration: TimeInterval, thenDragTo: UUID, withVelocity: GestureVelocityAPI, thenHoldForDuration: TimeInterval)
+        case pressDragAndHold(
+            forDuration: TimeInterval,
+            thenDragTo: UUID,
+            withVelocity: GestureVelocityAPI,
+            thenHoldForDuration: TimeInterval
+        )
     }
 
     public var serverId: UUID
@@ -490,7 +483,6 @@ public struct AccessibilityAuditResponse: Codable, Sendable {
 }
 
 public struct UIResponse<T: Codable>: Codable {
-
     public let response: Response<T>
 
     public init(response: T) {

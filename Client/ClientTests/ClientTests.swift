@@ -123,7 +123,9 @@ class ClientTests: XCTestCase, @unchecked Sendable {
 
         showView(SomethingView())
 
-        try await app.staticTexts.element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel")).assertElementExists()
+        try await app.staticTexts
+            .element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel"))
+            .assertElementExists()
     }
 
     func testExistsSync() {
@@ -241,7 +243,8 @@ class ClientTests: XCTestCase, @unchecked Sendable {
 
         showView(SomethingView())
 
-        let somethingView = app.staticTexts.element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel"))
+        let somethingView = app.staticTexts
+            .element(matching: NSPredicate(format: "label == %@", "SomethingViewAccessbilityLabel"))
 
         somethingView.assertElementExists()
     }
@@ -268,7 +271,12 @@ class ClientTests: XCTestCase, @unchecked Sendable {
     }
 }
 
-public func Assert(_ value: Bool, _ message: @Sendable @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) {
+public func Assert(
+    _ value: Bool,
+    _ message: @Sendable @autoclosure () -> String = "",
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
     XCTAssert(value, message(), file: file, line: line)
 }
 
@@ -283,7 +291,14 @@ extension Element {
         column: UInt = #column
     ) -> Element {
         Executor.execute {
-            try await self.assertElementExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column)
+            try await self.assertElementExists(
+                message: message,
+                timeout: timeout,
+                fileID: fileID,
+                filePath: filePath,
+                line: line,
+                column: column
+            )
         }.valueOrFailWithFallback(self)
     }
 }
@@ -291,10 +306,10 @@ extension Element {
 extension Result {
     func valueOrFailWithFallback(
         _ fallback: Success,
-        fileID: StaticString = #fileID,
-        filePath: StaticString = #filePath,
-        line: UInt = #line,
-        column: UInt = #column
+        fileID _: StaticString = #fileID,
+        filePath _: StaticString = #filePath,
+        line _: UInt = #line,
+        column _: UInt = #column
     ) -> Success {
         switch self {
         case let .success(result):
@@ -305,4 +320,3 @@ extension Result {
         }
     }
 }
-

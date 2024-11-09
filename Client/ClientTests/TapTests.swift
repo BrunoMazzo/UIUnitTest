@@ -4,7 +4,6 @@ import XCTest
 
 @MainActor
 class TapTests: XCTestCase {
-
     func testTap() async throws {
         let app = try await App()
 
@@ -102,7 +101,9 @@ class TapTests: XCTestCase {
 
         showView(TapView())
 
-        try await app.otherElements["ThreeFingersView"].assertElementExists().tap(withNumberOfTaps: 1, numberOfTouches: 3)
+        try await app.otherElements["ThreeFingersView"]
+            .assertElementExists()
+            .tap(withNumberOfTaps: 1, numberOfTouches: 3)
 
         try await app.staticTexts["Three fingers tapped"].assertElementExists()
     }
@@ -112,7 +113,8 @@ class TapTests: XCTestCase {
 
         showView(TapView())
 
-        app.otherElements["ThreeFingersView"].assertElementExists().tap(withNumberOfTaps: 1, numberOfTouches: 3)
+        app.otherElements["ThreeFingersView"].assertElementExists()
+            .tap(withNumberOfTaps: 1, numberOfTouches: 3)
 
         app.staticTexts["Three fingers tapped"].assertElementExists()
     }

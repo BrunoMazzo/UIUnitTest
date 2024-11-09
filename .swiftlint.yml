@@ -1,0 +1,7 @@
+identifier_name:
+  excluded:
+    - up
+    - x
+    - y
+    - dx
+    - dy

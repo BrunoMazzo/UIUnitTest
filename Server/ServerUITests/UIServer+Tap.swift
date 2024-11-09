@@ -6,7 +6,7 @@ extension UIServer {
         guard let element = try? cache.getElement(tapRequest.serverId) else {
             return false
         }
-        
+
         if let duration = tapRequest.duration {
             element.press(forDuration: duration)
         } else if let numberOfTouches = tapRequest.numberOfTouches {
@@ -18,10 +18,10 @@ extension UIServer {
         } else {
             element.tap()
         }
-        
+
         return true
     }
-    
+
     @MainActor
     func doubleTap(tapRequest: ElementRequest) async throws {
         let element = try cache.getElement(tapRequest.serverId)
