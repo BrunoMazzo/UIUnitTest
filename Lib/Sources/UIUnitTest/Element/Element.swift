@@ -13,14 +13,14 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
 
     deinit {
         Task { [serverId] in
-            let _: Bool = try await callServer(path: "remove", request: RemoveServerItemRequest(serverId: serverId))
+            let _: Bool = try await callServer(path: "remove", request: ElementPayload(serverId: serverId))
         }
     }
 
     /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
     public var isHittable: Bool {
         get async throws {
-            let existsRequestData = ElementRequest(serverId: serverId)
+            let existsRequestData = ElementPayload(serverId: serverId)
             let existsResponse: IsHittableResponse = try await callServer(path: "isHittable", request: existsRequestData)
             return existsResponse.isHittable
         }
@@ -29,7 +29,7 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     // Need better way to represent any :c
     public var value: String? {
         get async throws {
-            let valueRequest = ElementRequest(serverId: serverId)
+            let valueRequest = ElementPayload(serverId: serverId)
             let valueResponse: ValueResponse = try await callServer(path: "value", request: valueRequest)
             return valueResponse.value
         }
@@ -61,49 +61,49 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
 
     public var debugDescription: String {
         get async throws {
-            try await callServer(path: "debugDescription", request: ElementRequest(serverId: serverId))
+            try await callServer(path: "debugDescription", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var identifier: String {
         get async throws {
-            return try await callServer(path: "identifier", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "identifier", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var title: String {
         get async throws {
-            return try await callServer(path: "title", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "title", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var label: String {
         get async throws {
-            return try await callServer(path: "label", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "label", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var placeholderValue: String? {
         get async throws {
-            return try await callServer(path: "placeholderValue", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "placeholderValue", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var isSelected: Bool {
         get async throws {
-            return try await callServer(path: "isSelected", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "isSelected", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var hasFocus: Bool {
         get async throws {
-            return try await callServer(path: "hasFocus", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "hasFocus", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var isEnabled: Bool {
         get async throws {
-            return try await callServer(path: "isEnabled", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "isEnabled", request: ElementPayload(serverId: serverId))
         }
     }
 
@@ -119,25 +119,25 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
 
     public var frame: CGRect {
         get async throws {
-            return try await callServer(path: "frame", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "frame", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var horizontalSizeClass: SizeClass {
         get async throws {
-            return try await callServer(path: "horizontalSizeClass", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "horizontalSizeClass", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var verticalSizeClass: SizeClass {
         get async throws {
-            return try await callServer(path: "verticalSizeClass", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "verticalSizeClass", request: ElementPayload(serverId: serverId))
         }
     }
 
     public var elementType: ElementType {
         get async throws {
-            return try await callServer(path: "elementType", request: ElementRequest(serverId: serverId))
+            return try await callServer(path: "elementType", request: ElementPayload(serverId: serverId))
         }
     }
 

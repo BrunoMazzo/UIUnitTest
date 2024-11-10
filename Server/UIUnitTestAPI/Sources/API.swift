@@ -10,7 +10,7 @@ public struct ByIdRequest: Codable, Sendable {
     }
 }
 
-public struct ElementResponse: Codable, Sendable {
+public struct ElementPayload: Codable, Sendable {
     public var serverId: UUID
 
     public init(serverId: UUID) {
@@ -23,14 +23,6 @@ public struct ElementArrayResponse: Codable, Sendable {
 
     public init(serversId: [UUID]) {
         self.serversId = serversId
-    }
-}
-
-public struct RemoveServerItemRequest: Codable, Sendable {
-    public var serverId: UUID
-
-    public init(serverId: UUID) {
-        self.serverId = serverId
     }
 }
 
@@ -87,14 +79,6 @@ public struct ValueResponse: Codable, Sendable {
 
     public init(value: String?) {
         self.value = value
-    }
-}
-
-public struct ElementRequest: Codable, Sendable {
-    public var serverId: UUID
-
-    public init(serverId: UUID) {
-        self.serverId = serverId
     }
 }
 

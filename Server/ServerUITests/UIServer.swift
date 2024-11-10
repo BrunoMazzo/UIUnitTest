@@ -177,7 +177,7 @@ class UIServer {
     }
 
     @MainActor
-    func elementFromQuery(elementFromQuery: ElementFromQuery) async throws -> ElementResponse {
+    func elementFromQuery(elementFromQuery: ElementFromQuery) async throws -> ElementPayload {
         let query = try cache.getElementQuery(elementFromQuery.serverId)
 
         let element: XCUIElement
@@ -191,18 +191,18 @@ class UIServer {
 
         let id = cache.add(element: element)
 
-        return ElementResponse(serverId: id)
+        return ElementPayload(serverId: id)
     }
 
     @MainActor
-    func elementMatchingPredicate(predicateRequest: PredicateRequest) async throws -> ElementResponse {
+    func elementMatchingPredicate(predicateRequest: PredicateRequest) async throws -> ElementPayload {
         let query = try cache.getElementQuery(predicateRequest.serverId)
 
         let element = query.element(matching: predicateRequest.predicate)
 
         let id = cache.add(element: element)
 
-        return ElementResponse(serverId: id)
+        return ElementPayload(serverId: id)
     }
 
     @MainActor
@@ -246,7 +246,7 @@ class UIServer {
     }
 
     @MainActor
-    func value(request: ElementRequest) async throws -> ValueResponse {
+    func value(request: ElementPayload) async throws -> ValueResponse {
         let element = try cache.getElement(request.serverId)
         let value = element.value as? String
 
@@ -290,7 +290,7 @@ class UIServer {
     }
 
     @MainActor
-    func isHittable(request: ElementRequest) async throws -> IsHittableResponse {
+    func isHittable(request: ElementPayload) async throws -> IsHittableResponse {
         let isHittable = try cache.getElement(request.serverId).isHittable
         return IsHittableResponse(isHittable: isHittable)
     }
@@ -367,10 +367,10 @@ class UIServer {
     }
 
     @MainActor
-    func element(request: ByIdRequest) async -> ElementResponse {
+    func element(request: ByIdRequest) async -> ElementPayload {
         let newElement = try! await findElement(elementRequest: request)
         let id = cache.add(element: newElement)
-        return ElementResponse(serverId: id)
+        return ElementPayload(serverId: id)
     }
 
     @MainActor
@@ -381,14 +381,14 @@ class UIServer {
     }
 
     @MainActor
-    func remove(request: RemoveServerItemRequest) async -> Bool {
+    func remove(request: ElementPayload) async -> Bool {
         cache.remove(request.serverId)
 
         return true
     }
 
     @MainActor
-    func accessibilityTest(request: ElementRequest) async throws -> Bool {
+    func accessibilityTest(request: ElementPayload) async throws -> Bool {
         let application = try cache.getApplication(request.serverId)
 
         if #available(iOS 17.0, *) {

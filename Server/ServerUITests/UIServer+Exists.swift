@@ -3,7 +3,7 @@ import XCTest
 
 extension UIServer {
     @MainActor
-    func exists(request: ElementRequest) async throws -> ExistsResponse {
+    func exists(request: ElementPayload) async throws -> ExistsResponse {
         let element = try cache.getElement(request.serverId)
         let exists = element.exists
 

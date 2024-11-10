@@ -12,7 +12,7 @@ public final class Coordinate: Sendable {
     deinit {
         let serverId = serverId
         Task {
-            let _: Bool = try await callServer(path: "remove", request: RemoveServerItemRequest(serverId: serverId))
+            let _: Bool = try await callServer(path: "remove", request: ElementPayload(serverId: serverId))
         }
     }
 
@@ -25,7 +25,11 @@ public final class Coordinate: Sendable {
     public func withOffset(_ vector: CGVector) async throws -> Coordinate {
         let request = CoordinateOffsetRequest(coordinatorId: serverId, vector: vector)
         let response: CoordinateResponse = try await callServer(path: "coordinateWithOffset", request: request)
-        return Coordinate(serverId: response.coordinateId, referencedElement: Element(serverId: response.referencedElementId), screenPoint: response.screenPoint)
+        return Coordinate(
+            serverId: response.coordinateId,
+            referencedElement: Element(serverId: response.referencedElementId),
+            screenPoint: response.screenPoint
+        )
     }
 
     func tap() async throws {
@@ -44,12 +48,28 @@ public final class Coordinate: Sendable {
     }
 
     public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate) async throws {
-        let request = TapCoordinateRequest(serverId: serverId, type: .pressAndDrag(forDuration: duration, thenDragTo: coordinate.serverId))
+        let request = TapCoordinateRequest(
+            serverId: serverId,
+            type: .pressAndDrag(forDuration: duration, thenDragTo: coordinate.serverId)
+        )
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
 
-    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocityAPI, thenHoldForDuration holdDuration: TimeInterval) async throws {
-        let request = TapCoordinateRequest(serverId: serverId, type: .pressDragAndHold(forDuration: duration, thenDragTo: coordinate.serverId, withVelocity: velocity, thenHoldForDuration: holdDuration))
+    public func press(
+        forDuration duration: TimeInterval,
+        thenDragTo coordinate: Coordinate,
+        withVelocity velocity: GestureVelocityAPI,
+        thenHoldForDuration holdDuration: TimeInterval
+    ) async throws {
+        let request = TapCoordinateRequest(
+            serverId: serverId,
+            type: .pressDragAndHold(
+                forDuration: duration,
+                thenDragTo: coordinate.serverId,
+                withVelocity: velocity,
+                thenHoldForDuration: holdDuration
+            )
+        )
         let _: Bool = try await callServer(path: "coordinateTap", request: request)
     }
 }
@@ -66,7 +86,7 @@ public final class SyncCoordinate: Sendable {
     @available(*, noasync)
     public func withOffset(_ vector: CGVector) -> SyncCoordinate {
         Executor.execute {
-            SyncCoordinate(coordinate: try await self.coordinate.withOffset(vector))
+            try SyncCoordinate(coordinate: await self.coordinate.withOffset(vector))
         }.valueOrFailWithFallback(.EmptyCoordinate)
     }
 
@@ -99,9 +119,19 @@ public final class SyncCoordinate: Sendable {
     }
 
     @available(*, noasync)
-    public func press(forDuration duration: TimeInterval, thenDragTo coordinate: Coordinate, withVelocity velocity: GestureVelocityAPI, thenHoldForDuration holdDuration: TimeInterval) {
+    public func press(
+        forDuration duration: TimeInterval,
+        thenDragTo coordinate: Coordinate,
+        withVelocity velocity: GestureVelocityAPI,
+        thenHoldForDuration holdDuration: TimeInterval
+    ) {
         Executor.execute {
-            try await self.coordinate.press(forDuration: duration, thenDragTo: coordinate, withVelocity: velocity, thenHoldForDuration: holdDuration)
+            try await self.coordinate.press(
+                forDuration: duration,
+                thenDragTo: coordinate,
+                withVelocity: velocity,
+                thenHoldForDuration: holdDuration
+            )
         }.valueOrFailWithFallback(())
     }
 }

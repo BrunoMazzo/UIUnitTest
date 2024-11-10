@@ -23,7 +23,7 @@ extension UIServer {
     }
 
     @MainActor
-    func doubleTap(tapRequest: ElementRequest) async throws {
+    func doubleTap(tapRequest: ElementPayload) async throws {
         let element = try cache.getElement(tapRequest.serverId)
         element.doubleTap()
     }

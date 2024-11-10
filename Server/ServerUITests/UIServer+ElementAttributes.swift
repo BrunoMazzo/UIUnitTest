@@ -3,7 +3,7 @@ import Foundation
 
 extension UIServer {
     @MainActor
-    func debugDescription(request: ElementRequest) async throws -> String {
+    func debugDescription(request: ElementPayload) async throws -> String {
         var debugDescription: String!
         
         if let rootQuery = try? cache.getElementQuery(request.serverId) {
@@ -18,67 +18,67 @@ extension UIServer {
     }
     
     @MainActor
-    func identifier(request: ElementRequest) async throws -> String {
+    func identifier(request: ElementPayload) async throws -> String {
         let rootElement = try cache.getElement(request.serverId)
         return rootElement.identifier
     }
     
     @MainActor
-    func title(request: ElementRequest) async throws -> String {
+    func title(request: ElementPayload) async throws -> String {
         let rootElement = try cache.getElement(request.serverId)
         return rootElement.title
     }
     
     @MainActor
-    func label(request: ElementRequest) async throws -> String {
+    func label(request: ElementPayload) async throws -> String {
         let rootElement = try cache.getElement(request.serverId)
         return rootElement.label
     }
     
     @MainActor
-    func placeholderValue(request: ElementRequest) async throws -> String? {
+    func placeholderValue(request: ElementPayload) async throws -> String? {
         let rootElement = try cache.getElement(request.serverId)
         return rootElement.placeholderValue
     }
     
     @MainActor
-    func isSelected(request: ElementRequest) async throws -> Bool {
+    func isSelected(request: ElementPayload) async throws -> Bool {
         let rootElement = try cache.getElement(request.serverId)
         return rootElement.isSelected
     }
     
     @MainActor
-    func hasFocus(request: ElementRequest) async throws -> Bool {
+    func hasFocus(request: ElementPayload) async throws -> Bool {
         let rootElement = try cache.getElement(request.serverId)
         return rootElement.hasFocus
     }
     
     @MainActor
-    func isEnabled(request: ElementRequest) async throws -> Bool {
+    func isEnabled(request: ElementPayload) async throws -> Bool {
         let rootElement = try cache.getElement(request.serverId)
         return rootElement.isEnabled
     }
     
     @MainActor
-    func frame(request: ElementRequest) async throws -> CGRect {
+    func frame(request: ElementPayload) async throws -> CGRect {
         let element = try cache.getElement(request.serverId)
         return element.frame
     }
     
     @MainActor
-    func horizontalSizeClass(request: ElementRequest) async throws -> SizeClass {
+    func horizontalSizeClass(request: ElementPayload) async throws -> SizeClass {
         let element = try cache.getElement(request.serverId)
         return SizeClass(rawValue: element.horizontalSizeClass.rawValue)!
     }
     
     @MainActor
-    func verticalSizeClass(request: ElementRequest) async throws -> SizeClass {
+    func verticalSizeClass(request: ElementPayload) async throws -> SizeClass {
         let element = try cache.getElement(request.serverId)
         return SizeClass(rawValue: element.verticalSizeClass.rawValue)!
     }
     
     @MainActor
-    func elementType(request: ElementRequest) async throws -> UInt {
+    func elementType(request: ElementPayload) async throws -> UInt {
         let element = try cache.getElement(request.serverId)
         return element.elementType.rawValue
     }

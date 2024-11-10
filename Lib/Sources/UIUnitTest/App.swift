@@ -91,9 +91,15 @@ public class AsyncApi: Element, @unchecked Sendable {
         line: UInt = #line,
         column: UInt = #column
     ) async throws {
-        let accessibilityAuditRequest = AccessibilityAuditRequest(serverId: serverId, accessibilityAuditType: auditTypes.rawValue)
+        let accessibilityAuditRequest = AccessibilityAuditRequest(
+            serverId: serverId,
+            accessibilityAuditType: auditTypes.rawValue
+        )
 
-        let response: AccessibilityAuditResponse = try await callServer(path: "performAccessibilityAudit", request: accessibilityAuditRequest)
+        let response: AccessibilityAuditResponse = try await callServer(
+            path: "performAccessibilityAudit",
+            request: accessibilityAuditRequest
+        )
 
         for issue in response.issues {
             do {
@@ -130,13 +136,13 @@ public class SyncApi: SyncElement, @unchecked Sendable {
 
     @available(*, noasync)
     public init(appId: String = Bundle.main.bundleIdentifier!, activate: Bool = true) {
-        self.api = AsyncApi(appId: appId)
+        api = AsyncApi(appId: appId)
         super.init(element: api)
-        self.create(activate: activate)
+        create(activate: activate)
     }
 
     public init(asyncApi: AsyncApi) {
-        self.api = asyncApi
+        api = asyncApi
         super.init(element: api)
     }
 
