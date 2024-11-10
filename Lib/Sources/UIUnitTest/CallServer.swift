@@ -60,7 +60,7 @@ func deviceId() -> Int {
     let deviceName = syncFromMainActor {
         UIDevice.current.name
     }
-    
+
     var deviceId = 0
     let regulerExpression = try! NSRegularExpression(pattern: "Clone (\\d*) of .*")
 
@@ -78,24 +78,24 @@ func syncFromMainActor<T: Sendable>(body: @MainActor @escaping () -> T) -> T {
     // Objc/XCTest ignores Swift global actors
     if Thread.isMainThread {
         return MainActor.assumeIsolated {
-            return body()
+            body()
         }
     }
-    
+
     let deviceNameMutex = Mutex<T?>(nil)
-    
+
     Task { @MainActor in
         deviceNameMutex.withLock {
             $0 = body()
         }
     }
-    
+
     var deviceName: T!
     while deviceName == nil {
-        deviceNameMutex.withLock({ value in
+        deviceNameMutex.withLock { value in
             deviceName = value
-        })
+        }
     }
-    
+
     return deviceName
 }

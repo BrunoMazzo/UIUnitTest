@@ -123,7 +123,14 @@ public class AsyncApi: Element, @unchecked Sendable {
         column: UInt = #column
     ) throws {
         Executor.execute {
-            try await self.performAccessibilityAudit(for: auditTypes, issueHandler, fileID: fileID, filePath: filePath, line: line, column: column)
+            try await self.performAccessibilityAudit(
+                for: auditTypes,
+                issueHandler,
+                fileID: fileID,
+                filePath: filePath,
+                line: line,
+                column: column
+            )
         }.valueOrFailWithFallback(())
     }
 }
@@ -178,7 +185,14 @@ public class SyncApi: SyncElement, @unchecked Sendable {
         column: UInt = #column
     ) throws {
         Executor.execute {
-            try await self.api.performAccessibilityAudit(for: auditTypes, issueHandler, fileID: fileID, filePath: filePath, line: line, column: column)
+            try await self.api.performAccessibilityAudit(
+                for: auditTypes,
+                issueHandler,
+                fileID: fileID,
+                filePath: filePath,
+                line: line,
+                column: column
+            )
         }.valueOrFailWithFallback(())
     }
 }
