@@ -27,6 +27,11 @@ struct UIUnitTestExecutorActor {
     static let shared = MyActor()
 }
 
+enum ExecutorError: Error {
+    case unknownReturnType
+    case unknownServerError
+}
+
 public struct Executor: @unchecked Sendable {
     private var box = Box()
 
@@ -38,7 +43,6 @@ public struct Executor: @unchecked Sendable {
         return executor.execute(function: function, block)
     }
 
-    // TODO: Think about a better way to handle errors. Maybe just fail the test?
     func execute<T: Sendable>(
         function: String = #function,
         _ block: @escaping @Sendable () async throws -> T
@@ -58,9 +62,12 @@ public struct Executor: @unchecked Sendable {
         _ = XCTWaiter.wait(for: [expectation])
 
         if box.success {
-            return .success(box.value as! T)
+            if let value = box.value as? T {
+                return .success(value)
+            }
+            return .failure(ExecutorError.unknownReturnType)
         } else {
-            return .failure(box.value as! Error)
+            return .failure((box.value as? Error) ?? ExecutorError.unknownServerError)
         }
     }
 }

@@ -62,13 +62,22 @@ func deviceId() -> Int {
     }
 
     var deviceId = 0
-    let regulerExpression = try! NSRegularExpression(pattern: "Clone (\\d*) of .*")
+    guard let regulerExpression = try? NSRegularExpression(pattern: "Clone (\\d*) of .*") else {
+        fatalError("Invalid regular expression to match Clone simulators")
+    }
 
-    if let devicesNameMatch = regulerExpression.firstMatch(in: deviceName, range: NSRange(location: 0, length: deviceName.utf16.count)) {
-        if let swiftRange = Range(devicesNameMatch.range(at: 1), in: deviceName) {
-            let deviceIdString = deviceName[swiftRange]
-            deviceId = Int(deviceIdString) ?? 0
-        }
+    let devicesNameMatch = regulerExpression.firstMatch(
+        in: deviceName,
+        range: NSRange(location: 0, length: deviceName.utf16.count)
+    )
+
+    guard let devicesNameMatch else {
+        return deviceId
+    }
+
+    if let swiftRange = Range(devicesNameMatch.range(at: 1), in: deviceName) {
+        let deviceIdString = deviceName[swiftRange]
+        deviceId = Int(deviceIdString) ?? 0
     }
     return deviceId
 }
