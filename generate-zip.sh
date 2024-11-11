@@ -16,7 +16,7 @@ xcodebuild -project ./Server/Server.xcodeproj \
   -IDECustomBuildLocationType=Absolute \
   -IDECustomBuildProductsPath="$PWD/build/Products" \
   -derivedDataPath="$PWD/derivedData/" \
-  build-for-testing || exit 1
+  build-for-testing | xcbeautify || exit 1
 
 (cd "$root"/build/Products/Debug-iphonesimulator/ && zip -r "$root"/Lib/Sources/UIUnitTestCLI/resources/PreBuild.zip ServerUITests-Runner.app) || exit 1
 
