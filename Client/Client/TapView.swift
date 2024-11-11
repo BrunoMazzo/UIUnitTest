@@ -40,7 +40,10 @@ struct TappableView: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
         view.accessibilityIdentifier = accessibilityIdentifier
-        let doubleTapGestureRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap(sender:)))
+        let doubleTapGestureRecognizer = UITapGestureRecognizer(
+            target: context.coordinator,
+            action: #selector(Coordinator.handleTap(sender:))
+        )
 
         /// Set number of touches.
         doubleTapGestureRecognizer.numberOfTouchesRequired = numberOfTouches

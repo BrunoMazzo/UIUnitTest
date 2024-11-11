@@ -34,28 +34,6 @@ struct MySettingTable: View {
     }
 }
 
-struct TextFieldsView: View {
-    @State var textFieldValue: String = ""
-
-    var body: some View {
-        VStack {
-            Text("Text value: \(textFieldValue)")
-            LabeledContent("Default") {
-                TextField("Default", text: $textFieldValue)
-                    .accessibilityIdentifier("TextField-Default")
-            }
-        }
-    }
-}
-
-struct StepperView: View {
-    @State var value: Int = 0
-
-    var body: some View {
-        Stepper("Stepper", value: $value)
-    }
-}
-
 struct StringView: View {
     var value: String
 
