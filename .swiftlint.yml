@@ -6,3 +6,5 @@ identifier_name:
     - dx
     - dy
     - App
+trailing_comma:
+  mandatory_comma: true
