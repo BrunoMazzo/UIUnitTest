@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A4B8B9648EA90FFC90CF679 /* SomethingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDFC03712E8774F8F5C1EDC /* SomethingView.swift */; };
 		1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B6F29B45A4600465FB6 /* ClientApp.swift */; };
 		1D136B7229B45A4600465FB6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B7129B45A4600465FB6 /* ContentView.swift */; };
 		1D136B7429B45A4600465FB6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D136B7329B45A4600465FB6 /* Assets.xcassets */; };
@@ -26,6 +27,8 @@
 		1DE0F34829C533B00044AFFC /* RotateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F34729C533B00044AFFC /* RotateView.swift */; };
 		1DE0F35D29C58B4D0044AFFC /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8129B45A4600465FB6 /* ClientTests.swift */; };
 		1DF4DBFE2BF60C560025FC8E /* WaitForExistenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */; };
+		2B5A048640DB1D9A62C506B0 /* MySettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33144142238FA6925FB59B15 /* MySettingsTable.swift */; };
+		2E20EF8883E35EE011F4D203 /* StringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A984BE6E95431BFD07F508 /* StringView.swift */; };
 		8DB46B669B1CCD576E48F2B6 /* TapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588FB78BE242F975FFB24DC5 /* TapTests.swift */; };
 		B175880D6F533B272B0DE620 /* AccessibilityAuditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8269C148A627E0706091ADDA /* AccessibilityAuditView.swift */; };
 		B2740E7D5A37E4C35221A39A /* StepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941CF12B8E6EC3A48A73B863 /* StepperView.swift */; };
@@ -72,10 +75,13 @@
 		1DE0F34729C533B00044AFFC /* RotateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateView.swift; sourceTree = "<group>"; };
 		1DE0F35229C58B310044AFFC /* LocalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DE1F7B52BF756BB00EBAAD8 /* ClientTests - Parallel.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ClientTests - Parallel.xctestplan"; sourceTree = "<group>"; };
+		33144142238FA6925FB59B15 /* MySettingsTable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MySettingsTable.swift; sourceTree = "<group>"; };
 		588FB78BE242F975FFB24DC5 /* TapTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TapTests.swift; sourceTree = "<group>"; };
+		5CDFC03712E8774F8F5C1EDC /* SomethingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SomethingView.swift; sourceTree = "<group>"; };
 		7A99380EE944F5F88C2FE6DF /* TextFieldView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		8269C148A627E0706091ADDA /* AccessibilityAuditView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessibilityAuditView.swift; sourceTree = "<group>"; };
 		941CF12B8E6EC3A48A73B863 /* StepperView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StepperView.swift; sourceTree = "<group>"; };
+		D0A984BE6E95431BFD07F508 /* StringView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StringView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +162,9 @@
 				7A99380EE944F5F88C2FE6DF /* TextFieldView.swift */,
 				8269C148A627E0706091ADDA /* AccessibilityAuditView.swift */,
 				941CF12B8E6EC3A48A73B863 /* StepperView.swift */,
+				33144142238FA6925FB59B15 /* MySettingsTable.swift */,
+				D0A984BE6E95431BFD07F508 /* StringView.swift */,
+				5CDFC03712E8774F8F5C1EDC /* SomethingView.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -339,6 +348,9 @@
 				D039E08E1166A315C7DF56CE /* TextFieldView.swift in Sources */,
 				B175880D6F533B272B0DE620 /* AccessibilityAuditView.swift in Sources */,
 				B2740E7D5A37E4C35221A39A /* StepperView.swift in Sources */,
+				2B5A048640DB1D9A62C506B0 /* MySettingsTable.swift in Sources */,
+				2E20EF8883E35EE011F4D203 /* StringView.swift in Sources */,
+				1A4B8B9648EA90FFC90CF679 /* SomethingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
