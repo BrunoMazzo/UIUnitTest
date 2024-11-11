@@ -99,3 +99,7 @@ coverage/
 
 
 .vscode/
+**/.nvim/xcodebuild
+**/test-result.xcresult
+**/buildServer.json
+**/.UIUnitTest
