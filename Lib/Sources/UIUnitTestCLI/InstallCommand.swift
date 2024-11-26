@@ -64,13 +64,13 @@ struct InstallCommand: AsyncParsableCommand {
     }
 }
 
-func getTestingDevice(deviceUUID: String) async -> Device {
-    return Device(deviceIdentifier: deviceUUID, isCloneDevice: false, deviceID: 0)
+func getTestingDevice(deviceUUID: String, logger: Logger = Logger()) async -> Device {
+    return Device(deviceIdentifier: deviceUUID, isCloneDevice: false, deviceID: 0, logger: logger)
 }
 
-func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int] = []) async -> [Device] {
-    print("Searching for clone devices of \"\(deviceName)\"")
-    
+func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int] = [], logger: Logger = Logger()) async -> [Device] {
+    logger.log("Searching for clone devices of \"\(deviceName)\"")
+
     let cloneDeviceLists: String = await executeShellCommand("xcrun simctl --set testing list")
     
     let osVersionRegex = osVersion.replacingOccurrences(of: ".", with: "\\.")
@@ -85,8 +85,8 @@ func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int
     
     let allDevices = String(cloneDeviceLists[devicesString.range!])
     
-    print(allDevices)
-    
+    logger.log(allDevices)
+
     let safeDeviceName = deviceName
         .replacingOccurrences(of: ".", with: "\\.")
         .replacingOccurrences(of: "(", with: "\\(")
@@ -95,7 +95,7 @@ func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int
     let deviceRegex = try! Regex("Clone ([0-9]*) of \(safeDeviceName) \\(([0-9A-F-]*)\\) \\(Booted\\)")
     
     
-    let devices: [Device] = allDevices.matches(of: deviceRegex).compactMap { match in
+    let devices: [Device] = allDevices.matches(of: deviceRegex).compactMap { match -> Device? in
         let deviceID = Int(String(allDevices[match.output[1].range!])) ?? 0
         
         guard !excludeDevices.contains(deviceID) else {
@@ -104,10 +104,10 @@ func getTestsDevices(osVersion: String, deviceName: String, excludeDevices: [Int
         
         let deviceIdentifier = String(allDevices[match.output[2].range!])
         
-        return Device(deviceIdentifier: deviceIdentifier, isCloneDevice: true, deviceID: deviceID)
+        return Device(deviceIdentifier: deviceIdentifier, isCloneDevice: true, deviceID: deviceID, logger: logger)
     }
     
-    print("\(devices.count) clone devices found")
-    
+    logger.log("\(devices.count) clone devices found")
+
     return devices
 }

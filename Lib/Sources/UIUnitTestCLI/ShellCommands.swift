@@ -1,10 +1,10 @@
 import Foundation
 
 @discardableResult
-func executeShellCommand(_ command: String) async -> Data {
-    
-    print("Executing command: \(command)")
-    
+func executeShellCommand(_ command: String, logger: Logger = Logger()) async -> Data {
+
+    logger.log("Executing command: \(command)")
+
     let task = Process()
     let pipe = Pipe()
     
@@ -21,22 +21,22 @@ func executeShellCommand(_ command: String) async -> Data {
         for try await line in pipe.fileHandleForReading.bytes {
             data.append(Data(bytes: [line], count: 1))
             
-            if let string = String(bytes: [line], encoding: .utf8) {
-                print(string, terminator: "")
-            }
+//            if let string = String(bytes: [line], encoding: .utf8) {
+//                print(string, terminator: "")
+//            }
         }
     } catch {
-        print("Error: --------------------------------------")
-        print(error.localizedDescription)
-        print("Error: --------------------------------------")
+        logger.log("Error: --------------------------------------")
+        logger.log(error.localizedDescription)
+        logger.log("Error: --------------------------------------")
     }
     
     return data
 }
 
-func executeBackgroundShellCommand(_ command: String) {
-    print("Executing command: \(command)")
-    
+func executeBackgroundShellCommand(_ command: String, logger: Logger = Logger()) {
+    logger.log("Executing command: \(command)")
+
     Task {
         let task = Process()
         let pipe = Pipe()
@@ -47,18 +47,18 @@ func executeBackgroundShellCommand(_ command: String) {
         task.standardInput = nil
         task.arguments = ["-c", command]
         task.terminationHandler = { (process) in
-            print(process)
-            print("\ndidFinish: \(!process.isRunning)")
+            logger.log(process)
+            logger.log("\ndidFinish: \(!process.isRunning)")
         }
         task.launch()
         task.waitUntilExit()
     }
 }
 
-func executeTestUntilServerStarts(_ command: String) async {
-    
-    print("Executing command: \(command)")
-    
+func executeTestUntilServerStarts(_ command: String, logger: Logger = Logger()) async {
+
+    logger.log("Executing command: \(command)")
+
     let task = Process()
     let pipe = Pipe()
     
@@ -86,9 +86,9 @@ func executeTestUntilServerStarts(_ command: String) async {
             }
         }
     } catch {
-        print("Error: --------------------------------------")
-        print(error.localizedDescription)
-        print("Error: --------------------------------------")
+        logger.log("Error: --------------------------------------")
+        logger.log(error.localizedDescription)
+        logger.log("Error: --------------------------------------")
     }
 }
 

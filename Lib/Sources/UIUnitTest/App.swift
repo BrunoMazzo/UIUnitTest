@@ -96,7 +96,7 @@ public class App: Element {
     @available(iOS 17.0, *)
     public func performAccessibilityAudit(
         for auditTypes: AccessibilityAuditType = .all,
-        _ issueHandler: ((AccessibilityAuditIssue) throws -> Bool)? = nil,
+        _ issueHandler: (@Sendable (AccessibilityAuditIssue) throws -> Bool)? = nil,
         file: StaticString = #filePath,
         line: UInt = #line
     ) throws {

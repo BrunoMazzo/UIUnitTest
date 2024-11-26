@@ -7,11 +7,14 @@
 ## Build the UI test
 root=$PWD
 
+## Remove derived data to avoid adding it to the zip file
+rm -rf "$root"/Server/DerivedData
+
 (cd "$root"/Server/ && zip -r "$root"/Lib/Sources/UIUnitTestCLI/resources/Server.zip *) || exit 1
 
 xcodebuild -project ./Server/Server.xcodeproj \
   -scheme ServerUITests -sdk iphonesimulator \
-  -destination "platform=iOS Simulator,name=iPhone 15,OS=17.4" \
+  -destination "platform=iOS Simulator,name=iPhone 16,OS=18.0" \
   -IDEBuildLocationStyle=Custom \
   -IDECustomBuildLocationType=Absolute \
   -IDECustomBuildProductsPath="$PWD/build/Products" \

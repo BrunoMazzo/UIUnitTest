@@ -1,13 +1,10 @@
 import Foundation
-
-public enum SwipeDirection: Codable {
-    case up, down, left, right
-}
+import UIUnitTestAPI
 
 extension Element {
     public func swipe(direction: SwipeDirection, velocity: GestureVelocity = .default) async throws {
-        let swipeRequest = SwipeRequest(serverId: serverId, direction: direction, velocity: velocity)
-        
+        let swipeRequest = SwipeRequest(serverId: serverId, direction: direction, velocity: velocity.toAPI())
+
         let _: Bool = try await callServer(path: "swipe", request: swipeRequest)
     }
     
@@ -55,38 +52,21 @@ extension Element {
     }
 }
 
-public struct SwipeRequest: Codable {
-    
-    public var serverId: UUID
-    public var swipeDirection: SwipeDirection
-    public var velocity: GestureVelocity
-    
-    public init(serverId: UUID, direction: SwipeDirection, velocity: GestureVelocity) {
-        self.serverId = serverId
-        self.swipeDirection = direction
-        self.velocity = velocity
-    }
-}
-
-public enum GestureVelocity: Hashable, Equatable, @unchecked Sendable, Codable {
+public enum GestureVelocity: Hashable, Equatable, Sendable {
     case `default`, slow, fast
     case custom(CGFloat)
     
     public init(_ value: CGFloat) {
         self = .custom(value)
     }
-}
 
-public struct GestureVelocity2 : Hashable, Equatable, RawRepresentable, @unchecked Sendable, Codable {
-    
-    public let rawValue: CGFloat
-    
-    public init(_ rawValue: CGFloat) {
-        self.rawValue = rawValue
-    }
-    
-    public init(rawValue: CGFloat) {
-        self.rawValue = rawValue
+    public func toAPI() -> GestureVelocityAPI {
+        switch self {
+        case .default: return .default
+        case .slow: return .slow
+        case .fast: return .fast
+        case let .custom(value): return .custom(value)
+        }
     }
 }
 

@@ -1,22 +1,13 @@
 {
-  "originHash" : "486a9183cf57ca3adcb12f4b4540d6c05112140469fc2e1f22f1f262e64f2227",
+  "originHash" : "ab22821daa6a004cbc102f89757861b81bfa67fcae03a72eb74eed03fd04301a",
   "pins" : [
     {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "46989693916f56d1186bd59ac15124caef896560",
-        "version" : "1.3.1"
-      }
-    },
-    {
-      "identity" : "uiunittest",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
-      "state" : {
-        "branch" : "any-query",
-        "revision" : "cbe41cc29d5045654eb260374e0123f086196d50"
+        "revision" : "41982a3656a71c768319979febd796c6fd111d5c",
+        "version" : "1.5.0"
       }
     }
   ],

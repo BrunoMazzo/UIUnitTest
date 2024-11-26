@@ -1,14 +1,15 @@
 import Foundation
+import UIUnitTestAPI
 
-extension Element {
-    public func doubleTap() async throws {
-        let activateRequestData = ElementRequest(serverId: serverId)
-        
+public extension Element {
+    func doubleTap() async throws {
+        let activateRequestData = ElementPayload(serverId: serverId)
+
         let _: Bool = try await callServer(path: "doubleTap", request: activateRequestData)
     }
-    
+
     @available(*, noasync)
-    public func doubleTap() {
+    func doubleTap() {
         Executor.execute {
             try await self.doubleTap()
         }.valueOrFailWithFallback(())

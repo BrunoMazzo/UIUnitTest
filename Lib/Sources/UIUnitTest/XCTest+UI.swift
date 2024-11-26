@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 @MainActor
@@ -26,3 +27,5 @@ private func getKeyWindow() -> UIWindow {
         }
     }.first!
 }
+
+#endif

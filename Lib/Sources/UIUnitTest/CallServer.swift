@@ -1,12 +1,15 @@
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 
+@MainActor
 func deviceId() -> Int {
+#if canImport(UIKit)
     let deviceName = UIDevice.current.name
-    
     var deviceId = 0
     let regulerExpression = try! NSRegularExpression(pattern: "Clone (\\d*) of .*")
-    
+
     if let devicesNameMatch = regulerExpression.firstMatch(in: deviceName, range: NSRange(location: 0, length: deviceName.utf16.count)) {
         if let swiftRange = Range(devicesNameMatch.range(at: 1), in: deviceName) {
             let deviceIdString = deviceName[swiftRange]
@@ -14,8 +17,14 @@ func deviceId() -> Int {
         }
     }
     return deviceId
+#else
+    return 0
+#endif
+
+
 }
 
+@MainActor
 internal func callServer<RequestData: Codable, ResponseData: Codable>(
     path: String,
     request: RequestData

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable {
+public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable, Sendable {
     
     public var rawValue: UInt64
     
@@ -34,19 +34,19 @@ public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable {
     public static let all                          = AccessibilityAuditType(rawValue: ~0)
 }
 
-public class AccessibilityAuditIssue: Codable {
-    
+public final class AccessibilityAuditIssue: Codable, Sendable {
+
     /// The element associated with the issue.
-    public var element: Element?
+    public let element: Element?
 
     /// A short description about the issue.
-    public var compactDescription: String
-        
+    public let compactDescription: String
+
     /// A longer description of the issue with more details about the failure.
-    public var detailedDescription: String
-    
+    public let detailedDescription: String
+
     /// The type of audit which generated the issue.
-    public var auditType: AccessibilityAuditType
+    public let auditType: AccessibilityAuditType
     
     public init(element: UUID? = nil, compactDescription: String, detailedDescription: String, auditType: AccessibilityAuditType) {
         if let element = element {
@@ -72,8 +72,10 @@ public class AccessibilityAuditIssue: Codable {
         
         if let element = try container.decodeIfPresent(UUID.self, forKey: .element) {
             self.element = Element(serverId: element)
+        } else {
+            self.element = nil
         }
-        
+
         self.compactDescription = try container.decode(String.self, forKey: .compactDescription)
         self.detailedDescription = try container.decode(String.self, forKey: .detailedDescription)
         self.auditType = try container.decode(AccessibilityAuditType.self, forKey: .auditType)
@@ -89,13 +91,13 @@ public class AccessibilityAuditIssue: Codable {
     }
 }
 
-public struct AccessibilityAuditRequest: Codable {
+public struct AccessibilityAuditRequest: Codable, Sendable {
     public var serverId: UUID
     public var accessibilityAuditType: AccessibilityAuditType
 }
 
 
-public struct AccessibilityAuditResponse: Codable {
+public struct AccessibilityAuditResponse: Codable, Sendable {
     public var issues: [AccessibilityAuditIssue]
     
     public init(issues: [AccessibilityAuditIssue]) {

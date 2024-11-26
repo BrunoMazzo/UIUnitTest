@@ -1,5 +1,5 @@
 {
-  "originHash" : "cec6eada3aeef1a7161603afee83d308fe58ba11bcc829d3a4ab6b1952bb2ff6",
+  "originHash" : "a66955abf74a8e71ccd360767ff6132c873aae852128f8b799e3ba1007558c0d",
   "pins" : [
     {
       "identity" : "flyingfox",
@@ -7,25 +7,7 @@
       "location" : "https://github.com/swhitty/FlyingFox.git",
       "state" : {
         "branch" : "main",
-        "revision" : "b3f2ed19bd05d1228949a5548efce06a69850143"
-      }
-    },
-    {
-      "identity" : "swift-argument-parser",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-argument-parser",
-      "state" : {
-        "revision" : "46989693916f56d1186bd59ac15124caef896560",
-        "version" : "1.3.1"
-      }
-    },
-    {
-      "identity" : "uiunittest",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/BrunoMazzo/UIUnitTest.git",
-      "state" : {
-        "branch" : "accessibility-audit",
-        "revision" : "31beeddcaafcc8def22ef3404f8485f21119a4ac"
+        "revision" : "3de9f8ada6d7ce40341da23a325a5656debbb180"
       }
     }
   ],

@@ -3,12 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1D2C63902A3403B80012BB5A /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2C638F2A3403B80012BB5A /* Cache.swift */; };
-		1D456A9F29E1243500A98076 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D456A9E29E1243500A98076 /* UIUnitTest */; };
+		1D98A06F2CE3592300CDE6BC /* UIUnitTestAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 1D98A06E2CE3592300CDE6BC /* UIUnitTestAPI */; };
 		1DA1932D29B4260500322869 /* ServerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1932C29B4260500322869 /* ServerApp.swift */; };
 		1DA1932F29B4260500322869 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1932E29B4260500322869 /* ContentView.swift */; };
 		1DA1935929B4267200322869 /* UIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA1935729B4267200322869 /* UIServer.swift */; };
@@ -52,8 +52,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D456A9F29E1243500A98076 /* UIUnitTest in Frameworks */,
 				1DA1935D29B4270F00322869 /* FlyingFox in Frameworks */,
+				1D98A06F2CE3592300CDE6BC /* UIUnitTestAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,7 +155,7 @@
 			name = ServerUITests;
 			packageProductDependencies = (
 				1DA1935C29B4270F00322869 /* FlyingFox */,
-				1D456A9E29E1243500A98076 /* UIUnitTest */,
+				1D98A06E2CE3592300CDE6BC /* UIUnitTestAPI */,
 			);
 			productName = ServerUITests;
 			productReference = 1DA1934429B4260600322869 /* ServerUITests.xctest */;
@@ -191,7 +191,7 @@
 			mainGroup = 1DA1932029B4260500322869;
 			packageReferences = (
 				1DA1935B29B4270F00322869 /* XCRemoteSwiftPackageReference "FlyingFox" */,
-				1D456A9929E123A000A98076 /* XCRemoteSwiftPackageReference "UIUnitTest" */,
+				1D98A06D2CE3592300CDE6BC /* XCLocalSwiftPackageReference "UIUnitTestAPI" */,
 			);
 			productRefGroup = 1DA1932A29B4260500322869 /* Products */;
 			projectDirPath = "";
@@ -283,6 +283,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 4;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -343,6 +344,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 4;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -372,7 +374,6 @@
 				CODE_SIGN_ENTITLEMENTS = Server/Server.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -381,6 +382,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Server/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = UIUnitTestServer;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -417,7 +419,6 @@
 				CODE_SIGN_ENTITLEMENTS = Server/Server.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
@@ -426,6 +427,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Server/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = UIUnitTestServer;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -460,12 +462,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.mazzo.ServerUITests;
@@ -489,12 +490,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.mazzo.ServerUITests;
@@ -543,15 +543,14 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		1D456A9929E123A000A98076 /* XCRemoteSwiftPackageReference "UIUnitTest" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
-			requirement = {
-				branch = "accessibility-audit";
-				kind = branch;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		1D98A06D2CE3592300CDE6BC /* XCLocalSwiftPackageReference "UIUnitTestAPI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = UIUnitTestAPI;
 		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
 		1DA1935B29B4270F00322869 /* XCRemoteSwiftPackageReference "FlyingFox" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swhitty/FlyingFox.git";
@@ -563,10 +562,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1D456A9E29E1243500A98076 /* UIUnitTest */ = {
+		1D98A06E2CE3592300CDE6BC /* UIUnitTestAPI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1D456A9929E123A000A98076 /* XCRemoteSwiftPackageReference "UIUnitTest" */;
-			productName = UIUnitTest;
+			productName = UIUnitTestAPI;
 		};
 		1DA1935C29B4270F00322869 /* FlyingFox */ = {
 			isa = XCSwiftPackageProductDependency;

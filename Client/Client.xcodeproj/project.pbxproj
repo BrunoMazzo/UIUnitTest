@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D096EC62CE217B00070874E /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D096EC52CE217B00070874E /* UIUnitTest */; };
 		1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B6F29B45A4600465FB6 /* ClientApp.swift */; };
 		1D136B7229B45A4600465FB6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B7129B45A4600465FB6 /* ContentView.swift */; };
 		1D136B7429B45A4600465FB6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D136B7329B45A4600465FB6 /* Assets.xcassets */; };
@@ -14,7 +15,6 @@
 		1D136B8229B45A4600465FB6 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8129B45A4600465FB6 /* ClientTests.swift */; };
 		1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */; };
 		1D2B65E22AF5F29D00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E12AF5F29D00E5618D /* UIUnitTest */; };
-		1D2B65E52AF5F67B00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E42AF5F67B00E5618D /* UIUnitTest */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
 		1DE0F32E29BD9E2A0044AFFC /* PressAndHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F32D29BD9E2A0044AFFC /* PressAndHoldView.swift */; };
 		1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE0F33329BDD5410044AFFC /* GoToBackgroundAndBackView.swift */; };
@@ -77,7 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D2B65E52AF5F67B00E5618D /* UIUnitTest in Frameworks */,
+				1D096EC62CE217B00070874E /* UIUnitTest in Frameworks */,
 				1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,22 +93,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1D01C92F29B9CC3600551803 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		1D136B6329B45A4600465FB6 = {
 			isa = PBXGroup;
 			children = (
 				1DE1F7B52BF756BB00EBAAD8 /* ClientTests - Parallel.xctestplan */,
 				1D2B65E62AF60B8900E5618D /* Client.xctestplan */,
-				1D01C92F29B9CC3600551803 /* Packages */,
 				1D136B6E29B45A4600465FB6 /* Client */,
 				1D136B8029B45A4600465FB6 /* ClientTests */,
-				1DE0F35329C58B320044AFFC /* LocalTests */,
 				1D136B6D29B45A4600465FB6 /* Products */,
 				1D136B9C29B45CB300465FB6 /* Frameworks */,
 			);
@@ -168,13 +159,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		1DE0F35329C58B320044AFFC /* LocalTests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LocalTests;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -211,7 +195,7 @@
 			name = ClientTests;
 			packageProductDependencies = (
 				1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */,
-				1D2B65E42AF5F67B00E5618D /* UIUnitTest */,
+				1D096EC52CE217B00070874E /* UIUnitTest */,
 			);
 			productName = ClientTests;
 			productReference = 1D136B7D29B45A4600465FB6 /* ClientTests.xctest */;
@@ -271,7 +255,7 @@
 			);
 			mainGroup = 1D136B6329B45A4600465FB6;
 			packageReferences = (
-				1D2B65E32AF5F67B00E5618D /* XCRemoteSwiftPackageReference "UIUnitTest" */,
+				1D096EC42CE217B00070874E /* XCLocalSwiftPackageReference "UIUnitTest" */,
 			);
 			productRefGroup = 1D136B6D29B45A4600465FB6 /* Products */;
 			projectDirPath = "";
@@ -567,7 +551,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ClientTests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.mazzo.ClientTests;
@@ -593,7 +577,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ClientTests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.mazzo.ClientTests;
@@ -615,7 +599,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.mazzo.LocalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -635,7 +619,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = bruno.mazzo.LocalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -690,29 +674,24 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		1D2B65E32AF5F67B00E5618D /* XCRemoteSwiftPackageReference "UIUnitTest" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/BrunoMazzo/UIUnitTest.git";
-			requirement = {
-				branch = "any-query";
-				kind = branch;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		1D096EC42CE217B00070874E /* XCLocalSwiftPackageReference "UIUnitTest" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = UIUnitTest;
 		};
-/* End XCRemoteSwiftPackageReference section */
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1D096EC52CE217B00070874E /* UIUnitTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UIUnitTest;
+		};
 		1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UIUnitTest;
 		};
 		1D2B65E12AF5F29D00E5618D /* UIUnitTest */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = UIUnitTest;
-		};
-		1D2B65E42AF5F67B00E5618D /* UIUnitTest */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1D2B65E32AF5F67B00E5618D /* XCRemoteSwiftPackageReference "UIUnitTest" */;
 			productName = UIUnitTest;
 		};
 /* End XCSwiftPackageProductDependency section */
