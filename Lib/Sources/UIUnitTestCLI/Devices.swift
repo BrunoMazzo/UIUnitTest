@@ -205,7 +205,7 @@ struct Device {
         }
 
         logger.log("Cache is not up to date")
-        try! FileManager.default.removeItem(atPath: cacheFile)
+        try? FileManager.default.removeItem(atPath: cacheFile)
 
         if usePrebuildServer {
             logger.log("Copied prebuild server")

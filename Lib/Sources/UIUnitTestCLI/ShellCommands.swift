@@ -2,25 +2,24 @@ import Foundation
 
 @discardableResult
 func executeShellCommand(_ command: String, logger: Logger = Logger()) async -> Data {
-
     logger.log("Executing command: \(command)")
 
     let task = Process()
     let pipe = Pipe()
-    
+
     task.standardOutput = pipe
     task.standardError = pipe
-    task.executableURL = URL(fileURLWithPath: "/bin/zsh") //<--updated
+    task.executableURL = URL(fileURLWithPath: "/bin/zsh") // <--updated
     task.standardInput = nil
     task.arguments = ["-c", command]
     task.launch()
-    
+
     var data = Data()
-    
+
     do {
         for try await line in pipe.fileHandleForReading.bytes {
             data.append(Data(bytes: [line], count: 1))
-            
+
 //            if let string = String(bytes: [line], encoding: .utf8) {
 //                print(string, terminator: "")
 //            }
@@ -30,7 +29,7 @@ func executeShellCommand(_ command: String, logger: Logger = Logger()) async -> 
         logger.log(error.localizedDescription)
         logger.log("Error: --------------------------------------")
     }
-    
+
     return data
 }
 
@@ -40,13 +39,13 @@ func executeBackgroundShellCommand(_ command: String, logger: Logger = Logger())
     Task {
         let task = Process()
         let pipe = Pipe()
-        
+
         task.standardOutput = pipe
         task.standardError = pipe
-        task.executableURL = URL(fileURLWithPath: "/bin/zsh") //<--updated
+        task.executableURL = URL(fileURLWithPath: "/bin/zsh") // <--updated
         task.standardInput = nil
         task.arguments = ["-c", command]
-        task.terminationHandler = { (process) in
+        task.terminationHandler = { process in
             logger.log(process)
             logger.log("\ndidFinish: \(!process.isRunning)")
         }
@@ -56,21 +55,20 @@ func executeBackgroundShellCommand(_ command: String, logger: Logger = Logger())
 }
 
 func executeTestUntilServerStarts(_ command: String, logger: Logger = Logger()) async {
-
     logger.log("Executing command: \(command)")
 
     let task = Process()
     let pipe = Pipe()
-    
+
     task.standardOutput = pipe
     task.standardError = pipe
-    task.executableURL = URL(fileURLWithPath: "/bin/zsh") //<--updated
+    task.executableURL = URL(fileURLWithPath: "/bin/zsh") // <--updated
     task.standardInput = nil
     task.arguments = ["-c", command]
     task.launch()
-    
+
     var lastLine = ""
-    
+
     do {
         for try await line in pipe.fileHandleForReading.bytes {
             if let newCharacter = String(bytes: [line], encoding: .utf8) {
