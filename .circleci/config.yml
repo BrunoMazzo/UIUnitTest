@@ -20,9 +20,6 @@ jobs: # a basic unit of work in a run
             echo 'export PATH=/opt/homebrew/bin:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
       - run:
-          name: Check env
-          command: env
-      - run:
           name: Run Unit Tests
           command: set -o pipefail && xcodebuild -project Client/Client.xcodeproj -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' -resultBundlePath test-result.xcresult -clonedSourcePackagesDirPath SourcePackages -disableAutomaticPackageResolution | xcbeautify --report junit
       - save_cache:
