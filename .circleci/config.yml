@@ -5,6 +5,12 @@ version: 2.1
 orbs:
   macos: circleci/macos@2.5.1
 jobs: # a basic unit of work in a run
+  build:
+    docker:
+      - image: cimg/base:current
+    resource_class: brunomazzo/macos
+    steps:
+      - run: echo "Hi I'm on a Container Runner!"
   test: # your job name
     macos:
       xcode: 16.1.0 # indicate your selected version of Xcode
@@ -77,3 +83,6 @@ workflows:
     jobs:
       - test
       - test-parallel
+  localmachine:
+    jobs:
+      - build
