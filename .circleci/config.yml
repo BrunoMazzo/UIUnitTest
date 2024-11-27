@@ -17,6 +17,9 @@ jobs: # a basic unit of work in a run
       - checkout  # pull down code from your version control system.
       - restore_cache:
           key: spm-cache-{{ checksum "Client/Client.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}
+      - run:
+          name: Check env
+          command: env
       - run: brew install xcbeautify
       - macos/preboot-simulator:
           version: "18.1"
