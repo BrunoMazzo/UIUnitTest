@@ -11,8 +11,8 @@ jobs: # a basic unit of work in a run
     steps:
       - run: echo "Hi I'm on a Container Runner!"
   test: # your job name
-    macos:
-      xcode: 16.1.0 # indicate your selected version of Xcode
+    machine: true
+    resource_class: brunomazzo/macos
     steps: # a series of commands to run
       - checkout  # pull down code from your version control system.
       - restore_cache:
