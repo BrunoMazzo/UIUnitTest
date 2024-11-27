@@ -18,6 +18,13 @@ jobs: # a basic unit of work in a run
       - restore_cache:
           key: spm-cache-{{ checksum "Client/Client.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}
       - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          # Add source command to execute code and make variables
+          # available in current step.
+          command: |
+            echo 'export PATH=/opt/homebrew/bin:"$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
+      - run:
           name: Check env
           command: env
       - run: brew install xcbeautify
