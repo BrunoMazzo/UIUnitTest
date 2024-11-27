@@ -22,11 +22,6 @@ jobs: # a basic unit of work in a run
       - run:
           name: Check env
           command: env
-      - run: brew install xcbeautify
-      - macos/preboot-simulator:
-          version: "18.1"
-          platform: "iOS"
-          device: "iPhone 16"
       - run:
           name: Run Unit Tests
           command: set -o pipefail && xcodebuild -project Client/Client.xcodeproj -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' -resultBundlePath test-result.xcresult -clonedSourcePackagesDirPath SourcePackages -disableAutomaticPackageResolution | xcbeautify --report junit
@@ -62,12 +57,6 @@ jobs: # a basic unit of work in a run
           command: |
             echo 'export PATH=/opt/homebrew/bin:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
-
-      - run: brew install xcbeautify
-      - macos/preboot-simulator:
-          version: "18.1"
-          platform: "iOS"
-          device: "iPhone 16"
       - run:
           name: Run Unit Tests
           command: NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj -scheme "ClientTests - Parallel" test -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' -resultBundlePath test-result.xcresult -clonedSourcePackagesDirPath SourcePackages -disableAutomaticPackageResolution -parallel-testing-enabled YES -parallel-testing-worker-count 2 2>&1 | xcbeautify --report junit
