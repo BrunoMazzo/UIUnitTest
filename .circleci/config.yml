@@ -6,6 +6,7 @@ orbs:
   macos: circleci/macos@2.5.1
 jobs: # a basic unit of work in a run
   build:
+    machine: true
     resource_class: brunomazzo/macos
     steps:
       - run: echo "Hi I'm on a Container Runner!"
