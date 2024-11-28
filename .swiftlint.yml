@@ -1,6 +1,7 @@
 identifier_name:
   excluded:
     - up
+    - id
     - x
     - y
     - dx
