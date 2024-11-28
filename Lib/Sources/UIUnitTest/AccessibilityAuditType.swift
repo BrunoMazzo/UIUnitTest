@@ -27,28 +27,71 @@ public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable, Send
     public static let all = AccessibilityAuditType(rawValue: ~0)
 }
 
-public struct AccessibilityAuditIssue: Sendable {
+public final class AccessibilityAuditIssue: Codable, Sendable {
     /// The element associated with the issue.
-    public var element: Element?
+    public let element: Element?
 
     /// A short description about the issue.
-    public var compactDescription: String
+    public let compactDescription: String
 
     /// A longer description of the issue with more details about the failure.
-    public var detailedDescription: String
+    public let detailedDescription: String
 
     /// The type of audit which generated the issue.
-    public var auditType: AccessibilityAuditType
+    public let auditType: AccessibilityAuditType
 
-    public init(data: AccessibilityAuditIssueData) {
-        if let element = data.element {
+    public init(element: UUID? = nil, compactDescription: String, detailedDescription: String, auditType: AccessibilityAuditType) {
+        if let element = element {
+            self.element = Element(serverId: element)
+        } else {
+            self.element = nil
+        }
+
+        self.compactDescription = compactDescription
+        self.detailedDescription = detailedDescription
+        self.auditType = auditType
+    }
+
+    enum CodingKeys: CodingKey {
+        case element
+        case compactDescription
+        case detailedDescription
+        case auditType
+    }
+
+    public required init(from decoder: any Decoder) throws {
+        var container = try decoder.container(keyedBy: CodingKeys.self)
+
+        if let element = try container.decodeIfPresent(UUID.self, forKey: .element) {
             self.element = Element(serverId: element)
         } else {
             element = nil
         }
 
-        compactDescription = data.compactDescription
-        detailedDescription = data.detailedDescription
-        auditType = AccessibilityAuditType(rawValue: data.auditType)
+        compactDescription = try container.decode(String.self, forKey: .compactDescription)
+        detailedDescription = try container.decode(String.self, forKey: .detailedDescription)
+        auditType = try container.decode(AccessibilityAuditType.self, forKey: .auditType)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encodeIfPresent(element?.serverId, forKey: .element)
+        try container.encode(compactDescription, forKey: .compactDescription)
+        try container.encode(detailedDescription, forKey: .detailedDescription)
+        try container.encode(auditType, forKey: .auditType)
+    }
+}
+
+public struct AccessibilityAuditRequest: Codable, Sendable {
+    public var serverId: UUID
+    public var accessibilityAuditType: AccessibilityAuditType
+}
+
+public struct AccessibilityAuditResponse: Codable, Sendable {
+    public var issues: [AccessibilityAuditIssue]
+
+    public init(issues: [AccessibilityAuditIssue]) {
+        self.issues = issues
     }
 }

@@ -6,17 +6,19 @@ orbs:
   macos: circleci/macos@2.5.1
 jobs: # a basic unit of work in a run
   test: # your job name
-    macos:
-      xcode: 16.1.0 # indicate your selected version of Xcode
+    machine: true
+    resource_class: brunomazzo/macos
     steps: # a series of commands to run
       - checkout  # pull down code from your version control system.
       - restore_cache:
           key: spm-cache-{{ checksum "Client/Client.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}
-      - run: brew install xcbeautify
-      - macos/preboot-simulator:
-          version: "18.1"
-          platform: "iOS"
-          device: "iPhone 16"
+      - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          # Add source command to execute code and make variables
+          # available in current step.
+          command: |
+            echo 'export PATH=/opt/homebrew/bin:"$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
       - run:
           name: Run Unit Tests
           command: set -o pipefail && xcodebuild -project Client/Client.xcodeproj -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' -resultBundlePath test-result.xcresult -clonedSourcePackagesDirPath SourcePackages -disableAutomaticPackageResolution | xcbeautify --report junit
@@ -39,20 +41,22 @@ jobs: # a basic unit of work in a run
           path: build/reports/junit.xml
           destination: jUnit-tests-results.xml
   test-parallel: # your job name
-    macos:
-      xcode: 16.1.0 # indicate your selected version of Xcode
+    machine: true
+    resource_class: brunomazzo/macos
     steps: # a series of commands to run
       - checkout  # pull down code from your version control system.
       - restore_cache:
           key: spm-cache-{{ checksum "Client/Client.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" }}
-      - run: brew install xcbeautify
-      - macos/preboot-simulator:
-          version: "18.1"
-          platform: "iOS"
-          device: "iPhone 16"
+      - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          # Add source command to execute code and make variables
+          # available in current step.
+          command: |
+            echo 'export PATH=/opt/homebrew/bin:"$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
       - run:
           name: Run Unit Tests
-          command: NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj -scheme "ClientTests - Parallel" test -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' -resultBundlePath test-result.xcresult -clonedSourcePackagesDirPath SourcePackages -disableAutomaticPackageResolution -parallel-testing-enabled YES -parallel-testing-worker-count 2 2>&1 | xcbeautify --report junit
+          command: NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj -scheme "ClientTests - Parallel" test -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' -resultBundlePath test-result.xcresult -clonedSourcePackagesDirPath SourcePackages -disableAutomaticPackageResolution -parallel-testing-enabled YES -parallel-testing-worker-count 4 2>&1 | xcbeautify --report junit
       - save_cache:
           paths:
             - SourcePackages/

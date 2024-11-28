@@ -7,6 +7,8 @@ import XCTest
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
 
+let CurrentServerVersion = 5
+
 @MainActor
 class UIServer {
     var lastIssue: XCTIssue?
@@ -96,6 +98,10 @@ class UIServer {
             await self.buildResponse(true)
         })
 
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "server-version"), to: ClosureHTTPHandler({ request in
+            return await self.buildResponse(CurrentServerVersion)
+        }))
+
         let task = Task { try await server.run() }
 
         try await server.waitUntilListening()
@@ -159,7 +165,12 @@ class UIServer {
                 return true
             }
 
-            return AccessibilityAuditResponse(issues: issues.map { AccessibilityAuditIssueData(xcIssue: $0, cache: cache) })
+            var issuesData: [AccessibilityAuditIssueData] = []
+            for issue in issues {
+                issuesData.append(AccessibilityAuditIssueData(xcIssue: issue, cache: cache))
+            }
+
+            return AccessibilityAuditResponse(issues: issuesData)
         } else {
             // Fallback on earlier versions
             throw NSError(domain: "com.apple.XCTest", code: 0, userInfo: nil)

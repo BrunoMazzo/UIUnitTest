@@ -7,6 +7,9 @@
 ## Build the UI test
 root=$PWD
 
+## Remove derived data to avoid adding it to the zip file
+rm -rf "$root"/Server/DerivedData
+
 (cd "$root"/Server/ && zip -r "$root"/Lib/Sources/UIUnitTestCLI/resources/Server.zip *) || exit 1
 
 xcodebuild -project ./Server/Server.xcodeproj \
@@ -18,5 +21,6 @@ xcodebuild -project ./Server/Server.xcodeproj \
   -derivedDataPath="$PWD/derivedData/" \
   build-for-testing | xcbeautify || exit 1
 
-(cd "$root"/build/Products/Debug-iphonesimulator/ && zip -r "$root"/Lib/Sources/UIUnitTestCLI/resources/PreBuild.zip ServerUITests-Runner.app) || exit 1
+## (cd "$root"/build/Products/Debug-iphonesimulator/ && zip -r "$root"/Lib/Sources/UIUnitTestCLI/resources/PreBuild.zip ServerUITests-Runner.app) || exit 1
 
+(cd "$root"/build/Products/Release-iphonesimulator/ && zip -r "$root"/Lib/Sources/UIUnitTestCLI/resources/PreBuild.zip ServerUITests-Runner.app) || exit 1

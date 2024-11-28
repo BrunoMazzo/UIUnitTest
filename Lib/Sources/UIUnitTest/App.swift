@@ -93,7 +93,7 @@ public class AsyncApi: Element, @unchecked Sendable {
     ) async throws {
         let accessibilityAuditRequest = AccessibilityAuditRequest(
             serverId: serverId,
-            accessibilityAuditType: auditTypes.rawValue
+            accessibilityAuditType: AccessibilityAuditType(rawValue: auditTypes.rawValue)
         )
 
         let response: AccessibilityAuditResponse = try await callServer(
@@ -103,7 +103,7 @@ public class AsyncApi: Element, @unchecked Sendable {
 
         for issue in response.issues {
             do {
-                let ignore = try issueHandler?(AccessibilityAuditIssue(data: issue)) ?? false
+                let ignore = try issueHandler?(issue) ?? false
                 if !ignore {
                     fail(issue.compactDescription, fileID: fileID, filePath: filePath, line: line, column: column)
                 }
