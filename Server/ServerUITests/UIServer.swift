@@ -98,9 +98,9 @@ class UIServer {
             await self.buildResponse(true)
         })
 
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "server-version"), to: ClosureHTTPHandler({ request in
-            return await self.buildResponse(CurrentServerVersion)
-        }))
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "server-version"), to: ClosureHTTPHandler { _ in
+            await self.buildResponse(CurrentServerVersion)
+        })
 
         let task = Task { try await server.run() }
 
@@ -378,8 +378,8 @@ class UIServer {
     }
 
     @MainActor
-    func element(request: ByIdRequest) async -> ElementPayload {
-        let newElement = try! await findElement(elementRequest: request)
+    func element(request: ByIdRequest) async throws -> ElementPayload {
+        let newElement = try await findElement(elementRequest: request)
         let id = cache.add(element: newElement)
         return ElementPayload(serverId: id)
     }
