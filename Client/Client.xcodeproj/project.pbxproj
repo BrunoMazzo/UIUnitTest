@@ -15,6 +15,12 @@
 		1D136B8229B45A4600465FB6 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D136B8129B45A4600465FB6 /* ClientTests.swift */; };
 		1D2B65E02AF5F1EB00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65DF2AF5F1EB00E5618D /* UIUnitTest */; };
 		1D2B65E22AF5F29D00E5618D /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D2B65E12AF5F29D00E5618D /* UIUnitTest */; };
+		1D3D8E3E2CF7F4EB007AC85C /* SomethingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3D8E3A2CF7F4EB007AC85C /* SomethingView.swift */; };
+		1D3D8E3F2CF7F4EB007AC85C /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3D8E3D2CF7F4EB007AC85C /* TextFieldView.swift */; };
+		1D3D8E402CF7F4EB007AC85C /* AccessibilityAuditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3D8E382CF7F4EB007AC85C /* AccessibilityAuditView.swift */; };
+		1D3D8E412CF7F4EB007AC85C /* MySettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3D8E392CF7F4EB007AC85C /* MySettingsTable.swift */; };
+		1D3D8E422CF7F4EB007AC85C /* StepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3D8E3B2CF7F4EB007AC85C /* StepperView.swift */; };
+		1D3D8E432CF7F4EB007AC85C /* StringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3D8E3C2CF7F4EB007AC85C /* StringView.swift */; };
 		1D435E9129BB48250027CD1D /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D435E9029BB48250027CD1D /* SwipeView.swift */; };
 		1D5308912CDF591D002DB5FC /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D5308902CDF591D002DB5FC /* UIUnitTest */; };
 		1D5B0A2D2CDC6CD6008C64A4 /* UIUnitTest in Frameworks */ = {isa = PBXBuildFile; productRef = 1D5B0A2C2CDC6CD6008C64A4 /* UIUnitTest */; };
@@ -63,6 +69,12 @@
 		1D136B7D29B45A4600465FB6 /* ClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D136B8129B45A4600465FB6 /* ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTests.swift; sourceTree = "<group>"; };
 		1D2B65E62AF60B8900E5618D /* Client.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Client.xctestplan; sourceTree = "<group>"; };
+		1D3D8E382CF7F4EB007AC85C /* AccessibilityAuditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityAuditView.swift; sourceTree = "<group>"; };
+		1D3D8E392CF7F4EB007AC85C /* MySettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySettingsTable.swift; sourceTree = "<group>"; };
+		1D3D8E3A2CF7F4EB007AC85C /* SomethingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomethingView.swift; sourceTree = "<group>"; };
+		1D3D8E3B2CF7F4EB007AC85C /* StepperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperView.swift; sourceTree = "<group>"; };
+		1D3D8E3C2CF7F4EB007AC85C /* StringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringView.swift; sourceTree = "<group>"; };
+		1D3D8E3D2CF7F4EB007AC85C /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		1D435E9029BB48250027CD1D /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
 		1D60D5842C23D8E300F0B0FF /* SwiftTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTesting.swift; sourceTree = "<group>"; };
 		1DE0F32929BD89790044AFFC /* WaitForExistenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitForExistenceView.swift; sourceTree = "<group>"; };
@@ -146,6 +158,12 @@
 		1D136B6E29B45A4600465FB6 /* Client */ = {
 			isa = PBXGroup;
 			children = (
+				1D3D8E382CF7F4EB007AC85C /* AccessibilityAuditView.swift */,
+				1D3D8E392CF7F4EB007AC85C /* MySettingsTable.swift */,
+				1D3D8E3A2CF7F4EB007AC85C /* SomethingView.swift */,
+				1D3D8E3B2CF7F4EB007AC85C /* StepperView.swift */,
+				1D3D8E3C2CF7F4EB007AC85C /* StringView.swift */,
+				1D3D8E3D2CF7F4EB007AC85C /* TextFieldView.swift */,
 				1DE0F33929BDDBC70044AFFC /* Info.plist */,
 				1D136B6F29B45A4600465FB6 /* ClientApp.swift */,
 				1D136B7129B45A4600465FB6 /* ContentView.swift */,
@@ -342,6 +360,12 @@
 				1DE0F33429BDD5410044AFFC /* GoToBackgroundAndBackView.swift in Sources */,
 				1D136B7029B45A4600465FB6 /* ClientApp.swift in Sources */,
 				1DF4DBFE2BF60C560025FC8E /* WaitForExistenceView.swift in Sources */,
+				1D3D8E3E2CF7F4EB007AC85C /* SomethingView.swift in Sources */,
+				1D3D8E3F2CF7F4EB007AC85C /* TextFieldView.swift in Sources */,
+				1D3D8E402CF7F4EB007AC85C /* AccessibilityAuditView.swift in Sources */,
+				1D3D8E412CF7F4EB007AC85C /* MySettingsTable.swift in Sources */,
+				1D3D8E422CF7F4EB007AC85C /* StepperView.swift in Sources */,
+				1D3D8E432CF7F4EB007AC85C /* StringView.swift in Sources */,
 				1DE0F34829C533B00044AFFC /* RotateView.swift in Sources */,
 				1DE0F33E29BF265D0044AFFC /* TapView.swift in Sources */,
 				1DE0F34529C52D4E0044AFFC /* PinchView.swift in Sources */,
