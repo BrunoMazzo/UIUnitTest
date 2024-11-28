@@ -16,7 +16,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "SourcePackagesPath=&quot;${PROJECT_DIR}/../SourcePackages&quot;&#10;&#10;if [ -d &quot;$SourcePackagesPath/checkouts/UIUnitTest/start-server.sh&quot; ]; then&#10;    echo &quot;Using SourcePackagesPath&quot;&#10;    &quot;$SourcePackagesPath/checkouts/UIUnitTest/start-server.sh&quot;&#10;elif [ -e &quot;$PROJECT_DIR/UIUnitTest/start-server.sh&quot; ]; then&#10;    echo &quot;Using parant folder&quot;&#10;    &quot;${PROJECT_DIR}/UIUnitTest/start-server.sh&quot;&#10;else&#10;    echo &quot;Using Build directory&quot;&#10;    &quot;$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/start-server.sh&quot;&#10;fi&#10;">
+               scriptText = "SourcePackagesPath=&quot;${PROJECT_DIR}/../SourcePackages&quot;&#10;&#10;if [ -e &quot;$PROJECT_DIR/UIUnitTest/start-server.sh&quot; ]; then&#10;    echo &quot;Using parant folder&quot;&#10;    &quot;${PROJECT_DIR}/UIUnitTest/start-server.sh&quot;&#10;elif [ -d &quot;$SourcePackagesPath/checkouts/UIUnitTest/start-server.sh&quot; ]; then&#10;    echo &quot;Using SourcePackagesPath&quot;&#10;    &quot;$SourcePackagesPath/checkouts/UIUnitTest/start-server.sh&quot;&#10;else&#10;    echo &quot;Using Build directory&quot;&#10;    &quot;$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/start-server.sh&quot;&#10;fi&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
@@ -34,7 +34,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "SourcePackagesPath=&quot;${PROJECT_DIR}/../SourcePackages&quot;&#10;&#10;if [ -d &quot;$SourcePackagesPath&quot; ]; then&#10;    echo &quot;Using SourcePackagesPath&quot;&#10;    &quot;$SourcePackagesPath/checkouts/UIUnitTest/stop-server.sh&quot;&#10;#elif [ -e &quot;$PROJECT_DIR/../start-server.sh&quot; ]; then&#10;#    echo &quot;Using parant folder&quot;&#10;#    &quot;${PROJECT_DIR}/../stop-server.sh&quot;&#10;else&#10;    echo &quot;Using Build directory&quot;&#10;    &quot;$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/stop-server.sh&quot;&#10;fi&#10;">
+               scriptText = "SourcePackagesPath=&quot;${PROJECT_DIR}/../SourcePackages&quot;&#10;&#10;if [ -e &quot;$PROJECT_DIR/UIUnitTest/stop-server.sh&quot; ]; then&#10;    echo &quot;Using parant folder&quot;&#10;    &quot;${PROJECT_DIR}/UIUnitTest/stop-server.sh&quot;&#10;elif [ -d &quot;$SourcePackagesPath/checkouts/UIUnitTest/stop-server.sh&quot; ]; then&#10;    echo &quot;Using SourcePackagesPath&quot;&#10;    &quot;$SourcePackagesPath/checkouts/UIUnitTest/stop-server.sh&quot;&#10;else&#10;    echo &quot;Using Build directory&quot;&#10;    &quot;$BUILD_DIR/../../SourcePackages/checkouts/UIUnitTest/stop-server.sh&quot;&#10;fi&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
