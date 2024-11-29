@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-// TODO: Investigate why ScenePhase is not working
+// Schene phase only works when using SwiftIU App
 struct GoToBackgroundAndBackView: View {
     @State private var wasInBackground = false
 

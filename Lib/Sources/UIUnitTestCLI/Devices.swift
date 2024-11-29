@@ -1,6 +1,6 @@
 import Foundation
 
-let CurrentServerVersion = 5
+let CurrentServerVersion = 6
 
 struct Device {
     var deviceIdentifier: String
@@ -47,7 +47,7 @@ struct Device {
 
     func isServerRunning() async -> Bool {
         do {
-            let _ = try await URLSession.shared.data(for: URLRequest(url: URL(string: "http://localhost:\(serverPort)/alive")!))
+            _ = try await URLSession.shared.data(for: URLRequest(url: URL(string: "http://localhost:\(serverPort)/alive")!))
             logger.log("Server is running")
             return true
         } catch {

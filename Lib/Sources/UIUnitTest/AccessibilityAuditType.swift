@@ -2,6 +2,7 @@ import Foundation
 import UIUnitTestAPI
 
 public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable, Sendable {
+
     public var rawValue: UInt64
 
     public init(rawValue: UInt64) {

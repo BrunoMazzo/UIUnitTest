@@ -62,7 +62,7 @@ struct TappableView: UIViewRepresentable {
         }
 
         @objc func handleTap(sender: UITapGestureRecognizer) {
-            tapCallback(sender)
+            self.tapCallback(sender)
         }
     }
 }

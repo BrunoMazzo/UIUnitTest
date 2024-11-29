@@ -1,6 +1,8 @@
+root = $(PWD)
+
 .PHONY: test
 test:	
-	rm -rf test-result.xcresult 2> /dev/null
+	$(MAKE) clean-up
 	$(MAKE) generate-zip
 	set -o pipefail && xcodebuild -project Client/Client.xcodeproj \
 		-scheme Client \
