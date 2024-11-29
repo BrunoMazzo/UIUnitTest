@@ -47,7 +47,7 @@ struct MonitorForNewDevicesCommand: AsyncParsableCommand {
         }
     }
 
-    let logger = Logger(context: ["Command" : "MonitorForNewDevicesCommand"])
+    let logger = Logger(context: ["Command": "MonitorForNewDevicesCommand"])
 
     enum CodingKeys: CodingKey {
         case forceInstall

@@ -42,7 +42,7 @@ struct StartServerCommand: AsyncParsableCommand {
     @Flag
     var notPrebuildServer = false
 
-    let logger = Logger(context: ["Command" : "StartServerCommand"])
+    let logger = Logger(context: ["Command": "StartServerCommand"])
 
     enum CodingKeys: CodingKey {
         case _deviceIdentifier

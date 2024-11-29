@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 
 struct TapView: View {
+
     @State var twoFingersTap = false
     @State var threeFingersTap = false
 

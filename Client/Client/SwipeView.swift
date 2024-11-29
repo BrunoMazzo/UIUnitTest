@@ -21,6 +21,7 @@ enum SwipeDirection {
 }
 
 struct SwipeView: View {
+
     @State var direction: SwipeDirection?
 
     var body: some View {
