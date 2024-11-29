@@ -7,11 +7,12 @@ public extension Element {
 
         let _: Bool = try await callServer(path: "doubleTap", request: activateRequestData)
     }
+}
 
-    @available(*, noasync)
+public extension SyncElement {
     func doubleTap() {
         Executor.execute {
-            try await self.doubleTap()
+            try await self.element.doubleTap()
         }.valueOrFailWithFallback(())
     }
 }

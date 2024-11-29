@@ -18,17 +18,21 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
     }
 
     /** Whether or not a hit point can be computed for the element for the purpose of synthesizing events. */
-    public func isHittable() async throws -> Bool {
-        let existsRequestData = ElementPayload(serverId: serverId)
-        let existsResponse: IsHittableResponse = try await callServer(path: "isHittable", request: existsRequestData)
-        return existsResponse.isHittable
+    public var isHittable: Bool {
+        get async throws {
+            let existsRequestData = ElementPayload(serverId: serverId)
+            let existsResponse: IsHittableResponse = try await callServer(path: "isHittable", request: existsRequestData)
+            return existsResponse.isHittable
+        }
     }
 
     // Need better way to represent any :c
-    public func value() async throws -> String? {
-        let valueRequest = ElementPayload(serverId: serverId)
-        let valueResponse: ValueResponse = try await callServer(path: "value", request: valueRequest)
-        return valueResponse.value
+    public var value: String? {
+        get async throws {
+            let valueRequest = ElementPayload(serverId: serverId)
+            let valueResponse: ValueResponse = try await callServer(path: "value", request: valueRequest)
+            return valueResponse.value
+        }
     }
 
     /** Returns a query for all descendants of the element matching the specified type. */
@@ -55,129 +59,199 @@ public class Element: ElementTypeQueryProvider, @unchecked Sendable {
         let _: Bool = try await callServer(path: "typeText", request: activateRequestData)
     }
 
-    public func debugDescription() async throws -> String {
-        try await callServer(path: "debugDescription", request: ElementPayload(serverId: serverId))
+    public var debugDescription: String {
+        get async throws {
+            try await callServer(path: "debugDescription", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func identifier() async throws -> String {
-        return try await callServer(path: "identifier", request: ElementPayload(serverId: serverId))
+    public var identifier: String {
+        get async throws {
+            return try await callServer(path: "identifier", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func title() async throws -> String {
-        return try await callServer(path: "title", request: ElementPayload(serverId: serverId))
+    public var title: String {
+        get async throws {
+            return try await callServer(path: "title", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func label() async throws -> String {
-        return try await callServer(path: "label", request: ElementPayload(serverId: serverId))
+    public var label: String {
+        get async throws {
+            return try await callServer(path: "label", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func placeholderValue() async throws -> String? {
-        return try await callServer(path: "placeholderValue", request: ElementPayload(serverId: serverId))
+    public var placeholderValue: String? {
+        get async throws {
+            return try await callServer(path: "placeholderValue", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func isSelected() async throws -> Bool {
-        return try await callServer(path: "isSelected", request: ElementPayload(serverId: serverId))
+    public var isSelected: Bool {
+        get async throws {
+            return try await callServer(path: "isSelected", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func hasFocus() async throws -> Bool {
-        return try await callServer(path: "hasFocus", request: ElementPayload(serverId: serverId))
+    public var hasFocus: Bool {
+        get async throws {
+            return try await callServer(path: "hasFocus", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func isEnabled() async throws -> Bool {
-        return try await callServer(path: "isEnabled", request: ElementPayload(serverId: serverId))
+    public var isEnabled: Bool {
+        get async throws {
+            return try await callServer(path: "isEnabled", request: ElementPayload(serverId: serverId))
+        }
     }
 
     public func coordinate(withNormalizedOffset normalizedOffset: CGVector) async throws -> Coordinate {
         let request = CoordinateRequest(serverId: serverId, normalizedOffset: normalizedOffset)
         let response: CoordinateResponse = try await callServer(path: "coordinate", request: request)
-        return Coordinate(serverId: response.coordinateId, referencedElement: Element(serverId: response.referencedElementId), screenPoint: response.screenPoint)
+        return Coordinate(
+            serverId: response.coordinateId,
+            referencedElement: Element(serverId: response.referencedElementId),
+            screenPoint: response.screenPoint
+        )
     }
 
-    public func frame() async throws -> CGRect {
-        return try await callServer(path: "frame", request: ElementPayload(serverId: serverId))
+    public var frame: CGRect {
+        get async throws {
+            return try await callServer(path: "frame", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func horizontalSizeClass() async throws -> SizeClass {
-        return try await callServer(path: "horizontalSizeClass", request: ElementPayload(serverId: serverId))
+    public var horizontalSizeClass: SizeClass {
+        get async throws {
+            return try await callServer(path: "horizontalSizeClass", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func verticalSizeClass() async throws -> SizeClass {
-        return try await callServer(path: "verticalSizeClass", request: ElementPayload(serverId: serverId))
+    public var verticalSizeClass: SizeClass {
+        get async throws {
+            return try await callServer(path: "verticalSizeClass", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func elementType() async throws -> ElementType {
-        return try await callServer(path: "elementType", request: ElementPayload(serverId: serverId))
+    public var elementType: ElementType {
+        get async throws {
+            return try await callServer(path: "elementType", request: ElementPayload(serverId: serverId))
+        }
     }
 
-    public func any() async throws -> Query {
-        try await descendants(matching: .any)
+    public var any: Query {
+        get async throws {
+            try await descendants(matching: .any)
+        }
     }
-
-    @available(*, noasync)
-    public func any() -> Query {
-        Executor.execute {
-            try await self.any()
-        }.valueOrFailWithFallback(.EmptyQuery)
-    }
-
-    public func any(_ identifier: String) async throws -> Element {
-        try await descendants(matching: .any)(identifier: identifier)
-    }
-
-    @available(*, noasync)
-    public func any(_ identifier: String) -> Element {
-        Executor.execute {
-            try await self.any(identifier)
-        }.valueOrFailWithFallback(.EmptyElement)
-    }
-}
-
-public enum SizeClass: Int, Codable, Sendable {
-    case unspecified = 0
-    case compact = 1
-    case regular = 2
 }
 
 public extension Element {
     @discardableResult
-    func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) async throws -> Element {
-        if (try? await exists()) ?? false {
+    func assertElementExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) async throws -> Element {
+        if (try? await exists) ?? false {
             return self
         }
 
         if (try? await waitForExistence(timeout: timeout)) ?? false {
             return self
         } else {
-            XCTFail(message ?? "Element \(identifier) doesn't exists", file: file, line: line)
+            if let message {
+                fail(message, fileID: fileID, filePath: filePath, line: line, column: column)
+            } else {
+                let fallbackMessage = try await "Element \(identifier) doesn't exists"
+                fail(fallbackMessage, fileID: fileID, filePath: filePath, line: line, column: column)
+            }
+
             return self
         }
     }
 
     @discardableResult
-    func assertElementExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
-        Executor.execute {
-            try await self.assertElementExists(message: message, timeout: timeout, file: file, line: line)
-        }.valueOrFailWithFallback(self)
-    }
-
-    @discardableResult
-    func assertElementDoesntExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) async throws -> Element {
-        if (try? await !exists()) ?? false {
+    func assertElementDoesntExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) async throws -> Element {
+        if (try? await !exists) ?? false {
             return self
         }
 
         if (try? await waitForNonExistence(timeout: timeout)) ?? false {
             return self
         } else {
-            XCTFail(message ?? "Element \(identifier) exists", file: file, line: line)
+            if let message {
+                fail(message, fileID: fileID, filePath: filePath, line: line, column: column)
+            } else {
+                let fallbackMessage = try await "Element \(identifier) exists"
+                fail(fallbackMessage, fileID: fileID, filePath: filePath, line: line, column: column)
+            }
             return self
         }
     }
+}
+
+public class SyncElement: SyncElementTypeQueryProvider, @unchecked Sendable {
+    public var queryProvider: any ElementTypeQueryProvider {
+        element
+    }
+
+    public static let EmptyElement = SyncElement(element: .EmptyElement)
+
+    public let element: Element
+
+    public var serverId: UUID { element.serverId }
+
+    public init(element: Element) {
+        self.element = element
+    }
+
+    @available(*, noasync)
+    public var any: SyncQuery {
+        Executor.execute {
+            try SyncQuery(query: await self.element.any)
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+}
+
+public extension SyncElement {
+    @discardableResult
+    func assertElementExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> SyncElement {
+        Executor.execute {
+            try SyncElement(element: await self.element.assertElementExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column))
+        }.valueOrFailWithFallback(self)
+    }
 
     @discardableResult
-    func assertElementDoesntExists(message: String? = nil, timeout: TimeInterval = 1, file: StaticString = #filePath, line: UInt = #line) -> Element {
+    func assertElementDoesntExists(
+        message: String? = nil,
+        timeout: TimeInterval = 1,
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
+    ) -> SyncElement {
         Executor.execute {
-            try await self.assertElementDoesntExists(message: message, timeout: timeout, file: file, line: line)
+            try SyncElement(element: await self.element.assertElementDoesntExists(message: message, timeout: timeout, fileID: fileID, filePath: filePath, line: line, column: column))
         }.valueOrFailWithFallback(self)
     }
 }

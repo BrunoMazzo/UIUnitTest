@@ -27,35 +27,14 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Element(serverId: elementResponse.serverId)
     }
 
-    @available(*, noasync)
-    public var element: Element! {
-        Executor.execute {
-            try await self.element()
-        }.valueOrFailWithFallback(nil)
-    }
-
     public func allElementsBoundByAccessibilityElement() async throws -> [Element] {
         let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByAccessibilityElement", request: ElementsByAccessibility(serverId: serverId))
         return elementResponse.serversId.map { Element(serverId: $0) }
     }
 
-    @available(*, noasync)
-    public var allElementsBoundByAccessibilityElement: [Element] {
-        Executor.execute {
-            try await self.allElementsBoundByAccessibilityElement()
-        }.valueOrFailWithFallback([])
-    }
-
     public func allElementsBoundByIndex() async throws -> [Element] {
         let elementResponse: ElementArrayResponse = try await callServer(path: "allElementsBoundByIndex", request: ElementsByAccessibility(serverId: serverId))
         return elementResponse.serversId.map { Element(serverId: $0) }
-    }
-
-    @available(*, noasync)
-    public var allElementsBoundByIndex: [Element] {
-        Executor.execute {
-            try await self.allElementsBoundByIndex()
-        }.valueOrFailWithFallback([])
     }
 
     /** Evaluates the query at the time it is called and returns the number of matches found. */
@@ -64,37 +43,15 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return response.count
     }
 
-    @available(*, noasync)
-    public var count: Int {
-        Executor.execute {
-            try await self.count()
-        }.valueOrFailWithFallback(-1)
-    }
-
     public func element(boundByIndex index: Int) async throws -> Element {
         let elementResponse: ElementPayload = try await callServer(path: "elementFromQuery", request: ElementFromQuery(serverId: serverId, index: index))
         return Element(serverId: elementResponse.serverId)
     }
 
-    @available(*, noasync)
-    public func element(boundByIndex index: Int) -> Element {
-        Executor.execute {
-            try await self.element(boundByIndex: index)
-        }.valueOrFailWithFallback(.EmptyElement)
-    }
-
     // Using autoclosure to erase the Sendable warning
-    public func element(matching predicate: String) async throws -> Element {
-        let response: ElementPayload = try await callServer(path: "elementMatchingPredicate", request: PredicateRequest(serverId: serverId, predicate: predicate))
+    public func element(matching predicate: @Sendable @autoclosure () -> String) async throws -> Element {
+        let response: ElementPayload = try await callServer(path: "elementMatchingPredicate", request: PredicateRequest(serverId: serverId, predicate: predicate()))
         return Element(serverId: response.serverId)
-    }
-
-    @available(*, noasync)
-    // Using autoclosure to erase the Sendable warning
-    public func element(matching predicate: String) -> Element {
-        Executor.execute {
-            try await self.element(matching: predicate)
-        }.valueOrFailWithFallback(.EmptyElement)
     }
 
     public func element(matching elementType: Element.ElementType, identifier: String?) async throws -> Element {
@@ -102,23 +59,11 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Element(serverId: response.serverId)
     }
 
-    @available(*, noasync)
-    public func element(matching elementType: Element.ElementType, identifier: String?) -> Element {
-        Executor.execute {
-            try await self.element(matching: elementType, identifier: identifier)
-        }.valueOrFailWithFallback(.EmptyElement)
-    }
-
-    public func callAsFunction(identifier: String) async throws -> Element {
-        let response: ElementPayload = try await callServer(path: "element", request: ByIdRequest(queryRoot: serverId, identifier: identifier))
-        return Element(serverId: response.serverId)
-    }
-
-    @available(*, noasync)
-    public subscript(_ identifier: String) -> Element {
-        Executor.execute {
-            try await self(identifier: identifier)
-        }.valueOrFailWithFallback(.EmptyElement)
+    public subscript(identifier: String) -> Element {
+        get async throws {
+            let response: ElementPayload = try await callServer(path: "element", request: ByIdRequest(queryRoot: serverId, identifier: identifier))
+            return Element(serverId: response.serverId)
+        }
     }
 
     public func descendants(matching elementType: Element.ElementType) async throws -> Query {
@@ -126,33 +71,10 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Query(serverId: response.serverId)
     }
 
-    @available(*, noasync)
-    public func descendants(matching elementType: Element.ElementType) -> Query {
-        Executor.execute {
-            try await self.descendants(matching: elementType)
-        }.valueOrFailWithFallback(.EmptyQuery)
-    }
-
-    public func any() async throws -> Query {
-        try await descendants(matching: .any)
-    }
-
-    @available(*, noasync)
-    public func any() -> Query {
-        Executor.execute {
-            try await self.any()
-        }.valueOrFailWithFallback(.EmptyQuery)
-    }
-
-    public func any(_ identifier: String) async throws -> Element {
-        try await descendants(matching: .any)(identifier: identifier)
-    }
-
-    @available(*, noasync)
-    public func any(_ identifier: String) -> Element {
-        Executor.execute {
-            try await self.any(identifier)
-        }.valueOrFailWithFallback(.EmptyElement)
+    public var any: Query {
+        get async throws {
+            try await descendants(matching: .any)
+        }
     }
 
     public func children(matching type: Element.ElementType) async throws -> Query {
@@ -161,23 +83,9 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Query(serverId: queryResponse.serverId)
     }
 
-    @available(*, noasync)
-    public func children(matching type: Element.ElementType) -> Query {
-        Executor.execute {
-            try await self.children(matching: type)
-        }.valueOrFailWithFallback(.EmptyQuery)
-    }
-
     public func matching(_ predicate: String) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingPredicate", request: PredicateRequest(serverId: serverId, predicate: predicate))
         return Query(serverId: response.serverId)
-    }
-
-    @available(*, noasync)
-    public func matching(_ predicate: String) -> Query {
-        Executor.execute {
-            try await self.matching(predicate)
-        }.valueOrFailWithFallback(.EmptyQuery)
     }
 
     public func matching(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
@@ -185,23 +93,9 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Query(serverId: response.serverId)
     }
 
-    @available(*, noasync)
-    public func matching(_ elementType: Element.ElementType, identifier: String?) -> Query {
-        Executor.execute {
-            try await self.matching(elementType, identifier: identifier)
-        }.valueOrFailWithFallback(.EmptyQuery)
-    }
-
     public func matching(identifier: String) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingByIdentifier", request: ByIdRequest(queryRoot: serverId, identifier: identifier))
         return Query(serverId: response.serverId)
-    }
-
-    @available(*, noasync)
-    public func matching(identifier: String) -> Query {
-        Executor.execute {
-            try await self.matching(identifier: identifier)
-        }.valueOrFailWithFallback(.EmptyQuery)
     }
 
     public func containing(_ predicate: String) async throws -> Query {
@@ -209,23 +103,9 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Query(serverId: response.serverId)
     }
 
-    @available(*, noasync)
-    public func containing(_ predicate: String) -> Query {
-        Executor.execute {
-            try await self.containing(predicate)
-        }.valueOrFailWithFallback(.EmptyQuery)
-    }
-
     public func containing(_ elementType: Element.ElementType, identifier: String?) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "containingElementType", request: ElementTypeRequest(serverId: serverId, elementType: elementType.rawValue, identifier: identifier))
         return Query(serverId: response.serverId)
-    }
-
-    @available(*, noasync)
-    public func containing(_ elementType: Element.ElementType, identifier: String?) -> Query {
-        Executor.execute {
-            try await self.containing(elementType, identifier: identifier)
-        }.valueOrFailWithFallback(.EmptyQuery)
     }
 
     public func debugDescription() async throws -> String {
@@ -243,4 +123,150 @@ public final class Query: ElementTypeQueryProvider, Sendable {
 
 extension UUID {
     static let zero = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
+}
+
+final class NSPredicateSendableBox: @unchecked Sendable {
+    let predicate: NSPredicate
+
+    init(predicate: NSPredicate) {
+        self.predicate = predicate
+    }
+}
+
+public final class SyncQuery: SyncElementTypeQueryProvider, Sendable {
+    public static var EmptyQuery: SyncQuery { SyncQuery(query: .EmptyQuery) }
+
+    public var queryProvider: any ElementTypeQueryProvider {
+        query
+    }
+
+    public let query: Query
+
+    init(query: Query) {
+        self.query = query
+    }
+
+    @available(*, noasync)
+    public var element: SyncElement! {
+        Executor.execute {
+            try SyncElement(element: await self.query.element())
+        }.valueOrFailWithFallback(nil)
+    }
+
+    @available(*, noasync)
+    public var allElementsBoundByAccessibilityElement: [SyncElement] {
+        Executor.execute {
+            try await self.query.allElementsBoundByAccessibilityElement().map {
+                SyncElement(element: $0)
+            }
+        }.valueOrFailWithFallback([])
+    }
+
+    @available(*, noasync)
+    public var allElementsBoundByIndex: [SyncElement] {
+        Executor.execute {
+            try await self.query.allElementsBoundByIndex().map {
+                SyncElement(element: $0)
+            }
+        }.valueOrFailWithFallback([])
+    }
+
+    @available(*, noasync)
+    public var count: Int {
+        Executor.execute {
+            try await self.query.count()
+        }.valueOrFailWithFallback(-1)
+    }
+
+    @available(*, noasync)
+    public func element(boundByIndex index: Int) -> SyncElement {
+        Executor.execute {
+            try SyncElement(element: await self.query.element(boundByIndex: index))
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
+
+    @available(*, noasync)
+    // Using autoclosure to erase the Sendable warning
+    public func element(matching predicate: @Sendable @autoclosure @escaping () -> String) -> SyncElement {
+        Executor.execute {
+            try SyncElement(element: await self.query.element(matching: predicate()))
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
+
+    @available(*, noasync)
+    public func element(matching elementType: Element.ElementType, identifier: String?) -> SyncElement {
+        Executor.execute {
+            try SyncElement(element: await self.query.element(matching: elementType, identifier: identifier))
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
+
+    @available(*, noasync)
+    public subscript(_ identifier: String) -> SyncElement {
+        Executor.execute {
+            try SyncElement(element: await self.query[identifier])
+        }.valueOrFailWithFallback(.EmptyElement)
+    }
+
+    @available(*, noasync)
+    public func descendants(matching elementType: Element.ElementType) -> SyncQuery {
+        Executor.execute {
+            try SyncQuery(query: await self.query.descendants(matching: elementType))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public var any: SyncQuery {
+        Executor.execute {
+            try SyncQuery(query: await self.query.any)
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func children(matching type: Element.ElementType) -> SyncQuery {
+        Executor.execute {
+            try SyncQuery(query: await self.query.children(matching: type))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func matching(_ predicate: String) -> SyncQuery {
+        return Executor.execute {
+            try SyncQuery(query: await self.query.matching(predicate))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func matching(_ elementType: Element.ElementType, identifier: String?) -> SyncQuery {
+        Executor.execute {
+            try SyncQuery(query: await self.query.matching(elementType, identifier: identifier))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func matching(identifier: String) -> SyncQuery {
+        Executor.execute {
+            try SyncQuery(query: await self.query.matching(identifier: identifier))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func containing(_ predicate: String) -> SyncQuery {
+        return Executor.execute {
+            try SyncQuery(query: await self.query.containing(predicate))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public func containing(_ elementType: Element.ElementType, identifier: String?) -> SyncQuery {
+        Executor.execute {
+            try SyncQuery(query: await self.query.containing(elementType, identifier: identifier))
+        }.valueOrFailWithFallback(.EmptyQuery)
+    }
+
+    @available(*, noasync)
+    public var debugDescription: String {
+        Executor.execute {
+            try await self.query.debugDescription()
+        }.valueOrFailWithFallback("")
+    }
 }
