@@ -12,7 +12,7 @@ struct MyPlugin: BuildToolPlugin, XcodeBuildToolPlugin {
 
     /// 👇 This entry point is called when operating on an Xcode project.
     func createBuildCommands(context: XcodePluginContext, target: XcodeTarget) throws -> [Command] {
-        
+
         return [
             .buildCommand(
                 displayName: "Start UI Test server",
@@ -20,7 +20,7 @@ struct MyPlugin: BuildToolPlugin, XcodeBuildToolPlugin {
                 arguments: [],
                 environment: [:],
                 outputFiles: []
-            )
+            ),
         ]
     }
 }

@@ -5,7 +5,7 @@ enum SwipeDirection {
     case right
     case up
     case down
-    
+
     var description: String {
         switch self {
         case .left:
@@ -21,9 +21,9 @@ enum SwipeDirection {
 }
 
 struct SwipeView: View {
-    
+
     @State var direction: SwipeDirection?
-    
+
     var body: some View {
         VStack {
             Text("Direction: \(direction?.description ?? "No swipe detected")")

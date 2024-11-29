@@ -21,7 +21,6 @@ func deviceId() -> Int {
     return 0
 #endif
 
-
 }
 
 @MainActor
@@ -30,20 +29,20 @@ internal func callServer<RequestData: Codable, ResponseData: Codable>(
     request: RequestData
 ) async throws -> ResponseData {
     let encoder = JSONEncoder()
-    
+
     let port = 22087 + deviceId()
-    
+
     let activateUrl = URL(string: "http://localhost:\(port)/\(path)")!
     var activateRequest = URLRequest(url: activateUrl)
     activateRequest.httpMethod = "POST"
     activateRequest.httpBody = try encoder.encode(request)
-    
+
     let (data, _) = try await URLSession.shared.data(for: activateRequest)
-    
+
     let decoder = JSONDecoder()
-    
+
     let result = try decoder.decode(UIResponse<ResponseData>.self, from: data)
-    
+
     switch result.response {
     case .success(data: let response):
         return response
@@ -63,25 +62,25 @@ public struct ErrorResponse: Codable {
 }
 
 public struct UIResponse<T: Codable>: Codable {
-    
+
     public let response: Response<T>
-    
+
     public init(response: T) {
         self.response = .success(data: response)
     }
-    
+
     public init(error: String) {
         self.response = .error(error: ErrorResponse(error: error))
     }
-    
+
     enum CodingKeys: CodingKey {
         case data
         case error
     }
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         if let error = try container.decodeIfPresent(ErrorResponse.self, forKey: .error) {
             self.response = .error(error: error)
         } else if let response = try container.decodeIfPresent(T.self, forKey: .data) {
@@ -90,10 +89,10 @@ public struct UIResponse<T: Codable>: Codable {
             fatalError("Invalid response")
         }
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         switch self.response {
         case .error(error: let error):
             try container.encode(error, forKey: .error)
@@ -101,5 +100,5 @@ public struct UIResponse<T: Codable>: Codable {
             try container.encode(data, forKey: .data)
         }
     }
-    
+
 }

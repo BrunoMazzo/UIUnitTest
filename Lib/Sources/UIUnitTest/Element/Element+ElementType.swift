@@ -1,7 +1,7 @@
 import Foundation
 
 public extension Element {
-    enum ElementType : UInt, @unchecked Sendable, Codable {
+    enum ElementType: UInt, @unchecked Sendable, Codable {
         case any = 0
         case other = 1
         case application = 2

@@ -4,7 +4,7 @@ import SwiftUI
 struct RotateView: View {
     @State private var currentAmount = Angle.zero
     @State private var finalAmount = Angle.zero
-    
+
     var body: some View {
         VStack {
             Text("Current rotation: \(finalAmount.degrees + currentAmount.degrees)")
@@ -19,7 +19,7 @@ struct RotateView: View {
                         .onChanged { angle in
                             currentAmount = angle
                         }
-                        .onEnded { angle in
+                        .onEnded { _ in
                             finalAmount += currentAmount
                             currentAmount = .zero
                         }

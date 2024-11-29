@@ -47,7 +47,7 @@ struct Device {
 
     func isServerRunning() async -> Bool {
         do {
-            let _ = try await URLSession.shared.data(for: URLRequest(url: URL(string: "http://localhost:\(serverPort)/alive")!))
+            _ = try await URLSession.shared.data(for: URLRequest(url: URL(string: "http://localhost:\(serverPort)/alive")!))
             logger.log("Server is running")
             return true
         } catch {
