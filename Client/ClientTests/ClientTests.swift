@@ -13,7 +13,7 @@ class ClientTests: XCTestCase, @unchecked Sendable {
 
         showView(MySettingTable())
 
-        try await app.staticTexts["Hello world button"].assertElementExists2()
+        try await app.staticTexts["Hello world button"].assertElementExists()
 
         try await Assert(app.staticTexts["Hello world button"].isHittable)
 
