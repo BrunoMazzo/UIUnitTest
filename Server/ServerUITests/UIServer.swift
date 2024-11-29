@@ -18,6 +18,140 @@ class UIServer {
     @MainActor
     let cache = Cache()
 
+    func start(portIndex: UInt16 = 0) async throws {
+        let server = HTTPServer(
+            address: .loopback(port: 22087 + portIndex),
+            logger: DisabledLogger.disabled
+        )
+        self.server = server
+
+        await addRoute("createApp", handler: createApp(request:))
+        await addRoute("Activate", handler: activate(_:))
+
+        await addRoute("firstMatch", handler: firstMatch(firstMatchRequest:))
+        await addRoute("elementFromQuery", handler: elementFromQuery(elementFromQuery:))
+        await addRoute("elementMatchingPredicate", handler: elementMatchingPredicate(predicateRequest:))
+        await addRoute("matchingPredicate", handler: matchingPredicate(predicateRequest:))
+        await addRoute("matchingByIdentifier", handler: matchingByIdentifier(request:))
+        await addRoute("containingPredicate", handler: containingPredicate(request:))
+        await addRoute("containingElementType", handler: containingElementType(request:))
+
+        await addRoute("tapElement", handler: tapElement(tapRequest:))
+        await addRoute("doubleTap", handler: doubleTap(tapRequest:))
+
+        await addRoute("exists", handler: exists(request:))
+        await addRoute("waitForExistence", handler: waitForExistence(request:))
+        await addRoute("waitForNonExistence", handler: waitForNonExistence(request:))
+
+        await addRoute("value", handler: value(request:))
+        await addRoute("typeText", handler: typeText(request:))
+        await addRoute("scroll", handler: scroll(request:))
+        await addRoute("swipe", handler: swipe(request:))
+        await addRoute("pinch", handler: pinch(request:))
+        await addRoute("rotate", handler: rotate(request:))
+
+        await addRoute("HomeButton", handler: { (_: HomeButtonRequest) in
+            XCUIDevice.shared.press(.home)
+        })
+
+        await addRoute("isHittable", handler: isHittable(request:))
+        await addRoute("count", handler: count(request:))
+        await addRoute("queryDescendants", handler: queryDescendants(request:))
+        await addRoute("elementDescendants", handler: elementDescendants(request:))
+        await addRoute("matchingElementType", handler: matchingElementType(request:))
+        await addRoute("allElementsBoundByAccessibilityElement", handler: allElementsBoundByAccessibilityElement(request:))
+        await addRoute("allElementsBoundByIndex", handler: allElementsBoundByIndex(request:))
+        await addRoute("children", handler: children(request:))
+        await addRoute("query", handler: query(request:))
+        await addRoute("element", handler: element(request:))
+        await addRoute("remove", handler: remove(request:))
+        await addRoute("debugDescription", handler: debugDescription(request:))
+
+        await addRoute("identifier", handler: identifier(request:))
+        await addRoute("title", handler: title(request:))
+        await addRoute("label", handler: label(request:))
+        await addRoute("placeholderValue", handler: placeholderValue(request:))
+        await addRoute("isSelected", handler: isSelected(request:))
+        await addRoute("hasFocus", handler: hasFocus(request:))
+        await addRoute("isEnabled", handler: isEnabled(request:))
+
+        await addRoute("coordinate", handler: coordinate(request:))
+        await addRoute("coordinateWithOffset", handler: coordinateWithOffset(request:))
+        await addRoute("coordinateTap", handler: coordinateTap(request:))
+
+        await addRoute("frame", handler: frame(request:))
+        await addRoute("horizontalSizeClass", handler: horizontalSizeClass(request:))
+        await addRoute("verticalSizeClass", handler: verticalSizeClass(request:))
+        await addRoute("elementType", handler: elementType(request:))
+
+        await addRoute("performAccessibilityAudit", handler: performAccessibilityAudit(request:))
+
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler { _ in
+            Task {
+                await self.server.stop(timeout: 10)
+            }
+
+            return await self.buildResponse(true)
+        })
+
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "alive"), to: ClosureHTTPHandler { _ in
+            await self.buildResponse(true)
+        })
+
+        await self.server.appendRoute(HTTPRoute(stringLiteral: "server-version"), to: ClosureHTTPHandler { _ in
+            await self.buildResponse(CurrentServerVersion)
+        })
+
+        let task = Task { try await server.run() }
+
+        try await server.waitUntilListening()
+
+        print("Server ready")
+
+        _ = await task.result
+    }
+
+    func addRoute<Request: Codable, Response: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Response) async {
+        await server.appendRoute(HTTPRoute(stringLiteral: route), handler: { @MainActor request in
+
+            defer {
+                self.lastIssue = nil
+            }
+
+            let tapRequest = try await decoder.decode(Request.self, from: request.bodyData)
+
+            do {
+                let response = try await handler(tapRequest)
+                return self.buildResponse(response)
+            } catch {
+                return self.buildError(error.localizedDescription)
+            }
+        })
+    }
+
+    func addRoute<Request: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Void) async {
+        await addRoute(route, handler: { request in
+            try await handler(request)
+            return true
+        })
+    }
+
+    @MainActor
+    func createApp(request: CreateApplicationRequest) async throws {
+        let app = XCUIApplication(bundleIdentifier: request.appId)
+        cache.add(application: app, id: request.serverId)
+
+        if request.activate {
+            app.activate()
+        }
+    }
+
+    @MainActor
+    func activate(_ activateRequest: ActivateRequest) async throws {
+        let app = try cache.getApplication(activateRequest.serverId)
+        app.activate()
+    }
+
     @MainActor
     func performAccessibilityAudit(
         request: AccessibilityAuditRequest
