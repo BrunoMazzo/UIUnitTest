@@ -1,0 +1,40 @@
+name: iOS tests
+
+on:
+  push:
+    branches: [ "main", "parallel-testing", "swift-testing" ]
+  pull_request:
+
+jobs:
+  parallel-testing:
+    name: Cloned simulator
+    runs-on: self-host 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build & Test
+        run: |
+          NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj -scheme "ClientTests - Parallel" test -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' -resultBundlePath test-result.xcresult -clonedSourcePackagesDirPath SourcePackages -disableAutomaticPackageResolution -parallel-testing-enabled YES -parallel-testing-worker-count 4 2>&1 | xcbeautify --report junit
+      # - name: Archive cli logs
+      #   if: always()
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: cli-logs-clone-simulator
+      #     path: Client/logfile.txt
+  single-device-testing:
+    name: Normal simulator
+    runs-on: self-host 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build & Test
+        timeout-minutes: 20
+        run: |
+          #run UIUnitTest server
+          set -o pipefail && xcodebuild -project Client/Client.xcodeproj -scheme Client test -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.1' -resultBundlePath test-result.xcresult -clonedSourcePackagesDirPath SourcePackages -disableAutomaticPackageResolution | xcbeautify --report junit
+      # - name: Archive cli logs
+      #   if: always()
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: cli-logs-single-simulator
+      #     path: Client/logfile.txt
