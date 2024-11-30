@@ -21,9 +21,8 @@ jobs:
         with:
           path: Client/.uiUnitTest/Logs
           name: UIUnitTestLogs
-      - run:
-          name: Compress XCResult
-          run: tar -cvzf test-result.tar test-result.xcresult
+      - name: Compress XCResult
+        run: tar -cvzf test-result.tar test-result.xcresult
       - name: Archive Tests-results
         if: always()
         uses: actions/upload-artifact@v3
