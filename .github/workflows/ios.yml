@@ -23,7 +23,7 @@ jobs:
           name: UIUnitTestLogs
       - run:
           name: Compress XCResult
-          command: tar -cvzf test-result.tar test-result.xcresult
+          run: tar -cvzf test-result.tar test-result.xcresult
       - name: Archive Tests-results
         if: always()
         uses: actions/upload-artifact@v3
