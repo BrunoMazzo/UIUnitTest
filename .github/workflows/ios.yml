@@ -8,7 +8,7 @@ on:
 jobs:
   parallel-testing:
     name: Cloned simulator
-    runs-on: macos-latest 
+    runs-on: self-hosted 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -43,7 +43,7 @@ jobs:
       #     path: Client/logfile.txt
   single-device-testing:
     name: Normal simulator
-    runs-on: macos-latest 
+    runs-on: self-hosted 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
