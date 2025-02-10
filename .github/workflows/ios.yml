@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Select Xcode
-        run: sudo xcode-select -s "/Applications/Xcode_16.2.app"
       - name: Build & Test
         run: |
           make test-parallel
@@ -47,8 +45,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Select Xcode
-        run: sudo xcode-select -s "/Applications/Xcode_16.2.app"
       - name: Build & Test
         timeout-minutes: 20
         run: |
