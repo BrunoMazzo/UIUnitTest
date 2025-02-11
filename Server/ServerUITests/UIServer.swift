@@ -7,53 +7,14 @@ import UIUnitTestAPI
 let decoder = JSONDecoder()
 let encoder = JSONEncoder()
 
-let CurrentServerVersion = 4
-
-struct ApplicationNotFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Application with id \(serverId) not found"
-    }
-}
-
-struct ElementNotFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Element with id \(serverId) not found"
-    }
-}
-
-struct QueryNotFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Query with id \(serverId) not found"
-    }
-}
-
-struct CoordinateNotFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Coordinate with id \(serverId) not found"
-    }
-}
-
-struct WrongQueryTypeFoundError: Error, LocalizedError {
-    var serverId: String
-
-    var errorDescription: String? {
-        return "Query with id \(serverId) is not an XCUIElementQuery"
-    }
-}
+let CurrentServerVersion = 6
 
 class UIServer {
     var lastIssue: XCTIssue?
 
     var server: HTTPServer!
 
+    @MainActor
     let cache = Cache()
 
     @MainActor
