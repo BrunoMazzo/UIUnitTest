@@ -1,6 +1,6 @@
 import Foundation
 
-let CurrentServerVersion = 4
+let CurrentServerVersion = 6
 
 struct Device {
     var deviceIdentifier: String
