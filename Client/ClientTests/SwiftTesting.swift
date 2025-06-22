@@ -141,9 +141,9 @@ final class SwiftTesting {
 
         showView(TapView())
 
-        try await app.otherElements["TwoFingersView"].assertElementExists().twoFingerTap()
+        try await app.buttons["TwoFingersView"].assertElementExists().twoFingerTap()
 
-        try await app.staticTexts["Two fingers tapped"].assertElementExists()
+        try await app.staticTexts["Two fingers tapped successfully!"].assertElementExists()
     }
 
     @Test
@@ -152,10 +152,12 @@ final class SwiftTesting {
 
         showView(TapView())
 
-        try await app.otherElements["ThreeFingersView"].assertElementExists()
+        try await app.buttons["ThreeFingersView"].assertElementExists()
             .tap(withNumberOfTaps: 1, numberOfTouches: 3)
 
-        try await app.staticTexts["Three fingers tapped"].assertElementExists()
+        try await app.staticTexts["Three fingers tapped successfully!"].assertElementExists()
+
+        try await print(app.debugDescription)
     }
 
     @Test
@@ -327,11 +329,11 @@ final class SwiftTesting {
 
         showView(TapView())
 
-        app.otherElements["TwoFingersView"]
+        app.buttons["TwoFingersView"]
             .assertElementExists()
             .twoFingerTap()
 
-        app.staticTexts["Two fingers tapped"].assertElementExists()
+        app.staticTexts["Two fingers tapped successfully!"].assertElementExists()
     }
 
     @Test
@@ -340,9 +342,9 @@ final class SwiftTesting {
 
         showView(TapView())
 
-        app.otherElements["ThreeFingersView"].assertElementExists().tap(withNumberOfTaps: 1, numberOfTouches: 3)
+        app.buttons["ThreeFingersView"].assertElementExists().tap(withNumberOfTaps: 1, numberOfTouches: 3)
 
-        app.staticTexts["Three fingers tapped"].assertElementExists()
+        app.staticTexts["Three fingers tapped successfully!"].assertElementExists()
     }
 
     @Test
