@@ -7,11 +7,25 @@ test:
 	set -o pipefail && xcodebuild -project Client/Client.xcodeproj \
 		-scheme Client \
 		test \
-		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.0' \
+		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
 		-resultBundlePath test-result.xcresult \
 		-derivedDataPath 'derivedData' \
 		-clonedSourcePackagesDirPath SourcePackages \
 		-disableAutomaticPackageResolution | xcbeautify --report junit
+
+.PHONY: test.ci
+test.ci:	
+	$(MAKE) clean-up
+	$(MAKE) generate-zip
+	set -o pipefail && xcodebuild -project Client/Client.xcodeproj \
+		-scheme Client \
+		test \
+		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+		-resultBundlePath test-result.xcresult \
+		-derivedDataPath 'derivedData' \
+		-clonedSourcePackagesDirPath SourcePackages \
+		-disableAutomaticPackageResolution | xcbeautify --report junit
+
 
 .PHONY: test-parallel
 test-parallel:
@@ -20,7 +34,7 @@ test-parallel:
 	NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj \
 	  -scheme "ClientTests - Parallel" \
 		test \
-		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.0' \
+		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
 		-resultBundlePath test-result.xcresult \
 		-clonedSourcePackagesDirPath SourcePackages \
 		-disableAutomaticPackageResolution \
@@ -35,7 +49,7 @@ generate-zip:
 	(cd $(root)/Server/ && zip -r $(root)/Lib/Sources/UIUnitTestCLI/resources/Server.zip *) || exit 1
 	xcodebuild -project ./Server/Server.xcodeproj \
 	  -scheme ServerUITests -sdk iphonesimulator \
-	  -destination "platform=iOS Simulator,name=iPhone 16,OS=18.0" \
+	  -destination "platform=iOS Simulator,name=iPhone 16,OS=18.2" \
 	  -IDEBuildLocationStyle=Custom \
 	  -IDECustomBuildLocationType=Absolute \
 	  -IDECustomBuildProductsPath="$(root)/build/Products" \

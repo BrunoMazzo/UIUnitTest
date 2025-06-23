@@ -8,10 +8,13 @@ on:
 jobs:
   parallel-testing:
     name: Cloned simulator
-    runs-on: self-hosted 
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - uses: maxim-lobanov/setup-xcode@v1.6.0
+        with:
+          xcode-version: latest-stable
       - name: Build & Test
         run: |
           make test-parallel
@@ -41,15 +44,18 @@ jobs:
       #     path: Client/logfile.txt
   single-device-testing:
     name: Normal simulator
-    runs-on: self-hosted 
+    runs-on: macos-latest 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - uses: maxim-lobanov/setup-xcode@v1.6.0
+        with:
+          xcode-version: latest-stable
       - name: Build & Test
         timeout-minutes: 20
         run: |
           #run UIUnitTest server
-          make test
+          make test.ci
       # - name: Archive cli logs
       #   if: always()
       #   uses: actions/upload-artifact@v3
