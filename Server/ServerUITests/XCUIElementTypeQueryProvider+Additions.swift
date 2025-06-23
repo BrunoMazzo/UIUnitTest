@@ -18,7 +18,7 @@ extension XCUIElementTypeQueryProvider {
         case .cells:
             resultQuery = self.cells
         case .checkBoxes:
-            resultQuery = self.staticTexts
+            resultQuery = self.checkBoxes
         case .collectionViews:
             resultQuery = self.collectionViews
         case .colorWells:
