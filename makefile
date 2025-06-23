@@ -20,7 +20,7 @@ test-parallel:
 	NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj \
 	  -scheme "ClientTests - Parallel" \
 		test \
-		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.0' \
+		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
 		-resultBundlePath test-result.xcresult \
 		-clonedSourcePackagesDirPath SourcePackages \
 		-disableAutomaticPackageResolution \
