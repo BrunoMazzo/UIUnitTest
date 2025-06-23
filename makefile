@@ -13,6 +13,20 @@ test:
 		-clonedSourcePackagesDirPath SourcePackages \
 		-disableAutomaticPackageResolution | xcbeautify --report junit
 
+.PHONY: test.ci
+test.ci:	
+	$(MAKE) clean-up
+	$(MAKE) generate-zip
+	set -o pipefail && xcodebuild -project Client/Client.xcodeproj \
+		-scheme Client \
+		test \
+		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+		-resultBundlePath test-result.xcresult \
+		-derivedDataPath 'derivedData' \
+		-clonedSourcePackagesDirPath SourcePackages \
+		-disableAutomaticPackageResolution | xcbeautify --report junit
+
+
 .PHONY: test-parallel
 test-parallel:
 	$(MAKE) clean-up

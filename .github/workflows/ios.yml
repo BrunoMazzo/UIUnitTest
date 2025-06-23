@@ -55,7 +55,7 @@ jobs:
         timeout-minutes: 20
         run: |
           #run UIUnitTest server
-          make test
+          make test.ci
       # - name: Archive cli logs
       #   if: always()
       #   uses: actions/upload-artifact@v3
