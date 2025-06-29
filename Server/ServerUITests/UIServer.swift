@@ -87,7 +87,7 @@ class UIServer {
     /// A cache mechanism to manage and track XCUIApplication and XCUIElement instances
     /// Provides efficient reference management and lookup for UI testing elements
     @MainActor
-    let cache = Cache()
+    let cache = ServerState()
 
     /// Starts the UIServer with a specified port index
     ///
@@ -746,7 +746,7 @@ extension UInt64 {
 extension AccessibilityAuditIssueData {
     @available(iOS 17.0, *)
     @MainActor
-    init(xcIssue: XCUIAccessibilityAuditIssue, cache: Cache) {
+    init(xcIssue: XCUIAccessibilityAuditIssue, cache: ServerState) {
         var elementId: UUID?
         if let element = xcIssue.element {
             elementId = cache.add(element: element)
