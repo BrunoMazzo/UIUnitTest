@@ -3,14 +3,27 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-// MARK: - Application Routes
-extension UIServer {
+/// A class responsible for handling application lifecycle management routes
+@MainActor
+final class ApplicationRoutes {
+    private let cache: ServerState
+    private let routeRegistrar: RouteRegistering
+    
+    /// Initializes a new ApplicationRoutes instance
+    /// - Parameters:
+    ///   - cache: The server state cache for managing application instances
+    ///   - routeRegistrar: The object responsible for registering routes
+    init(cache: ServerState, routeRegistrar: RouteRegistering) {
+        self.cache = cache
+        self.routeRegistrar = routeRegistrar
+    }
+    
     /// Registers routes for application lifecycle management
     /// - createApp: Creates a new XCUIApplication instance
     /// - Activate: Activates a previously created application
-    func registerApplicationRoutes() async {
-        await addRoute("createApp", handler: createApp(request:))
-        await addRoute("Activate", handler: activate(_:))
+    func registerRoutes() async {
+        await routeRegistrar.addRoute("createApp", handler: createApp(request:))
+        await routeRegistrar.addRoute("Activate", handler: activate(_:))
     }
 
     /// Creates a new XCUIApplication instance for a given bundle identifier
@@ -20,9 +33,8 @@ extension UIServer {
     ///
     /// - Parameters:
     ///   - request: A request containing the bundle identifier and optional activation flag
-    ///   - Throws: Errors related to application creation or caching
-    @MainActor
-    func createApp(request: CreateApplicationRequest) async throws {
+    /// - Throws: Errors related to application creation or caching
+    private func createApp(request: CreateApplicationRequest) async throws {
         let app = XCUIApplication(bundleIdentifier: request.appId)
         cache.add(application: app, id: request.serverId)
 
@@ -39,9 +51,26 @@ extension UIServer {
     /// - Parameters:
     ///   - activateRequest: A request containing the server ID of the application to activate
     /// - Throws: Errors related to application retrieval or activation
-    @MainActor
-    func activate(_ activateRequest: ActivateRequest) async throws {
+    private func activate(_ activateRequest: ActivateRequest) async throws {
         let app = try cache.getApplication(activateRequest.serverId)
         app.activate()
+    }
+}
+
+/// Protocol defining the interface for route registration
+protocol RouteRegistering {
+    func addRoute<Request: Codable, Response: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Response) async
+    func addRoute<Request: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Void) async
+}
+
+// MARK: - UIServer + RouteRegistering
+extension UIServer: RouteRegistering {}
+
+// MARK: - UIServer + Application Routes
+extension UIServer {
+    /// Registers routes for application lifecycle management
+    func registerApplicationRoutes() async {
+        let routes = ApplicationRoutes(cache: cache, routeRegistrar: self)
+        await routes.registerRoutes()
     }
 }
