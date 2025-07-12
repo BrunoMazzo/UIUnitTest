@@ -175,9 +175,10 @@ extension UIServer {
     /// - Returns: An `ElementPayload` with the server ID of the found element
     /// - Throws: Errors related to query retrieval or element matching
     @MainActor
-    func element(request: ByIdRequest) async throws -> ElementPayload {
-        let newElement = try await findElement(elementRequest: request)
-        let id = cache.add(element: newElement)
+    func element(request: ByIdRequest) async -> ElementPayload {
+        let rootElementQuery =  try! self.cache.getElementQuery(request.queryRoot)
+        let newElement =  rootElementQuery[request.identifier]
+        let id = self.cache.add(element: newElement)
         return ElementPayload(serverId: id)
     }
 

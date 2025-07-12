@@ -40,46 +40,4 @@ extension UIServer {
         let rootElement = try cache.getElement(request.serverId)
         return rootElement.placeholderValue
     }
-    
-    @MainActor
-    func isSelected(request: ElementPayload) async throws -> Bool {
-        let rootElement = try cache.getElement(request.serverId)
-        return rootElement.isSelected
-    }
-    
-    @MainActor
-    func hasFocus(request: ElementPayload) async throws -> Bool {
-        let rootElement = try cache.getElement(request.serverId)
-        return rootElement.hasFocus
-    }
-    
-    @MainActor
-    func isEnabled(request: ElementPayload) async throws -> Bool {
-        let rootElement = try cache.getElement(request.serverId)
-        return rootElement.isEnabled
-    }
-    
-    @MainActor
-    func frame(request: ElementPayload) async throws -> CGRect {
-        let element = try cache.getElement(request.serverId)
-        return element.frame
-    }
-    
-    @MainActor
-    func horizontalSizeClass(request: ElementPayload) async throws -> SizeClass {
-        let element = try cache.getElement(request.serverId)
-        return SizeClass(rawValue: element.horizontalSizeClass.rawValue)!
-    }
-    
-    @MainActor
-    func verticalSizeClass(request: ElementPayload) async throws -> SizeClass {
-        let element = try cache.getElement(request.serverId)
-        return SizeClass(rawValue: element.verticalSizeClass.rawValue)!
-    }
-    
-    @MainActor
-    func elementType(request: ElementPayload) async throws -> UInt {
-        let element = try cache.getElement(request.serverId)
-        return element.elementType.rawValue
-    }
 }

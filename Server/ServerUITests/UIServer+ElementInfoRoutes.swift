@@ -31,66 +31,6 @@ extension UIServer {
         await addRoute("verticalSizeClass", handler: verticalSizeClass(request:))
     }
 
-    /// Retrieves the identifier of an element
-    ///
-    /// This method returns the identifier associated with a specific UI element.
-    /// The identifier is a string that uniquely identifies the element in the UI hierarchy.
-    ///
-    /// - Parameters:
-    ///   - request: Contains the server ID of the element
-    /// - Returns: A `StringResponse` containing the element's identifier
-    /// - Throws: Errors related to element retrieval
-    @MainActor
-    func identifier(request: ElementPayload) async throws -> StringResponse {
-        let element = try cache.getElement(request.serverId)
-        return StringResponse(value: element.identifier)
-    }
-
-    /// Retrieves the title of an element
-    ///
-    /// This method returns the title text associated with a specific UI element.
-    /// The title typically represents the main text content or heading of the element.
-    ///
-    /// - Parameters:
-    ///   - request: Contains the server ID of the element
-    /// - Returns: A `StringResponse` containing the element's title
-    /// - Throws: Errors related to element retrieval
-    @MainActor
-    func title(request: ElementPayload) async throws -> StringResponse {
-        let element = try cache.getElement(request.serverId)
-        return StringResponse(value: element.title)
-    }
-
-    /// Retrieves the label of an element
-    ///
-    /// This method returns the accessibility label associated with a specific UI element.
-    /// The label is typically used for accessibility purposes and describes the element's purpose.
-    ///
-    /// - Parameters:
-    ///   - request: Contains the server ID of the element
-    /// - Returns: A `StringResponse` containing the element's label
-    /// - Throws: Errors related to element retrieval
-    @MainActor
-    func label(request: ElementPayload) async throws -> StringResponse {
-        let element = try cache.getElement(request.serverId)
-        return StringResponse(value: element.label)
-    }
-
-    /// Retrieves the placeholder value of an element
-    ///
-    /// This method returns the placeholder text associated with a specific UI element.
-    /// The placeholder is typically used in text input fields to provide hints about expected input.
-    ///
-    /// - Parameters:
-    ///   - request: Contains the server ID of the element
-    /// - Returns: A `StringResponse` containing the element's placeholder value
-    /// - Throws: Errors related to element retrieval
-    @MainActor
-    func placeholderValue(request: ElementPayload) async throws -> StringResponse {
-        let element = try cache.getElement(request.serverId)
-        return StringResponse(value: element.placeholderValue)
-    }
-
     /// Checks if an element is selected
     ///
     /// This method determines whether a specific UI element is currently in a selected state.
@@ -146,9 +86,9 @@ extension UIServer {
     /// - Returns: An `ElementTypeResponse` containing the element's type
     /// - Throws: Errors related to element retrieval
     @MainActor
-    func elementType(request: ElementPayload) async throws -> ElementTypeResponse {
+    func elementType(request: ElementPayload) async throws -> UInt {
         let element = try cache.getElement(request.serverId)
-        return ElementTypeResponse(elementType: element.elementType.toElementType())
+        return element.elementType.rawValue
     }
 
     /// Retrieves the frame of an element
@@ -161,9 +101,9 @@ extension UIServer {
     /// - Returns: A `FrameResponse` containing the element's frame coordinates
     /// - Throws: Errors related to element retrieval
     @MainActor
-    func frame(request: ElementPayload) async throws -> FrameResponse {
+    func frame(request: ElementPayload) async throws -> CGRect {
         let element = try cache.getElement(request.serverId)
-        return FrameResponse(frame: element.frame)
+        return element.frame
     }
 
     /// Retrieves the horizontal size class of an element
@@ -176,9 +116,9 @@ extension UIServer {
     /// - Returns: A `UserInterfaceSizeClassResponse` containing the horizontal size class
     /// - Throws: Errors related to element retrieval
     @MainActor
-    func horizontalSizeClass(request: ElementPayload) async throws -> UserInterfaceSizeClassResponse {
+    func horizontalSizeClass(request: ElementPayload) async throws -> SizeClass {
         let element = try cache.getElement(request.serverId)
-        return UserInterfaceSizeClassResponse(sizeClass: element.horizontalSizeClass.toUserInterfaceSizeClass())
+        return SizeClass(rawValue: element.horizontalSizeClass.rawValue)!
     }
 
     /// Retrieves the vertical size class of an element
@@ -191,8 +131,8 @@ extension UIServer {
     /// - Returns: A `UserInterfaceSizeClassResponse` containing the vertical size class
     /// - Throws: Errors related to element retrieval
     @MainActor
-    func verticalSizeClass(request: ElementPayload) async throws -> UserInterfaceSizeClassResponse {
+    func verticalSizeClass(request: ElementPayload) async throws -> SizeClass {
         let element = try cache.getElement(request.serverId)
-        return UserInterfaceSizeClassResponse(sizeClass: element.verticalSizeClass.toUserInterfaceSizeClass())
+        return SizeClass(rawValue: element.verticalSizeClass.rawValue)!
     }
 }

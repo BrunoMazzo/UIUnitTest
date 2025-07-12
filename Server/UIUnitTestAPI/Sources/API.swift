@@ -509,7 +509,7 @@ public struct UIResponse<T: Codable>: Codable {
 extension UIResponse: Sendable where T: Sendable {}
 
 public enum Response<T: Codable> {
-    case error(error: ErrorResponse)
+case error(error: ErrorResponse)
     case success(data: T)
 }
 

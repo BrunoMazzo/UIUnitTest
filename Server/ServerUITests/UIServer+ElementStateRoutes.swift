@@ -44,7 +44,7 @@ extension UIServer {
     /// - Returns: A boolean indicating whether the element appeared within the timeout
     /// - Throws: Errors related to element retrieval
     @MainActor
-    func waitForExistence(request: WaitRequest) async throws -> Bool {
+    func waitForExistence(request: WaitForExistenceRequest) async throws -> Bool {
         let element = try cache.getElement(request.serverId)
         return element.waitForExistence(timeout: request.timeout)
     }
@@ -59,7 +59,7 @@ extension UIServer {
     /// - Returns: A boolean indicating whether the element disappeared within the timeout
     /// - Throws: Errors related to element retrieval
     @MainActor
-    func waitForNonExistence(request: WaitRequest) async throws -> Bool {
+    func waitForNonExistence(request: WaitForExistenceRequest) async throws -> Bool {
         let element = try cache.getElement(request.serverId)
         return element.waitForNonExistence(timeout: request.timeout)
     }
@@ -72,12 +72,12 @@ extension UIServer {
     ///
     /// - Parameters:
     ///   - request: Contains the server ID of the element
-    /// - Returns: A `StringResponse` containing the element's value
+    /// - Returns: A `ValueResponse` containing the element's value
     /// - Throws: Errors related to element retrieval
     @MainActor
-    func value(request: ElementPayload) async throws -> StringResponse {
+    func value(request: ElementPayload) async throws -> ValueResponse {
         let element = try cache.getElement(request.serverId)
-        return StringResponse(value: element.value as? String ?? "")
+        return ValueResponse(value: element.value as? String ?? "")
     }
 
     /// Checks if an element is hittable

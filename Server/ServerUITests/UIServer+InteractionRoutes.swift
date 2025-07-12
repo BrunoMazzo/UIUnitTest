@@ -37,32 +37,21 @@ extension UIServer {
     /// - Returns: A boolean indicating whether the tap was successful
     /// - Throws: Errors related to element retrieval or tap execution
     @MainActor
-    func tapElement(tapRequest: TapRequest) async throws -> Bool {
-        let element = try cache.getElement(tapRequest.serverId)
+    func tapElement(tapRequest: TapElementRequest) throws -> Bool {
+        guard let element = try? cache.getElement(tapRequest.serverId) else {
+            return false
+        }
 
-        switch tapRequest.type {
-        case .tap:
-            element.tap()
-        case .doubleTap:
-            element.doubleTap()
-        case let .press(forDuration: duration):
+        if let duration = tapRequest.duration {
             element.press(forDuration: duration)
-        case let .pressAndDrag(forDuration: duration, thenDragTo: coordinate):
-            let coordinate = try cache.getCoordinate(coordinate)
-            element.press(forDuration: duration, thenDragTo: coordinate)
-        case let .pressDragAndHold(
-            forDuration: duration,
-            thenDragTo: coordinate,
-            withVelocity: velocity,
-            thenHoldForDuration: holdDuration
-        ):
-            let coordinate = try cache.getCoordinate(coordinate)
-            element.press(
-                forDuration: duration,
-                thenDragTo: coordinate,
-                withVelocity: velocity.xcUIGestureVelocity,
-                thenHoldForDuration: holdDuration
-            )
+        } else if let numberOfTouches = tapRequest.numberOfTouches {
+            if let numberOfTaps = tapRequest.numberOfTaps {
+                element.tap(withNumberOfTaps: numberOfTaps, numberOfTouches: numberOfTouches)
+            } else {
+                element.twoFingerTap()
+            }
+        } else {
+            element.tap()
         }
 
         return true
@@ -78,10 +67,9 @@ extension UIServer {
     /// - Returns: A boolean indicating whether the double tap was successful
     /// - Throws: Errors related to element retrieval or tap execution
     @MainActor
-    func doubleTap(tapRequest: TapRequest) async throws -> Bool {
+    func doubleTap(tapRequest: ElementPayload) throws -> Void {
         let element = try cache.getElement(tapRequest.serverId)
         element.doubleTap()
-        return true
     }
 
     /// Types text into an element
@@ -94,10 +82,9 @@ extension UIServer {
     /// - Returns: A boolean indicating whether the text input was successful
     /// - Throws: Errors related to element retrieval or text input
     @MainActor
-    func typeText(request: TypeTextRequest) async throws -> Bool {
-        let element = try cache.getElement(request.serverId)
-        element.typeText(request.text)
-        return true
+    func typeText(request: EnterTextRequest) throws -> Void {
+        let element = try self.cache.getElement(request.serverId)
+        element.typeText(request.textToEnter)
     }
 
     /// Scrolls an element by specified delta values
@@ -110,7 +97,7 @@ extension UIServer {
     /// - Returns: A boolean indicating whether the scroll was successful
     /// - Throws: Errors related to element retrieval or scroll execution
     @MainActor
-    func scroll(request: ScrollRequest) async throws -> Bool {
+    func scroll(request: ScrollRequest) throws -> Bool {
         let element = try cache.getElement(request.serverId)
         element.scroll(byDeltaX: request.deltaX, deltaY: request.deltaY)
         return true
@@ -126,10 +113,10 @@ extension UIServer {
     /// - Returns: A boolean indicating whether the swipe was successful
     /// - Throws: Errors related to element retrieval or swipe execution
     @MainActor
-    func swipe(request: SwipeRequest) async throws -> Bool {
+    func swipe(request: SwipeRequest) throws -> Bool {
         let element = try cache.getElement(request.serverId)
 
-        switch request.direction {
+        switch request.swipeDirection {
         case .up:
             element.swipeUp()
         case .down:
@@ -153,17 +140,9 @@ extension UIServer {
     /// - Returns: A boolean indicating whether the pinch was successful
     /// - Throws: Errors related to element retrieval or pinch execution
     @MainActor
-    func pinch(request: PinchRequest) async throws -> Bool {
-        let element = try cache.getElement(request.serverId)
-
-        switch request.direction {
-        case .inward:
-            element.pinch(withScale: request.scale, velocity: request.velocity)
-        case .outward:
-            element.pinch(withScale: request.scale, velocity: -request.velocity)
-        }
-
-        return true
+    func pinch(request: PinchRequest) throws {
+        let element = try self.cache.getElement(request.serverId)
+        element.pinch(withScale: request.scale, velocity: request.velocity)
     }
 
     /// Performs a rotation gesture on an element
@@ -176,7 +155,7 @@ extension UIServer {
     /// - Returns: A boolean indicating whether the rotation was successful
     /// - Throws: Errors related to element retrieval or rotation execution
     @MainActor
-    func rotate(request: RotateRequest) async throws -> Bool {
+    func rotate(request: RotateRequest) throws -> Bool {
         let element = try cache.getElement(request.serverId)
         element.rotate(request.rotation, withVelocity: request.velocity)
         return true
