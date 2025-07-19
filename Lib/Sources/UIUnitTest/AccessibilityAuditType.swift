@@ -1,11 +1,5 @@
-//
-//  File.swift
-//  
-//
-//  Created by Bruno Mazzo on 7/5/2024.
-//
-
 import Foundation
+import UIUnitTestAPI
 
 public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable, Sendable {
 
@@ -15,27 +9,26 @@ public struct AccessibilityAuditType: RawRepresentable, OptionSet, Codable, Send
         self.rawValue = rawValue
     }
 
-    public static let contrast                     = AccessibilityAuditType(rawValue: 1 << 0)
-    public static let elementDetection             = AccessibilityAuditType(rawValue: 1 << 1)
-    public static let hitRegion                    = AccessibilityAuditType(rawValue: 1 << 2)
+    public static let contrast = AccessibilityAuditType(rawValue: 1 << 0)
+    public static let elementDetection = AccessibilityAuditType(rawValue: 1 << 1)
+    public static let hitRegion = AccessibilityAuditType(rawValue: 1 << 2)
     public static let sufficientElementDescription = AccessibilityAuditType(rawValue: 1 << 3)
 
-#if TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH || TARGET_OS_SIMULATOR
-    // Types of audits supported on iOS, watchOS, and tvOS
-    public static let dynamicType                  = AccessibilityAuditType(rawValue: 1 << 16)
-    public static let textClipped                  = AccessibilityAuditType(rawValue: 1 << 17)
-    public static let trait                        = AccessibilityAuditType(rawValue: 1 << 18)
+    #if TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH || TARGET_OS_SIMULATOR
+        // Types of audits supported on iOS, watchOS, and tvOS
+        public static let dynamicType = AccessibilityAuditType(rawValue: 1 << 16)
+        public static let textClipped = AccessibilityAuditType(rawValue: 1 << 17)
+        public static let trait = AccessibilityAuditType(rawValue: 1 << 18)
 
-#elseif TARGET_OS_OSX || TARGET_OS_MACCATALYST
-    // Types of audits supported on macOS
-    public static let action                       = AccessibilityAuditType(rawValue: 1 << 32)
-    public static let parentChild                  = AccessibilityAuditType(rawValue: 1 << 33)
-#endif
-    public static let all                          = AccessibilityAuditType(rawValue: ~0)
+    #elseif TARGET_OS_OSX || TARGET_OS_MACCATALYST
+        // Types of audits supported on macOS
+        public static let action = AccessibilityAuditType(rawValue: 1 << 32)
+        public static let parentChild = AccessibilityAuditType(rawValue: 1 << 33)
+    #endif
+    public static let all = AccessibilityAuditType(rawValue: ~0)
 }
 
 public final class AccessibilityAuditIssue: Codable, Sendable {
-
     /// The element associated with the issue.
     public let element: Element?
 
@@ -73,12 +66,12 @@ public final class AccessibilityAuditIssue: Codable, Sendable {
         if let element = try container.decodeIfPresent(UUID.self, forKey: .element) {
             self.element = Element(serverId: element)
         } else {
-            self.element = nil
+            element = nil
         }
 
-        self.compactDescription = try container.decode(String.self, forKey: .compactDescription)
-        self.detailedDescription = try container.decode(String.self, forKey: .detailedDescription)
-        self.auditType = try container.decode(AccessibilityAuditType.self, forKey: .auditType)
+        compactDescription = try container.decode(String.self, forKey: .compactDescription)
+        detailedDescription = try container.decode(String.self, forKey: .detailedDescription)
+        auditType = try container.decode(AccessibilityAuditType.self, forKey: .auditType)
     }
 
     public func encode(to encoder: any Encoder) throws {

@@ -7,7 +7,7 @@ test:
 	set -o pipefail && xcodebuild -project Client/Client.xcodeproj \
 		-scheme Client \
 		test \
-		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.0' \
+		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
 		-resultBundlePath test-result.xcresult \
 		-derivedDataPath 'derivedData' \
 		-clonedSourcePackagesDirPath SourcePackages \
@@ -20,7 +20,7 @@ test-parallel:
 	NSUnbufferedIO=YES xcodebuild -project Client/Client.xcodeproj \
 	  -scheme "ClientTests - Parallel" \
 		test \
-		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.0' \
+		-destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
 		-resultBundlePath test-result.xcresult \
 		-clonedSourcePackagesDirPath SourcePackages \
 		-disableAutomaticPackageResolution \
@@ -35,7 +35,7 @@ generate-zip:
 	(cd $(root)/Server/ && zip -r $(root)/Lib/Sources/UIUnitTestCLI/resources/Server.zip *) || exit 1
 	xcodebuild -project ./Server/Server.xcodeproj \
 	  -scheme ServerUITests -sdk iphonesimulator \
-	  -destination "platform=iOS Simulator,name=iPhone 16,OS=18.0" \
+	  -destination "platform=iOS Simulator,name=iPhone 16,OS=18.2" \
 	  -IDEBuildLocationStyle=Custom \
 	  -IDECustomBuildLocationType=Absolute \
 	  -IDECustomBuildProductsPath="$(root)/build/Products" \
@@ -50,3 +50,6 @@ clean-up:
 	rm -rf derivedData 2> /dev/null
 	rm -rf test-result.xcresult 2> /dev/null
 
+.PHONY: reset-simulators
+reset-simulators:
+	killall "Simulator" 2> /dev/null; xcrun simctl erase all

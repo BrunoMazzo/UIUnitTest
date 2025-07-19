@@ -21,7 +21,6 @@ enum SwipeDirection {
 }
 
 struct SwipeView: View {
-
     @State var direction: SwipeDirection?
 
     var body: some View {
@@ -31,7 +30,7 @@ struct SwipeView: View {
                 .frame(width: 200, height: 200)
                 .background(.green)
                 .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                    .onEnded({ value in
+                    .onEnded { value in
                         if value.translation.width < 0 {
                             direction = .left
                         }
@@ -44,7 +43,7 @@ struct SwipeView: View {
                         if value.translation.height > 0 {
                             direction = .down
                         }
-                    }))
+                    })
         }
     }
 }

@@ -1,9 +1,12 @@
 import XCTest
+import FlyingFox
 
 final class UITestServerTest: XCTestCase {
 
     override func record(_ issue: XCTIssue) {
-        self.server.lastIssue = issue
+        MainActor.assumeIsolated { [server] in
+            server!.lastIssue = issue
+        }
     }
 
     override func setUpWithError() throws {
@@ -29,7 +32,8 @@ final class UITestServerTest: XCTestCase {
             print("SERVER ERROR ----------------------------------")
         }
     }
-
+    
+    @MainActor
     func deviceId() -> Int {
         let deviceName = UIDevice.current.name
 

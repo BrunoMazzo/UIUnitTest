@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 
 @MainActor
-class Cache {
+class ServerState {
     private var queryIds: [UUID: XCUIElementTypeQueryProvider] = [:]
     private var elementIds: [UUID: XCUIElement] = [:]
     private var coordinates: [UUID: XCUICoordinate] = [:]

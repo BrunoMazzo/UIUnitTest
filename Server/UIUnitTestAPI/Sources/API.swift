@@ -224,11 +224,38 @@ public struct CountResponse: Codable, Sendable {
 
 public struct PredicateRequest: Codable, Sendable {
     public let serverId: UUID
-    public let predicate: String
+    public nonisolated(unsafe)
+    let predicate: NSPredicate
 
-    public init(serverId: UUID, predicate: String) {
+    public init(serverId: UUID, predicate: NSPredicate) {
         self.serverId = serverId
         self.predicate = predicate
+    }
+
+    enum CodingKeys: CodingKey {
+        case serverId
+        case predicate
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        let data = try NSKeyedArchiver.archivedData(
+            withRootObject: predicate,
+            requiringSecureCoding: true
+        )
+
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(serverId, forKey: .serverId)
+        try container.encode(data, forKey: .predicate)
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        serverId = try container.decode(UUID.self, forKey: .serverId)
+
+        let data = try container.decode(Data.self, forKey: .predicate)
+
+        predicate = try NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSPredicate.self], from: data) as! NSPredicate
     }
 }
 
@@ -482,7 +509,7 @@ public struct UIResponse<T: Codable>: Codable {
 extension UIResponse: Sendable where T: Sendable {}
 
 public enum Response<T: Codable> {
-    case error(error: ErrorResponse)
+case error(error: ErrorResponse)
     case success(data: T)
 }
 

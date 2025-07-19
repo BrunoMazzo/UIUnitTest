@@ -49,7 +49,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
     }
 
     // Using autoclosure to erase the Sendable warning
-    public func element(matching predicate: @Sendable @autoclosure () -> String) async throws -> Element {
+    public func element(matching predicate: @Sendable @autoclosure () -> NSPredicate) async throws -> Element {
         let response: ElementPayload = try await callServer(path: "elementMatchingPredicate", request: PredicateRequest(serverId: serverId, predicate: predicate()))
         return Element(serverId: response.serverId)
     }
@@ -83,7 +83,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Query(serverId: queryResponse.serverId)
     }
 
-    public func matching(_ predicate: String) async throws -> Query {
+    public func matching(_ predicate: NSPredicate) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "matchingPredicate", request: PredicateRequest(serverId: serverId, predicate: predicate))
         return Query(serverId: response.serverId)
     }
@@ -98,7 +98,7 @@ public final class Query: ElementTypeQueryProvider, Sendable {
         return Query(serverId: response.serverId)
     }
 
-    public func containing(_ predicate: String) async throws -> Query {
+    public func containing(_ predicate: NSPredicate) async throws -> Query {
         let response: QueryResponse = try await callServer(path: "containingPredicate", request: PredicateRequest(serverId: serverId, predicate: predicate))
         return Query(serverId: response.serverId)
     }
@@ -187,7 +187,7 @@ public final class SyncQuery: SyncElementTypeQueryProvider, Sendable {
 
     @available(*, noasync)
     // Using autoclosure to erase the Sendable warning
-    public func element(matching predicate: @Sendable @autoclosure @escaping () -> String) -> SyncElement {
+    public func element(matching predicate: @Sendable @autoclosure @escaping () -> NSPredicate) -> SyncElement {
         Executor.execute {
             try SyncElement(element: await self.query.element(matching: predicate()))
         }.valueOrFailWithFallback(.EmptyElement)
@@ -229,9 +229,10 @@ public final class SyncQuery: SyncElementTypeQueryProvider, Sendable {
     }
 
     @available(*, noasync)
-    public func matching(_ predicate: String) -> SyncQuery {
+    public func matching(_ predicate: NSPredicate) -> SyncQuery {
+        let sendablebox = NSPredicateSendableBox(predicate: predicate)
         return Executor.execute {
-            try SyncQuery(query: await self.query.matching(predicate))
+            try SyncQuery(query: await self.query.matching(sendablebox.predicate))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
 
@@ -250,9 +251,10 @@ public final class SyncQuery: SyncElementTypeQueryProvider, Sendable {
     }
 
     @available(*, noasync)
-    public func containing(_ predicate: String) -> SyncQuery {
+    public func containing(_ predicate: NSPredicate) -> SyncQuery {
+        let sendablebox = NSPredicateSendableBox(predicate: predicate)
         return Executor.execute {
-            try SyncQuery(query: await self.query.containing(predicate))
+            try SyncQuery(query: await self.query.containing(sendablebox.predicate))
         }.valueOrFailWithFallback(.EmptyQuery)
     }
 
