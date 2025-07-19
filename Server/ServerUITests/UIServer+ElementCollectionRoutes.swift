@@ -3,8 +3,24 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-// MARK: - Element Collection Routes
-extension UIServer {
+/// A class responsible for handling element collection routes
+@MainActor
+final class ElementCollectionRoutes {
+    private let cache: ServerState
+    private let routeRegistrar: RouteRegistering
+    private let server: UIServer
+    
+    /// Initializes a new ElementCollectionRoutes instance
+    /// - Parameters:
+    ///   - cache: The server state cache for managing application instances
+    ///   - routeRegistrar: The object responsible for registering routes
+    ///   - server: The UIServer instance for accessing utility methods
+    init(cache: ServerState, routeRegistrar: RouteRegistering, server: UIServer) {
+        self.cache = cache
+        self.routeRegistrar = routeRegistrar
+        self.server = server
+    }
+    
     /// Registers routes for element collection operations
     /// - count: Gets count of elements in query
     /// - queryDescendants: Gets descendants query from query
@@ -17,18 +33,18 @@ extension UIServer {
     /// - element: Gets specific element by identifier
     /// - remove: Removes element from cache
     /// - debugDescription: Gets debug description
-    func registerElementCollectionRoutes() async {
-        await addRoute("count", handler: count(request:))
-        await addRoute("queryDescendants", handler: queryDescendants(request:))
-        await addRoute("elementDescendants", handler: elementDescendants(request:))
-        await addRoute("matchingElementType", handler: matchingElementType(request:))
-        await addRoute("allElementsBoundByAccessibilityElement", handler: allElementsBoundByAccessibilityElement(request:))
-        await addRoute("allElementsBoundByIndex", handler: allElementsBoundByIndex(request:))
-        await addRoute("children", handler: children(request:))
-        await addRoute("query", handler: query(request:))
-        await addRoute("element", handler: element(request:))
-        await addRoute("remove", handler: remove(request:))
-        await addRoute("debugDescription", handler: debugDescription(request:))
+    func registerRoutes() async {
+        await routeRegistrar.addRoute("count", handler: count(request:))
+        await routeRegistrar.addRoute("queryDescendants", handler: queryDescendants(request:))
+        await routeRegistrar.addRoute("elementDescendants", handler: elementDescendants(request:))
+        await routeRegistrar.addRoute("matchingElementType", handler: matchingElementType(request:))
+        await routeRegistrar.addRoute("allElementsBoundByAccessibilityElement", handler: allElementsBoundByAccessibilityElement(request:))
+        await routeRegistrar.addRoute("allElementsBoundByIndex", handler: allElementsBoundByIndex(request:))
+        await routeRegistrar.addRoute("children", handler: children(request:))
+        await routeRegistrar.addRoute("query", handler: query(request:))
+        await routeRegistrar.addRoute("element", handler: element(request:))
+        await routeRegistrar.addRoute("remove", handler: remove(request:))
+        await routeRegistrar.addRoute("debugDescription", handler: debugDescription(request:))
     }
 
     /// Counts the number of elements in a query
@@ -40,8 +56,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the query to count
     /// - Returns: A `CountResponse` with the number of elements in the query
     /// - Throws: Errors related to query retrieval
-    @MainActor
-    func count(request: CountRequest) async throws -> CountResponse {
+    private func count(request: CountRequest) async throws -> CountResponse {
         let count: Int = try (cache.getElementQuery(request.serverId)).count
         return CountResponse(count: count)
     }
@@ -55,8 +70,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the source query and the element type to match
     /// - Returns: A `QueryResponse` with the server ID of the new descendants query
     /// - Throws: Errors related to query retrieval or element type matching
-    @MainActor
-    func queryDescendants(request: DescendantsFromQuery) async throws -> QueryResponse {
+    private func queryDescendants(request: DescendantsFromQuery) async throws -> QueryResponse {
         let rootQuery = try cache.getElementQuery(request.serverId)
         let descendantsQuery = rootQuery.descendants(matching: request.elementType.toXCUIElementType())
 
@@ -74,8 +88,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the source element and the element type to match
     /// - Returns: A `QueryResponse` with the server ID of the new descendants query
     /// - Throws: Errors related to element retrieval or element type matching
-    @MainActor
-    func elementDescendants(request: ElementTypeRequest) async throws -> QueryResponse {
+    private func elementDescendants(request: ElementTypeRequest) async throws -> QueryResponse {
         let rootElement = try cache.getElement(request.serverId)
         let descendantsQuery = rootElement.descendants(matching: request.elementType.toXCUIElementType())
 
@@ -93,8 +106,7 @@ extension UIServer {
     ///   - request: Contains the source query's server ID, element type, and optional identifier
     /// - Returns: A `QueryResponse` with the server ID of the new filtered query
     /// - Throws: Errors related to query retrieval or element type matching
-    @MainActor
-    func matchingElementType(request: ElementTypeRequest) async throws -> QueryResponse {
+    private func matchingElementType(request: ElementTypeRequest) async throws -> QueryResponse {
         let rootQuery = try cache.getElementQuery(request.serverId)
         let descendantsQuery = rootQuery.matching(request.elementType.toXCUIElementType(), identifier: request.identifier)
         let id = cache.add(query: descendantsQuery)
@@ -110,8 +122,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the source query
     /// - Returns: An `ElementArrayResponse` with server IDs of the retrieved elements
     /// - Throws: Errors related to query retrieval
-    @MainActor
-    func allElementsBoundByAccessibilityElement(request: ElementsByAccessibility) async throws -> ElementArrayResponse {
+    private func allElementsBoundByAccessibilityElement(request: ElementsByAccessibility) async throws -> ElementArrayResponse {
         let rootQuery = try cache.getElementQuery(request.serverId)
         let allElements = rootQuery.allElementsBoundByAccessibilityElement
 
@@ -129,8 +140,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the source query
     /// - Returns: An `ElementArrayResponse` with server IDs of the retrieved elements
     /// - Throws: Errors related to query retrieval
-    @MainActor
-    func allElementsBoundByIndex(request: ElementsByAccessibility) async throws -> ElementArrayResponse {
+    private func allElementsBoundByIndex(request: ElementsByAccessibility) async throws -> ElementArrayResponse {
         let rootQuery = try cache.getElementQuery(request.serverId)
         let allElements = rootQuery.allElementsBoundByIndex
 
@@ -148,8 +158,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the source query/element and the element type to match
     /// - Returns: A `QueryResponse` with the server ID of the new children query
     /// - Throws: Errors if the source element or query cannot be found
-    @MainActor
-    func children(request: ChildrenMatchinType) async throws -> QueryResponse {
+    private func children(request: ChildrenMatchinType) async throws -> QueryResponse {
         var childrenQuery: XCUIElementQuery
 
         if let rootQuery = try? cache.getElementQuery(request.serverId) {
@@ -174,8 +183,7 @@ extension UIServer {
     ///   - request: Contains the query's server ID and the identifier of the element to find
     /// - Returns: An `ElementPayload` with the server ID of the found element
     /// - Throws: Errors related to query retrieval or element matching
-    @MainActor
-    func element(request: ByIdRequest) async -> ElementPayload {
+    private func element(request: ByIdRequest) async -> ElementPayload {
         let rootElementQuery =  try! self.cache.getElementQuery(request.queryRoot)
         let newElement =  rootElementQuery[request.identifier]
         let id = self.cache.add(element: newElement)
@@ -191,9 +199,8 @@ extension UIServer {
     ///   - request: Contains the server ID of the source query and the query type to apply
     /// - Returns: A `QueryResponse` with the server ID of the new query
     /// - Throws: Errors related to query retrieval or query execution
-    @MainActor
-    func query(request: QueryRequest) async throws -> QueryResponse {
-        let newQuery = try await performQuery(queryRequest: request)
+    private func query(request: QueryRequest) async throws -> QueryResponse {
+        let newQuery = try await server.performQuery(queryRequest: request)
         let serverId = cache.add(query: newQuery)
         return QueryResponse(serverId: serverId)
     }
@@ -206,10 +213,32 @@ extension UIServer {
     /// - Parameters:
     ///   - request: Contains the server ID of the element to remove
     /// - Returns: A boolean indicating whether the removal was successful
-    @MainActor
-    func remove(request: ElementPayload) async -> Bool {
+    private func remove(request: ElementPayload) async -> Bool {
         cache.remove(request.serverId)
 
         return true
+    }
+
+    private func debugDescription(request: ElementPayload) async throws -> String {
+        var debugDescription: String!
+
+        if let rootQuery = try? cache.getElementQuery(request.serverId) {
+            debugDescription = rootQuery.debugDescription
+        } else if let rootElement = try? cache.getElement(request.serverId) {
+            debugDescription = rootElement.debugDescription
+        } else {
+            throw ElementNotFoundError(serverId: request.serverId.uuidString)
+        }
+
+        return debugDescription
+    }
+}
+
+// MARK: - UIServer + Element Collection Routes
+extension UIServer {
+    /// Registers routes for element collection operations
+    func registerElementCollectionRoutes() async {
+        let routes = ElementCollectionRoutes(cache: cache, routeRegistrar: self, server: self)
+        await routes.registerRoutes()
     }
 }

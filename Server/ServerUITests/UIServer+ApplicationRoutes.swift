@@ -58,6 +58,7 @@ final class ApplicationRoutes {
 }
 
 /// Protocol defining the interface for route registration
+@MainActor
 protocol RouteRegistering {
     func addRoute<Request: Codable, Response: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Response) async
     func addRoute<Request: Codable>(_ route: String, handler: @escaping @MainActor (Request) async throws -> Void) async

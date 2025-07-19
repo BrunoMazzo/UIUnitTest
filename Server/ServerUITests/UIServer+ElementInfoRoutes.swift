@@ -3,8 +3,21 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-// MARK: - Element Info Routes
-extension UIServer {
+/// A class responsible for handling element information routes
+@MainActor
+final class ElementInfoRoutes {
+    private let cache: ServerState
+    private let routeRegistrar: RouteRegistering
+    
+    /// Initializes a new ElementInfoRoutes instance
+    /// - Parameters:
+    ///   - cache: The server state cache for managing application instances
+    ///   - routeRegistrar: The object responsible for registering routes
+    init(cache: ServerState, routeRegistrar: RouteRegistering) {
+        self.cache = cache
+        self.routeRegistrar = routeRegistrar
+    }
+    
     /// Registers routes for element information retrieval
     /// - identifier: Gets element identifier
     /// - title: Gets element title
@@ -17,18 +30,38 @@ extension UIServer {
     /// - frame: Gets element frame
     /// - horizontalSizeClass: Gets horizontal size class
     /// - verticalSizeClass: Gets vertical size class
-    func registerElementInfoRoutes() async {
-        await addRoute("identifier", handler: identifier(request:))
-        await addRoute("title", handler: title(request:))
-        await addRoute("label", handler: label(request:))
-        await addRoute("placeholderValue", handler: placeholderValue(request:))
-        await addRoute("isSelected", handler: isSelected(request:))
-        await addRoute("hasFocus", handler: hasFocus(request:))
-        await addRoute("isEnabled", handler: isEnabled(request:))
-        await addRoute("elementType", handler: elementType(request:))
-        await addRoute("frame", handler: frame(request:))
-        await addRoute("horizontalSizeClass", handler: horizontalSizeClass(request:))
-        await addRoute("verticalSizeClass", handler: verticalSizeClass(request:))
+    func registerRoutes() async {
+        await routeRegistrar.addRoute("identifier", handler: identifier(request:))
+        await routeRegistrar.addRoute("title", handler: title(request:))
+        await routeRegistrar.addRoute("label", handler: label(request:))
+        await routeRegistrar.addRoute("placeholderValue", handler: placeholderValue(request:))
+        await routeRegistrar.addRoute("isSelected", handler: isSelected(request:))
+        await routeRegistrar.addRoute("hasFocus", handler: hasFocus(request:))
+        await routeRegistrar.addRoute("isEnabled", handler: isEnabled(request:))
+        await routeRegistrar.addRoute("elementType", handler: elementType(request:))
+        await routeRegistrar.addRoute("frame", handler: frame(request:))
+        await routeRegistrar.addRoute("horizontalSizeClass", handler: horizontalSizeClass(request:))
+        await routeRegistrar.addRoute("verticalSizeClass", handler: verticalSizeClass(request:))
+    }
+    
+    private func identifier(request: ElementPayload) async throws -> String {
+        let rootElement = try cache.getElement(request.serverId)
+        return rootElement.identifier
+    }
+    
+    private func title(request: ElementPayload) async throws -> String {
+        let rootElement = try cache.getElement(request.serverId)
+        return rootElement.title
+    }
+    
+    private func label(request: ElementPayload) async throws -> String {
+        let rootElement = try cache.getElement(request.serverId)
+        return rootElement.label
+    }
+    
+    private func placeholderValue(request: ElementPayload) async throws -> String? {
+        let rootElement = try cache.getElement(request.serverId)
+        return rootElement.placeholderValue
     }
 
     /// Checks if an element is selected
@@ -40,8 +73,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element
     /// - Returns: A boolean indicating whether the element is selected
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func isSelected(request: ElementPayload) async throws -> Bool {
+    private func isSelected(request: ElementPayload) async throws -> Bool {
         let element = try cache.getElement(request.serverId)
         return element.isSelected
     }
@@ -55,8 +87,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element
     /// - Returns: A boolean indicating whether the element has focus
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func hasFocus(request: ElementPayload) async throws -> Bool {
+    private func hasFocus(request: ElementPayload) async throws -> Bool {
         let element = try cache.getElement(request.serverId)
         return element.hasFocus
     }
@@ -70,8 +101,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element
     /// - Returns: A boolean indicating whether the element is enabled
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func isEnabled(request: ElementPayload) async throws -> Bool {
+    private func isEnabled(request: ElementPayload) async throws -> Bool {
         let element = try cache.getElement(request.serverId)
         return element.isEnabled
     }
@@ -85,8 +115,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element
     /// - Returns: An `ElementTypeResponse` containing the element's type
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func elementType(request: ElementPayload) async throws -> UInt {
+    private func elementType(request: ElementPayload) async throws -> UInt {
         let element = try cache.getElement(request.serverId)
         return element.elementType.rawValue
     }
@@ -100,8 +129,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element
     /// - Returns: A `FrameResponse` containing the element's frame coordinates
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func frame(request: ElementPayload) async throws -> CGRect {
+    private func frame(request: ElementPayload) async throws -> CGRect {
         let element = try cache.getElement(request.serverId)
         return element.frame
     }
@@ -115,8 +143,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element
     /// - Returns: A `UserInterfaceSizeClassResponse` containing the horizontal size class
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func horizontalSizeClass(request: ElementPayload) async throws -> SizeClass {
+    private func horizontalSizeClass(request: ElementPayload) async throws -> SizeClass {
         let element = try cache.getElement(request.serverId)
         return SizeClass(rawValue: element.horizontalSizeClass.rawValue)!
     }
@@ -130,9 +157,17 @@ extension UIServer {
     ///   - request: Contains the server ID of the element
     /// - Returns: A `UserInterfaceSizeClassResponse` containing the vertical size class
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func verticalSizeClass(request: ElementPayload) async throws -> SizeClass {
+    private func verticalSizeClass(request: ElementPayload) async throws -> SizeClass {
         let element = try cache.getElement(request.serverId)
         return SizeClass(rawValue: element.verticalSizeClass.rawValue)!
+    }
+}
+
+// MARK: - UIServer + Element Info Routes
+extension UIServer {
+    /// Registers routes for element information retrieval
+    func registerElementInfoRoutes() async {
+        let routes = ElementInfoRoutes(cache: cache, routeRegistrar: self)
+        await routes.registerRoutes()
     }
 }

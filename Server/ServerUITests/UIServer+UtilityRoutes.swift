@@ -3,28 +3,47 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-// MARK: - Utility Routes
-extension UIServer {
+/// A class responsible for handling utility routes for server management
+@MainActor
+final class UtilityRoutes {
+    private let server: UIServer
+    
+    /// Initializes a new UtilityRoutes instance
+    /// - Parameters:
+    ///   - server: The UIServer instance for accessing server functionality
+    init(server: UIServer) {
+        self.server = server
+    }
+    
     /// Registers utility routes for server management
     /// - stop: Stops the server
     /// - alive: Health check endpoint
     /// - server-version: Gets server version
-    func registerUtilityRoutes() async {
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler { _ in
+    func registerRoutes() async {
+        await server.server.appendRoute(HTTPRoute(stringLiteral: "stop"), to: ClosureHTTPHandler { _ in
             Task {
-                await self.server.stop(timeout: 10)
+                await self.server.server.stop(timeout: 10)
             }
 
-            return await self.buildResponse(true)
+            return await self.server.buildResponse(true)
         })
 
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "alive"), to: ClosureHTTPHandler { _ in
-            await self.buildResponse(true)
+        await server.server.appendRoute(HTTPRoute(stringLiteral: "alive"), to: ClosureHTTPHandler { _ in
+            await self.server.buildResponse(true)
         })
 
-        await self.server.appendRoute(HTTPRoute(stringLiteral: "server-version"), to: ClosureHTTPHandler { _ in
-            await self.buildResponse(CurrentServerVersion)
+        await server.server.appendRoute(HTTPRoute(stringLiteral: "server-version"), to: ClosureHTTPHandler { _ in
+            await self.server.buildResponse(CurrentServerVersion)
         })
+    }
+}
+
+// MARK: - UIServer + Utility Routes
+extension UIServer {
+    /// Registers utility routes for server management
+    func registerUtilityRoutes() async {
+        let routes = UtilityRoutes(server: self)
+        await routes.registerRoutes()
     }
 
     /// Performs a query based on a request

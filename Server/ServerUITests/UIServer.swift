@@ -87,7 +87,7 @@ class UIServer {
     /// A cache mechanism to manage and track XCUIApplication and XCUIElement instances
     /// Provides efficient reference management and lookup for UI testing elements
     @MainActor
-let cache = ServerState()
+    let cache = ServerState()
 
     /// Starts the UIServer with a specified port index
     ///

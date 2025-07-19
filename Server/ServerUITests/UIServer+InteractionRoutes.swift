@@ -3,8 +3,21 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-// MARK: - Interaction Routes
-extension UIServer {
+/// A class responsible for handling interaction routes
+@MainActor
+final class InteractionRoutes {
+    private let cache: ServerState
+    private let routeRegistrar: RouteRegistering
+    
+    /// Initializes a new InteractionRoutes instance
+    /// - Parameters:
+    ///   - cache: The server state cache for managing application instances
+    ///   - routeRegistrar: The object responsible for registering routes
+    init(cache: ServerState, routeRegistrar: RouteRegistering) {
+        self.cache = cache
+        self.routeRegistrar = routeRegistrar
+    }
+    
     /// Registers routes for element interactions and gestures
     /// - tapElement: Performs tap gesture on element
     /// - doubleTap: Performs double tap gesture on element
@@ -14,15 +27,15 @@ extension UIServer {
     /// - pinch: Performs pinch gesture on element
     /// - rotate: Performs rotation gesture on element
     /// - HomeButton: Presses device home button
-    func registerInteractionRoutes() async {
-        await addRoute("tapElement", handler: tapElement(tapRequest:))
-        await addRoute("doubleTap", handler: doubleTap(tapRequest:))
-        await addRoute("typeText", handler: typeText(request:))
-        await addRoute("scroll", handler: scroll(request:))
-        await addRoute("swipe", handler: swipe(request:))
-        await addRoute("pinch", handler: pinch(request:))
-        await addRoute("rotate", handler: rotate(request:))
-        await addRoute("HomeButton", handler: { (_: HomeButtonRequest) in
+    func registerRoutes() async {
+        await routeRegistrar.addRoute("tapElement", handler: tapElement(tapRequest:))
+        await routeRegistrar.addRoute("doubleTap", handler: doubleTap(tapRequest:))
+        await routeRegistrar.addRoute("typeText", handler: typeText(request:))
+        await routeRegistrar.addRoute("scroll", handler: scroll(request:))
+        await routeRegistrar.addRoute("swipe", handler: swipe(request:))
+        await routeRegistrar.addRoute("pinch", handler: pinch(request:))
+        await routeRegistrar.addRoute("rotate", handler: rotate(request:))
+        await routeRegistrar.addRoute("HomeButton", handler: { (_: HomeButtonRequest) in
             XCUIDevice.shared.press(.home)
         })
     }
@@ -36,8 +49,7 @@ extension UIServer {
     ///   - tapRequest: Contains the server ID of the element and tap configuration
     /// - Returns: A boolean indicating whether the tap was successful
     /// - Throws: Errors related to element retrieval or tap execution
-    @MainActor
-    func tapElement(tapRequest: TapElementRequest) throws -> Bool {
+    private func tapElement(tapRequest: TapElementRequest) throws -> Bool {
         guard let element = try? cache.getElement(tapRequest.serverId) else {
             return false
         }
@@ -66,8 +78,7 @@ extension UIServer {
     ///   - tapRequest: Contains the server ID of the element to double tap
     /// - Returns: A boolean indicating whether the double tap was successful
     /// - Throws: Errors related to element retrieval or tap execution
-    @MainActor
-    func doubleTap(tapRequest: ElementPayload) throws -> Void {
+    private func doubleTap(tapRequest: ElementPayload) throws -> Void {
         let element = try cache.getElement(tapRequest.serverId)
         element.doubleTap()
     }
@@ -81,8 +92,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element and the text to type
     /// - Returns: A boolean indicating whether the text input was successful
     /// - Throws: Errors related to element retrieval or text input
-    @MainActor
-    func typeText(request: EnterTextRequest) throws -> Void {
+    private func typeText(request: EnterTextRequest) throws -> Void {
         let element = try self.cache.getElement(request.serverId)
         element.typeText(request.textToEnter)
     }
@@ -96,8 +106,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element and scroll deltas
     /// - Returns: A boolean indicating whether the scroll was successful
     /// - Throws: Errors related to element retrieval or scroll execution
-    @MainActor
-    func scroll(request: ScrollRequest) throws -> Bool {
+    private func scroll(request: ScrollRequest) throws -> Bool {
         let element = try cache.getElement(request.serverId)
         element.scroll(byDeltaX: request.deltaX, deltaY: request.deltaY)
         return true
@@ -112,8 +121,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element and swipe configuration
     /// - Returns: A boolean indicating whether the swipe was successful
     /// - Throws: Errors related to element retrieval or swipe execution
-    @MainActor
-    func swipe(request: SwipeRequest) throws -> Bool {
+    private func swipe(request: SwipeRequest) throws -> Bool {
         let element = try cache.getElement(request.serverId)
 
         switch request.swipeDirection {
@@ -139,8 +147,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element and pinch configuration
     /// - Returns: A boolean indicating whether the pinch was successful
     /// - Throws: Errors related to element retrieval or pinch execution
-    @MainActor
-    func pinch(request: PinchRequest) throws {
+    private func pinch(request: PinchRequest) throws {
         let element = try self.cache.getElement(request.serverId)
         element.pinch(withScale: request.scale, velocity: request.velocity)
     }
@@ -154,10 +161,18 @@ extension UIServer {
     ///   - request: Contains the server ID of the element and rotation configuration
     /// - Returns: A boolean indicating whether the rotation was successful
     /// - Throws: Errors related to element retrieval or rotation execution
-    @MainActor
-    func rotate(request: RotateRequest) throws -> Bool {
+    private func rotate(request: RotateRequest) throws -> Bool {
         let element = try cache.getElement(request.serverId)
         element.rotate(request.rotation, withVelocity: request.velocity)
         return true
+    }
+}
+
+// MARK: - UIServer + Interaction Routes
+extension UIServer {
+    /// Registers routes for element interactions and gestures
+    func registerInteractionRoutes() async {
+        let routes = InteractionRoutes(cache: cache, routeRegistrar: self)
+        await routes.registerRoutes()
     }
 }

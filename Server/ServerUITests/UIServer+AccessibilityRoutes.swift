@@ -3,12 +3,25 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-// MARK: - Accessibility Routes
-extension UIServer {
+/// A class responsible for handling accessibility-related routes
+@MainActor
+final class AccessibilityRoutes {
+    private let cache: ServerState
+    private let routeRegistrar: RouteRegistering
+    
+    /// Initializes a new AccessibilityRoutes instance
+    /// - Parameters:
+    ///   - cache: The server state cache for managing application instances
+    ///   - routeRegistrar: The object responsible for registering routes
+    init(cache: ServerState, routeRegistrar: RouteRegistering) {
+        self.cache = cache
+        self.routeRegistrar = routeRegistrar
+    }
+    
     /// Registers routes for accessibility operations
     /// - performAccessibilityAudit: Performs accessibility audit
-    func registerAccessibilityRoutes() async {
-        await addRoute("performAccessibilityAudit", handler: performAccessibilityAudit(request:))
+    func registerRoutes() async {
+        await routeRegistrar.addRoute("performAccessibilityAudit", handler: performAccessibilityAudit(request:))
     }
 
     /// Performs an accessibility audit on the specified application
@@ -23,8 +36,7 @@ extension UIServer {
     /// - Throws: 
     ///   - Errors if the application cannot be retrieved from the cache
     ///   - An error for iOS versions earlier than 17.0
-    @MainActor
-    func performAccessibilityAudit(
+    private func performAccessibilityAudit(
         request: AccessibilityAuditRequest
     ) async throws -> AccessibilityAuditResponse {
         let app = try cache.getApplication(request.serverId)
@@ -57,8 +69,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the application to audit
     /// - Returns: A boolean indicating whether the accessibility audit was successful
     /// - Throws: Errors related to application retrieval or accessibility audit
-    @MainActor
-    func accessibilityTest(request: ElementPayload) async throws -> Bool {
+    private func accessibilityTest(request: ElementPayload) async throws -> Bool {
         let application = try cache.getApplication(request.serverId)
 
         if #available(iOS 17.0, *) {
@@ -66,5 +77,14 @@ extension UIServer {
         } else {
             return false
         }
+    }
+}
+
+// MARK: - UIServer + Accessibility Routes
+extension UIServer {
+    /// Registers routes for accessibility operations
+    func registerAccessibilityRoutes() async {
+        let routes = AccessibilityRoutes(cache: cache, routeRegistrar: self)
+        await routes.registerRoutes()
     }
 }

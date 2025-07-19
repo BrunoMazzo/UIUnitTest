@@ -3,20 +3,33 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-// MARK: - Element State Routes
-extension UIServer {
+/// A class responsible for handling element state routes
+@MainActor
+final class ElementStateRoutes {
+    private let cache: ServerState
+    private let routeRegistrar: RouteRegistering
+    
+    /// Initializes a new ElementStateRoutes instance
+    /// - Parameters:
+    ///   - cache: The server state cache for managing application instances
+    ///   - routeRegistrar: The object responsible for registering routes
+    init(cache: ServerState, routeRegistrar: RouteRegistering) {
+        self.cache = cache
+        self.routeRegistrar = routeRegistrar
+    }
+    
     /// Registers routes for element state checking
     /// - exists: Checks if element exists
     /// - waitForExistence: Waits for element to exist
     /// - waitForNonExistence: Waits for element to not exist
     /// - value: Gets element value
     /// - isHittable: Checks if element is hittable
-    func registerElementStateRoutes() async {
-        await addRoute("exists", handler: exists(request:))
-        await addRoute("waitForExistence", handler: waitForExistence(request:))
-        await addRoute("waitForNonExistence", handler: waitForNonExistence(request:))
-        await addRoute("value", handler: value(request:))
-        await addRoute("isHittable", handler: isHittable(request:))
+    func registerRoutes() async {
+        await routeRegistrar.addRoute("exists", handler: exists(request:))
+        await routeRegistrar.addRoute("waitForExistence", handler: waitForExistence(request:))
+        await routeRegistrar.addRoute("waitForNonExistence", handler: waitForNonExistence(request:))
+        await routeRegistrar.addRoute("value", handler: value(request:))
+        await routeRegistrar.addRoute("isHittable", handler: isHittable(request:))
     }
 
     /// Checks if an element exists in the UI hierarchy
@@ -28,8 +41,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element to check
     /// - Returns: A boolean indicating whether the element exists
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func exists(request: ElementPayload) async throws -> Bool {
+    private func exists(request: ElementPayload) async throws -> Bool {
         let element = try cache.getElement(request.serverId)
         return element.exists
     }
@@ -43,8 +55,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element and timeout duration
     /// - Returns: A boolean indicating whether the element appeared within the timeout
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func waitForExistence(request: WaitForExistenceRequest) async throws -> Bool {
+    private func waitForExistence(request: WaitForExistenceRequest) async throws -> Bool {
         let element = try cache.getElement(request.serverId)
         return element.waitForExistence(timeout: request.timeout)
     }
@@ -58,8 +69,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element and timeout duration
     /// - Returns: A boolean indicating whether the element disappeared within the timeout
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func waitForNonExistence(request: WaitForExistenceRequest) async throws -> Bool {
+    private func waitForNonExistence(request: WaitForExistenceRequest) async throws -> Bool {
         let element = try cache.getElement(request.serverId)
         return element.waitForNonExistence(timeout: request.timeout)
     }
@@ -74,8 +84,7 @@ extension UIServer {
     ///   - request: Contains the server ID of the element
     /// - Returns: A `ValueResponse` containing the element's value
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func value(request: ElementPayload) async throws -> ValueResponse {
+    private func value(request: ElementPayload) async throws -> ValueResponse {
         let element = try cache.getElement(request.serverId)
         return ValueResponse(value: element.value as? String ?? "")
     }
@@ -90,9 +99,17 @@ extension UIServer {
     ///   - request: Contains the server ID of the element
     /// - Returns: A boolean indicating whether the element is hittable
     /// - Throws: Errors related to element retrieval
-    @MainActor
-    func isHittable(request: ElementPayload) async throws -> Bool {
+    private func isHittable(request: ElementPayload) async throws -> Bool {
         let element = try cache.getElement(request.serverId)
         return element.isHittable
+    }
+}
+
+// MARK: - UIServer + Element State Routes
+extension UIServer {
+    /// Registers routes for element state checking
+    func registerElementStateRoutes() async {
+        let routes = ElementStateRoutes(cache: cache, routeRegistrar: self)
+        await routes.registerRoutes()
     }
 }

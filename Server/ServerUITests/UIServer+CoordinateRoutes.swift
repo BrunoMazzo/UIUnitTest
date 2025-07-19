@@ -3,20 +3,32 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-// MARK: - Coordinate Routes
-extension UIServer {
+/// A class responsible for handling coordinate-based routes
+@MainActor
+final class CoordinateRoutes {
+    private let cache: ServerState
+    private let routeRegistrar: RouteRegistering
+    
+    /// Initializes a new CoordinateRoutes instance
+    /// - Parameters:
+    ///   - cache: The server state cache for managing application instances
+    ///   - routeRegistrar: The object responsible for registering routes
+    init(cache: ServerState, routeRegistrar: RouteRegistering) {
+        self.cache = cache
+        self.routeRegistrar = routeRegistrar
+    }
+    
     /// Registers routes for coordinate-based operations
     /// - coordinate: Gets coordinate from element
     /// - coordinateWithOffset: Gets coordinate with offset
     /// - coordinateTap: Performs tap at coordinate
-    func registerCoordinateRoutes() async {
-        await addRoute("coordinate", handler: coordinate(request:))
-        await addRoute("coordinateWithOffset", handler: coordinateWithOffset(request:))
-        await addRoute("coordinateTap", handler: coordinateTap(request:))
+    func registerRoutes() async {
+        await routeRegistrar.addRoute("coordinate", handler: coordinate(request:))
+        await routeRegistrar.addRoute("coordinateWithOffset", handler: coordinateWithOffset(request:))
+        await routeRegistrar.addRoute("coordinateTap", handler: coordinateTap(request:))
     }
 
-    @MainActor
-    func coordinate(request: CoordinateRequest) async throws -> CoordinateResponse {
+    private func coordinate(request: CoordinateRequest) async throws -> CoordinateResponse {
         // withNormalizedOffset: CGVector
         let rootElement = try cache.getElement(request.serverId)
         let coordinate = rootElement.coordinate(withNormalizedOffset: request.normalizedOffset)
@@ -31,8 +43,7 @@ extension UIServer {
         )
     }
 
-    @MainActor
-    func coordinateWithOffset(request: CoordinateOffsetRequest) async throws -> CoordinateResponse {
+    private func coordinateWithOffset(request: CoordinateOffsetRequest) async throws -> CoordinateResponse {
         let rootCoordinate = try cache.getCoordinate(request.coordinatorId)
         let coordinate = rootCoordinate.withOffset(request.vector)
 
@@ -46,8 +57,7 @@ extension UIServer {
         )
     }
 
-    @MainActor
-    func coordinateTap(request: TapCoordinateRequest) async throws -> Bool {
+    private func coordinateTap(request: TapCoordinateRequest) async throws -> Bool {
         let rootCoordinate = try cache.getCoordinate(request.serverId)
 
         switch request.type {
@@ -76,5 +86,14 @@ extension UIServer {
         }
 
         return true
+    }
+}
+
+// MARK: - UIServer + Coordinate Routes
+extension UIServer {
+    /// Registers routes for coordinate-based operations
+    func registerCoordinateRoutes() async {
+        let routes = CoordinateRoutes(cache: cache, routeRegistrar: self)
+        await routes.registerRoutes()
     }
 }

@@ -3,8 +3,21 @@ import Foundation
 import UIUnitTestAPI
 import XCTest
 
-// MARK: - Element Query Routes
-extension UIServer {
+/// A class responsible for handling element query routes
+@MainActor
+final class ElementQueryRoutes {
+    private let cache: ServerState
+    private let routeRegistrar: RouteRegistering
+    
+    /// Initializes a new ElementQueryRoutes instance
+    /// - Parameters:
+    ///   - cache: The server state cache for managing application instances
+    ///   - routeRegistrar: The object responsible for registering routes
+    init(cache: ServerState, routeRegistrar: RouteRegistering) {
+        self.cache = cache
+        self.routeRegistrar = routeRegistrar
+    }
+    
     /// Registers routes for element querying and selection
     /// - firstMatch: Gets the first matching element from a query
     /// - elementFromQuery: Retrieves a specific element from a query
@@ -13,14 +26,14 @@ extension UIServer {
     /// - matchingByIdentifier: Creates query with elements matching identifier
     /// - containingPredicate: Creates query containing elements matching predicate
     /// - containingElementType: Creates query containing elements of specific type
-    func registerElementQueryRoutes() async {
-        await addRoute("firstMatch", handler: firstMatch(firstMatchRequest:))
-        await addRoute("elementFromQuery", handler: elementFromQuery(elementFromQuery:))
-        await addRoute("elementMatchingPredicate", handler: elementMatchingPredicate(predicateRequest:))
-        await addRoute("matchingPredicate", handler: matchingPredicate(predicateRequest:))
-        await addRoute("matchingByIdentifier", handler: matchingByIdentifier(request:))
-        await addRoute("containingPredicate", handler: containingPredicate(request:))
-        await addRoute("containingElementType", handler: containingElementType(request:))
+    func registerRoutes() async {
+        await routeRegistrar.addRoute("firstMatch", handler: firstMatch(firstMatchRequest:))
+        await routeRegistrar.addRoute("elementFromQuery", handler: elementFromQuery(elementFromQuery:))
+        await routeRegistrar.addRoute("elementMatchingPredicate", handler: elementMatchingPredicate(predicateRequest:))
+        await routeRegistrar.addRoute("matchingPredicate", handler: matchingPredicate(predicateRequest:))
+        await routeRegistrar.addRoute("matchingByIdentifier", handler: matchingByIdentifier(request:))
+        await routeRegistrar.addRoute("containingPredicate", handler: containingPredicate(request:))
+        await routeRegistrar.addRoute("containingElementType", handler: containingElementType(request:))
     }
 
     /// Retrieves the first matching element from a given query
@@ -32,8 +45,7 @@ extension UIServer {
     ///   - firstMatchRequest: A request containing the server ID of the query to match
     /// - Returns: A response with the server ID of the first matching element
     /// - Throws: Errors related to query retrieval or element matching
-    @MainActor
-    func firstMatch(firstMatchRequest: FirstMatchRequest) async throws -> FirstMatchResponse {
+    private func firstMatch(firstMatchRequest: FirstMatchRequest) async throws -> FirstMatchResponse {
         let query = try cache.getQuery(firstMatchRequest.serverId)
         let element = query.firstMatch
 
@@ -53,8 +65,7 @@ extension UIServer {
     ///   - elementFromQuery: A request containing the query server ID and optional selection criteria
     /// - Returns: A payload containing the server ID of the selected element
     /// - Throws: Errors related to query retrieval or element selection
-    @MainActor
-    func elementFromQuery(elementFromQuery: ElementFromQuery) async throws -> ElementPayload {
+    private func elementFromQuery(elementFromQuery: ElementFromQuery) async throws -> ElementPayload {
         let query = try cache.getElementQuery(elementFromQuery.serverId)
 
         let element: XCUIElement
@@ -80,8 +91,7 @@ extension UIServer {
     ///   - predicateRequest: A request containing the query server ID and the predicate to match
     /// - Returns: A payload containing the server ID of the matching element
     /// - Throws: Errors related to query retrieval or element matching
-    @MainActor
-    func elementMatchingPredicate(predicateRequest: PredicateRequest) async throws -> ElementPayload {
+    private func elementMatchingPredicate(predicateRequest: PredicateRequest) async throws -> ElementPayload {
         let query = try cache.getElementQuery(predicateRequest.serverId)
 
         let element = query.element(matching: predicateRequest.predicate)
@@ -101,8 +111,7 @@ extension UIServer {
     ///   - predicateRequest: A request containing the source query's server ID and the predicate to match
     /// - Returns: A response with the server ID of the new filtered query
     /// - Throws: Errors related to query retrieval or predicate matching
-    @MainActor
-    func matchingPredicate(predicateRequest: PredicateRequest) async throws -> QueryResponse {
+    private func matchingPredicate(predicateRequest: PredicateRequest) async throws -> QueryResponse {
         let query = try cache.getElementQuery(predicateRequest.serverId)
         let matching = query.matching(predicateRequest.predicate)
         let id = cache.add(query: matching)
@@ -118,8 +127,7 @@ extension UIServer {
     ///   - request: A request containing the root query's server ID and the identifier to match
     /// - Returns: A response with the server ID of the new filtered query
     /// - Throws: Errors related to query retrieval or identifier matching
-    @MainActor
-    func matchingByIdentifier(request: ByIdRequest) async throws -> QueryResponse {
+    private func matchingByIdentifier(request: ByIdRequest) async throws -> QueryResponse {
         let query = try cache.getElementQuery(request.queryRoot)
         let matching = query.matching(identifier: request.identifier)
         let id = cache.add(query: matching)
@@ -136,8 +144,7 @@ extension UIServer {
     ///   - request: A request containing the source query's server ID and the predicate to match
     /// - Returns: A response with the server ID of the new filtered query
     /// - Throws: Errors related to query retrieval or predicate matching
-    @MainActor
-    func containingPredicate(request: PredicateRequest) async throws -> QueryResponse {
+    private func containingPredicate(request: PredicateRequest) async throws -> QueryResponse {
         let query = try cache.getElementQuery(request.serverId)
         let matching = query.containing(request.predicate)
         let id = cache.add(query: matching)
@@ -154,13 +161,21 @@ extension UIServer {
     ///   - request: A request containing the source query's server ID, element type, and optional identifier
     /// - Returns: A response with the server ID of the new filtered query
     /// - Throws: Errors related to query retrieval or element type matching
-    @MainActor
-    func containingElementType(request: ElementTypeRequest) async throws -> QueryResponse {
+    private func containingElementType(request: ElementTypeRequest) async throws -> QueryResponse {
         let rootQuery = try cache.getElementQuery(request.serverId)
         let query = rootQuery.containing(request.elementType.toXCUIElementType(), identifier: request.identifier)
 
         let id = cache.add(query: query)
 
         return QueryResponse(serverId: id)
+    }
+}
+
+// MARK: - UIServer + Element Query Routes
+extension UIServer {
+    /// Registers routes for element querying and selection
+    func registerElementQueryRoutes() async {
+        let routes = ElementQueryRoutes(cache: cache, routeRegistrar: self)
+        await routes.registerRoutes()
     }
 }
